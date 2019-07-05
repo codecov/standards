@@ -1,4 +1,4 @@
-# Standards Scripts
+# Codecov Standards Scripts
 
 ## Purpose
 
