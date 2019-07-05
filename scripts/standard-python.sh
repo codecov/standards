@@ -4,7 +4,7 @@ setup_git() {
 }
 
 clone_repo(){
-    git clone https://ibrahim0814:${GH_TOKEN}@github.com/username/repository.git
+    git clone https://ibrahim0814:${GH_TOKEN}@github.com/ibrahim0814/pystandard-draft.git
     cd pystandard-draft
 }
 
