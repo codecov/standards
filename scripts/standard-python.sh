@@ -1,31 +1,27 @@
-setup_git() {
-  git config --global user.email "ibrahim.0814@gmail.com"
-  git config --global user.name "ibrahim0814"
-}
-
 clone_repo(){
     git clone https://ibrahim0814:${GH_TOKEN}@github.com/ibrahim0814/pystandard-draft.git
     cd pystandard-draft
 }
 
+dateAndTime=`date +"%D %T"`
 change_readme() {
   # Current month and year, e.g: Apr 2018
-  dateAndTime=`date +"%D %T"`
-  # Stage the modified files in dist/output
-  cat README.md
-  #sed -i "s/^Last Updated.*/Last Updated ${dateAndTime}/" ./README.md
+
+  #change readme file in line, update it with the latest build date
+  sed -i -e "s|.*Last Updated:.*|### Last Updated: $dateAndTime|g" README.md
+
+  rm -f README.md-e
 }
 
 commit_and_upload() {
   
-  dateOnly = `date +”%m/%d/%Y”`
   git add .
-  git commit -m "New Build: $dateOnly" 
-  git remote -v
+  git commit -m "New Build: ${dateAndTime}" 
+  git remote rm origin 
+  git remote add origin https://ibrahim0814:${GH_TOKEN}@github.com/ibrahim0814/pystandard-draft.git
   git push origin master --quiet
 }
 
-setup_git
 clone_repo
 change_readme
 commit_and_upload
