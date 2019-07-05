@@ -12,7 +12,8 @@ change_readme() {
   # Current month and year, e.g: Apr 2018
   dateAndTime=`date +"%D %T"`
   # Stage the modified files in dist/output
-  sed -i "s/^Last Updated.*/Last Updated ${dateAndTime}/" ./README.md
+  cat README.md
+  #sed -i "s/^Last Updated.*/Last Updated ${dateAndTime}/" ./README.md
 }
 
 commit_and_upload() {
