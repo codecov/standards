@@ -1,9 +1,12 @@
 #Function: Helper shell script for python standards repo
+setup_git() {
+  git config --global user.name "Codecov Travis CI Runner"
+}
 
 #clone the python standards repo from gh
 clone_repo(){
-    git clone https://ibrahim0814:${GH_TOKEN}@github.com/ibrahim0814/pystandard-draft.git
-    cd pystandard-draft
+    git clone https://codecov:${GH_TOKEN}@github.com/codecov/Python-Standard.git
+    cd Python-Standard
 }
 
 # Get current month and year, e.g: Apr 2018
@@ -22,7 +25,7 @@ commit_and_upload() {
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
-  git remote add origin https://ibrahim0814:${GH_TOKEN}@github.com/ibrahim0814/pystandard-draft.git
+  git remote add origin https://codecov:${GH_TOKEN}@github.com/codecov/Python-Standard.git
   git push origin master --quiet
 
 }
