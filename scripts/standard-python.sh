@@ -1,7 +1,4 @@
 #Function: Helper shell script for python standards repo
-setup_git() {
-  git config --global user.name "Codecov Travis CI Runner"
-}
 
 #clone the python standards repo from gh
 clone_repo(){
