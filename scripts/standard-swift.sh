@@ -4,7 +4,7 @@
 #clone the python standards repo from gh
 clone_repo(){
     git clone https://codecov:${GH_TOKEN}@github.com/codecov/Swift-Standard.git
-    cd SwiftStandard-Draft
+    cd Swift-Standard
 }
 
 # Get current month and year, e.g: Apr 2018
