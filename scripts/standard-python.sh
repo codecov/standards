@@ -2,6 +2,7 @@
 
 
 #clone the python standards repo from gh
+echo "Cloning Python Standard repo..."
 clone_repo(){
     git clone https://codecov:${GH_TOKEN}@github.com/codecov/Python-Standard.git
     cd Python-Standard
@@ -11,6 +12,7 @@ clone_repo(){
 dateAndTime=`date +"%D %T"`
 
 #change repo readme in line, update it with the latest build date
+echo "Modifying README.md..."
 change_readme() {
   sed -i -e "s|.*Last Updated:.*|### Last Updated: $dateAndTime|g" README.md
 
@@ -18,6 +20,7 @@ change_readme() {
 }
 
 #commit files and upload to github repo with new commmit sha
+echo "Committing changes, pushing to GH repo..."
 commit_and_upload() {
   
   git add .
