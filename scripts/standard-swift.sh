@@ -3,7 +3,7 @@
 
 #clone the python standards repo from gh
 clone_repo(){
-    git clone https://ibrahim0814:${GH_TOKEN}@github.com/ibrahim0814/SwiftStandard-Draft.git
+    git clone https://codecov:${GH_TOKEN}@github.com/codecov/Swift-Standard.git
     cd SwiftStandard-Draft
 }
 
@@ -23,7 +23,7 @@ commit_and_upload() {
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
-  git remote add origin  https://ibrahim0814:${GH_TOKEN}@github.com/ibrahim0814/SwiftStandard-Draft.git
+  git remote add origin  https://codecov:${GH_TOKEN}@github.com/codecov/Swift-Standard.git
   git push origin master --quiet
 
 }
