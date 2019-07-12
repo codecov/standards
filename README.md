@@ -11,3 +11,4 @@ Scripts that run on Travis to modify files in existing repos. They exist for eve
 |                           Standard                           | Build Status                                                                                                                      |
 | :----------------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------- |
 | [Python 3.6](https://github.com/codecov/Python-Standard.git) | [![Build Status](https://travis-ci.org/codecov/Python-Standard.svg?branch=master)](https://travis-ci.org/codecov/Python-Standard) |
+|[Swift 5/Xcode 11](https://github.com/codecov/Swift-Standard) |[![Build Status](https://travis-ci.org/codecov/Swift-Standard.svg?branch=master)](https://travis-ci.org/codecov/Swift-Standard) |
