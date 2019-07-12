@@ -24,6 +24,7 @@ commit_and_upload() {
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
   git remote add origin  https://codecov:${GH_TOKEN}@github.com/codecov/Swift-Standard.git
+  git pull origin master
   git push origin master --quiet
 
 }
