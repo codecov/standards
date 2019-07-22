@@ -4,3 +4,5 @@ node_js:
 script:
   - bash scripts/standard-python.sh
   - bash scripts/standard-swift.sh
+  - bash scripts/standard-ruby-1.sh
+  - bash scripts/standard-ruby-2.sh

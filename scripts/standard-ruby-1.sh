@@ -1,11 +1,10 @@
-#Function: Helper shell script for swift standards repo
+#Function: Helper shell script for ruby standard 1 repo (codecov gem edition)
 
-
-#clone the swift standards repo from gh
-echo "Cloning Swift Standard repo..."
+#clone the ruby standards 1 repo from gh
+echo "Cloning Ruby Standard 1 repo..."
 clone_repo(){
-    git clone https://codecov:${GH_TOKEN}@github.com/codecov/Swift-Standard.git
-    cd Swift-Standard
+    git clone https://codecov:${GH_TOKEN}@github.com/codecov/Ruby-Standard-1.git
+    cd Ruby-Standard-1
 }
 
 # Get current month and year, e.g: Apr 2018
@@ -26,7 +25,7 @@ commit_and_upload() {
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
-  git remote add origin  https://codecov:${GH_TOKEN}@github.com/codecov/Swift-Standard.git
+  git remote add origin  https://codecov:${GH_TOKEN}@github.com/codecov/Ruby-Standard-1.git
   git pull origin master
   git push origin master --quiet
 
