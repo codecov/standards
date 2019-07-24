@@ -6,3 +6,4 @@ script:
   - bash scripts/standard-swift.sh
   - bash scripts/standard-ruby-1.sh
   - bash scripts/standard-ruby-2.sh
+  - bash scripts/standard-typescript.sh
