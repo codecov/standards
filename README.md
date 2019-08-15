@@ -4,7 +4,7 @@
 
 ## What is this?
 
-This is a repository containing aggregated information about the state of all Codecov language standards. Each standard ensures that Codecov is properly processing reports for said lanaguge if it's build is passing. 
+This is a repository containing aggregated information about the state of all Codecov language standards. Each standard ensures that Codecov is properly processing reports for a particular lanaguge if it's build is passing. 
 
 ## List of Standards
 
