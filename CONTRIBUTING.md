@@ -1,4 +1,4 @@
-## Contributing
+# Contributing Guide
 
 If you would like to contribute your own language specific standard to Codecov you can do so as follows:
 
