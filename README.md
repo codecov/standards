@@ -18,7 +18,7 @@ This is a repository containing aggregated information about the state of all Co
 
 ## Operation Details
 
-Inside the `scripts` folder, you'll find shell files that run daily on a Travis CRON. These scripts attach a timestamp to the `Last Updated` line in the `README.md` files for each standard and commit this change. This action triggers a Travis build for the respective standard. 
+Inside the `scripts` folder, you'll find shell files that run daily on a Travis CRON job. These scripts attach a timestamp to the `Last Updated` line in the `README.md` files for each standard and commit this change. This action triggers a Travis build for the respective standard. 
 
 Within the Travis build for each standard:
   * Unit tests are run
