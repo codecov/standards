@@ -4,9 +4,19 @@
 
 ## What is this?
 
-This is a repository containing aggregated information about the state of all Codecov language standards. Each lanaguage standard ensures that Codecov is processing reports for said lanaguge properly if it's build is passing. Repositories for each standard along with their current build statuses are listed in the table below.
+This is a repository containing aggregated information about the state of all Codecov language standards. Each standard ensures that Codecov is properly processing reports for said lanaguge if it's build is passing. 
 
-Inside the `scripts` folder, you can also find shell files for each standard that run on a Travis CRON job (daily). Essentially, this allows us to make sure coverage is uploaded to Codecov on a regular basis for each repo. 
+## Operation Details
+
+Inside the `scripts` folder, you'll find shell files that run daily on a Travis CRON. These scripts attach a timestamp to the `Last Updated` line in the `README.md` files for each standard and commit this change. This action triggers a Travis build for the respective standard. 
+
+Within the Travis build for each standard:
+  * Unit tests are run
+  * A coverage report is generated (should not vary from commit to commit) 
+  * Coverage is uploaded to Codecov
+  * A script ensures that Codecov's API returns the right coverage
+  
+If all of these details check out, then Codecov's processing for that lanaguage is working properly. The results of all of these builds is aggregated in the table below. 
 
 ## List of Standards
 
@@ -17,3 +27,7 @@ Inside the `scripts` folder, you can also find shell files for each standard tha
 |[Ruby 1 - Codecov Gem](https://github.com/codecov/Ruby-Standard-1) |[![Build Status](https://travis-ci.org/codecov/Ruby-Standard-1.svg?branch=master)](https://travis-ci.org/codecov/Ruby-Standard-1) |
 |[Ruby 2 - Bash Uploader](https://github.com/codecov/Ruby-Standard-2) |[![Build Status](https://travis-ci.org/codecov/Ruby-Standard-2.svg?branch=master)](https://travis-ci.org/codecov/Ruby-Standard-2) |
 |[TypeScript](https://github.com/codecov/TypeScript-Standard) |[![Build Status](https://travis-ci.org/codecov/TypeScript-Standard.svg?branch=master)](https://travis-ci.org/codecov/TypeScript-Standard) |
+
+## Contributing
+
+Want to write a standard for a lanaguage that's not listed in the table above? Contributions are welcome! See the [Contributing Guide](CONTRIBUTING) for more details. 
