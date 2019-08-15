@@ -26,7 +26,7 @@ Within the Travis build for each standard:
   * Coverage is uploaded to Codecov
   * A script ensures that Codecov's API returns the right coverage
   
-If all of these details check out, then Codecov's processing for that lanaguage is working properly. The results of all of these builds is aggregated in the table above. 
+If all of these details check out, then Codecov's processing for that lanaguage is working as intended. The results of all of these builds are aggregated in the table above. 
 
 ## Contributing
 
