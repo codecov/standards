@@ -30,4 +30,4 @@ If all of these details check out, then Codecov's processing for that lanaguage 
 
 ## Contributing
 
-Want to write a standard for a lanaguage that's not listed in the table above? Contributions are welcome! See the [Contributing Guide](CONTRIBUTING) for more details. 
+Want to write a standard for a lanaguage that's not listed in the table above? Contributions are welcome! See the [Contributing Guide](CONTRIBUTING.md) for more details. 
