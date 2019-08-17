@@ -1,6 +1,6 @@
 # Codecov Language Standards
 
-[![Build Status](https://travis-ci.org/codecov/standards-scripts.svg?branch=master)](https://travis-ci.org/codecov/standards-scripts)
+[![Build Status](https://travis-ci.org/codecov/standards.svg?branch=master)](https://travis-ci.org/codecov/standards)
 
 ## What is this?
 
