@@ -2,7 +2,7 @@
 
 
 #clone the python standards repo from gh
-echo "Cloning Python Standard repo..."
+echo "Cloning Kotlin Standard repo..."
 clone_repo(){
     git clone https://codecov:${GH_TOKEN}@github.com/codecov/kotlin-Standard.git
     cd Python-Standard
