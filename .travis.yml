@@ -7,3 +7,4 @@ script:
   - bash scripts/standard-ruby-1.sh
   - bash scripts/standard-ruby-2.sh
   - bash scripts/standard-typescript.sh
+  - bash scripts/standard-kotlin.sh
