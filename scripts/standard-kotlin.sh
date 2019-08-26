@@ -5,7 +5,7 @@
 echo "Cloning Kotlin Standard repo..."
 clone_repo(){
     git clone https://codecov:${GH_TOKEN}@github.com/codecov/kotlin-Standard.git
-    cd Python-Standard
+    cd kotlin-Standard
 }
 
 # Get current month and year, e.g: Apr 2018
