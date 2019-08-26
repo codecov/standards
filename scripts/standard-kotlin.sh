@@ -1,7 +1,7 @@
-#Function: Helper shell script for python standards repo
+#Function: Helper shell script for kotlin standards repo
 
 
-#clone the python standards repo from gh
+#clone the kotlin standards repo from gh
 echo "Cloning Kotlin Standard repo..."
 clone_repo(){
     git clone https://codecov:${GH_TOKEN}@github.com/codecov/kotlin-Standard.git
