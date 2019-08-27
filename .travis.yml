@@ -9,3 +9,4 @@ script:
   - bash scripts/standard-typescript.sh
   - bash scripts/standard-kotlin.sh
   - bash scripts/standard-go.sh
+  - bash scripts/standard-cpp-11.sh
