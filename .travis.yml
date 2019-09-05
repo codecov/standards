@@ -10,3 +10,4 @@ script:
   - bash scripts/standard-kotlin.sh
   - bash scripts/standard-go.sh
   - bash scripts/standard-cpp-11.sh
+  - bash scripts/standard-java.sh

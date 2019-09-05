@@ -18,7 +18,7 @@ This is a repository containing aggregated information about the state of all Co
 |[Kotlin](https://github.com/codecov/kotlin-Standard) |[![Build Status](https://travis-ci.org/codecov/kotlin-Standard.svg?branch=master)](https://travis-ci.org/codecov/kotlin-Standard) |
 |[Go](https://github.com/codecov/go-Standard) |[![Build Status](https://travis-ci.org/codecov/go-Standard.svg?branch=master)](https://travis-ci.org/codecov/go-Standard) |
 |[C++ (11)](https://github.com/codecov/cpp-11-Standard) |[![Build Status](https://travis-ci.org/codecov/cpp-11-Standard.svg?branch=master)](https://travis-ci.org/codecov/cpp-11-Standard) |
-
+|[Java](https://github.com/codecov/java-Standard) |[![Build Status](https://travis-ci.org/codecov/java-Standard.svg?branch=master)](https://travis-ci.org/codecov/java-Standard) |
 
 ## Operation Details
 
