@@ -4,7 +4,7 @@
 #clone the ruby standards 2 repo from gh
 echo "Cloning Ruby Standard 2 repo..."
 clone_repo(){
-    git clone https://codecov:${GH_TOKEN}@github.com/codecov/Ruby-Standard-2.git
+    git clone https://codecov:${GH_TOKEN}@github.com/codecov/ruby-standard-2.git
     cd Ruby-Standard-2
 }
 
@@ -26,7 +26,7 @@ commit_and_upload() {
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
-  git remote add origin  https://codecov:${GH_TOKEN}@github.com/codecov/Ruby-Standard-2.git
+  git remote add origin  https://codecov:${GH_TOKEN}@github.com/codecov/ruby-standard-2.git
   git pull origin master
   git push origin master --quiet
 

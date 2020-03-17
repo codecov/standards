@@ -4,7 +4,7 @@
 #clone the swift standards repo from gh
 echo "Cloning Swift Standard repo..."
 clone_repo(){
-    git clone https://codecov:${GH_TOKEN}@github.com/codecov/Swift-Standard.git
+    git clone https://codecov:${GH_TOKEN}@github.com/codecov/swift-standard.git
     cd Swift-Standard
 }
 
@@ -26,7 +26,7 @@ commit_and_upload() {
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
-  git remote add origin  https://codecov:${GH_TOKEN}@github.com/codecov/Swift-Standard.git
+  git remote add origin  https://codecov:${GH_TOKEN}@github.com/codecov/swift-standard.git
   git pull origin master
   git push origin master --quiet
 

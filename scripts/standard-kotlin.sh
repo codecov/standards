@@ -4,7 +4,7 @@
 #clone the kotlin standards repo from gh
 echo "Cloning Kotlin Standard repo..."
 clone_repo(){
-    git clone https://codecov:${GH_TOKEN}@github.com/codecov/kotlin-Standard.git
+    git clone https://codecov:${GH_TOKEN}@github.com/codecov/kotlin-standard.git
     cd kotlin-Standard
 }
 
@@ -26,7 +26,7 @@ commit_and_upload() {
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
-  git remote add origin https://codecov:${GH_TOKEN}@github.com/codecov/kotlin-Standard.git
+  git remote add origin https://codecov:${GH_TOKEN}@github.com/codecov/kotlin-standard.git
   git push origin master --quiet
 
 }
