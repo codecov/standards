@@ -5,7 +5,7 @@
 echo "Cloning Swift Standard repo..."
 clone_repo(){
     git clone https://codecov:${GH_TOKEN}@github.com/codecov/swift-standard.git
-    cd Swift-Standard
+    cd swift-standard
 }
 
 # Get current month and year, e.g: Apr 2018

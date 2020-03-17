@@ -5,7 +5,7 @@
 echo "Cloning Cpp-11 Standard repo..."
 clone_repo(){
     git clone https://codecov:${GH_TOKEN}@github.com/codecov/cpp-11-standard.git
-    cd cpp-11-Standard
+    cd cpp-11-standard
 }
 
 # Get current month and year, e.g: Apr 2018

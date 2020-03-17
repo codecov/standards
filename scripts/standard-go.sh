@@ -5,7 +5,7 @@
 echo "Cloning Go Standard repo..."
 clone_repo(){
     git clone https://codecov:${GH_TOKEN}@github.com/codecov/go-standard.git
-    cd go-Standard
+    cd go-standard
 }
 
 # Get current month and year, e.g: Apr 2018
