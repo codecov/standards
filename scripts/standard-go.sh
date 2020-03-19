@@ -4,8 +4,8 @@
 #clone the go standards repo from gh
 echo "Cloning Go Standard repo..."
 clone_repo(){
-    git clone https://codecov:${GH_TOKEN}@github.com/codecov/go-Standard.git
-    cd go-Standard
+    git clone https://codecov:${GH_TOKEN}@github.com/codecov/go-standard.git
+    cd go-standard
 }
 
 # Get current month and year, e.g: Apr 2018
@@ -26,7 +26,7 @@ commit_and_upload() {
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
-  git remote add origin https://codecov:${GH_TOKEN}@github.com/codecov/go-Standard.git
+  git remote add origin https://codecov:${GH_TOKEN}@github.com/codecov/go-standard.git
   git push origin master --quiet
 
 }

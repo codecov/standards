@@ -4,8 +4,8 @@
 #clone the C++ standards repo from gh
 echo "Cloning Cpp-11 Standard repo..."
 clone_repo(){
-    git clone https://codecov:${GH_TOKEN}@github.com/codecov/cpp-11-Standard.git
-    cd cpp-11-Standard
+    git clone https://codecov:${GH_TOKEN}@github.com/codecov/cpp-11-standard.git
+    cd cpp-11-standard
 }
 
 # Get current month and year, e.g: Apr 2018
@@ -26,7 +26,7 @@ commit_and_upload() {
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
-  git remote add origin https://codecov:${GH_TOKEN}@github.com/codecov/cpp-11-Standard.git
+  git remote add origin https://codecov:${GH_TOKEN}@github.com/codecov/cpp-11-standard.git
   git push origin master --quiet
 
 }
