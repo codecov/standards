@@ -1,6 +1,7 @@
 # Codecov Language Standards
 
 [![Build Status](https://travis-ci.org/codecov/standards.svg?branch=master)](https://travis-ci.org/codecov/standards)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcodecov%2Fstandards.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcodecov%2Fstandards?ref=badge_shield)
 
 ## What is this?
 
@@ -35,3 +36,7 @@ If all of these details check out, then Codecov's processing for that lanaguage 
 ## Contributing
 
 Want to write a standard for a lanaguage that's not listed in the table? Contributions are welcome! See the [Contributing Guide](CONTRIBUTING.md) for more details. 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcodecov%2Fstandards.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcodecov%2Fstandards?ref=badge_large)
