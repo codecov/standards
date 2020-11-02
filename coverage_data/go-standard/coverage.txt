@@ -1,6 +1,6 @@
 mode: atomic
-github.com/codecov/go-standard/main.go:3.31,4.7 1 1
-github.com/codecov/go-standard/main.go:7.2,7.13 1 0
-github.com/codecov/go-standard/main.go:4.7,6.3 1 1
-github.com/codecov/go-standard/main.go:10.26,12.2 1 1
-github.com/codecov/go-standard/main.go:14.23,16.2 1 0
+github.com/codecov/go-standard/main.go:5.31,6.7 1 1
+github.com/codecov/go-standard/main.go:10.2,10.13 1 0
+github.com/codecov/go-standard/main.go:6.7,8.3 1 1
+github.com/codecov/go-standard/main.go:14.26,16.2 1 1
+github.com/codecov/go-standard/main.go:21.23,23.2 1 0
