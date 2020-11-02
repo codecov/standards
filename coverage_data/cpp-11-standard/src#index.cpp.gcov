@@ -1,0 +1,27 @@
+        -:    0:Source:src/index.cpp
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:
+        -:    2:namespace Index {
+function _ZN5Index12uncovered_ifEb called 1 returned 100% blocks executed 75%
+        1:    3:    bool uncovered_if(bool a = true) {
+        1:    4:        if (a)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:    5:            return false;
+        -:    6:        else
+    #####:    7:            return true;   
+        -:    8:    }
+        -:    9:
+function _ZN5Index13fully_coveredEv called 1 returned 100% blocks executed 100%
+        1:   10:    bool fully_covered() {
+        1:   11:        return true;
+        -:   12:    }
+        -:   13:
+function _ZN5Index9uncoveredEv called 0 returned 0% blocks executed 0%
+    #####:   14:    bool uncovered() {
+    #####:   15:        return true;
+        -:   16:    }
+        -:   17:}

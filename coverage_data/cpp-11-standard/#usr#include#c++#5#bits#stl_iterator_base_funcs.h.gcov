@@ -1,0 +1,282 @@
+        -:    0:Source:/usr/include/c++/5/bits/stl_iterator_base_funcs.h
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// Functions used by iterators -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/*
+        -:   26: *
+        -:   27: * Copyright (c) 1994
+        -:   28: * Hewlett-Packard Company
+        -:   29: *
+        -:   30: * Permission to use, copy, modify, distribute and sell this software
+        -:   31: * and its documentation for any purpose is hereby granted without fee,
+        -:   32: * provided that the above copyright notice appear in all copies and
+        -:   33: * that both that copyright notice and this permission notice appear
+        -:   34: * in supporting documentation.  Hewlett-Packard Company makes no
+        -:   35: * representations about the suitability of this software for any
+        -:   36: * purpose.  It is provided "as is" without express or implied warranty.
+        -:   37: *
+        -:   38: *
+        -:   39: * Copyright (c) 1996-1998
+        -:   40: * Silicon Graphics Computer Systems, Inc.
+        -:   41: *
+        -:   42: * Permission to use, copy, modify, distribute and sell this software
+        -:   43: * and its documentation for any purpose is hereby granted without fee,
+        -:   44: * provided that the above copyright notice appear in all copies and
+        -:   45: * that both that copyright notice and this permission notice appear
+        -:   46: * in supporting documentation.  Silicon Graphics makes no
+        -:   47: * representations about the suitability of this software for any
+        -:   48: * purpose.  It is provided "as is" without express or implied warranty.
+        -:   49: */
+        -:   50:
+        -:   51:/** @file bits/stl_iterator_base_funcs.h
+        -:   52: *  This is an internal header file, included by other library headers.
+        -:   53: *  Do not attempt to use it directly. @headername{iterator}
+        -:   54: *
+        -:   55: *  This file contains all of the general iterator-related utility
+        -:   56: *  functions, such as distance() and advance().
+        -:   57: */
+        -:   58:
+        -:   59:#ifndef _STL_ITERATOR_BASE_FUNCS_H
+        -:   60:#define _STL_ITERATOR_BASE_FUNCS_H 1
+        -:   61:
+        -:   62:#pragma GCC system_header
+        -:   63:
+        -:   64:#include <bits/concept_check.h>
+        -:   65:#include <debug/debug.h>
+        -:   66:
+        -:   67:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   68:{
+        -:   69:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   70:
+        -:   71:  template<typename _InputIterator>
+        -:   72:    inline typename iterator_traits<_InputIterator>::difference_type
+        -:   73:    __distance(_InputIterator __first, _InputIterator __last,
+        -:   74:               input_iterator_tag)
+        -:   75:    {
+        -:   76:      // concept requirements
+        -:   77:      __glibcxx_function_requires(_InputIteratorConcept<_InputIterator>)
+        -:   78:
+        -:   79:      typename iterator_traits<_InputIterator>::difference_type __n = 0;
+        -:   80:      while (__first != __last)
+        -:   81:	{
+        -:   82:	  ++__first;
+        -:   83:	  ++__n;
+        -:   84:	}
+        -:   85:      return __n;
+        -:   86:    }
+        -:   87:
+        -:   88:  template<typename _RandomAccessIterator>
+        -:   89:    inline typename iterator_traits<_RandomAccessIterator>::difference_type
+function _ZSt10__distanceIN9__gnu_cxx17__normal_iteratorIPcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEENSt15iterator_traitsIT_E15difference_typeESB_SB_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZSt10__distanceIN9__gnu_cxx17__normal_iteratorIPKcSt6vectorIcSaIcEEEEENSt15iterator_traitsIT_E15difference_typeES9_S9_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZSt10__distanceIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEENSt15iterator_traitsIT_E15difference_typeESC_SC_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZSt10__distanceIPcENSt15iterator_traitsIT_E15difference_typeES2_S2_St26random_access_iterator_tag called 3800 returned 100% blocks executed 100%
+function _ZSt10__distanceIPKcENSt15iterator_traitsIT_E15difference_typeES3_S3_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZSt10__distanceIN9__gnu_cxx17__normal_iteratorIPKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS7_SaIS7_EEEEENSt15iterator_traitsIT_E15difference_typeESF_SF_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZSt10__distanceIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail11HelpColumnsESt6vectorIS5_SaIS5_EEEEENSt15iterator_traitsIT_E15difference_typeESC_SC_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZSt10__distanceIPKPKcENSt15iterator_traitsIT_E15difference_typeES5_S5_St26random_access_iterator_tag called 1 returned 100% blocks executed 100%
+function _ZSt10__distanceIPKN5Catch12_GLOBAL__N_110ColumnInfoEENSt15iterator_traitsIT_E15difference_typeES6_S6_St26random_access_iterator_tag called 1 returned 100% blocks executed 100%
+function _ZSt10__distanceIPKN5Catch5clara6detail11HelpColumnsEENSt15iterator_traitsIT_E15difference_typeES7_S7_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZSt10__distanceIN9__gnu_cxx17__normal_iteratorIPKN5Catch11MessageInfoESt6vectorIS3_SaIS3_EEEEENSt15iterator_traitsIT_E15difference_typeESB_SB_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+     3802:   90:    __distance(_RandomAccessIterator __first, _RandomAccessIterator __last,
+        -:   91:               random_access_iterator_tag)
+        -:   92:    {
+        -:   93:      // concept requirements
+        -:   94:      __glibcxx_function_requires(_RandomAccessIteratorConcept<
+        -:   95:				  _RandomAccessIterator>)
+     3802:   96:      return __last - __first;
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+        -:   97:    }
+        -:   98:
+        -:   99:  /**
+        -:  100:   *  @brief A generalization of pointer arithmetic.
+        -:  101:   *  @param  __first  An input iterator.
+        -:  102:   *  @param  __last  An input iterator.
+        -:  103:   *  @return  The distance between them.
+        -:  104:   *
+        -:  105:   *  Returns @c n such that __first + n == __last.  This requires
+        -:  106:   *  that @p __last must be reachable from @p __first.  Note that @c
+        -:  107:   *  n may be negative.
+        -:  108:   *
+        -:  109:   *  For random access iterators, this uses their @c + and @c - operations
+        -:  110:   *  and are constant time.  For other %iterator classes they are linear time.
+        -:  111:  */
+        -:  112:  template<typename _InputIterator>
+        -:  113:    inline typename iterator_traits<_InputIterator>::difference_type
+function _ZSt8distanceIN9__gnu_cxx17__normal_iteratorIPcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEENSt15iterator_traitsIT_E15difference_typeESB_SB_ called 0 returned 0% blocks executed 0%
+function _ZSt8distanceIN9__gnu_cxx17__normal_iteratorIPKcSt6vectorIcSaIcEEEEENSt15iterator_traitsIT_E15difference_typeES9_S9_ called 0 returned 0% blocks executed 0%
+function _ZSt8distanceIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEENSt15iterator_traitsIT_E15difference_typeESC_SC_ called 0 returned 0% blocks executed 0%
+function _ZSt8distanceIPcENSt15iterator_traitsIT_E15difference_typeES2_S2_ called 3800 returned 100% blocks executed 100%
+function _ZSt8distanceIPKcENSt15iterator_traitsIT_E15difference_typeES3_S3_ called 0 returned 0% blocks executed 0%
+function _ZSt8distanceIN9__gnu_cxx17__normal_iteratorIPKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS7_SaIS7_EEEEENSt15iterator_traitsIT_E15difference_typeESF_SF_ called 0 returned 0% blocks executed 0%
+function _ZSt8distanceIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail11HelpColumnsESt6vectorIS5_SaIS5_EEEEENSt15iterator_traitsIT_E15difference_typeESC_SC_ called 0 returned 0% blocks executed 0%
+function _ZSt8distanceIPKPKcENSt15iterator_traitsIT_E15difference_typeES5_S5_ called 1 returned 100% blocks executed 100%
+function _ZSt8distanceIPKN5Catch12_GLOBAL__N_110ColumnInfoEENSt15iterator_traitsIT_E15difference_typeES6_S6_ called 1 returned 100% blocks executed 100%
+function _ZSt8distanceIPKN5Catch5clara6detail11HelpColumnsEENSt15iterator_traitsIT_E15difference_typeES7_S7_ called 0 returned 0% blocks executed 0%
+function _ZSt8distanceIN9__gnu_cxx17__normal_iteratorIPKN5Catch11MessageInfoESt6vectorIS3_SaIS3_EEEEENSt15iterator_traitsIT_E15difference_typeESB_SB_ called 0 returned 0% blocks executed 0%
+     3802:  114:    distance(_InputIterator __first, _InputIterator __last)
+        -:  115:    {
+        -:  116:      // concept requirements -- taken care of in __distance
+     7604:  117:      return std::__distance(__first, __last,
+    11406:  118:			     std::__iterator_category(__first));
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 returned 100%
+call    7 returned 100%
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 returned 100%
+call   15 returned 100%
+call   16 returned 100%
+call   17 returned 100%
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+        -:  119:    }
+        -:  120:
+        -:  121:  template<typename _InputIterator, typename _Distance>
+        -:  122:    inline void
+        -:  123:    __advance(_InputIterator& __i, _Distance __n, input_iterator_tag)
+        -:  124:    {
+        -:  125:      // concept requirements
+        -:  126:      __glibcxx_function_requires(_InputIteratorConcept<_InputIterator>)
+        -:  127:      _GLIBCXX_DEBUG_ASSERT(__n >= 0);
+        -:  128:      while (__n--)
+        -:  129:	++__i;
+        -:  130:    }
+        -:  131:
+        -:  132:  template<typename _BidirectionalIterator, typename _Distance>
+        -:  133:    inline void
+        -:  134:    __advance(_BidirectionalIterator& __i, _Distance __n,
+        -:  135:	      bidirectional_iterator_tag)
+        -:  136:    {
+        -:  137:      // concept requirements
+        -:  138:      __glibcxx_function_requires(_BidirectionalIteratorConcept<
+        -:  139:				  _BidirectionalIterator>)
+        -:  140:      if (__n > 0)
+        -:  141:        while (__n--)
+        -:  142:	  ++__i;
+        -:  143:      else
+        -:  144:        while (__n++)
+        -:  145:	  --__i;
+        -:  146:    }
+        -:  147:
+        -:  148:  template<typename _RandomAccessIterator, typename _Distance>
+        -:  149:    inline void
+function _ZSt9__advanceIN9__gnu_cxx17__normal_iteratorIPKcSt6vectorIcSaIcEEEElEvRT_T0_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZSt9__advanceIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEElEvRT_T0_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZSt9__advanceIN9__gnu_cxx17__normal_iteratorIPKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS7_SaIS7_EEEElEvRT_T0_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZSt9__advanceIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail11HelpColumnsESt6vectorIS5_SaIS5_EEEElEvRT_T0_St26random_access_iterator_tag called 0 returned 0% blocks executed 0%
+    #####:  150:    __advance(_RandomAccessIterator& __i, _Distance __n,
+        -:  151:              random_access_iterator_tag)
+        -:  152:    {
+        -:  153:      // concept requirements
+        -:  154:      __glibcxx_function_requires(_RandomAccessIteratorConcept<
+        -:  155:				  _RandomAccessIterator>)
+    #####:  156:      __i += __n;
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  157:    }
+        -:  158:
+        -:  159:  /**
+        -:  160:   *  @brief A generalization of pointer arithmetic.
+        -:  161:   *  @param  __i  An input iterator.
+        -:  162:   *  @param  __n  The @a delta by which to change @p __i.
+        -:  163:   *  @return  Nothing.
+        -:  164:   *
+        -:  165:   *  This increments @p i by @p n.  For bidirectional and random access
+        -:  166:   *  iterators, @p __n may be negative, in which case @p __i is decremented.
+        -:  167:   *
+        -:  168:   *  For random access iterators, this uses their @c + and @c - operations
+        -:  169:   *  and are constant time.  For other %iterator classes they are linear time.
+        -:  170:  */
+        -:  171:  template<typename _InputIterator, typename _Distance>
+        -:  172:    inline void
+function _ZSt7advanceIN9__gnu_cxx17__normal_iteratorIPKcSt6vectorIcSaIcEEEElEvRT_T0_ called 0 returned 0% blocks executed 0%
+function _ZSt7advanceIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEElEvRT_T0_ called 0 returned 0% blocks executed 0%
+function _ZSt7advanceIN9__gnu_cxx17__normal_iteratorIPKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS7_SaIS7_EEEEmEvRT_T0_ called 0 returned 0% blocks executed 0%
+function _ZSt7advanceIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail11HelpColumnsESt6vectorIS5_SaIS5_EEEEmEvRT_T0_ called 0 returned 0% blocks executed 0%
+    #####:  173:    advance(_InputIterator& __i, _Distance __n)
+        -:  174:    {
+        -:  175:      // concept requirements -- taken care of in __advance
+    #####:  176:      typename iterator_traits<_InputIterator>::difference_type __d = __n;
+    #####:  177:      std::__advance(__i, __d, std::__iterator_category(__i));
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+    #####:  178:    }
+        -:  179:
+        -:  180:#if __cplusplus >= 201103L
+        -:  181:
+        -:  182:  template<typename _ForwardIterator>
+        -:  183:    inline _ForwardIterator
+        -:  184:    next(_ForwardIterator __x, typename
+        -:  185:	 iterator_traits<_ForwardIterator>::difference_type __n = 1)
+        -:  186:    {
+        -:  187:      std::advance(__x, __n);
+        -:  188:      return __x;
+        -:  189:    }
+        -:  190:
+        -:  191:  template<typename _BidirectionalIterator>
+        -:  192:    inline _BidirectionalIterator
+function _ZSt4prevIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEET_SB_NSt15iterator_traitsISB_E15difference_typeE called 0 returned 0% blocks executed 0%
+    #####:  193:    prev(_BidirectionalIterator __x, typename
+        -:  194:	 iterator_traits<_BidirectionalIterator>::difference_type __n = 1) 
+        -:  195:    {
+    #####:  196:      std::advance(__x, -__n);
+call    0 never executed
+    #####:  197:      return __x;
+        -:  198:    }
+        -:  199:
+        -:  200:#endif // C++11
+        -:  201:
+        -:  202:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  203:} // namespace
+        -:  204:
+        -:  205:#endif /* _STL_ITERATOR_BASE_FUNCS_H */

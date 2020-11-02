@@ -1,0 +1,2754 @@
+        -:    0:Source:/usr/include/c++/5/bits/vector.tcc
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// Vector implementation (out of line) -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/*
+        -:   26: *
+        -:   27: * Copyright (c) 1994
+        -:   28: * Hewlett-Packard Company
+        -:   29: *
+        -:   30: * Permission to use, copy, modify, distribute and sell this software
+        -:   31: * and its documentation for any purpose is hereby granted without fee,
+        -:   32: * provided that the above copyright notice appear in all copies and
+        -:   33: * that both that copyright notice and this permission notice appear
+        -:   34: * in supporting documentation.  Hewlett-Packard Company makes no
+        -:   35: * representations about the suitability of this software for any
+        -:   36: * purpose.  It is provided "as is" without express or implied warranty.
+        -:   37: *
+        -:   38: *
+        -:   39: * Copyright (c) 1996
+        -:   40: * Silicon Graphics Computer Systems, Inc.
+        -:   41: *
+        -:   42: * Permission to use, copy, modify, distribute and sell this software
+        -:   43: * and its documentation for any purpose is hereby granted without fee,
+        -:   44: * provided that the above copyright notice appear in all copies and
+        -:   45: * that both that copyright notice and this permission notice appear
+        -:   46: * in supporting documentation.  Silicon Graphics makes no
+        -:   47: * representations about the suitability of this  software for any
+        -:   48: * purpose.  It is provided "as is" without express or implied warranty.
+        -:   49: */
+        -:   50:
+        -:   51:/** @file bits/vector.tcc
+        -:   52: *  This is an internal header file, included by other library headers.
+        -:   53: *  Do not attempt to use it directly. @headername{vector}
+        -:   54: */
+        -:   55:
+        -:   56:#ifndef _VECTOR_TCC
+        -:   57:#define _VECTOR_TCC 1
+        -:   58:
+        -:   59:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   60:{
+        -:   61:_GLIBCXX_BEGIN_NAMESPACE_CONTAINER
+        -:   62:
+        -:   63:  template<typename _Tp, typename _Alloc>
+        -:   64:    void
+function _ZNSt6vectorIN5Catch8TestCaseESaIS1_EE7reserveEm called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEESaIS7_EE7reserveEm called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EE7reserveEm called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch5clara8TextFlow6Column8iteratorESaIS4_EE7reserveEm called 0 returned 0% blocks executed 0%
+    #####:   65:    vector<_Tp, _Alloc>::
+        -:   66:    reserve(size_type __n)
+        -:   67:    {
+    #####:   68:      if (__n > this->max_size())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+    #####:   69:	__throw_length_error(__N("vector::reserve"));
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:   70:      if (this->capacity() < __n)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+        -:   71:	{
+    #####:   72:	  const size_type __old_size = size();
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:   73:	  pointer __tmp = _M_allocate_and_copy(__n,
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+        -:   74:	    _GLIBCXX_MAKE_MOVE_IF_NOEXCEPT_ITERATOR(this->_M_impl._M_start),
+    #####:   75:	    _GLIBCXX_MAKE_MOVE_IF_NOEXCEPT_ITERATOR(this->_M_impl._M_finish));
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:   76:	  std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:   77:			_M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:   78:	  _M_deallocate(this->_M_impl._M_start,
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:   79:			this->_M_impl._M_end_of_storage
+    #####:   80:			- this->_M_impl._M_start);
+    #####:   81:	  this->_M_impl._M_start = __tmp;
+    #####:   82:	  this->_M_impl._M_finish = __tmp + __old_size;
+    #####:   83:	  this->_M_impl._M_end_of_storage = this->_M_impl._M_start + __n;
+        -:   84:	}
+    #####:   85:    }
+        -:   86:
+        -:   87:#if __cplusplus >= 201103L
+        -:   88:  template<typename _Tp, typename _Alloc>
+        -:   89:    template<typename... _Args>
+        -:   90:      void
+function _ZNSt6vectorISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_ESaIS7_EE12emplace_backIJS7_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt4pairIccESaIS1_EE12emplace_backIJS1_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIcSaIcEE12emplace_backIJcEEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt4pairIlS_INSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEESaISG_EE12emplace_backIJRlRKSF_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorINSt8__detail6_StateINSt7__cxx1112regex_traitsIcEEEESaIS5_EE12emplace_backIJS5_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS2_EESaIS5_EE12emplace_backIJS5_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch13SummaryColumnESaIS1_EE12emplace_backIJS1_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch9StringRefESaIS1_EE12emplace_backIJS1_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS6_EESaIS9_EE12emplace_backIJS9_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIPN5Catch16TestCaseTracking8ITrackerESaIS3_EE12emplace_backIJS3_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS3_EESaIS6_EE12emplace_backIJS6_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS3_EESaIS6_EE12emplace_backIJS6_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEESaIS7_EE12emplace_backIJS7_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EE12emplace_backIJS5_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch5clara6detail5TokenESaIS3_EE12emplace_backIJS3_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch5clara8TextFlow6Column8iteratorESaIS4_EE12emplace_backIJS4_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIPKN5Catch8TestCaseESaIS3_EE12emplace_backIJS3_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch13ScopedMessageESaIS1_EE12emplace_backIJRKNS0_14MessageBuilderEEEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch11MessageInfoESaIS1_EE12emplace_backIJRNS0_9StringRefERKNS0_14SourceLineInfoERNS0_9ResultWas6OfTypeEEEEvDpOT_ called 0 returned 0% blocks executed 0%
+    #####:   91:      vector<_Tp, _Alloc>::
+        -:   92:      emplace_back(_Args&&... __args)
+        -:   93:      {
+    #####:   94:	if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+branch 13 never executed
+branch 14 never executed
+branch 15 never executed
+branch 16 never executed
+branch 17 never executed
+branch 18 never executed
+branch 19 never executed
+branch 20 never executed
+branch 21 never executed
+branch 22 never executed
+branch 23 never executed
+branch 24 never executed
+branch 25 never executed
+branch 26 never executed
+branch 27 never executed
+branch 28 never executed
+branch 29 never executed
+branch 30 never executed
+branch 31 never executed
+branch 32 never executed
+branch 33 never executed
+branch 34 never executed
+branch 35 never executed
+branch 36 never executed
+branch 37 never executed
+        -:   95:	  {
+    #####:   96:	    _Alloc_traits::construct(this->_M_impl, this->_M_impl._M_finish,
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+    #####:   97:				     std::forward<_Args>(__args)...);
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+    #####:   98:	    ++this->_M_impl._M_finish;
+        -:   99:	  }
+        -:  100:	else
+    #####:  101:	  _M_emplace_back_aux(std::forward<_Args>(__args)...);
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 never executed
+call   27 never executed
+call   28 never executed
+call   29 never executed
+call   30 never executed
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 never executed
+call   37 never executed
+call   38 never executed
+call   39 never executed
+call   40 never executed
+    #####:  102:      }
+        -:  103:#endif
+        -:  104:
+        -:  105:  template<typename _Tp, typename _Alloc>
+        -:  106:    typename vector<_Tp, _Alloc>::iterator
+        -:  107:    vector<_Tp, _Alloc>::
+        -:  108:#if __cplusplus >= 201103L
+        -:  109:    insert(const_iterator __position, const value_type& __x)
+        -:  110:#else
+        -:  111:    insert(iterator __position, const value_type& __x)
+        -:  112:#endif
+        -:  113:    {
+        -:  114:      const size_type __n = __position - begin();
+        -:  115:      if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage
+        -:  116:	  && __position == end())
+        -:  117:	{
+        -:  118:	  _Alloc_traits::construct(this->_M_impl, this->_M_impl._M_finish, __x);
+        -:  119:	  ++this->_M_impl._M_finish;
+        -:  120:	}
+        -:  121:      else
+        -:  122:	{
+        -:  123:#if __cplusplus >= 201103L
+        -:  124:	  const auto __pos = begin() + (__position - cbegin());
+        -:  125:	  if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage)
+        -:  126:	    {
+        -:  127:	      _Tp __x_copy = __x;
+        -:  128:	      _M_insert_aux(__pos, std::move(__x_copy));
+        -:  129:	    }
+        -:  130:	  else
+        -:  131:	    _M_insert_aux(__pos, __x);
+        -:  132:#else
+        -:  133:	    _M_insert_aux(__position, __x);
+        -:  134:#endif
+        -:  135:	}
+        -:  136:      return iterator(this->_M_impl._M_start + __n);
+        -:  137:    }
+        -:  138:
+        -:  139:  template<typename _Tp, typename _Alloc>
+        -:  140:    typename vector<_Tp, _Alloc>::iterator
+function _ZNSt6vectorIN5Catch5clara6detail5TokenESaIS3_EE8_M_eraseEN9__gnu_cxx17__normal_iteratorIPS3_S5_EE called 0 returned 0% blocks executed 0%
+    #####:  141:    vector<_Tp, _Alloc>::
+        -:  142:    _M_erase(iterator __position)
+        -:  143:    {
+    #####:  144:      if (__position + 1 != end())
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  145:	_GLIBCXX_MOVE3(__position + 1, end(), __position);
+call    0 never executed
+call    1 never executed
+call    2 never executed
+    #####:  146:      --this->_M_impl._M_finish;
+    #####:  147:      _Alloc_traits::destroy(this->_M_impl, this->_M_impl._M_finish);
+call    0 never executed
+    #####:  148:      return __position;
+        -:  149:    }
+        -:  150:
+        -:  151:  template<typename _Tp, typename _Alloc>
+        -:  152:    typename vector<_Tp, _Alloc>::iterator
+function _ZNSt6vectorIcSaIcEE8_M_eraseEN9__gnu_cxx17__normal_iteratorIPcS1_EES5_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EE8_M_eraseEN9__gnu_cxx17__normal_iteratorIPS5_S7_EESB_ called 2 returned 100% blocks executed 29%
+function _ZNSt6vectorIN5Catch11MessageInfoESaIS1_EE8_M_eraseEN9__gnu_cxx17__normal_iteratorIPS1_S3_EES7_ called 0 returned 0% blocks executed 0%
+        2:  153:    vector<_Tp, _Alloc>::
+        -:  154:    _M_erase(iterator __first, iterator __last)
+        -:  155:    {
+        2:  156:      if (__first != __last)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 returned 100%
+branch  4 taken 0% (fallthrough)
+branch  5 taken 100%
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+        -:  157:	{
+    #####:  158:	  if (__last != end())
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+call    8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+    #####:  159:	    _GLIBCXX_MOVE3(__last, end(), __first);
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+    #####:  160:	  _M_erase_at_end(__first.base() + (end() - __last));
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+        -:  161:	}
+        2:  162:      return __first;
+        -:  163:    }
+        -:  164:
+        -:  165:  template<typename _Tp, typename _Alloc>
+        -:  166:    vector<_Tp, _Alloc>&
+function _ZNSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS0_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISC_EEaSERKSE_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch5clara6detail3ArgESaIS3_EEaSERKS5_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch5clara6detail3OptESaIS3_EEaSERKS5_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EEaSERKS7_ called 0 returned 0% blocks executed 0%
+    #####:  167:    vector<_Tp, _Alloc>::
+        -:  168:    operator=(const vector<_Tp, _Alloc>& __x)
+        -:  169:    {
+    #####:  170:      if (&__x != this)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+        -:  171:	{
+        -:  172:#if __cplusplus >= 201103L
+    #####:  173:	  if (_Alloc_traits::_S_propagate_on_copy_assign())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+        -:  174:	    {
+    #####:  175:	      if (!_Alloc_traits::_S_always_equal()
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+branch  8 never executed
+branch  9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+branch 13 never executed
+call   14 never executed
+branch 15 never executed
+branch 16 never executed
+branch 17 never executed
+branch 18 never executed
+branch 19 never executed
+branch 20 never executed
+call   21 never executed
+branch 22 never executed
+branch 23 never executed
+branch 24 never executed
+branch 25 never executed
+branch 26 never executed
+branch 27 never executed
+    #####:  176:	          && _M_get_Tp_allocator() != __x._M_get_Tp_allocator())
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+        -:  177:	        {
+        -:  178:		  // replacement allocator cannot free existing storage
+    #####:  179:		  this->clear();
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  180:		  _M_deallocate(this->_M_impl._M_start,
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  181:				this->_M_impl._M_end_of_storage
+    #####:  182:				- this->_M_impl._M_start);
+    #####:  183:		  this->_M_impl._M_start = nullptr;
+    #####:  184:		  this->_M_impl._M_finish = nullptr;
+    #####:  185:		  this->_M_impl._M_end_of_storage = nullptr;
+        -:  186:		}
+    #####:  187:	      std::__alloc_on_copy(_M_get_Tp_allocator(),
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+        -:  188:				   __x._M_get_Tp_allocator());
+        -:  189:	    }
+        -:  190:#endif
+    #####:  191:	  const size_type __xlen = __x.size();
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  192:	  if (__xlen > capacity())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+        -:  193:	    {
+    #####:  194:	      pointer __tmp = _M_allocate_and_copy(__xlen, __x.begin(),
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+    #####:  195:						   __x.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  196:	      std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  197:			    _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  198:	      _M_deallocate(this->_M_impl._M_start,
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  199:			    this->_M_impl._M_end_of_storage
+    #####:  200:			    - this->_M_impl._M_start);
+    #####:  201:	      this->_M_impl._M_start = __tmp;
+    #####:  202:	      this->_M_impl._M_end_of_storage = this->_M_impl._M_start + __xlen;
+        -:  203:	    }
+    #####:  204:	  else if (size() >= __xlen)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+        -:  205:	    {
+    #####:  206:	      std::_Destroy(std::copy(__x.begin(), __x.end(), begin()),
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+    #####:  207:			    end(), _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  208:	    }
+        -:  209:	  else
+        -:  210:	    {
+    #####:  211:	      std::copy(__x._M_impl._M_start, __x._M_impl._M_start + size(),
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+        -:  212:			this->_M_impl._M_start);
+    #####:  213:	      std::__uninitialized_copy_a(__x._M_impl._M_start + size(),
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+        -:  214:					  __x._M_impl._M_finish,
+        -:  215:					  this->_M_impl._M_finish,
+    #####:  216:					  _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  217:	    }
+    #####:  218:	  this->_M_impl._M_finish = this->_M_impl._M_start + __xlen;
+        -:  219:	}
+    #####:  220:      return *this;
+        -:  221:    }
+        -:  222:
+        -:  223:  template<typename _Tp, typename _Alloc>
+        -:  224:    void
+        -:  225:    vector<_Tp, _Alloc>::
+        -:  226:    _M_fill_assign(size_t __n, const value_type& __val)
+        -:  227:    {
+        -:  228:      if (__n > capacity())
+        -:  229:	{
+        -:  230:	  vector __tmp(__n, __val, _M_get_Tp_allocator());
+        -:  231:	  __tmp._M_impl._M_swap_data(this->_M_impl);
+        -:  232:	}
+        -:  233:      else if (__n > size())
+        -:  234:	{
+        -:  235:	  std::fill(begin(), end(), __val);
+        -:  236:	  this->_M_impl._M_finish =
+        -:  237:	    std::__uninitialized_fill_n_a(this->_M_impl._M_finish,
+        -:  238:					  __n - size(), __val,
+        -:  239:					  _M_get_Tp_allocator());
+        -:  240:	}
+        -:  241:      else
+        -:  242:        _M_erase_at_end(std::fill_n(this->_M_impl._M_start, __n, __val));
+        -:  243:    }
+        -:  244:
+        -:  245:  template<typename _Tp, typename _Alloc>
+        -:  246:    template<typename _InputIterator>
+        -:  247:      void
+        -:  248:      vector<_Tp, _Alloc>::
+        -:  249:      _M_assign_aux(_InputIterator __first, _InputIterator __last,
+        -:  250:		    std::input_iterator_tag)
+        -:  251:      {
+        -:  252:	pointer __cur(this->_M_impl._M_start);
+        -:  253:	for (; __first != __last && __cur != this->_M_impl._M_finish;
+        -:  254:	     ++__cur, ++__first)
+        -:  255:	  *__cur = *__first;
+        -:  256:	if (__first == __last)
+        -:  257:	  _M_erase_at_end(__cur);
+        -:  258:	else
+        -:  259:	  insert(end(), __first, __last);
+        -:  260:      }
+        -:  261:
+        -:  262:  template<typename _Tp, typename _Alloc>
+        -:  263:    template<typename _ForwardIterator>
+        -:  264:      void
+        -:  265:      vector<_Tp, _Alloc>::
+        -:  266:      _M_assign_aux(_ForwardIterator __first, _ForwardIterator __last,
+        -:  267:		    std::forward_iterator_tag)
+        -:  268:      {
+        -:  269:	const size_type __len = std::distance(__first, __last);
+        -:  270:
+        -:  271:	if (__len > capacity())
+        -:  272:	  {
+        -:  273:	    pointer __tmp(_M_allocate_and_copy(__len, __first, __last));
+        -:  274:	    std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+        -:  275:			  _M_get_Tp_allocator());
+        -:  276:	    _M_deallocate(this->_M_impl._M_start,
+        -:  277:			  this->_M_impl._M_end_of_storage
+        -:  278:			  - this->_M_impl._M_start);
+        -:  279:	    this->_M_impl._M_start = __tmp;
+        -:  280:	    this->_M_impl._M_finish = this->_M_impl._M_start + __len;
+        -:  281:	    this->_M_impl._M_end_of_storage = this->_M_impl._M_finish;
+        -:  282:	  }
+        -:  283:	else if (size() >= __len)
+        -:  284:	  _M_erase_at_end(std::copy(__first, __last, this->_M_impl._M_start));
+        -:  285:	else
+        -:  286:	  {
+        -:  287:	    _ForwardIterator __mid = __first;
+        -:  288:	    std::advance(__mid, size());
+        -:  289:	    std::copy(__first, __mid, this->_M_impl._M_start);
+        -:  290:	    this->_M_impl._M_finish =
+        -:  291:	      std::__uninitialized_copy_a(__mid, __last,
+        -:  292:					  this->_M_impl._M_finish,
+        -:  293:					  _M_get_Tp_allocator());
+        -:  294:	  }
+        -:  295:      }
+        -:  296:
+        -:  297:#if __cplusplus >= 201103L
+        -:  298:  template<typename _Tp, typename _Alloc>
+        -:  299:    template<typename... _Args>
+        -:  300:      typename vector<_Tp, _Alloc>::iterator
+        -:  301:      vector<_Tp, _Alloc>::
+        -:  302:      emplace(const_iterator __position, _Args&&... __args)
+        -:  303:      {
+        -:  304:	const size_type __n = __position - begin();
+        -:  305:	if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage
+        -:  306:	    && __position == end())
+        -:  307:	  {
+        -:  308:	    _Alloc_traits::construct(this->_M_impl, this->_M_impl._M_finish,
+        -:  309:				     std::forward<_Args>(__args)...);
+        -:  310:	    ++this->_M_impl._M_finish;
+        -:  311:	  }
+        -:  312:	else
+        -:  313:	  _M_insert_aux(begin() + (__position - cbegin()),
+        -:  314:			std::forward<_Args>(__args)...);
+        -:  315:	return iterator(this->_M_impl._M_start + __n);
+        -:  316:      }
+        -:  317:
+        -:  318:  template<typename _Tp, typename _Alloc>
+        -:  319:    template<typename... _Args>
+        -:  320:      void
+        -:  321:      vector<_Tp, _Alloc>::
+        -:  322:      _M_insert_aux(iterator __position, _Args&&... __args)
+        -:  323:#else
+        -:  324:  template<typename _Tp, typename _Alloc>
+        -:  325:    void
+        -:  326:    vector<_Tp, _Alloc>::
+        -:  327:    _M_insert_aux(iterator __position, const _Tp& __x)
+        -:  328:#endif
+        -:  329:    {
+        -:  330:      if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage)
+        -:  331:	{
+        -:  332:	  _Alloc_traits::construct(this->_M_impl, this->_M_impl._M_finish,
+        -:  333:			           _GLIBCXX_MOVE(*(this->_M_impl._M_finish
+        -:  334:				                   - 1)));
+        -:  335:	  ++this->_M_impl._M_finish;
+        -:  336:#if __cplusplus < 201103L
+        -:  337:	  _Tp __x_copy = __x;
+        -:  338:#endif
+        -:  339:	  _GLIBCXX_MOVE_BACKWARD3(__position.base(),
+        -:  340:				  this->_M_impl._M_finish - 2,
+        -:  341:				  this->_M_impl._M_finish - 1);
+        -:  342:#if __cplusplus < 201103L
+        -:  343:	  *__position = __x_copy;
+        -:  344:#else
+        -:  345:	  *__position = _Tp(std::forward<_Args>(__args)...);
+        -:  346:#endif
+        -:  347:	}
+        -:  348:      else
+        -:  349:	{
+        -:  350:	  const size_type __len =
+        -:  351:	    _M_check_len(size_type(1), "vector::_M_insert_aux");
+        -:  352:	  const size_type __elems_before = __position - begin();
+        -:  353:	  pointer __new_start(this->_M_allocate(__len));
+        -:  354:	  pointer __new_finish(__new_start);
+        -:  355:	  __try
+        -:  356:	    {
+        -:  357:	      // The order of the three operations is dictated by the C++0x
+        -:  358:	      // case, where the moves could alter a new element belonging
+        -:  359:	      // to the existing vector.  This is an issue only for callers
+        -:  360:	      // taking the element by const lvalue ref (see 23.1/13).
+        -:  361:	      _Alloc_traits::construct(this->_M_impl,
+        -:  362:		                       __new_start + __elems_before,
+        -:  363:#if __cplusplus >= 201103L
+        -:  364:				       std::forward<_Args>(__args)...);
+        -:  365:#else
+        -:  366:	                               __x);
+        -:  367:#endif
+        -:  368:	      __new_finish = pointer();
+        -:  369:
+        -:  370:	      __new_finish
+        -:  371:		= std::__uninitialized_move_if_noexcept_a
+        -:  372:		(this->_M_impl._M_start, __position.base(),
+        -:  373:		 __new_start, _M_get_Tp_allocator());
+        -:  374:
+        -:  375:	      ++__new_finish;
+        -:  376:
+        -:  377:	      __new_finish
+        -:  378:		= std::__uninitialized_move_if_noexcept_a
+        -:  379:		(__position.base(), this->_M_impl._M_finish,
+        -:  380:		 __new_finish, _M_get_Tp_allocator());
+        -:  381:	    }
+        -:  382:          __catch(...)
+        -:  383:	    {
+        -:  384:	      if (!__new_finish)
+        -:  385:		_Alloc_traits::destroy(this->_M_impl,
+        -:  386:		                       __new_start + __elems_before);
+        -:  387:	      else
+        -:  388:		std::_Destroy(__new_start, __new_finish, _M_get_Tp_allocator());
+        -:  389:	      _M_deallocate(__new_start, __len);
+        -:  390:	      __throw_exception_again;
+        -:  391:	    }
+        -:  392:	  std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+        -:  393:			_M_get_Tp_allocator());
+        -:  394:	  _M_deallocate(this->_M_impl._M_start,
+        -:  395:			this->_M_impl._M_end_of_storage
+        -:  396:			- this->_M_impl._M_start);
+        -:  397:	  this->_M_impl._M_start = __new_start;
+        -:  398:	  this->_M_impl._M_finish = __new_finish;
+        -:  399:	  this->_M_impl._M_end_of_storage = __new_start + __len;
+        -:  400:	}
+        -:  401:    }
+        -:  402:
+        -:  403:#if __cplusplus >= 201103L
+        -:  404:  template<typename _Tp, typename _Alloc>
+        -:  405:    template<typename... _Args>
+        -:  406:      void
+function _ZNSt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEESaISD_EE19_M_emplace_back_auxIJRKSD_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_ESaIS7_EE19_M_emplace_back_auxIJS7_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt4pairIccESaIS1_EE19_M_emplace_back_auxIJS1_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIcSaIcEE19_M_emplace_back_auxIJcEEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorINSt7__cxx1112regex_traitsIcE10_RegexMaskESaIS3_EE19_M_emplace_back_auxIJRKS3_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt4pairIlS_INSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEESaISG_EE19_M_emplace_back_auxIJRlRKSF_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorINSt8__detail6_StateINSt7__cxx1112regex_traitsIcEEEESaIS5_EE19_M_emplace_back_auxIJS5_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS2_EESaIS5_EE19_M_emplace_back_auxIJS5_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEESaISB_EE19_M_emplace_back_auxIJRKSB_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEESaIS9_EE19_M_emplace_back_auxIJRKS9_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEESaIS6_EE19_M_emplace_back_auxIJRKS6_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch14AssertionStatsESaIS1_EE19_M_emplace_back_auxIJRKS1_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch13SummaryColumnESaIS1_EE19_M_emplace_back_auxIJS1_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch11SectionInfoESaIS1_EE19_M_emplace_back_auxIJRKS1_EEEvDpOT_ called 1 returned 100% blocks executed 52%
+function _ZNSt6vectorISt10shared_ptrIN5Catch8TestSpec7PatternEESaIS4_EE19_M_emplace_back_auxIJRKS4_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch9StringRefESaIS1_EE19_M_emplace_back_auxIJS1_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS6_EESaIS9_EE19_M_emplace_back_auxIJS9_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIPN5Catch16TestCaseTracking8ITrackerESaIS3_EE19_M_emplace_back_auxIJS3_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS3_EESaIS6_EE19_M_emplace_back_auxIJS6_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS3_EESaIS6_EE19_M_emplace_back_auxIJS6_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEESaIS7_EE19_M_emplace_back_auxIJS7_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EE19_M_emplace_back_auxIJS5_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch5clara6detail5TokenESaIS3_EE19_M_emplace_back_auxIJS3_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch5clara8TextFlow6Column8iteratorESaIS4_EE19_M_emplace_back_auxIJS4_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch8TestSpec6FilterESaIS2_EE19_M_emplace_back_auxIJRKS2_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIPKN5Catch8TestCaseESaIS3_EE19_M_emplace_back_auxIJS3_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEESaIS4_EE19_M_emplace_back_auxIJRKS4_EEEvDpOT_ called 2 returned 100% blocks executed 52%
+function _ZNSt6vectorIN5Catch8TestCaseESaIS1_EE19_M_emplace_back_auxIJRKS1_EEEvDpOT_ called 2 returned 100% blocks executed 52%
+function _ZNSt6vectorImSaImEE19_M_emplace_back_auxIJRKmEEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorINSt15__exception_ptr13exception_ptrESaIS1_EE19_M_emplace_back_auxIJRKS1_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIPN5Catch10ISingletonESaIS2_EE19_M_emplace_back_auxIJRKS2_EEEvDpOT_ called 1 returned 100% blocks executed 52%
+function _ZNSt6vectorIN5Catch13ScopedMessageESaIS1_EE19_M_emplace_back_auxIJRKNS0_14MessageBuilderEEEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch14SectionEndInfoESaIS1_EE19_M_emplace_back_auxIJRKS1_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorISt10shared_ptrIN5Catch16IReporterFactoryEESaIS3_EE19_M_emplace_back_auxIJRKS3_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch11MessageInfoESaIS1_EE19_M_emplace_back_auxIJRNS0_9StringRefERKNS0_14SourceLineInfoERNS0_9ResultWas6OfTypeEEEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch11MessageInfoESaIS1_EE19_M_emplace_back_auxIJRKS1_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch5clara6detail3OptESaIS3_EE19_M_emplace_back_auxIJRKS3_EEEvDpOT_ called 29 returned 100% blocks executed 52%
+function _ZNSt6vectorIN5Catch5clara6detail3ArgESaIS3_EE19_M_emplace_back_auxIJRKS3_EEEvDpOT_ called 1 returned 100% blocks executed 52%
+function _ZNSt6vectorIN5Catch5clara8TextFlow6ColumnESaIS3_EE19_M_emplace_back_auxIJRKS3_EEEvDpOT_ called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EE19_M_emplace_back_auxIJRKS5_EEEvDpOT_ called 52 returned 100% blocks executed 52%
+       88:  407:      vector<_Tp, _Alloc>::
+        -:  408:      _M_emplace_back_aux(_Args&&... __args)
+        -:  409:      {
+        -:  410:	const size_type __len =
+       88:  411:	  _M_check_len(size_type(1), "vector::_M_emplace_back_aux");
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 returned 100%
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 returned 100%
+call   27 returned 100%
+call   28 never executed
+call   29 never executed
+call   30 returned 100%
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 returned 100%
+call   37 returned 100%
+call   38 never executed
+call   39 returned 100%
+       88:  412:	pointer __new_start(this->_M_allocate(__len));
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 returned 100%
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 returned 100%
+call   27 returned 100%
+call   28 never executed
+call   29 never executed
+call   30 returned 100%
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 returned 100%
+call   37 returned 100%
+call   38 never executed
+call   39 returned 100%
+       88:  413:	pointer __new_finish(__new_start);
+        -:  414:	__try
+        -:  415:	  {
+       88:  416:	    _Alloc_traits::construct(this->_M_impl, __new_start + size(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+call    8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+call   12 never executed
+call   13 never executed
+branch 14 never executed
+branch 15 never executed
+call   16 never executed
+call   17 never executed
+branch 18 never executed
+branch 19 never executed
+call   20 never executed
+call   21 never executed
+branch 22 never executed
+branch 23 never executed
+call   24 never executed
+call   25 never executed
+branch 26 never executed
+branch 27 never executed
+call   28 never executed
+call   29 never executed
+branch 30 never executed
+branch 31 never executed
+call   32 never executed
+call   33 never executed
+branch 34 never executed
+branch 35 never executed
+call   36 never executed
+call   37 never executed
+branch 38 never executed
+branch 39 never executed
+call   40 never executed
+call   41 never executed
+branch 42 never executed
+branch 43 never executed
+call   44 never executed
+call   45 never executed
+branch 46 never executed
+branch 47 never executed
+call   48 never executed
+call   49 never executed
+branch 50 never executed
+branch 51 never executed
+call   52 returned 100%
+call   53 returned 100%
+branch 54 taken 100% (fallthrough)
+branch 55 taken 0% (throw)
+call   56 never executed
+call   57 never executed
+branch 58 never executed
+branch 59 never executed
+call   60 never executed
+call   61 never executed
+branch 62 never executed
+branch 63 never executed
+call   64 never executed
+call   65 never executed
+branch 66 never executed
+branch 67 never executed
+call   68 never executed
+call   69 never executed
+branch 70 never executed
+branch 71 never executed
+call   72 never executed
+call   73 never executed
+branch 74 never executed
+branch 75 never executed
+call   76 never executed
+call   77 never executed
+branch 78 never executed
+branch 79 never executed
+call   80 never executed
+call   81 never executed
+branch 82 never executed
+branch 83 never executed
+call   84 never executed
+call   85 never executed
+branch 86 never executed
+branch 87 never executed
+call   88 never executed
+call   89 never executed
+branch 90 never executed
+branch 91 never executed
+call   92 never executed
+call   93 never executed
+branch 94 never executed
+branch 95 never executed
+call   96 never executed
+call   97 never executed
+branch 98 never executed
+branch 99 never executed
+call   100 never executed
+call   101 never executed
+branch 102 never executed
+branch 103 never executed
+call   104 returned 100%
+call   105 returned 100%
+branch 106 taken 100% (fallthrough)
+branch 107 taken 0% (throw)
+call   108 returned 100%
+call   109 returned 100%
+branch 110 taken 100% (fallthrough)
+branch 111 taken 0% (throw)
+call   112 never executed
+call   113 never executed
+branch 114 never executed
+branch 115 never executed
+call   116 never executed
+call   117 never executed
+branch 118 never executed
+branch 119 never executed
+call   120 returned 100%
+call   121 returned 100%
+branch 122 taken 100% (fallthrough)
+branch 123 taken 0% (throw)
+call   124 never executed
+call   125 never executed
+branch 126 never executed
+branch 127 never executed
+call   128 never executed
+call   129 never executed
+branch 130 never executed
+branch 131 never executed
+call   132 never executed
+call   133 never executed
+branch 134 never executed
+branch 135 never executed
+call   136 never executed
+call   137 never executed
+branch 138 never executed
+branch 139 never executed
+call   140 never executed
+call   141 never executed
+branch 142 never executed
+branch 143 never executed
+call   144 returned 100%
+call   145 returned 100%
+branch 146 taken 100% (fallthrough)
+branch 147 taken 0% (throw)
+call   148 returned 100%
+call   149 returned 100%
+branch 150 taken 100% (fallthrough)
+branch 151 taken 0% (throw)
+call   152 never executed
+call   153 never executed
+branch 154 never executed
+branch 155 never executed
+call   156 returned 100%
+call   157 returned 100%
+branch 158 taken 100% (fallthrough)
+branch 159 taken 0% (throw)
+       88:  417:				     std::forward<_Args>(__args)...);
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 returned 100%
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 never executed
+call   27 returned 100%
+call   28 returned 100%
+call   29 never executed
+call   30 never executed
+call   31 returned 100%
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 never executed
+call   37 never executed
+call   38 never executed
+call   39 returned 100%
+call   40 returned 100%
+call   41 never executed
+call   42 returned 100%
+       88:  418:	    __new_finish = pointer();
+        -:  419:
+       88:  420:	    __new_finish
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+call   12 never executed
+branch 13 never executed
+branch 14 never executed
+call   15 never executed
+branch 16 never executed
+branch 17 never executed
+call   18 never executed
+branch 19 never executed
+branch 20 never executed
+call   21 never executed
+branch 22 never executed
+branch 23 never executed
+call   24 never executed
+branch 25 never executed
+branch 26 never executed
+call   27 never executed
+branch 28 never executed
+branch 29 never executed
+call   30 never executed
+branch 31 never executed
+branch 32 never executed
+call   33 never executed
+branch 34 never executed
+branch 35 never executed
+call   36 never executed
+branch 37 never executed
+branch 38 never executed
+call   39 returned 100%
+branch 40 taken 100% (fallthrough)
+branch 41 taken 0% (throw)
+call   42 never executed
+branch 43 never executed
+branch 44 never executed
+call   45 never executed
+branch 46 never executed
+branch 47 never executed
+call   48 never executed
+branch 49 never executed
+branch 50 never executed
+call   51 never executed
+branch 52 never executed
+branch 53 never executed
+call   54 never executed
+branch 55 never executed
+branch 56 never executed
+call   57 never executed
+branch 58 never executed
+branch 59 never executed
+call   60 never executed
+branch 61 never executed
+branch 62 never executed
+call   63 never executed
+branch 64 never executed
+branch 65 never executed
+call   66 never executed
+branch 67 never executed
+branch 68 never executed
+call   69 never executed
+branch 70 never executed
+branch 71 never executed
+call   72 never executed
+branch 73 never executed
+branch 74 never executed
+call   75 never executed
+branch 76 never executed
+branch 77 never executed
+call   78 returned 100%
+branch 79 taken 100% (fallthrough)
+branch 80 taken 0% (throw)
+call   81 returned 100%
+branch 82 taken 100% (fallthrough)
+branch 83 taken 0% (throw)
+call   84 never executed
+branch 85 never executed
+branch 86 never executed
+call   87 never executed
+branch 88 never executed
+branch 89 never executed
+call   90 returned 100%
+branch 91 taken 100% (fallthrough)
+branch 92 taken 0% (throw)
+call   93 never executed
+branch 94 never executed
+branch 95 never executed
+call   96 never executed
+branch 97 never executed
+branch 98 never executed
+call   99 never executed
+branch 100 never executed
+branch 101 never executed
+call   102 never executed
+branch 103 never executed
+branch 104 never executed
+call   105 never executed
+branch 106 never executed
+branch 107 never executed
+call   108 returned 100%
+branch 109 taken 100% (fallthrough)
+branch 110 taken 0% (throw)
+call   111 returned 100%
+branch 112 taken 100% (fallthrough)
+branch 113 taken 0% (throw)
+call   114 never executed
+branch 115 never executed
+branch 116 never executed
+call   117 returned 100%
+branch 118 taken 100% (fallthrough)
+branch 119 taken 0% (throw)
+        -:  421:	      = std::__uninitialized_move_if_noexcept_a
+       88:  422:	      (this->_M_impl._M_start, this->_M_impl._M_finish,
+       88:  423:	       __new_start, _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 returned 100%
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 returned 100%
+call   27 returned 100%
+call   28 never executed
+call   29 never executed
+call   30 returned 100%
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 returned 100%
+call   37 returned 100%
+call   38 never executed
+call   39 returned 100%
+        -:  424:
+       88:  425:	    ++__new_finish;
+        -:  426:	  }
+    =====:  427:	__catch(...)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 never executed
+call   27 never executed
+call   28 never executed
+call   29 never executed
+call   30 never executed
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 never executed
+call   37 never executed
+call   38 never executed
+call   39 never executed
+call   40 never executed
+call   41 never executed
+call   42 never executed
+call   43 never executed
+call   44 never executed
+call   45 never executed
+call   46 never executed
+call   47 never executed
+call   48 never executed
+call   49 never executed
+call   50 never executed
+call   51 never executed
+call   52 never executed
+call   53 never executed
+call   54 never executed
+call   55 never executed
+call   56 never executed
+call   57 never executed
+call   58 never executed
+call   59 never executed
+call   60 never executed
+call   61 never executed
+call   62 never executed
+call   63 never executed
+call   64 never executed
+call   65 never executed
+call   66 never executed
+call   67 never executed
+call   68 never executed
+call   69 never executed
+call   70 never executed
+call   71 never executed
+call   72 never executed
+call   73 never executed
+call   74 never executed
+call   75 never executed
+call   76 never executed
+call   77 never executed
+call   78 never executed
+call   79 never executed
+        -:  428:	  {
+    =====:  429:	    if (!__new_finish)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+branch 13 never executed
+branch 14 never executed
+branch 15 never executed
+branch 16 never executed
+branch 17 never executed
+branch 18 never executed
+branch 19 never executed
+branch 20 never executed
+branch 21 never executed
+branch 22 never executed
+branch 23 never executed
+branch 24 never executed
+branch 25 never executed
+branch 26 never executed
+branch 27 never executed
+branch 28 never executed
+branch 29 never executed
+branch 30 never executed
+branch 31 never executed
+branch 32 never executed
+branch 33 never executed
+branch 34 never executed
+branch 35 never executed
+branch 36 never executed
+branch 37 never executed
+branch 38 never executed
+branch 39 never executed
+branch 40 never executed
+branch 41 never executed
+branch 42 never executed
+branch 43 never executed
+branch 44 never executed
+branch 45 never executed
+branch 46 never executed
+branch 47 never executed
+branch 48 never executed
+branch 49 never executed
+branch 50 never executed
+branch 51 never executed
+branch 52 never executed
+branch 53 never executed
+branch 54 never executed
+branch 55 never executed
+branch 56 never executed
+branch 57 never executed
+branch 58 never executed
+branch 59 never executed
+branch 60 never executed
+branch 61 never executed
+branch 62 never executed
+branch 63 never executed
+branch 64 never executed
+branch 65 never executed
+branch 66 never executed
+branch 67 never executed
+branch 68 never executed
+branch 69 never executed
+branch 70 never executed
+branch 71 never executed
+branch 72 never executed
+branch 73 never executed
+branch 74 never executed
+branch 75 never executed
+branch 76 never executed
+branch 77 never executed
+branch 78 never executed
+branch 79 never executed
+    =====:  430:	      _Alloc_traits::destroy(this->_M_impl, __new_start + size());
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+call    8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+call   12 never executed
+call   13 never executed
+branch 14 never executed
+branch 15 never executed
+call   16 never executed
+call   17 never executed
+branch 18 never executed
+branch 19 never executed
+call   20 never executed
+call   21 never executed
+branch 22 never executed
+branch 23 never executed
+call   24 never executed
+call   25 never executed
+branch 26 never executed
+branch 27 never executed
+call   28 never executed
+call   29 never executed
+branch 30 never executed
+branch 31 never executed
+call   32 never executed
+call   33 never executed
+branch 34 never executed
+branch 35 never executed
+call   36 never executed
+call   37 never executed
+branch 38 never executed
+branch 39 never executed
+call   40 never executed
+call   41 never executed
+branch 42 never executed
+branch 43 never executed
+call   44 never executed
+call   45 never executed
+branch 46 never executed
+branch 47 never executed
+call   48 never executed
+call   49 never executed
+branch 50 never executed
+branch 51 never executed
+call   52 never executed
+call   53 never executed
+branch 54 never executed
+branch 55 never executed
+call   56 never executed
+call   57 never executed
+branch 58 never executed
+branch 59 never executed
+call   60 never executed
+call   61 never executed
+branch 62 never executed
+branch 63 never executed
+call   64 never executed
+call   65 never executed
+branch 66 never executed
+branch 67 never executed
+call   68 never executed
+call   69 never executed
+branch 70 never executed
+branch 71 never executed
+call   72 never executed
+call   73 never executed
+branch 74 never executed
+branch 75 never executed
+call   76 never executed
+call   77 never executed
+branch 78 never executed
+branch 79 never executed
+call   80 never executed
+call   81 never executed
+branch 82 never executed
+branch 83 never executed
+call   84 never executed
+call   85 never executed
+branch 86 never executed
+branch 87 never executed
+call   88 never executed
+call   89 never executed
+branch 90 never executed
+branch 91 never executed
+call   92 never executed
+call   93 never executed
+branch 94 never executed
+branch 95 never executed
+call   96 never executed
+call   97 never executed
+branch 98 never executed
+branch 99 never executed
+call   100 never executed
+call   101 never executed
+branch 102 never executed
+branch 103 never executed
+call   104 never executed
+call   105 never executed
+branch 106 never executed
+branch 107 never executed
+call   108 never executed
+call   109 never executed
+branch 110 never executed
+branch 111 never executed
+call   112 never executed
+call   113 never executed
+branch 114 never executed
+branch 115 never executed
+call   116 never executed
+call   117 never executed
+branch 118 never executed
+branch 119 never executed
+call   120 never executed
+call   121 never executed
+branch 122 never executed
+branch 123 never executed
+call   124 never executed
+call   125 never executed
+branch 126 never executed
+branch 127 never executed
+call   128 never executed
+call   129 never executed
+branch 130 never executed
+branch 131 never executed
+call   132 never executed
+call   133 never executed
+branch 134 never executed
+branch 135 never executed
+call   136 never executed
+call   137 never executed
+branch 138 never executed
+branch 139 never executed
+call   140 never executed
+call   141 never executed
+branch 142 never executed
+branch 143 never executed
+call   144 never executed
+call   145 never executed
+branch 146 never executed
+branch 147 never executed
+call   148 never executed
+call   149 never executed
+branch 150 never executed
+branch 151 never executed
+call   152 never executed
+call   153 never executed
+branch 154 never executed
+branch 155 never executed
+call   156 never executed
+call   157 never executed
+branch 158 never executed
+branch 159 never executed
+        -:  431:	    else
+    =====:  432:	      std::_Destroy(__new_start, __new_finish, _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+call    8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+call   12 never executed
+call   13 never executed
+branch 14 never executed
+branch 15 never executed
+call   16 never executed
+call   17 never executed
+branch 18 never executed
+branch 19 never executed
+call   20 never executed
+call   21 never executed
+branch 22 never executed
+branch 23 never executed
+call   24 never executed
+call   25 never executed
+branch 26 never executed
+branch 27 never executed
+call   28 never executed
+call   29 never executed
+branch 30 never executed
+branch 31 never executed
+call   32 never executed
+call   33 never executed
+branch 34 never executed
+branch 35 never executed
+call   36 never executed
+call   37 never executed
+branch 38 never executed
+branch 39 never executed
+call   40 never executed
+call   41 never executed
+branch 42 never executed
+branch 43 never executed
+call   44 never executed
+call   45 never executed
+branch 46 never executed
+branch 47 never executed
+call   48 never executed
+call   49 never executed
+branch 50 never executed
+branch 51 never executed
+call   52 never executed
+call   53 never executed
+branch 54 never executed
+branch 55 never executed
+call   56 never executed
+call   57 never executed
+branch 58 never executed
+branch 59 never executed
+call   60 never executed
+call   61 never executed
+branch 62 never executed
+branch 63 never executed
+call   64 never executed
+call   65 never executed
+branch 66 never executed
+branch 67 never executed
+call   68 never executed
+call   69 never executed
+branch 70 never executed
+branch 71 never executed
+call   72 never executed
+call   73 never executed
+branch 74 never executed
+branch 75 never executed
+call   76 never executed
+call   77 never executed
+branch 78 never executed
+branch 79 never executed
+call   80 never executed
+call   81 never executed
+branch 82 never executed
+branch 83 never executed
+call   84 never executed
+call   85 never executed
+branch 86 never executed
+branch 87 never executed
+call   88 never executed
+call   89 never executed
+branch 90 never executed
+branch 91 never executed
+call   92 never executed
+call   93 never executed
+branch 94 never executed
+branch 95 never executed
+call   96 never executed
+call   97 never executed
+branch 98 never executed
+branch 99 never executed
+call   100 never executed
+call   101 never executed
+branch 102 never executed
+branch 103 never executed
+call   104 never executed
+call   105 never executed
+branch 106 never executed
+branch 107 never executed
+call   108 never executed
+call   109 never executed
+branch 110 never executed
+branch 111 never executed
+call   112 never executed
+call   113 never executed
+branch 114 never executed
+branch 115 never executed
+call   116 never executed
+call   117 never executed
+branch 118 never executed
+branch 119 never executed
+call   120 never executed
+call   121 never executed
+branch 122 never executed
+branch 123 never executed
+call   124 never executed
+call   125 never executed
+branch 126 never executed
+branch 127 never executed
+call   128 never executed
+call   129 never executed
+branch 130 never executed
+branch 131 never executed
+call   132 never executed
+call   133 never executed
+branch 134 never executed
+branch 135 never executed
+call   136 never executed
+call   137 never executed
+branch 138 never executed
+branch 139 never executed
+call   140 never executed
+call   141 never executed
+branch 142 never executed
+branch 143 never executed
+call   144 never executed
+call   145 never executed
+branch 146 never executed
+branch 147 never executed
+call   148 never executed
+call   149 never executed
+branch 150 never executed
+branch 151 never executed
+call   152 never executed
+call   153 never executed
+branch 154 never executed
+branch 155 never executed
+call   156 never executed
+call   157 never executed
+branch 158 never executed
+branch 159 never executed
+    =====:  433:	    _M_deallocate(__new_start, __len);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+call   12 never executed
+branch 13 never executed
+branch 14 never executed
+call   15 never executed
+branch 16 never executed
+branch 17 never executed
+call   18 never executed
+branch 19 never executed
+branch 20 never executed
+call   21 never executed
+branch 22 never executed
+branch 23 never executed
+call   24 never executed
+branch 25 never executed
+branch 26 never executed
+call   27 never executed
+branch 28 never executed
+branch 29 never executed
+call   30 never executed
+branch 31 never executed
+branch 32 never executed
+call   33 never executed
+branch 34 never executed
+branch 35 never executed
+call   36 never executed
+branch 37 never executed
+branch 38 never executed
+call   39 never executed
+branch 40 never executed
+branch 41 never executed
+call   42 never executed
+branch 43 never executed
+branch 44 never executed
+call   45 never executed
+branch 46 never executed
+branch 47 never executed
+call   48 never executed
+branch 49 never executed
+branch 50 never executed
+call   51 never executed
+branch 52 never executed
+branch 53 never executed
+call   54 never executed
+branch 55 never executed
+branch 56 never executed
+call   57 never executed
+branch 58 never executed
+branch 59 never executed
+call   60 never executed
+branch 61 never executed
+branch 62 never executed
+call   63 never executed
+branch 64 never executed
+branch 65 never executed
+call   66 never executed
+branch 67 never executed
+branch 68 never executed
+call   69 never executed
+branch 70 never executed
+branch 71 never executed
+call   72 never executed
+branch 73 never executed
+branch 74 never executed
+call   75 never executed
+branch 76 never executed
+branch 77 never executed
+call   78 never executed
+branch 79 never executed
+branch 80 never executed
+call   81 never executed
+branch 82 never executed
+branch 83 never executed
+call   84 never executed
+branch 85 never executed
+branch 86 never executed
+call   87 never executed
+branch 88 never executed
+branch 89 never executed
+call   90 never executed
+branch 91 never executed
+branch 92 never executed
+call   93 never executed
+branch 94 never executed
+branch 95 never executed
+call   96 never executed
+branch 97 never executed
+branch 98 never executed
+call   99 never executed
+branch 100 never executed
+branch 101 never executed
+call   102 never executed
+branch 103 never executed
+branch 104 never executed
+call   105 never executed
+branch 106 never executed
+branch 107 never executed
+call   108 never executed
+branch 109 never executed
+branch 110 never executed
+call   111 never executed
+branch 112 never executed
+branch 113 never executed
+call   114 never executed
+branch 115 never executed
+branch 116 never executed
+call   117 never executed
+branch 118 never executed
+branch 119 never executed
+    =====:  434:	    __throw_exception_again;
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 never executed
+call   27 never executed
+call   28 never executed
+call   29 never executed
+call   30 never executed
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 never executed
+call   37 never executed
+call   38 never executed
+call   39 never executed
+        -:  435:	  }
+       88:  436:	std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 returned 100%
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 returned 100%
+call   27 returned 100%
+call   28 never executed
+call   29 never executed
+call   30 returned 100%
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 returned 100%
+call   37 returned 100%
+call   38 never executed
+call   39 returned 100%
+       88:  437:		      _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 returned 100%
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 returned 100%
+call   27 returned 100%
+call   28 never executed
+call   29 never executed
+call   30 returned 100%
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 returned 100%
+call   37 returned 100%
+call   38 never executed
+call   39 returned 100%
+      176:  438:	_M_deallocate(this->_M_impl._M_start,
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 returned 100%
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 returned 100%
+call   27 returned 100%
+call   28 never executed
+call   29 never executed
+call   30 returned 100%
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 returned 100%
+call   37 returned 100%
+call   38 never executed
+call   39 returned 100%
+        -:  439:		      this->_M_impl._M_end_of_storage
+      176:  440:		      - this->_M_impl._M_start);
+       88:  441:	this->_M_impl._M_start = __new_start;
+       88:  442:	this->_M_impl._M_finish = __new_finish;
+       88:  443:	this->_M_impl._M_end_of_storage = __new_start + __len;
+       88:  444:      }
+        -:  445:#endif
+        -:  446:
+        -:  447:  template<typename _Tp, typename _Alloc>
+        -:  448:    void
+        -:  449:    vector<_Tp, _Alloc>::
+        -:  450:    _M_fill_insert(iterator __position, size_type __n, const value_type& __x)
+        -:  451:    {
+        -:  452:      if (__n != 0)
+        -:  453:	{
+        -:  454:	  if (size_type(this->_M_impl._M_end_of_storage
+        -:  455:			- this->_M_impl._M_finish) >= __n)
+        -:  456:	    {
+        -:  457:	      value_type __x_copy = __x;
+        -:  458:	      const size_type __elems_after = end() - __position;
+        -:  459:	      pointer __old_finish(this->_M_impl._M_finish);
+        -:  460:	      if (__elems_after > __n)
+        -:  461:		{
+        -:  462:		  std::__uninitialized_move_a(this->_M_impl._M_finish - __n,
+        -:  463:					      this->_M_impl._M_finish,
+        -:  464:					      this->_M_impl._M_finish,
+        -:  465:					      _M_get_Tp_allocator());
+        -:  466:		  this->_M_impl._M_finish += __n;
+        -:  467:		  _GLIBCXX_MOVE_BACKWARD3(__position.base(),
+        -:  468:					  __old_finish - __n, __old_finish);
+        -:  469:		  std::fill(__position.base(), __position.base() + __n,
+        -:  470:			    __x_copy);
+        -:  471:		}
+        -:  472:	      else
+        -:  473:		{
+        -:  474:		  this->_M_impl._M_finish =
+        -:  475:		    std::__uninitialized_fill_n_a(this->_M_impl._M_finish,
+        -:  476:						  __n - __elems_after,
+        -:  477:						  __x_copy,
+        -:  478:						  _M_get_Tp_allocator());
+        -:  479:		  std::__uninitialized_move_a(__position.base(), __old_finish,
+        -:  480:					      this->_M_impl._M_finish,
+        -:  481:					      _M_get_Tp_allocator());
+        -:  482:		  this->_M_impl._M_finish += __elems_after;
+        -:  483:		  std::fill(__position.base(), __old_finish, __x_copy);
+        -:  484:		}
+        -:  485:	    }
+        -:  486:	  else
+        -:  487:	    {
+        -:  488:	      const size_type __len =
+        -:  489:		_M_check_len(__n, "vector::_M_fill_insert");
+        -:  490:	      const size_type __elems_before = __position - begin();
+        -:  491:	      pointer __new_start(this->_M_allocate(__len));
+        -:  492:	      pointer __new_finish(__new_start);
+        -:  493:	      __try
+        -:  494:		{
+        -:  495:		  // See _M_insert_aux above.
+        -:  496:		  std::__uninitialized_fill_n_a(__new_start + __elems_before,
+        -:  497:						__n, __x,
+        -:  498:						_M_get_Tp_allocator());
+        -:  499:		  __new_finish = pointer();
+        -:  500:
+        -:  501:		  __new_finish
+        -:  502:		    = std::__uninitialized_move_if_noexcept_a
+        -:  503:		    (this->_M_impl._M_start, __position.base(),
+        -:  504:		     __new_start, _M_get_Tp_allocator());
+        -:  505:
+        -:  506:		  __new_finish += __n;
+        -:  507:
+        -:  508:		  __new_finish
+        -:  509:		    = std::__uninitialized_move_if_noexcept_a
+        -:  510:		    (__position.base(), this->_M_impl._M_finish,
+        -:  511:		     __new_finish, _M_get_Tp_allocator());
+        -:  512:		}
+        -:  513:	      __catch(...)
+        -:  514:		{
+        -:  515:		  if (!__new_finish)
+        -:  516:		    std::_Destroy(__new_start + __elems_before,
+        -:  517:				  __new_start + __elems_before + __n,
+        -:  518:				  _M_get_Tp_allocator());
+        -:  519:		  else
+        -:  520:		    std::_Destroy(__new_start, __new_finish,
+        -:  521:				  _M_get_Tp_allocator());
+        -:  522:		  _M_deallocate(__new_start, __len);
+        -:  523:		  __throw_exception_again;
+        -:  524:		}
+        -:  525:	      std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+        -:  526:			    _M_get_Tp_allocator());
+        -:  527:	      _M_deallocate(this->_M_impl._M_start,
+        -:  528:			    this->_M_impl._M_end_of_storage
+        -:  529:			    - this->_M_impl._M_start);
+        -:  530:	      this->_M_impl._M_start = __new_start;
+        -:  531:	      this->_M_impl._M_finish = __new_finish;
+        -:  532:	      this->_M_impl._M_end_of_storage = __new_start + __len;
+        -:  533:	    }
+        -:  534:	}
+        -:  535:    }
+        -:  536:
+        -:  537:#if __cplusplus >= 201103L
+        -:  538:  template<typename _Tp, typename _Alloc>
+        -:  539:    void
+function _ZNSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS0_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISC_EE17_M_default_appendEm called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch5clara6detail5TokenESaIS3_EE17_M_default_appendEm called 0 returned 0% blocks executed 0%
+    #####:  540:    vector<_Tp, _Alloc>::
+        -:  541:    _M_default_append(size_type __n)
+        -:  542:    {
+    #####:  543:      if (__n != 0)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  544:	{
+    #####:  545:	  if (size_type(this->_M_impl._M_end_of_storage
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  546:			- this->_M_impl._M_finish) >= __n)
+        -:  547:	    {
+    #####:  548:	      this->_M_impl._M_finish =
+    #####:  549:		std::__uninitialized_default_n_a(this->_M_impl._M_finish,
+call    0 never executed
+call    1 never executed
+    #####:  550:						 __n, _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+        -:  551:	    }
+        -:  552:	  else
+        -:  553:	    {
+        -:  554:	      const size_type __len =
+    #####:  555:		_M_check_len(__n, "vector::_M_default_append");
+call    0 never executed
+call    1 never executed
+    #####:  556:	      const size_type __old_size = this->size();
+call    0 never executed
+call    1 never executed
+    #####:  557:	      pointer __new_start(this->_M_allocate(__len));
+call    0 never executed
+call    1 never executed
+    #####:  558:	      pointer __new_finish(__new_start);
+        -:  559:	      __try
+        -:  560:		{
+    #####:  561:		  __new_finish
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  562:		    = std::__uninitialized_move_if_noexcept_a
+    #####:  563:		    (this->_M_impl._M_start, this->_M_impl._M_finish,
+    #####:  564:		     __new_start, _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+    #####:  565:		  __new_finish =
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  566:		    std::__uninitialized_default_n_a(__new_finish, __n,
+    #####:  567:						     _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+        -:  568:		}
+    =====:  569:	      __catch(...)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  570:		{
+    =====:  571:		  std::_Destroy(__new_start, __new_finish,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    =====:  572:				_M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+    =====:  573:		  _M_deallocate(__new_start, __len);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    =====:  574:		  __throw_exception_again;
+call    0 never executed
+call    1 never executed
+        -:  575:		}
+    #####:  576:	      std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+call    0 never executed
+call    1 never executed
+    #####:  577:			    _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+    #####:  578:	      _M_deallocate(this->_M_impl._M_start,
+call    0 never executed
+call    1 never executed
+        -:  579:			    this->_M_impl._M_end_of_storage
+    #####:  580:			    - this->_M_impl._M_start);
+    #####:  581:	      this->_M_impl._M_start = __new_start;
+    #####:  582:	      this->_M_impl._M_finish = __new_finish;
+    #####:  583:	      this->_M_impl._M_end_of_storage = __new_start + __len;
+        -:  584:	    }
+        -:  585:	}
+    #####:  586:    }
+        -:  587:
+        -:  588:  template<typename _Tp, typename _Alloc>
+        -:  589:    bool
+        -:  590:    vector<_Tp, _Alloc>::
+        -:  591:    _M_shrink_to_fit()
+        -:  592:    {
+        -:  593:      if (capacity() == size())
+        -:  594:	return false;
+        -:  595:      return std::__shrink_to_fit_aux<vector>::_S_do_it(*this);
+        -:  596:    }
+        -:  597:#endif
+        -:  598:
+        -:  599:  template<typename _Tp, typename _Alloc>
+        -:  600:    template<typename _InputIterator>
+        -:  601:      void
+        -:  602:      vector<_Tp, _Alloc>::
+        -:  603:      _M_range_insert(iterator __pos, _InputIterator __first,
+        -:  604:		      _InputIterator __last, std::input_iterator_tag)
+        -:  605:      {
+        -:  606:	for (; __first != __last; ++__first)
+        -:  607:	  {
+        -:  608:	    __pos = insert(__pos, *__first);
+        -:  609:	    ++__pos;
+        -:  610:	  }
+        -:  611:      }
+        -:  612:
+        -:  613:  template<typename _Tp, typename _Alloc>
+        -:  614:    template<typename _ForwardIterator>
+        -:  615:      void
+function _ZNSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EE15_M_range_insertIN9__gnu_cxx17__normal_iteratorIPKS5_S7_EEEEvNSA_IPS5_S7_EET_SG_St20forward_iterator_tag called 0 returned 0% blocks executed 0%
+function _ZNSt6vectorIN5Catch5clara6detail11HelpColumnsESaIS3_EE15_M_range_insertIN9__gnu_cxx17__normal_iteratorIPS3_S5_EEEEvSA_T_SB_St20forward_iterator_tag called 0 returned 0% blocks executed 0%
+    #####:  616:      vector<_Tp, _Alloc>::
+        -:  617:      _M_range_insert(iterator __position, _ForwardIterator __first,
+        -:  618:		      _ForwardIterator __last, std::forward_iterator_tag)
+        -:  619:      {
+    #####:  620:	if (__first != __last)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  621:	  {
+    #####:  622:	    const size_type __n = std::distance(__first, __last);
+call    0 never executed
+call    1 never executed
+    #####:  623:	    if (size_type(this->_M_impl._M_end_of_storage
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  624:			  - this->_M_impl._M_finish) >= __n)
+        -:  625:	      {
+    #####:  626:		const size_type __elems_after = end() - __position;
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  627:		pointer __old_finish(this->_M_impl._M_finish);
+    #####:  628:		if (__elems_after > __n)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  629:		  {
+    #####:  630:		    std::__uninitialized_move_a(this->_M_impl._M_finish - __n,
+call    0 never executed
+call    1 never executed
+        -:  631:						this->_M_impl._M_finish,
+        -:  632:						this->_M_impl._M_finish,
+    #####:  633:						_M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+    #####:  634:		    this->_M_impl._M_finish += __n;
+    #####:  635:		    _GLIBCXX_MOVE_BACKWARD3(__position.base(),
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  636:					    __old_finish - __n, __old_finish);
+    #####:  637:		    std::copy(__first, __last, __position);
+call    0 never executed
+call    1 never executed
+        -:  638:		  }
+        -:  639:		else
+        -:  640:		  {
+    #####:  641:		    _ForwardIterator __mid = __first;
+    #####:  642:		    std::advance(__mid, __elems_after);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  643:		    std::__uninitialized_copy_a(__mid, __last,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  644:						this->_M_impl._M_finish,
+    #####:  645:						_M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+    #####:  646:		    this->_M_impl._M_finish += __n - __elems_after;
+    #####:  647:		    std::__uninitialized_move_a(__position.base(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+        -:  648:						__old_finish,
+        -:  649:						this->_M_impl._M_finish,
+    #####:  650:						_M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+    #####:  651:		    this->_M_impl._M_finish += __elems_after;
+    #####:  652:		    std::copy(__first, __mid, __position);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  653:		  }
+        -:  654:	      }
+        -:  655:	    else
+        -:  656:	      {
+        -:  657:		const size_type __len =
+    #####:  658:		  _M_check_len(__n, "vector::_M_range_insert");
+call    0 never executed
+call    1 never executed
+    #####:  659:		pointer __new_start(this->_M_allocate(__len));
+call    0 never executed
+call    1 never executed
+    #####:  660:		pointer __new_finish(__new_start);
+        -:  661:		__try
+        -:  662:		  {
+    #####:  663:		    __new_finish
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  664:		      = std::__uninitialized_move_if_noexcept_a
+    #####:  665:		      (this->_M_impl._M_start, __position.base(),
+call    0 never executed
+call    1 never executed
+    #####:  666:		       __new_start, _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+    #####:  667:		    __new_finish
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  668:		      = std::__uninitialized_copy_a(__first, __last,
+        -:  669:						    __new_finish,
+    #####:  670:						    _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+    #####:  671:		    __new_finish
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  672:		      = std::__uninitialized_move_if_noexcept_a
+    #####:  673:		      (__position.base(), this->_M_impl._M_finish,
+call    0 never executed
+call    1 never executed
+    #####:  674:		       __new_finish, _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+        -:  675:		  }
+    =====:  676:		__catch(...)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  677:		  {
+    =====:  678:		    std::_Destroy(__new_start, __new_finish,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    =====:  679:				  _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+    =====:  680:		    _M_deallocate(__new_start, __len);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    =====:  681:		    __throw_exception_again;
+call    0 never executed
+call    1 never executed
+        -:  682:		  }
+    #####:  683:		std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+call    0 never executed
+call    1 never executed
+    #####:  684:			      _M_get_Tp_allocator());
+call    0 never executed
+call    1 never executed
+    #####:  685:		_M_deallocate(this->_M_impl._M_start,
+call    0 never executed
+call    1 never executed
+        -:  686:			      this->_M_impl._M_end_of_storage
+    #####:  687:			      - this->_M_impl._M_start);
+    #####:  688:		this->_M_impl._M_start = __new_start;
+    #####:  689:		this->_M_impl._M_finish = __new_finish;
+    #####:  690:		this->_M_impl._M_end_of_storage = __new_start + __len;
+        -:  691:	      }
+        -:  692:	  }
+    #####:  693:      }
+call    0 never executed
+call    1 never executed
+        -:  694:
+        -:  695:
+        -:  696:  // vector<bool>
+        -:  697:  template<typename _Alloc>
+        -:  698:    void
+        -:  699:    vector<bool, _Alloc>::
+        -:  700:    _M_reallocate(size_type __n)
+        -:  701:    {
+        -:  702:      _Bit_pointer __q = this->_M_allocate(__n);
+        -:  703:      iterator __start(std::__addressof(*__q), 0);
+        -:  704:      this->_M_impl._M_finish = _M_copy_aligned(begin(), end(), __start);
+        -:  705:      this->_M_deallocate();
+        -:  706:      this->_M_impl._M_start = __start;
+        -:  707:      this->_M_impl._M_end_of_storage = __q + _S_nword(__n);
+        -:  708:    }
+        -:  709:
+        -:  710:  template<typename _Alloc>
+        -:  711:    void
+        -:  712:    vector<bool, _Alloc>::
+        -:  713:    _M_fill_insert(iterator __position, size_type __n, bool __x)
+        -:  714:    {
+        -:  715:      if (__n == 0)
+        -:  716:	return;
+        -:  717:      if (capacity() - size() >= __n)
+        -:  718:	{
+        -:  719:	  std::copy_backward(__position, end(),
+        -:  720:			     this->_M_impl._M_finish + difference_type(__n));
+        -:  721:	  std::fill(__position, __position + difference_type(__n), __x);
+        -:  722:	  this->_M_impl._M_finish += difference_type(__n);
+        -:  723:	}
+        -:  724:      else
+        -:  725:	{
+        -:  726:	  const size_type __len = 
+        -:  727:	    _M_check_len(__n, "vector<bool>::_M_fill_insert");
+        -:  728:	  _Bit_pointer __q = this->_M_allocate(__len);
+        -:  729:	  iterator __start(std::__addressof(*__q), 0);
+        -:  730:	  iterator __i = _M_copy_aligned(begin(), __position, __start);
+        -:  731:	  std::fill(__i, __i + difference_type(__n), __x);
+        -:  732:	  this->_M_impl._M_finish = std::copy(__position, end(),
+        -:  733:					      __i + difference_type(__n));
+        -:  734:	  this->_M_deallocate();
+        -:  735:	  this->_M_impl._M_end_of_storage = __q + _S_nword(__len);
+        -:  736:	  this->_M_impl._M_start = __start;
+        -:  737:	}
+        -:  738:    }
+        -:  739:
+        -:  740:  template<typename _Alloc>
+        -:  741:    template<typename _ForwardIterator>
+        -:  742:      void
+        -:  743:      vector<bool, _Alloc>::
+        -:  744:      _M_insert_range(iterator __position, _ForwardIterator __first, 
+        -:  745:		      _ForwardIterator __last, std::forward_iterator_tag)
+        -:  746:      {
+        -:  747:	if (__first != __last)
+        -:  748:	  {
+        -:  749:	    size_type __n = std::distance(__first, __last);
+        -:  750:	    if (capacity() - size() >= __n)
+        -:  751:	      {
+        -:  752:		std::copy_backward(__position, end(),
+        -:  753:				   this->_M_impl._M_finish
+        -:  754:				   + difference_type(__n));
+        -:  755:		std::copy(__first, __last, __position);
+        -:  756:		this->_M_impl._M_finish += difference_type(__n);
+        -:  757:	      }
+        -:  758:	    else
+        -:  759:	      {
+        -:  760:		const size_type __len =
+        -:  761:		  _M_check_len(__n, "vector<bool>::_M_insert_range");
+        -:  762:		_Bit_pointer __q = this->_M_allocate(__len);
+        -:  763:		iterator __start(std::__addressof(*__q), 0);
+        -:  764:		iterator __i = _M_copy_aligned(begin(), __position, __start);
+        -:  765:		__i = std::copy(__first, __last, __i);
+        -:  766:		this->_M_impl._M_finish = std::copy(__position, end(), __i);
+        -:  767:		this->_M_deallocate();
+        -:  768:		this->_M_impl._M_end_of_storage = __q + _S_nword(__len);
+        -:  769:		this->_M_impl._M_start = __start;
+        -:  770:	      }
+        -:  771:	  }
+        -:  772:      }
+        -:  773:
+        -:  774:  template<typename _Alloc>
+        -:  775:    void
+        -:  776:    vector<bool, _Alloc>::
+        -:  777:    _M_insert_aux(iterator __position, bool __x)
+        -:  778:    {
+        -:  779:      if (this->_M_impl._M_finish._M_p != this->_M_impl._M_end_addr())
+        -:  780:	{
+        -:  781:	  std::copy_backward(__position, this->_M_impl._M_finish, 
+        -:  782:			     this->_M_impl._M_finish + 1);
+        -:  783:	  *__position = __x;
+        -:  784:	  ++this->_M_impl._M_finish;
+        -:  785:	}
+        -:  786:      else
+        -:  787:	{
+        -:  788:	  const size_type __len =
+        -:  789:	    _M_check_len(size_type(1), "vector<bool>::_M_insert_aux");
+        -:  790:	  _Bit_pointer __q = this->_M_allocate(__len);
+        -:  791:	  iterator __start(std::__addressof(*__q), 0);
+        -:  792:	  iterator __i = _M_copy_aligned(begin(), __position, __start);
+        -:  793:	  *__i++ = __x;
+        -:  794:	  this->_M_impl._M_finish = std::copy(__position, end(), __i);
+        -:  795:	  this->_M_deallocate();
+        -:  796:	  this->_M_impl._M_end_of_storage = __q + _S_nword(__len);
+        -:  797:	  this->_M_impl._M_start = __start;
+        -:  798:	}
+        -:  799:    }
+        -:  800:
+        -:  801:  template<typename _Alloc>
+        -:  802:    typename vector<bool, _Alloc>::iterator
+        -:  803:    vector<bool, _Alloc>::
+        -:  804:    _M_erase(iterator __position)
+        -:  805:    {
+        -:  806:      if (__position + 1 != end())
+        -:  807:        std::copy(__position + 1, end(), __position);
+        -:  808:      --this->_M_impl._M_finish;
+        -:  809:      return __position;
+        -:  810:    }
+        -:  811:
+        -:  812:  template<typename _Alloc>
+        -:  813:    typename vector<bool, _Alloc>::iterator
+        -:  814:    vector<bool, _Alloc>::
+        -:  815:    _M_erase(iterator __first, iterator __last)
+        -:  816:    {
+        -:  817:      if (__first != __last)
+        -:  818:	_M_erase_at_end(std::copy(__last, end(), __first));
+        -:  819:      return __first;
+        -:  820:    }
+        -:  821:
+        -:  822:#if __cplusplus >= 201103L
+        -:  823:  template<typename _Alloc>
+        -:  824:    bool
+        -:  825:    vector<bool, _Alloc>::
+        -:  826:    _M_shrink_to_fit()
+        -:  827:    {
+        -:  828:      if (capacity() - size() < int(_S_word_bit))
+        -:  829:	return false;
+        -:  830:      __try
+        -:  831:	{
+        -:  832:	  _M_reallocate(size());
+        -:  833:	  return true;
+        -:  834:	}
+        -:  835:      __catch(...)
+        -:  836:	{ return false; }
+        -:  837:    }
+        -:  838:#endif
+        -:  839:
+        -:  840:_GLIBCXX_END_NAMESPACE_CONTAINER
+        -:  841:} // namespace std
+        -:  842:
+        -:  843:#if __cplusplus >= 201103L
+        -:  844:
+        -:  845:namespace std _GLIBCXX_VISIBILITY(default)
+        -:  846:{
+        -:  847:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:  848:
+        -:  849:  template<typename _Alloc>
+        -:  850:    size_t
+        -:  851:    hash<_GLIBCXX_STD_C::vector<bool, _Alloc>>::
+        -:  852:    operator()(const _GLIBCXX_STD_C::vector<bool, _Alloc>& __b) const noexcept
+        -:  853:    {
+        -:  854:      size_t __hash = 0;
+        -:  855:      using _GLIBCXX_STD_C::_S_word_bit;
+        -:  856:      using _GLIBCXX_STD_C::_Bit_type;
+        -:  857:
+        -:  858:      const size_t __words = __b.size() / _S_word_bit;
+        -:  859:      if (__words)
+        -:  860:	{
+        -:  861:	  const size_t __clength = __words * sizeof(_Bit_type);
+        -:  862:	  __hash = std::_Hash_impl::hash(__b._M_impl._M_start._M_p, __clength);
+        -:  863:	}
+        -:  864:
+        -:  865:      const size_t __extrabits = __b.size() % _S_word_bit;
+        -:  866:      if (__extrabits)
+        -:  867:	{
+        -:  868:	  _Bit_type __hiword = *__b._M_impl._M_finish._M_p;
+        -:  869:	  __hiword &= ~((~static_cast<_Bit_type>(0)) << __extrabits);
+        -:  870:
+        -:  871:	  const size_t __clength
+        -:  872:	    = (__extrabits + __CHAR_BIT__ - 1) / __CHAR_BIT__;
+        -:  873:	  if (__words)
+        -:  874:	    __hash = std::_Hash_impl::hash(&__hiword, __clength, __hash);
+        -:  875:	  else
+        -:  876:	    __hash = std::_Hash_impl::hash(&__hiword, __clength);
+        -:  877:	}
+        -:  878:
+        -:  879:      return __hash;
+        -:  880:    }
+        -:  881:
+        -:  882:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  883:} // namespace std
+        -:  884:
+        -:  885:#endif // C++11
+        -:  886:
+        -:  887:#endif /* _VECTOR_TCC */

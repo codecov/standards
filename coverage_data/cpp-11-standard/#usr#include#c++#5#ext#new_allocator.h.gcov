@@ -1,0 +1,2017 @@
+        -:    0:Source:/usr/include/c++/5/ext/new_allocator.h
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// Allocator that wraps operator new -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file ext/new_allocator.h
+        -:   26: *  This file is a GNU extension to the Standard C++ Library.
+        -:   27: */
+        -:   28:
+        -:   29:#ifndef _NEW_ALLOCATOR_H
+        -:   30:#define _NEW_ALLOCATOR_H 1
+        -:   31:
+        -:   32:#include <bits/c++config.h>
+        -:   33:#include <new>
+        -:   34:#include <bits/functexcept.h>
+        -:   35:#include <bits/move.h>
+        -:   36:#if __cplusplus >= 201103L
+        -:   37:#include <type_traits>
+        -:   38:#endif
+        -:   39:
+        -:   40:namespace __gnu_cxx _GLIBCXX_VISIBILITY(default)
+        -:   41:{
+        -:   42:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   43:
+        -:   44:  using std::size_t;
+        -:   45:  using std::ptrdiff_t;
+        -:   46:
+        -:   47:  /**
+        -:   48:   *  @brief  An allocator that uses global new, as per [20.4].
+        -:   49:   *  @ingroup allocators
+        -:   50:   *
+        -:   51:   *  This is precisely the allocator defined in the C++ Standard. 
+        -:   52:   *    - all allocation calls operator new
+        -:   53:   *    - all deallocation calls operator delete
+        -:   54:   *
+        -:   55:   *  @tparam  _Tp  Type of allocated object.
+        -:   56:   */
+        -:   57:  template<typename _Tp>
+        -:   58:    class new_allocator
+        -:   59:    {
+        -:   60:    public:
+        -:   61:      typedef size_t     size_type;
+        -:   62:      typedef ptrdiff_t  difference_type;
+        -:   63:      typedef _Tp*       pointer;
+        -:   64:      typedef const _Tp* const_pointer;
+        -:   65:      typedef _Tp&       reference;
+        -:   66:      typedef const _Tp& const_reference;
+        -:   67:      typedef _Tp        value_type;
+        -:   68:
+        -:   69:      template<typename _Tp1>
+        -:   70:        struct rebind
+        -:   71:        { typedef new_allocator<_Tp1> other; };
+        -:   72:
+        -:   73:#if __cplusplus >= 201103L
+        -:   74:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:   75:      // 2103. propagate_on_container_move_assignment
+        -:   76:      typedef std::true_type propagate_on_container_move_assignment;
+        -:   77:#endif
+        -:   78:
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEESaISD_ELNS_12_Lock_policyE2EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeESaIS6_ELNS_12_Lock_policyE2EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail6_StateINSt7__cxx1112regex_traitsIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_EEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112regex_traitsIcE10_RegexMaskEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIccEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPlEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKllEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIlEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS7_ELNS_12_Lock_policyE2EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIlSt6vectorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS3_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS6_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS6_ELNS_12_Lock_policyE2EEEC2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISH_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISH_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISH_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISH_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISH_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISH_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlbE9_EESaIS9_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISH_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUliE8_EESaIS9_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISH_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_11XmlReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_13JunitReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEESaISB_ELNS_12_Lock_policyE2EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEESaIS9_ELNS_12_Lock_policyE2EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_15ConsoleReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_15CompactReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS4_ELNS_12_Lock_policyE2EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS4_ELNS_12_Lock_policyE2EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS4_ELNS_12_Lock_policyE2EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISC_EEEESaISF_ELNS_12_Lock_policyE2EEEC2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlbE7_EESaIS9_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS4_4HelpC4ERbEUlbE_EESaIS9_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS4_ELNS_12_Lock_policyE2EEEC2Ev called 8 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS7_EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS3_ELNS_12_Lock_policyE2EEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS4_ELNS_12_Lock_policyE2EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS4_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorINSt15__exception_ptr13exception_ptrEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS4_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16IReporterFactoryEEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINS_17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS5_ELNS_12_Lock_policyE2EEEC2Ev called 22 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISC_ELNS_12_Lock_policyE2EEEC2Ev called 6 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS7_ELNS_12_Lock_policyE2EEEC2Ev called 6 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS3_13JunitReporterEE11SectionNodeEESaIS8_EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14AssertionStatsEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11SectionInfoEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIPcEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS3_EEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13SummaryColumnEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch8TestSpec7PatternEEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIPKN5Catch8TestCaseEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEEC2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestCaseEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch8TestCaseEEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch9StringRefEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch10ISingletonEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3ArgEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3OptEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch16TestCaseTracking8ITrackerEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14SectionEndInfoEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13ScopedMessageEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11MessageInfoEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorImEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec6FilterEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefIdEEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefIjEEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail5TokenEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6ColumnEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6Column8iteratorEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec10TagPatternEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec15ExcludedPatternEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec11NamePatternEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch16TestCaseTracking14SectionTrackerEEC2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch6ConfigEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch10Generators16GeneratorTrackerEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail12BoundFlagRefEEC2Ev called 11 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEC2Ev called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch12_GLOBAL__N_110ColumnInfoEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch9VerbosityEEC2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec11FilterMatchEEC2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11HelpColumnsEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2Ev called 45 returned 100% blocks executed 100%
+      205:   79:      new_allocator() _GLIBCXX_USE_NOEXCEPT { }
+        -:   80:
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEEC2ERKSD_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEEC2ERKS6_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIlEC2ERKS1_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_EEC2ERKS9_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112regex_traitsIcE10_RegexMaskEEC2ERKS5_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIccEEC2ERKS3_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIlSt6vectorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS3_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEEC2ERKSI_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEEC2ERKS7_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEEC2ERKS7_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINS_17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEEC2ERKSD_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefIdEEEC2ERKS6_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefIjEEEC2ERKS6_ called 6 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEEC2ERKSH_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEEC2ERKSH_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEEC2ERKSH_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEEC2ERKSH_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEEC2ERKSH_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEEC2ERKSH_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EEEC2ERKS9_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEEC2ERKSH_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EEEC2ERKS9_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEEC2ERKSH_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryEEC2ERKS6_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryEEC2ERKS6_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEC2ERKSB_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEEC2ERKS9_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryEEC2ERKS6_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryEEC2ERKS6_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec10TagPatternEEC2ERKS4_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec15ExcludedPatternEEC2ERKS4_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec11NamePatternEEC2ERKS4_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEEC2ERKSD_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEEEC2ERKSF_ called 6 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EEEC2ERKS9_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EEEC2ERKS9_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch16TestCaseTracking14SectionTrackerEEC2ERKS4_ called 12 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch6ConfigEEC2ERKS3_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch10Generators16GeneratorTrackerEEC2ERKS4_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail12BoundFlagRefEEC2ERKS5_ called 33 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEC2ERKSC_ called 9 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch12_GLOBAL__N_110ColumnInfoEEC2ERKS4_ called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2ERKS5_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch8TestSpec7PatternEEEC2ERKS6_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec11FilterMatchEEC2ERKS4_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC2ERKS9_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3ArgEEC2ERKS5_ called 126 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3OptEEC2ERKS5_ called 126 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11HelpColumnsEEC2ERKS5_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPKN5Catch8TestCaseEEC2ERKS5_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestCaseEEC2ERKS3_ called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec6FilterEEC2ERKS4_ called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11MessageInfoEEC2ERKS3_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2ERKS7_ called 2330 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail5TokenEEC2ERKS5_ called 8 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6ColumnEEC2ERKS5_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch9VerbosityEEC2ERKS3_ called 1 returned 100% blocks executed 100%
+     2725:   81:      new_allocator(const new_allocator&) _GLIBCXX_USE_NOEXCEPT { }
+        -:   82:
+        -:   83:      template<typename _Tp1>
+        -:   84:        new_allocator(const new_allocator<_Tp1>&) _GLIBCXX_USE_NOEXCEPT { }
+        -:   85:
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEESaISD_ELNS_12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeESaIS6_ELNS_12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail6_StateINSt7__cxx1112regex_traitsIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPlED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_EED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112regex_traitsIcE10_RegexMaskEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIccEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIlED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKllEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS7_ELNS_12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS6_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS6_ELNS_12_Lock_policyE2EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISH_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISH_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISH_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISH_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISH_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISH_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlbE9_EESaIS9_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISH_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUliE8_EESaIS9_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISH_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_11XmlReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_13JunitReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEESaISB_ELNS_12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEESaIS9_ELNS_12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_15ConsoleReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_15CompactReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS4_ELNS_12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS4_ELNS_12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS4_ELNS_12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIlSt6vectorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS3_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISC_EEEESaISF_ELNS_12_Lock_policyE2EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlbE7_EESaIS9_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS4_4HelpC4ERbEUlbE_EESaIS9_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS4_ELNS_12_Lock_policyE2EEED2Ev called 8 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS3_ELNS_12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS4_ELNS_12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINS_17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS5_ELNS_12_Lock_policyE2EEED2Ev called 22 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISC_ELNS_12_Lock_policyE2EEED2Ev called 6 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS7_ELNS_12_Lock_policyE2EEED2Ev called 6 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS7_EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS4_EEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorINSt15__exception_ptr13exception_ptrEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIPcED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefIdEEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefIjEEED2Ev called 8 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS3_EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS3_13JunitReporterEE11SectionNodeEESaIS8_EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14AssertionStatsEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13SummaryColumnEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11SectionInfoEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec10TagPatternEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec15ExcludedPatternEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec11NamePatternEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch10ISingletonEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch16TestCaseTracking8ITrackerEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14SectionEndInfoEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13ScopedMessageEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16IReporterFactoryEEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS4_EEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch9StringRefEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch8TestSpec7PatternEEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorImED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEEED2Ev called 8 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3ArgEED2Ev called 128 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3OptEED2Ev called 128 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch9VerbosityEEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIPKN5Catch8TestCaseEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch16TestCaseTracking14SectionTrackerEED2Ev called 16 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch8TestCaseEEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestCaseEED2Ev called 6 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch6ConfigEED2Ev called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch10Generators16GeneratorTrackerEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec6FilterEED2Ev called 6 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11MessageInfoEED2Ev called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail12BoundFlagRefEED2Ev called 44 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEED2Ev called 12 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail5TokenEED2Ev called 9 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6ColumnEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6Column8iteratorEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch12_GLOBAL__N_110ColumnInfoEED2Ev called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch9VerbosityEED2Ev called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec11FilterMatchEED2Ev called 5 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11HelpColumnsEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEED2Ev called 2375 returned 100% blocks executed 100%
+     2930:   86:      ~new_allocator() _GLIBCXX_USE_NOEXCEPT { }
+        -:   87:
+        -:   88:      pointer
+        -:   89:      address(reference __x) const _GLIBCXX_NOEXCEPT
+        -:   90:      { return std::__addressof(__x); }
+        -:   91:
+        -:   92:      const_pointer
+        -:   93:      address(const_reference __x) const _GLIBCXX_NOEXCEPT
+        -:   94:      { return std::__addressof(__x); }
+        -:   95:
+        -:   96:      // NB: __n is permitted to be 0.  The C++ standard says nothing
+        -:   97:      // about what the return value is when __n == 0.
+        -:   98:      pointer
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEESaISD_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeESaIS6_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_EE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIccEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKllEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112regex_traitsIcE10_RegexMaskEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIlE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPlE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIlSt6vectorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS3_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail6_StateINSt7__cxx1112regex_traitsIcEEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS7_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINS_17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS6_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS6_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 2 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISH_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISH_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISH_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISH_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISH_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISH_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlbE9_EESaIS9_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISH_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUliE8_EESaIS9_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISH_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_11XmlReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_13JunitReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEESaISB_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEESaIS9_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_15ConsoleReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_15CompactReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch9VerbosityEEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS4_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS4_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS4_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISC_EEEESaISF_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 2 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlbE7_EESaIS9_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS4_4HelpC4ERbEUlbE_EESaIS9_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS4_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 4 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch8TestCaseEEE8allocateEmPKv called 2 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS3_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS4_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS5_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 11 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISC_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 3 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS7_ELNS_12_Lock_policyE2EEE8allocateEmPKv called 3 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS3_EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14AssertionStatsEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13SummaryColumnEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11SectionInfoEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch8TestSpec7PatternEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec11FilterMatchEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch9StringRefEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS7_EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEE8allocateEmPKv called 2 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch16TestCaseTracking8ITrackerEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEE8allocateEmPKv called 4 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIcE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPcE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS4_EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS4_EEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch12_GLOBAL__N_110ColumnInfoEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec6FilterEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPKN5Catch8TestCaseEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEE8allocateEmPKv called 2 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestCaseEE8allocateEmPKv called 3 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorImE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt15__exception_ptr13exception_ptrEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch10ISingletonEE8allocateEmPKv called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13ScopedMessageEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14SectionEndInfoEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16IReporterFactoryEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11MessageInfoEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3OptEE8allocateEmPKv called 88 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3ArgEE8allocateEmPKv called 2 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11HelpColumnsEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail5TokenEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6ColumnEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6Column8iteratorEE8allocateEmPKv called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE8allocateEmPKv called 1002 returned 100% blocks executed 83%
+     1152:   99:      allocate(size_type __n, const void* = 0)
+        -:  100:      { 
+     1152:  101:	if (__n > this->max_size())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+call   12 never executed
+branch 13 never executed
+branch 14 never executed
+call   15 never executed
+branch 16 never executed
+branch 17 never executed
+call   18 never executed
+branch 19 never executed
+branch 20 never executed
+call   21 never executed
+branch 22 never executed
+branch 23 never executed
+call   24 never executed
+branch 25 never executed
+branch 26 never executed
+call   27 never executed
+branch 28 never executed
+branch 29 never executed
+call   30 never executed
+branch 31 never executed
+branch 32 never executed
+call   33 never executed
+branch 34 never executed
+branch 35 never executed
+call   36 never executed
+branch 37 never executed
+branch 38 never executed
+call   39 never executed
+branch 40 never executed
+branch 41 never executed
+call   42 never executed
+branch 43 never executed
+branch 44 never executed
+call   45 never executed
+branch 46 never executed
+branch 47 never executed
+call   48 returned 100%
+branch 49 taken 0% (fallthrough)
+branch 50 taken 100%
+call   51 returned 100%
+branch 52 taken 0% (fallthrough)
+branch 53 taken 100%
+call   54 returned 100%
+branch 55 taken 0% (fallthrough)
+branch 56 taken 100%
+call   57 returned 100%
+branch 58 taken 0% (fallthrough)
+branch 59 taken 100%
+call   60 returned 100%
+branch 61 taken 0% (fallthrough)
+branch 62 taken 100%
+call   63 returned 100%
+branch 64 taken 0% (fallthrough)
+branch 65 taken 100%
+call   66 returned 100%
+branch 67 taken 0% (fallthrough)
+branch 68 taken 100%
+call   69 returned 100%
+branch 70 taken 0% (fallthrough)
+branch 71 taken 100%
+call   72 returned 100%
+branch 73 taken 0% (fallthrough)
+branch 74 taken 100%
+call   75 returned 100%
+branch 76 taken 0% (fallthrough)
+branch 77 taken 100%
+call   78 returned 100%
+branch 79 taken 0% (fallthrough)
+branch 80 taken 100%
+call   81 returned 100%
+branch 82 taken 0% (fallthrough)
+branch 83 taken 100%
+call   84 returned 100%
+branch 85 taken 0% (fallthrough)
+branch 86 taken 100%
+call   87 returned 100%
+branch 88 taken 0% (fallthrough)
+branch 89 taken 100%
+call   90 never executed
+branch 91 never executed
+branch 92 never executed
+call   93 never executed
+branch 94 never executed
+branch 95 never executed
+call   96 returned 100%
+branch 97 taken 0% (fallthrough)
+branch 98 taken 100%
+call   99 returned 100%
+branch 100 taken 0% (fallthrough)
+branch 101 taken 100%
+call   102 returned 100%
+branch 103 taken 0% (fallthrough)
+branch 104 taken 100%
+call   105 never executed
+branch 106 never executed
+branch 107 never executed
+call   108 never executed
+branch 109 never executed
+branch 110 never executed
+call   111 never executed
+branch 112 never executed
+branch 113 never executed
+call   114 returned 100%
+branch 115 taken 0% (fallthrough)
+branch 116 taken 100%
+call   117 returned 100%
+branch 118 taken 0% (fallthrough)
+branch 119 taken 100%
+call   120 returned 100%
+branch 121 taken 0% (fallthrough)
+branch 122 taken 100%
+call   123 returned 100%
+branch 124 taken 0% (fallthrough)
+branch 125 taken 100%
+call   126 returned 100%
+branch 127 taken 0% (fallthrough)
+branch 128 taken 100%
+call   129 never executed
+branch 130 never executed
+branch 131 never executed
+call   132 returned 100%
+branch 133 taken 0% (fallthrough)
+branch 134 taken 100%
+call   135 never executed
+branch 136 never executed
+branch 137 never executed
+call   138 never executed
+branch 139 never executed
+branch 140 never executed
+call   141 never executed
+branch 142 never executed
+branch 143 never executed
+call   144 returned 100%
+branch 145 taken 0% (fallthrough)
+branch 146 taken 100%
+call   147 returned 100%
+branch 148 taken 0% (fallthrough)
+branch 149 taken 100%
+call   150 returned 100%
+branch 151 taken 0% (fallthrough)
+branch 152 taken 100%
+call   153 never executed
+branch 154 never executed
+branch 155 never executed
+call   156 never executed
+branch 157 never executed
+branch 158 never executed
+call   159 never executed
+branch 160 never executed
+branch 161 never executed
+call   162 never executed
+branch 163 never executed
+branch 164 never executed
+call   165 never executed
+branch 166 never executed
+branch 167 never executed
+call   168 never executed
+branch 169 never executed
+branch 170 never executed
+call   171 returned 100%
+branch 172 taken 0% (fallthrough)
+branch 173 taken 100%
+call   174 never executed
+branch 175 never executed
+branch 176 never executed
+call   177 never executed
+branch 178 never executed
+branch 179 never executed
+call   180 never executed
+branch 181 never executed
+branch 182 never executed
+call   183 never executed
+branch 184 never executed
+branch 185 never executed
+call   186 returned 100%
+branch 187 taken 0% (fallthrough)
+branch 188 taken 100%
+call   189 never executed
+branch 190 never executed
+branch 191 never executed
+call   192 returned 100%
+branch 193 taken 0% (fallthrough)
+branch 194 taken 100%
+call   195 never executed
+branch 196 never executed
+branch 197 never executed
+call   198 never executed
+branch 199 never executed
+branch 200 never executed
+call   201 never executed
+branch 202 never executed
+branch 203 never executed
+call   204 never executed
+branch 205 never executed
+branch 206 never executed
+call   207 returned 100%
+branch 208 taken 0% (fallthrough)
+branch 209 taken 100%
+call   210 never executed
+branch 211 never executed
+branch 212 never executed
+call   213 never executed
+branch 214 never executed
+branch 215 never executed
+call   216 returned 100%
+branch 217 taken 0% (fallthrough)
+branch 218 taken 100%
+call   219 returned 100%
+branch 220 taken 0% (fallthrough)
+branch 221 taken 100%
+call   222 never executed
+branch 223 never executed
+branch 224 never executed
+call   225 never executed
+branch 226 never executed
+branch 227 never executed
+call   228 returned 100%
+branch 229 taken 0% (fallthrough)
+branch 230 taken 100%
+call   231 never executed
+branch 232 never executed
+branch 233 never executed
+call   234 never executed
+branch 235 never executed
+branch 236 never executed
+call   237 never executed
+branch 238 never executed
+branch 239 never executed
+call   240 never executed
+branch 241 never executed
+branch 242 never executed
+call   243 never executed
+branch 244 never executed
+branch 245 never executed
+call   246 returned 100%
+branch 247 taken 0% (fallthrough)
+branch 248 taken 100%
+call   249 returned 100%
+branch 250 taken 0% (fallthrough)
+branch 251 taken 100%
+call   252 never executed
+branch 253 never executed
+branch 254 never executed
+call   255 never executed
+branch 256 never executed
+branch 257 never executed
+call   258 never executed
+branch 259 never executed
+branch 260 never executed
+call   261 never executed
+branch 262 never executed
+branch 263 never executed
+call   264 returned 100%
+branch 265 taken 0% (fallthrough)
+branch 266 taken 100%
+    #####:  102:	  std::__throw_bad_alloc();
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+call   25 never executed
+call   26 never executed
+call   27 never executed
+call   28 never executed
+call   29 never executed
+call   30 never executed
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 never executed
+call   37 never executed
+call   38 never executed
+call   39 never executed
+call   40 never executed
+call   41 never executed
+call   42 never executed
+call   43 never executed
+call   44 never executed
+call   45 never executed
+call   46 never executed
+call   47 never executed
+call   48 never executed
+call   49 never executed
+call   50 never executed
+call   51 never executed
+call   52 never executed
+call   53 never executed
+call   54 never executed
+call   55 never executed
+call   56 never executed
+call   57 never executed
+call   58 never executed
+call   59 never executed
+call   60 never executed
+call   61 never executed
+call   62 never executed
+call   63 never executed
+call   64 never executed
+call   65 never executed
+call   66 never executed
+call   67 never executed
+call   68 never executed
+call   69 never executed
+call   70 never executed
+call   71 never executed
+call   72 never executed
+call   73 never executed
+call   74 never executed
+call   75 never executed
+call   76 never executed
+call   77 never executed
+call   78 never executed
+call   79 never executed
+call   80 never executed
+call   81 never executed
+call   82 never executed
+call   83 never executed
+call   84 never executed
+call   85 never executed
+call   86 never executed
+call   87 never executed
+call   88 never executed
+        -:  103:
+     1152:  104:	return static_cast<_Tp*>(::operator new(__n * sizeof(_Tp)));
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+call   16 returned 100%
+call   17 returned 100%
+call   18 returned 100%
+call   19 returned 100%
+call   20 returned 100%
+call   21 returned 100%
+call   22 returned 100%
+call   23 returned 100%
+call   24 returned 100%
+call   25 returned 100%
+call   26 returned 100%
+call   27 returned 100%
+call   28 returned 100%
+call   29 returned 100%
+call   30 never executed
+call   31 never executed
+call   32 returned 100%
+call   33 returned 100%
+call   34 returned 100%
+call   35 never executed
+call   36 never executed
+call   37 never executed
+call   38 returned 100%
+call   39 returned 100%
+call   40 returned 100%
+call   41 returned 100%
+call   42 returned 100%
+call   43 never executed
+call   44 returned 100%
+call   45 never executed
+call   46 never executed
+call   47 never executed
+call   48 returned 100%
+call   49 returned 100%
+call   50 returned 100%
+call   51 never executed
+call   52 never executed
+call   53 never executed
+call   54 never executed
+call   55 never executed
+call   56 never executed
+call   57 returned 100%
+call   58 never executed
+call   59 never executed
+call   60 never executed
+call   61 never executed
+call   62 returned 100%
+call   63 never executed
+call   64 returned 100%
+call   65 never executed
+call   66 never executed
+call   67 never executed
+call   68 never executed
+call   69 returned 100%
+call   70 never executed
+call   71 never executed
+call   72 returned 100%
+call   73 returned 100%
+call   74 never executed
+call   75 never executed
+call   76 returned 100%
+call   77 never executed
+call   78 never executed
+call   79 never executed
+call   80 never executed
+call   81 never executed
+call   82 returned 100%
+call   83 returned 100%
+call   84 never executed
+call   85 never executed
+call   86 never executed
+call   87 never executed
+call   88 returned 100%
+        -:  105:      }
+        -:  106:
+        -:  107:      // __p is not permitted to be a null pointer.
+        -:  108:      void
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEESaISD_ELNS_12_Lock_policyE2EEE10deallocateEPSG_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeESaIS6_ELNS_12_Lock_policyE2EEE10deallocateEPS9_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKllEEE10deallocateEPS5_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIlE10deallocateEPlm called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_EE10deallocateEPS8_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112regex_traitsIcE10_RegexMaskEE10deallocateEPS4_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIccEE10deallocateEPS2_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPlE10deallocateEPS1_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail6_StateINSt7__cxx1112regex_traitsIcEEEEE10deallocateEPS6_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS7_ELNS_12_Lock_policyE2EEE10deallocateEPSA_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEE10deallocateEPS6_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS6_ELNS_12_Lock_policyE2EEE10deallocateEPS9_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS6_ELNS_12_Lock_policyE2EEE10deallocateEPS9_m called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISH_ELNS_12_Lock_policyE2EEE10deallocateEPSK_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISH_ELNS_12_Lock_policyE2EEE10deallocateEPSK_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISH_ELNS_12_Lock_policyE2EEE10deallocateEPSK_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISH_ELNS_12_Lock_policyE2EEE10deallocateEPSK_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISH_ELNS_12_Lock_policyE2EEE10deallocateEPSK_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISH_ELNS_12_Lock_policyE2EEE10deallocateEPSK_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlbE9_EESaIS9_ELNS_12_Lock_policyE2EEE10deallocateEPSC_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISH_ELNS_12_Lock_policyE2EEE10deallocateEPSK_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUliE8_EESaIS9_ELNS_12_Lock_policyE2EEE10deallocateEPSC_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISH_ELNS_12_Lock_policyE2EEE10deallocateEPSK_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_11XmlReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE10deallocateEPS9_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_13JunitReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE10deallocateEPS9_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEESaISB_ELNS_12_Lock_policyE2EEE10deallocateEPSE_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEESaIS9_ELNS_12_Lock_policyE2EEE10deallocateEPSC_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_15ConsoleReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE10deallocateEPS9_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_15CompactReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE10deallocateEPS9_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS4_ELNS_12_Lock_policyE2EEE10deallocateEPS7_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS4_ELNS_12_Lock_policyE2EEE10deallocateEPS7_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS4_ELNS_12_Lock_policyE2EEE10deallocateEPS7_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIlSt6vectorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS3_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEE10deallocateEPSH_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINS_17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEE10deallocateEPSC_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEE10deallocateEPS7_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISC_EEEESaISF_ELNS_12_Lock_policyE2EEE10deallocateEPSI_m called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlbE7_EESaIS9_ELNS_12_Lock_policyE2EEE10deallocateEPSC_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS4_4HelpC4ERbEUlbE_EESaIS9_ELNS_12_Lock_policyE2EEE10deallocateEPSC_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS4_ELNS_12_Lock_policyE2EEE10deallocateEPS7_m called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS3_ELNS_12_Lock_policyE2EEE10deallocateEPS6_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS4_ELNS_12_Lock_policyE2EEE10deallocateEPS7_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEE10deallocateEPSC_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS5_ELNS_12_Lock_policyE2EEE10deallocateEPS8_m called 11 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISC_ELNS_12_Lock_policyE2EEE10deallocateEPSF_m called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS7_ELNS_12_Lock_policyE2EEE10deallocateEPSA_m called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch9VerbosityEEE10deallocateEPS4_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch8TestCaseEEE10deallocateEPS4_m called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEE10deallocateEPSD_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS7_EEE10deallocateEPSA_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEE10deallocateEPS6_m called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEE10deallocateEPSF_m called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE10deallocateEPS8_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEE10deallocateEPSD_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS4_EEE10deallocateEPS7_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS3_EEE10deallocateEPS6_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeEEE10deallocateEPS7_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEEEE10deallocateEPSE_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEE10deallocateEPSC_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEEEE10deallocateEPSA_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS3_13JunitReporterEE11SectionNodeEESaIS8_EEE10deallocateEPSA_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14AssertionStatsEE10deallocateEPS2_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13SummaryColumnEE10deallocateEPS2_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch12_GLOBAL__N_110ColumnInfoEE10deallocateEPS3_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11SectionInfoEE10deallocateEPS2_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIPKN5Catch8TestCaseEE10deallocateEPS4_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt15__exception_ptr13exception_ptrEE10deallocateEPS2_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch10ISingletonEE10deallocateEPS3_m called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec11FilterMatchEE10deallocateEPS3_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch16TestCaseTracking8ITrackerEE10deallocateEPS4_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14SectionEndInfoEE10deallocateEPS2_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13ScopedMessageEE10deallocateEPS2_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEE10deallocateEPS5_m called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16IReporterFactoryEEE10deallocateEPS4_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPcE10deallocateEPS1_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11MessageInfoEE10deallocateEPS2_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS4_EEE10deallocateEPS7_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch9StringRefEE10deallocateEPS2_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch8TestSpec7PatternEEE10deallocateEPS5_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorImE10deallocateEPmm called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec6FilterEE10deallocateEPS3_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11HelpColumnsEE10deallocateEPS4_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail5TokenEE10deallocateEPS4_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6ColumnEE10deallocateEPS4_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIcE10deallocateEPcm called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestCaseEE10deallocateEPS2_m called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3ArgEE10deallocateEPS4_m called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3OptEE10deallocateEPS4_m called 88 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE10deallocateEPS8_m called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE10deallocateEPS6_m called 1002 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6Column8iteratorEE10deallocateEPS5_m called 0 returned 0% blocks executed 0%
+     1152:  109:      deallocate(pointer __p, size_type)
+     1152:  110:      { ::operator delete(__p); }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 returned 100%
+call   12 returned 100%
+call   13 returned 100%
+call   14 returned 100%
+call   15 returned 100%
+call   16 returned 100%
+call   17 returned 100%
+call   18 returned 100%
+call   19 returned 100%
+call   20 returned 100%
+call   21 returned 100%
+call   22 returned 100%
+call   23 returned 100%
+call   24 returned 100%
+call   25 never executed
+call   26 never executed
+call   27 returned 100%
+call   28 returned 100%
+call   29 never executed
+call   30 never executed
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 returned 100%
+call   36 returned 100%
+call   37 returned 100%
+call   38 returned 100%
+call   39 returned 100%
+call   40 never executed
+call   41 never executed
+call   42 returned 100%
+call   43 returned 100%
+call   44 returned 100%
+call   45 returned 100%
+call   46 returned 100%
+call   47 never executed
+call   48 never executed
+call   49 returned 100%
+call   50 returned 100%
+call   51 never executed
+call   52 never executed
+call   53 never executed
+call   54 never executed
+call   55 never executed
+call   56 never executed
+call   57 never executed
+call   58 never executed
+call   59 never executed
+call   60 never executed
+call   61 never executed
+call   62 returned 100%
+call   63 returned 100%
+call   64 never executed
+call   65 never executed
+call   66 returned 100%
+call   67 never executed
+call   68 never executed
+call   69 never executed
+call   70 never executed
+call   71 returned 100%
+call   72 never executed
+call   73 never executed
+call   74 never executed
+call   75 never executed
+call   76 never executed
+call   77 never executed
+call   78 never executed
+call   79 never executed
+call   80 never executed
+call   81 never executed
+call   82 never executed
+call   83 never executed
+call   84 returned 100%
+call   85 returned 100%
+call   86 returned 100%
+call   87 never executed
+call   88 returned 100%
+call   89 never executed
+        -:  111:
+        -:  112:      size_type
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEESaISD_ELNS_12_Lock_policyE2EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeESaIS6_ELNS_12_Lock_policyE2EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_EE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt4pairIccEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKllEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorINSt7__cxx1112regex_traitsIcE10_RegexMaskEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIlE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIPlE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt4pairIlSt6vectorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS3_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorINSt8__detail6_StateINSt7__cxx1112regex_traitsIcEEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS7_ELNS_12_Lock_policyE2EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt4pairINS_17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS6_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS6_ELNS_12_Lock_policyE2EEE8max_sizeEv called 2 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISH_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISH_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISH_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISH_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISH_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISH_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlbE9_EESaIS9_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISH_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUliE8_EESaIS9_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISH_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_11XmlReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_13JunitReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEESaISB_ELNS_12_Lock_policyE2EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEESaIS9_ELNS_12_Lock_policyE2EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_15ConsoleReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS2_15CompactReporterEE15ReporterFactoryESaIS6_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch9VerbosityEEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS4_ELNS_12_Lock_policyE2EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS4_ELNS_12_Lock_policyE2EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS4_ELNS_12_Lock_policyE2EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISC_EEEESaISF_ELNS_12_Lock_policyE2EEE8max_sizeEv called 2 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_21makeCommandLineParserERNS2_10ConfigDataEEUlbE7_EESaIS9_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS4_4HelpC4ERbEUlbE_EESaIS9_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS4_ELNS_12_Lock_policyE2EEE8max_sizeEv called 4 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch8TestCaseEEE8max_sizeEv called 2 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS3_ELNS_12_Lock_policyE2EEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS4_ELNS_12_Lock_policyE2EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS5_ELNS_12_Lock_policyE2EEE8max_sizeEv called 11 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISC_ELNS_12_Lock_policyE2EEE8max_sizeEv called 3 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS7_ELNS_12_Lock_policyE2EEE8max_sizeEv called 3 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS3_EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch14AssertionStatsEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch13SummaryColumnEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch11SectionInfoEE8max_sizeEv called 3 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch8TestSpec7PatternEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch8TestSpec11FilterMatchEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch9StringRefEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS7_EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEE8max_sizeEv called 2 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorIPN5Catch16TestCaseTracking8ITrackerEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEE8max_sizeEv called 4 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorIPcE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS4_EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS4_EEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch12_GLOBAL__N_110ColumnInfoEE8max_sizeEv called 1 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch8TestSpec6FilterEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIPKN5Catch8TestCaseEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEE8max_sizeEv called 6 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorImE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorINSt15__exception_ptr13exception_ptrEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIPN5Catch10ISingletonEE8max_sizeEv called 3 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch13ScopedMessageEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch14SectionEndInfoEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16IReporterFactoryEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch11MessageInfoEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch5clara6detail3OptEE8max_sizeEv called 146 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch5clara6detail3ArgEE8max_sizeEv called 4 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch5clara6detail11HelpColumnsEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch5clara6detail5TokenEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6ColumnEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIcE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch8TestCaseEE8max_sizeEv called 7 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE8max_sizeEv called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE8max_sizeEv called 1106 returned 100% blocks executed 100%
+function _ZNK9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6Column8iteratorEE8max_sizeEv called 0 returned 0% blocks executed 0%
+     1328:  113:      max_size() const _GLIBCXX_USE_NOEXCEPT
+     1328:  114:      { return size_t(-1) / sizeof(_Tp); }
+        -:  115:
+        -:  116:#if __cplusplus >= 201103L
+        -:  117:      template<typename _Up, typename... _Args>
+        -:  118:        void
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEE9constructISC_JRKS6_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEE9constructIS5_JRNS1_12SectionStatsEEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEEEE9constructISE_JRKSE_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_EE9constructIS8_JS8_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIccEE9constructIS2_JS2_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKllEEE9constructIS4_JRKSt21piecewise_construct_tSt5tupleIJRS3_EESB_IJEEEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIcE9constructIcJcEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112regex_traitsIcE10_RegexMaskEE9constructIS4_JRKS4_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIlE9constructIlJRKlEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEE9constructIS6_JRKSt6localeRNSt15regex_constants18syntax_option_typeEEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIlSt6vectorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS3_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEE9constructISH_JRlRKSG_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEE9constructIS6_JS6_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEE9constructIS6_JRKS6_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail6_StateINSt7__cxx1112regex_traitsIcEEEEE9constructIS6_JS6_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefIdEEE9constructIS5_JRdEEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefIjEEE9constructIS5_JRjEEEvPT_DpOT0_ called 2 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEE9constructISG_JRKSF_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEE9constructISG_JRKSF_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEE9constructISG_JRKSF_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEE9constructISG_JRKSF_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEE9constructISG_JRKSF_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEE9constructISG_JRKSF_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EEE9constructIS8_JRKS7_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEE9constructISG_JRKSF_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EEE9constructIS8_JRKS7_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEE9constructISG_JRKSF_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryEE9constructIS5_JEEEvPT_DpOT0_ called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryEE9constructIS5_JEEEvPT_DpOT0_ called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEE9constructISA_JRKS6_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEE9constructIS8_JRKS6_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryEE9constructIS5_JEEEvPT_DpOT0_ called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryEE9constructIS5_JEEEvPT_DpOT0_ called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch9VerbosityEEE9constructIS3_JRKS3_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec10TagPatternEE9constructIS3_JRNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESC_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec15ExcludedPatternEE9constructIS3_JRSt10shared_ptrINS2_7PatternEEEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec11NamePatternEE9constructIS3_JRNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESC_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEE9constructIS5_JRKS5_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEEE9constructISE_JRSD_EEEvPT_DpOT0_ called 2 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EEE9constructIS8_JRKS7_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EEE9constructIS8_JRKS7_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch16TestCaseTracking14SectionTrackerEE9constructIS3_JRKNS2_15NameAndLocationERNS2_14TrackerContextEPNS2_8ITrackerEEEEvPT_DpOT0_ called 2 returned 100% blocks executed 82%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch16TestCaseTracking14SectionTrackerEE9constructIS3_JNS2_15NameAndLocationERNS2_14TrackerContextEDnEEEvPT_DpOT0_ called 2 returned 100% blocks executed 82%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch8TestCaseEEE9constructIS3_JRKS3_EEEvPT_DpOT0_ called 2 returned 100% blocks executed 78%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEE9constructISC_JS2_IS8_SB_EEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch6ConfigEE9constructIS2_JRNS1_10ConfigDataEEEEvPT_DpOT0_ called 1 returned 100% blocks executed 78%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch10Generators16GeneratorTrackerEE9constructIS3_JRKNS1_16TestCaseTracking15NameAndLocationERNS6_14TrackerContextEPNS6_8ITrackerEEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEE9constructISC_JS2_IS8_SB_EEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE9constructIS7_JRKS7_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail12BoundFlagRefEE9constructIS4_JRbEEEvPT_DpOT0_ called 11 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEE9constructISB_JRSA_EEEvPT_DpOT0_ called 3 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE9constructIS6_JRA13_KcEEEvPT_DpOT0_ called 3 returned 100% blocks executed 69%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEE9constructIS5_JS5_EEEvPT_DpOT0_ called 2 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEE9constructISE_JRS9_RKSD_EEEvPT_DpOT0_ called 4 returned 100% blocks executed 80%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS3_EEE9constructIS6_JS6_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEE9constructISC_JRKSC_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEEEE9constructISA_JRKSA_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeEEE9constructIS7_JRKS7_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14AssertionStatsEE9constructIS2_JRKS2_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13SummaryColumnEE9constructIS2_JS2_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11SectionInfoEE9constructIS2_JRKS2_EEEvPT_DpOT0_ called 2 returned 100% blocks executed 78%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch8TestSpec7PatternEEE9constructIS5_JRKS5_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch9StringRefEE9constructIS2_JS2_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS7_EEE9constructISA_JSA_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch16TestCaseTracking8ITrackerEE9constructIS4_JS4_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIcE9constructIcJRKcEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS4_EEE9constructIS7_JS7_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS4_EEE9constructIS7_JS7_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE9constructIS8_JS8_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE9constructIS6_JS6_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail5TokenEE9constructIS4_JS4_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6Column8iteratorEE9constructIS5_JS5_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec6FilterEE9constructIS3_JRKS3_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPKN5Catch8TestCaseEE9constructIS4_JS4_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEE9constructIS5_JRKS5_EEEvPT_DpOT0_ called 2 returned 100% blocks executed 86%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestCaseEE9constructIS2_JRKS2_EEEvPT_DpOT0_ called 2 returned 100% blocks executed 78%
+function _ZN9__gnu_cxx13new_allocatorImE9constructImJRKmEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt15__exception_ptr13exception_ptrEE9constructIS2_JRKS2_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch10ISingletonEE9constructIS3_JRKS3_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 83%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13ScopedMessageEE9constructIS2_JRKNS1_14MessageBuilderEEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14SectionEndInfoEE9constructIS2_JRKS2_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16IReporterFactoryEEE9constructIS4_JRKS4_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11MessageInfoEE9constructIS2_JRNS1_9StringRefERKNS1_14SourceLineInfoERNS1_9ResultWas6OfTypeEEEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11MessageInfoEE9constructIS2_JRKS2_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3OptEE9constructIS4_JRKS4_EEEvPT_DpOT0_ called 29 returned 100% blocks executed 78%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3ArgEE9constructIS4_JRKS4_EEEvPT_DpOT0_ called 1 returned 100% blocks executed 78%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6ColumnEE9constructIS4_JRKS4_EEEvPT_DpOT0_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE9constructIS6_JRKS6_EEEvPT_DpOT0_ called 52 returned 100% blocks executed 78%
+      141:  119:        construct(_Up* __p, _Args&&... __args)
+      141:  120:	{ ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+call   12 never executed
+branch 13 never executed
+branch 14 never executed
+call   15 never executed
+call   16 never executed
+call   17 never executed
+branch 18 never executed
+branch 19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+branch 23 never executed
+branch 24 never executed
+call   25 never executed
+call   26 never executed
+call   27 never executed
+branch 28 never executed
+branch 29 never executed
+call   30 never executed
+call   31 never executed
+call   32 never executed
+call   33 never executed
+call   34 never executed
+branch 35 never executed
+branch 36 never executed
+call   37 never executed
+branch 38 never executed
+branch 39 never executed
+call   40 never executed
+call   41 never executed
+call   42 never executed
+branch 43 never executed
+branch 44 never executed
+call   45 never executed
+call   46 never executed
+branch 47 never executed
+branch 48 never executed
+call   49 never executed
+call   50 never executed
+branch 51 never executed
+branch 52 never executed
+call   53 never executed
+call   54 never executed
+call   55 never executed
+branch 56 never executed
+branch 57 never executed
+call   58 never executed
+branch 59 never executed
+branch 60 never executed
+call   61 never executed
+call   62 never executed
+call   63 never executed
+call   64 never executed
+branch 65 never executed
+branch 66 never executed
+call   67 never executed
+branch 68 never executed
+branch 69 never executed
+call   70 never executed
+call   71 never executed
+call   72 never executed
+branch 73 never executed
+branch 74 never executed
+call   75 never executed
+call   76 never executed
+branch 77 never executed
+branch 78 never executed
+call   79 never executed
+call   80 never executed
+branch 81 never executed
+branch 82 never executed
+call   83 never executed
+branch 84 never executed
+branch 85 never executed
+call   86 never executed
+call   87 returned 100%
+call   88 returned 100%
+branch 89 taken 100% (fallthrough)
+branch 90 taken 0%
+call   91 returned 100%
+call   92 returned 100%
+call   93 returned 100%
+branch 94 taken 100% (fallthrough)
+branch 95 taken 0%
+call   96 returned 100%
+call   97 returned 100%
+call   98 returned 100%
+branch 99 taken 100% (fallthrough)
+branch 100 taken 0%
+call   101 returned 100%
+call   102 returned 100%
+call   103 returned 100%
+branch 104 taken 100% (fallthrough)
+branch 105 taken 0%
+call   106 returned 100%
+call   107 returned 100%
+call   108 returned 100%
+branch 109 taken 100% (fallthrough)
+branch 110 taken 0%
+call   111 returned 100%
+call   112 returned 100%
+call   113 returned 100%
+branch 114 taken 100% (fallthrough)
+branch 115 taken 0%
+call   116 returned 100%
+call   117 returned 100%
+call   118 returned 100%
+branch 119 taken 100% (fallthrough)
+branch 120 taken 0%
+call   121 returned 100%
+call   122 returned 100%
+call   123 returned 100%
+branch 124 taken 100% (fallthrough)
+branch 125 taken 0%
+call   126 returned 100%
+call   127 returned 100%
+call   128 returned 100%
+branch 129 taken 100% (fallthrough)
+branch 130 taken 0%
+call   131 returned 100%
+call   132 returned 100%
+call   133 returned 100%
+branch 134 taken 100% (fallthrough)
+branch 135 taken 0%
+call   136 returned 100%
+call   137 returned 100%
+call   138 returned 100%
+branch 139 taken 100% (fallthrough)
+branch 140 taken 0%
+call   141 returned 100%
+call   142 returned 100%
+call   143 returned 100%
+branch 144 taken 100% (fallthrough)
+branch 145 taken 0%
+call   146 returned 100%
+call   147 returned 100%
+branch 148 taken 100% (fallthrough)
+branch 149 taken 0%
+call   150 returned 100%
+call   151 returned 100%
+branch 152 taken 100% (fallthrough)
+branch 153 taken 0%
+call   154 returned 100%
+call   155 never executed
+call   156 never executed
+branch 157 never executed
+branch 158 never executed
+call   159 never executed
+branch 160 never executed
+branch 161 never executed
+call   162 never executed
+call   163 never executed
+call   164 never executed
+branch 165 never executed
+branch 166 never executed
+call   167 never executed
+branch 168 never executed
+branch 169 never executed
+call   170 never executed
+call   171 returned 100%
+branch 172 taken 100% (fallthrough)
+branch 173 taken 0%
+call   174 returned 100%
+call   175 returned 100%
+branch 176 taken 100% (fallthrough)
+branch 177 taken 0%
+call   178 returned 100%
+call   179 returned 100%
+call   180 returned 100%
+branch 181 taken 100% (fallthrough)
+branch 182 taken 0%
+call   183 never executed
+call   184 never executed
+call   185 never executed
+branch 186 never executed
+branch 187 never executed
+call   188 never executed
+branch 189 never executed
+branch 190 never executed
+call   191 never executed
+call   192 never executed
+call   193 never executed
+branch 194 never executed
+branch 195 never executed
+call   196 never executed
+branch 197 never executed
+branch 198 never executed
+call   199 never executed
+call   200 never executed
+call   201 never executed
+call   202 never executed
+branch 203 never executed
+branch 204 never executed
+call   205 never executed
+branch 206 never executed
+branch 207 never executed
+call   208 never executed
+call   209 never executed
+call   210 never executed
+branch 211 never executed
+branch 212 never executed
+call   213 returned 100%
+call   214 returned 100%
+branch 215 taken 100% (fallthrough)
+branch 216 taken 0%
+call   217 returned 100%
+call   218 returned 100%
+call   219 returned 100%
+branch 220 taken 100% (fallthrough)
+branch 221 taken 0%
+call   222 returned 100%
+call   223 returned 100%
+call   224 returned 100%
+branch 225 taken 100% (fallthrough)
+branch 226 taken 0%
+call   227 returned 100%
+call   228 returned 100%
+call   229 returned 100%
+call   230 returned 100%
+call   231 returned 100%
+branch 232 taken 100% (fallthrough)
+branch 233 taken 0%
+call   234 returned 100%
+branch 235 taken 100% (fallthrough)
+branch 236 taken 0% (throw)
+call   237 never executed
+call   238 returned 100%
+call   239 returned 100%
+call   240 returned 100%
+call   241 returned 100%
+branch 242 taken 100% (fallthrough)
+branch 243 taken 0%
+call   244 returned 100%
+branch 245 taken 100% (fallthrough)
+branch 246 taken 0% (throw)
+call   247 never executed
+call   248 returned 100%
+call   249 returned 100%
+branch 250 taken 100% (fallthrough)
+branch 251 taken 0%
+call   252 returned 100%
+branch 253 taken 100% (fallthrough)
+branch 254 taken 0% (throw)
+call   255 never executed
+call   256 never executed
+call   257 never executed
+branch 258 never executed
+branch 259 never executed
+call   260 never executed
+call   261 returned 100%
+call   262 returned 100%
+branch 263 taken 100% (fallthrough)
+branch 264 taken 0%
+call   265 returned 100%
+branch 266 taken 100% (fallthrough)
+branch 267 taken 0% (throw)
+call   268 never executed
+call   269 never executed
+call   270 never executed
+call   271 never executed
+call   272 never executed
+branch 273 never executed
+branch 274 never executed
+call   275 never executed
+branch 276 never executed
+branch 277 never executed
+call   278 never executed
+call   279 never executed
+call   280 never executed
+branch 281 never executed
+branch 282 never executed
+call   283 never executed
+call   284 never executed
+call   285 never executed
+branch 286 never executed
+branch 287 never executed
+call   288 never executed
+branch 289 never executed
+branch 290 never executed
+call   291 never executed
+call   292 returned 100%
+call   293 returned 100%
+branch 294 taken 100% (fallthrough)
+branch 295 taken 0%
+call   296 returned 100%
+call   297 returned 100%
+call   298 returned 100%
+branch 299 taken 100% (fallthrough)
+branch 300 taken 0%
+call   301 returned 100%
+call   302 returned 100%
+call   303 returned 100%
+call   304 returned 100%
+branch 305 taken 100% (fallthrough)
+branch 306 taken 0%
+call   307 returned 100%
+branch 308 taken 100% (fallthrough)
+branch 309 taken 0% (throw)
+call   310 returned 100%
+call   311 never executed
+call   312 never executed
+call   313 returned 100%
+call   314 returned 100%
+branch 315 taken 100% (fallthrough)
+branch 316 taken 0%
+call   317 returned 100%
+call   318 returned 100%
+call   319 returned 100%
+branch 320 taken 100% (fallthrough)
+branch 321 taken 0%
+call   322 returned 100%
+branch 323 taken 100% (fallthrough)
+branch 324 taken 0% (throw)
+call   325 never executed
+call   326 never executed
+call   327 never executed
+branch 328 never executed
+branch 329 never executed
+call   330 never executed
+call   331 never executed
+call   332 never executed
+branch 333 never executed
+branch 334 never executed
+call   335 never executed
+call   336 never executed
+call   337 never executed
+branch 338 never executed
+branch 339 never executed
+call   340 never executed
+call   341 never executed
+call   342 never executed
+branch 343 never executed
+branch 344 never executed
+call   345 never executed
+call   346 never executed
+call   347 never executed
+branch 348 never executed
+branch 349 never executed
+call   350 never executed
+branch 351 never executed
+branch 352 never executed
+call   353 never executed
+call   354 never executed
+call   355 never executed
+branch 356 never executed
+branch 357 never executed
+call   358 never executed
+call   359 returned 100%
+call   360 returned 100%
+branch 361 taken 100% (fallthrough)
+branch 362 taken 0%
+call   363 returned 100%
+branch 364 taken 100% (fallthrough)
+branch 365 taken 0% (throw)
+call   366 never executed
+call   367 never executed
+call   368 never executed
+branch 369 never executed
+branch 370 never executed
+call   371 never executed
+call   372 never executed
+call   373 never executed
+branch 374 never executed
+branch 375 never executed
+call   376 never executed
+call   377 never executed
+call   378 never executed
+branch 379 never executed
+branch 380 never executed
+call   381 never executed
+call   382 never executed
+call   383 never executed
+branch 384 never executed
+branch 385 never executed
+call   386 never executed
+call   387 never executed
+branch 388 never executed
+branch 389 never executed
+call   390 never executed
+call   391 never executed
+branch 392 never executed
+branch 393 never executed
+call   394 never executed
+call   395 never executed
+call   396 never executed
+branch 397 never executed
+branch 398 never executed
+call   399 never executed
+call   400 never executed
+call   401 never executed
+branch 402 never executed
+branch 403 never executed
+call   404 never executed
+call   405 never executed
+call   406 never executed
+branch 407 never executed
+branch 408 never executed
+call   409 never executed
+call   410 never executed
+call   411 never executed
+branch 412 never executed
+branch 413 never executed
+call   414 never executed
+call   415 never executed
+call   416 never executed
+branch 417 never executed
+branch 418 never executed
+call   419 never executed
+call   420 never executed
+branch 421 never executed
+branch 422 never executed
+call   423 never executed
+branch 424 never executed
+branch 425 never executed
+call   426 never executed
+call   427 never executed
+call   428 never executed
+branch 429 never executed
+branch 430 never executed
+call   431 returned 100%
+call   432 returned 100%
+branch 433 taken 100% (fallthrough)
+branch 434 taken 0%
+call   435 returned 100%
+call   436 returned 100%
+call   437 returned 100%
+branch 438 taken 100% (fallthrough)
+branch 439 taken 0%
+call   440 returned 100%
+branch 441 taken 100% (fallthrough)
+branch 442 taken 0% (throw)
+call   443 never executed
+call   444 never executed
+call   445 never executed
+branch 446 never executed
+branch 447 never executed
+call   448 never executed
+call   449 never executed
+branch 450 never executed
+branch 451 never executed
+call   452 never executed
+call   453 returned 100%
+call   454 returned 100%
+branch 455 taken 100% (fallthrough)
+branch 456 taken 0%
+call   457 never executed
+call   458 never executed
+branch 459 never executed
+branch 460 never executed
+call   461 never executed
+branch 462 never executed
+branch 463 never executed
+call   464 never executed
+call   465 never executed
+call   466 never executed
+branch 467 never executed
+branch 468 never executed
+call   469 never executed
+branch 470 never executed
+branch 471 never executed
+call   472 never executed
+call   473 never executed
+call   474 never executed
+branch 475 never executed
+branch 476 never executed
+call   477 never executed
+call   478 never executed
+call   479 never executed
+call   480 never executed
+call   481 never executed
+branch 482 never executed
+branch 483 never executed
+call   484 never executed
+call   485 never executed
+call   486 never executed
+branch 487 never executed
+branch 488 never executed
+call   489 never executed
+branch 490 never executed
+branch 491 never executed
+call   492 never executed
+call   493 returned 100%
+call   494 returned 100%
+branch 495 taken 100% (fallthrough)
+branch 496 taken 0%
+call   497 returned 100%
+branch 498 taken 100% (fallthrough)
+branch 499 taken 0% (throw)
+call   500 never executed
+call   501 returned 100%
+call   502 returned 100%
+branch 503 taken 100% (fallthrough)
+branch 504 taken 0%
+call   505 returned 100%
+branch 506 taken 100% (fallthrough)
+branch 507 taken 0% (throw)
+call   508 never executed
+call   509 never executed
+call   510 never executed
+branch 511 never executed
+branch 512 never executed
+call   513 never executed
+branch 514 never executed
+branch 515 never executed
+call   516 never executed
+call   517 returned 100%
+call   518 returned 100%
+branch 519 taken 100% (fallthrough)
+branch 520 taken 0%
+call   521 returned 100%
+branch 522 taken 100% (fallthrough)
+branch 523 taken 0% (throw)
+call   524 never executed
+        -:  121:
+        -:  122:      template<typename _Up>
+        -:  123:        void 
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEE7destroyIS5_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEE7destroyISC_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_12TestRunStatsENS6_INS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEEEE7destroyISE_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEE7destroyISB_EEvPT_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail12BoundFlagRefEE7destroyIS4_EEvPT_ called 11 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch10Generators16GeneratorTrackerEE7destroyIS3_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch6ConfigEE7destroyIS2_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch16TestCaseTracking14SectionTrackerEE7destroyIS3_EEvPT_ called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EEE7destroyIS8_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EEE7destroyIS8_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEEE7destroyISE_EEvPT_ called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec11NamePatternEE7destroyIS3_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec15ExcludedPatternEE7destroyIS3_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec10TagPatternEE7destroyIS3_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryEE7destroyIS5_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryEE7destroyIS5_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEE7destroyIS8_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEE7destroyISA_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryEE7destroyIS5_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryEE7destroyIS5_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEE7destroyISG_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EEE7destroyIS8_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEE7destroyISG_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EEE7destroyIS8_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEE7destroyISG_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEE7destroyISG_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEE7destroyISG_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEE7destroyISG_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEE7destroyISG_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEE7destroyISG_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefIjEEE7destroyIS5_EEvPT_ called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail13BoundValueRefIdEEE7destroyIS5_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEE7destroyIS6_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_EE7destroyIS8_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIccEE7destroyIS2_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKllEEE7destroyIS4_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112regex_traitsIcE10_RegexMaskEE7destroyIS4_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIlE7destroyIlEEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIlSt6vectorINSt7__cxx119sub_matchINS_17__normal_iteratorIPKcNS3_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEE7destroyISH_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail6_StateINSt7__cxx1112regex_traitsIcEEEEE7destroyIS6_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEE7destroyIS6_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch9VerbosityEEE7destroyIS3_EEvPT_ called 1 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIN5Catch8TestCaseEEE7destroyIS3_EEvPT_ called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEE7destroyISC_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEE7destroyIS5_EEvPT_ called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEE7destroyISE_EEvPT_ called 4 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE7destroyIS7_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEE7destroyISC_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS3_EEE7destroyIS6_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_14TestGroupStatsENS6_INS2_13TestCaseStatsENS5_11SectionNodeEEEEEEE7destroyISC_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE4NodeINS2_13TestCaseStatsENS5_11SectionNodeEEEEE7destroyISA_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeEEE7destroyIS7_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14AssertionStatsEE7destroyIS2_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13SummaryColumnEE7destroyIS2_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch8TestSpec7PatternEEE7destroyIS5_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch9StringRefEE7destroyIS2_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS7_EEE7destroyISA_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS4_EEE7destroyIS7_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS4_EEE7destroyIS7_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEE7destroyIS8_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6Column8iteratorEE7destroyIS5_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11SectionInfoEE7destroyIS2_EEvPT_ called 2 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestSpec6FilterEE7destroyIS3_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPKN5Catch8TestCaseEE7destroyIS4_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEE7destroyIS5_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch8TestCaseEE7destroyIS2_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt15__exception_ptr13exception_ptrEE7destroyIS2_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch10ISingletonEE7destroyIS3_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch13ScopedMessageEE7destroyIS2_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch14SectionEndInfoEE7destroyIS2_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorISt10shared_ptrIN5Catch16IReporterFactoryEEE7destroyIS4_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIcE7destroyIcEEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch11MessageInfoEE7destroyIS2_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3OptEE7destroyIS4_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail3ArgEE7destroyIS4_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara6detail5TokenEE7destroyIS4_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIN5Catch5clara8TextFlow6ColumnEE7destroyIS4_EEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE7destroyIS6_EEvPT_ called 3 returned 100% blocks executed 100%
+function _ZN9__gnu_cxx13new_allocatorImE7destroyImEEvPT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx13new_allocatorIPN5Catch16TestCaseTracking8ITrackerEE7destroyIS4_EEvPT_ called 0 returned 0% blocks executed 0%
+       54:  124:        destroy(_Up* __p) { __p->~_Up(); }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 returned 100%
+call    4 returned 100%
+call    5 never executed
+call    6 returned 100%
+call    7 returned 100%
+call    8 returned 100%
+call    9 returned 100%
+call   10 returned 100%
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 returned 100%
+call   15 returned 100%
+call   16 never executed
+call   17 never executed
+call   18 returned 100%
+call   19 returned 100%
+call   20 returned 100%
+call   21 returned 100%
+call   22 returned 100%
+call   23 returned 100%
+call   24 returned 100%
+call   25 returned 100%
+call   26 returned 100%
+call   27 returned 100%
+call   28 returned 100%
+call   29 returned 100%
+call   30 returned 100%
+call   31 returned 100%
+call   32 never executed
+call   33 never executed
+call   34 never executed
+call   35 never executed
+call   36 returned 100%
+call   37 never executed
+call   38 returned 100%
+call   39 never executed
+call   40 never executed
+call   41 never executed
+call   42 never executed
+call   43 never executed
+call   44 never executed
+call   45 never executed
+call   46 never executed
+call   47 never executed
+call   48 never executed
+call   49 never executed
+call   50 never executed
+call   51 never executed
+call   52 never executed
+call   53 returned 100%
+call   54 never executed
+call   55 never executed
+call   56 never executed
+call   57 never executed
+call   58 never executed
+call   59 never executed
+call   60 never executed
+call   61 never executed
+call   62 never executed
+call   63 never executed
+call   64 never executed
+call   65 never executed
+call   66 returned 100%
+        -:  125:#else
+        -:  126:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  127:      // 402. wrong new expression in [some_] allocator::construct
+        -:  128:      void 
+        -:  129:      construct(pointer __p, const _Tp& __val) 
+        -:  130:      { ::new((void *)__p) _Tp(__val); }
+        -:  131:
+        -:  132:      void 
+        -:  133:      destroy(pointer __p) { __p->~_Tp(); }
+        -:  134:#endif
+        -:  135:    };
+        -:  136:
+        -:  137:  template<typename _Tp>
+        -:  138:    inline bool
+        -:  139:    operator==(const new_allocator<_Tp>&, const new_allocator<_Tp>&)
+        -:  140:    { return true; }
+        -:  141:  
+        -:  142:  template<typename _Tp>
+        -:  143:    inline bool
+        -:  144:    operator!=(const new_allocator<_Tp>&, const new_allocator<_Tp>&)
+        -:  145:    { return false; }
+        -:  146:
+        -:  147:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  148:} // namespace
+        -:  149:
+        -:  150:#endif

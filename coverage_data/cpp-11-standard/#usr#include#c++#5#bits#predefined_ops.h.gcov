@@ -1,0 +1,411 @@
+        -:    0:Source:/usr/include/c++/5/bits/predefined_ops.h
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// Default predicates for internal use -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2013-2015 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file predefined_ops.h
+        -:   26: *  This is an internal header file, included by other library headers.
+        -:   27: *  You should not attempt to use it directly.
+        -:   28: */
+        -:   29:
+        -:   30:#ifndef _GLIBCXX_PREDEFINED_OPS_H
+        -:   31:#define _GLIBCXX_PREDEFINED_OPS_H	1
+        -:   32:
+        -:   33:namespace __gnu_cxx
+        -:   34:{
+        -:   35:namespace __ops
+        -:   36:{
+        -:   37:  struct _Iter_less_iter
+        -:   38:  {
+        -:   39:    template<typename _Iterator1, typename _Iterator2>
+        -:   40:      _GLIBCXX14_CONSTEXPR
+        -:   41:      bool
+function _ZNK9__gnu_cxx5__ops15_Iter_less_iterclINS_17__normal_iteratorIPcSt6vectorIcSaIcEEEES8_EEbT_T0_ called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx5__ops15_Iter_less_iterclINS_17__normal_iteratorIPN5Catch8TestCaseESt6vectorIS5_SaIS5_EEEESA_EEbT_T0_ called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx5__ops15_Iter_less_iterclINS_17__normal_iteratorIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS9_SaIS9_EEEESE_EEbT_T0_ called 0 returned 0% blocks executed 0%
+    #####:   42:      operator()(_Iterator1 __it1, _Iterator2 __it2) const
+    #####:   43:      { return *__it1 < *__it2; }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+        -:   44:  };
+        -:   45:  _GLIBCXX14_CONSTEXPR
+        -:   46:  inline _Iter_less_iter
+function _ZN9__gnu_cxx5__ops16__iter_less_iterEv called 2 returned 100% blocks executed 100%
+        2:   47:  __iter_less_iter()
+        2:   48:  { return _Iter_less_iter(); }
+        -:   49:
+        -:   50:  struct _Iter_less_val
+        -:   51:  {
+        -:   52:    template<typename _Iterator, typename _Value>
+        -:   53:      bool
+function _ZNK9__gnu_cxx5__ops14_Iter_less_valclINS_17__normal_iteratorIPcSt6vectorIcSaIcEEEEcEEbT_RT0_ called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx5__ops14_Iter_less_valclINS_17__normal_iteratorIPKcSt6vectorIcSaIcEEEES4_EEbT_RT0_ called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx5__ops14_Iter_less_valclINS_17__normal_iteratorIPN5Catch8TestCaseESt6vectorIS5_SaIS5_EEEES5_EEbT_RT0_ called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx5__ops14_Iter_less_valclINS_17__normal_iteratorIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS9_SaIS9_EEEES9_EEbT_RT0_ called 0 returned 0% blocks executed 0%
+    #####:   54:      operator()(_Iterator __it, _Value& __val) const
+    #####:   55:      { return *__it < __val; }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+        -:   56:    };
+        -:   57:
+        -:   58:  inline _Iter_less_val
+function _ZN9__gnu_cxx5__ops15__iter_less_valEv called 0 returned 0% blocks executed 0%
+    #####:   59:  __iter_less_val()
+    #####:   60:  { return _Iter_less_val(); }
+        -:   61:
+        -:   62:  inline _Iter_less_val
+function _ZN9__gnu_cxx5__ops15__iter_comp_valENS0_15_Iter_less_iterE called 0 returned 0% blocks executed 0%
+    #####:   63:  __iter_comp_val(_Iter_less_iter)
+    #####:   64:  { return _Iter_less_val(); }
+        -:   65:
+        -:   66:  struct _Val_less_iter
+        -:   67:  {
+        -:   68:    template<typename _Value, typename _Iterator>
+        -:   69:      bool
+function _ZNK9__gnu_cxx5__ops14_Val_less_iterclIcNS_17__normal_iteratorIPcSt6vectorIcSaIcEEEEEEbRT_T0_ called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx5__ops14_Val_less_iterclIN5Catch8TestCaseENS_17__normal_iteratorIPS4_St6vectorIS4_SaIS4_EEEEEEbRT_T0_ called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx5__ops14_Val_less_iterclINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEENS_17__normal_iteratorIPS8_St6vectorIS8_SaIS8_EEEEEEbRT_T0_ called 0 returned 0% blocks executed 0%
+    #####:   70:      operator()(_Value& __val, _Iterator __it) const
+    #####:   71:      { return __val < *__it; }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+        -:   72:    };
+        -:   73:
+        -:   74:  inline _Val_less_iter
+        -:   75:  __val_less_iter()
+        -:   76:  { return _Val_less_iter(); }
+        -:   77:
+        -:   78:  inline _Val_less_iter
+function _ZN9__gnu_cxx5__ops15__val_comp_iterENS0_15_Iter_less_iterE called 0 returned 0% blocks executed 0%
+    #####:   79:  __val_comp_iter(_Iter_less_iter)
+    #####:   80:  { return _Val_less_iter(); }
+        -:   81:
+        -:   82:  struct _Iter_equal_to_iter
+        -:   83:  {
+        -:   84:    template<typename _Iterator1, typename _Iterator2>
+        -:   85:      bool
+function _ZNK9__gnu_cxx5__ops19_Iter_equal_to_iterclINS_17__normal_iteratorIPcSt6vectorIcSaIcEEEES8_EEbT_T0_ called 0 returned 0% blocks executed 0%
+function _ZNK9__gnu_cxx5__ops19_Iter_equal_to_iterclINS_17__normal_iteratorIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS9_SaIS9_EEEESE_EEbT_T0_ called 0 returned 0% blocks executed 0%
+    #####:   86:      operator()(_Iterator1 __it1, _Iterator2 __it2) const
+    #####:   87:      { return *__it1 == *__it2; }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+        -:   88:    };
+        -:   89:
+        -:   90:  inline _Iter_equal_to_iter
+function _ZN9__gnu_cxx5__ops20__iter_equal_to_iterEv called 2 returned 100% blocks executed 100%
+        2:   91:  __iter_equal_to_iter()
+        2:   92:  { return _Iter_equal_to_iter(); }
+        -:   93:
+        -:   94:  struct _Iter_equal_to_val
+        -:   95:  {
+        -:   96:    template<typename _Iterator, typename _Value>
+        -:   97:      bool
+        -:   98:      operator()(_Iterator __it, _Value& __val) const
+        -:   99:      { return *__it == __val; }
+        -:  100:    };
+        -:  101:
+        -:  102:  inline _Iter_equal_to_val
+        -:  103:  __iter_equal_to_val()
+        -:  104:  { return _Iter_equal_to_val(); }
+        -:  105:
+        -:  106:  inline _Iter_equal_to_val
+        -:  107:  __iter_comp_val(_Iter_equal_to_iter)
+        -:  108:  { return _Iter_equal_to_val(); }
+        -:  109:
+        -:  110:  template<typename _Compare>
+        -:  111:    struct _Iter_comp_iter
+        -:  112:    {
+        -:  113:      _Compare _M_comp;
+        -:  114:      _GLIBCXX14_CONSTEXPR
+        -:  115:      _Iter_comp_iter(_Compare __comp)
+        -:  116:	: _M_comp(__comp)
+        -:  117:      { }
+        -:  118:
+        -:  119:      template<typename _Iterator1, typename _Iterator2>
+        -:  120:        _GLIBCXX14_CONSTEXPR
+        -:  121:        bool
+        -:  122:        operator()(_Iterator1 __it1, _Iterator2 __it2)
+        -:  123:        { return bool(_M_comp(*__it1, *__it2)); }
+        -:  124:    };
+        -:  125:
+        -:  126:  template<typename _Compare>
+        -:  127:    _GLIBCXX14_CONSTEXPR
+        -:  128:    inline _Iter_comp_iter<_Compare>
+        -:  129:    __iter_comp_iter(_Compare __comp)
+        -:  130:    { return _Iter_comp_iter<_Compare>(__comp); }
+        -:  131:
+        -:  132:  template<typename _Compare>
+        -:  133:    struct _Iter_comp_val
+        -:  134:    {
+        -:  135:      _Compare _M_comp;
+        -:  136:
+        -:  137:      _Iter_comp_val(_Compare __comp)
+        -:  138:	: _M_comp(__comp)
+        -:  139:      { }
+        -:  140:
+        -:  141:      template<typename _Iterator, typename _Value>
+        -:  142:	bool
+        -:  143:	operator()(_Iterator __it, _Value& __val)
+        -:  144:	{ return bool(_M_comp(*__it, __val)); }
+        -:  145:    };
+        -:  146:
+        -:  147:  template<typename _Compare>
+        -:  148:   inline _Iter_comp_val<_Compare>
+        -:  149:    __iter_comp_val(_Compare __comp)
+        -:  150:    { return _Iter_comp_val<_Compare>(__comp); }
+        -:  151:
+        -:  152:  template<typename _Compare>
+        -:  153:    inline _Iter_comp_val<_Compare>
+        -:  154:    __iter_comp_val(_Iter_comp_iter<_Compare> __comp)
+        -:  155:    { return _Iter_comp_val<_Compare>(__comp._M_comp); }
+        -:  156:
+        -:  157:  template<typename _Compare>
+        -:  158:    struct _Val_comp_iter
+        -:  159:    {
+        -:  160:      _Compare _M_comp;
+        -:  161:
+        -:  162:      _Val_comp_iter(_Compare __comp)
+        -:  163:	: _M_comp(__comp)
+        -:  164:      { }
+        -:  165:
+        -:  166:      template<typename _Value, typename _Iterator>
+        -:  167:	bool
+        -:  168:	operator()(_Value& __val, _Iterator __it)
+        -:  169:	{ return bool(_M_comp(__val, *__it)); }
+        -:  170:    };
+        -:  171:
+        -:  172:  template<typename _Compare>
+        -:  173:    inline _Val_comp_iter<_Compare>
+        -:  174:    __val_comp_iter(_Compare __comp)
+        -:  175:    { return _Val_comp_iter<_Compare>(__comp); }
+        -:  176:
+        -:  177:  template<typename _Compare>
+        -:  178:    inline _Val_comp_iter<_Compare>
+        -:  179:    __val_comp_iter(_Iter_comp_iter<_Compare> __comp)
+        -:  180:    { return _Val_comp_iter<_Compare>(__comp._M_comp); }
+        -:  181:
+        -:  182:  template<typename _Value>
+        -:  183:    struct _Iter_equals_val
+        -:  184:    {
+        -:  185:      _Value& _M_value;
+        -:  186:
+function _ZN9__gnu_cxx5__ops16_Iter_equals_valIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2ERS8_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops16_Iter_equals_valIKN5Catch11MessageInfoEEC2ERS4_ called 0 returned 0% blocks executed 0%
+    #####:  187:      _Iter_equals_val(_Value& __value)
+    #####:  188:	: _M_value(__value)
+    #####:  189:      { }
+        -:  190:
+        -:  191:      template<typename _Iterator>
+        -:  192:	bool
+function _ZN9__gnu_cxx5__ops16_Iter_equals_valIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEclINS_17__normal_iteratorIPS8_St6vectorIS7_SaIS7_EEEEEEbT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops16_Iter_equals_valIKN5Catch11MessageInfoEEclINS_17__normal_iteratorIPS3_St6vectorIS3_SaIS3_EEEEEEbT_ called 0 returned 0% blocks executed 0%
+    #####:  193:	operator()(_Iterator __it)
+    #####:  194:	{ return *__it == _M_value; }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  195:    };
+        -:  196:
+        -:  197:  template<typename _Value>
+        -:  198:    inline _Iter_equals_val<_Value>
+function _ZN9__gnu_cxx5__ops17__iter_equals_valIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEENS0_16_Iter_equals_valIT_EERSA_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops17__iter_equals_valIKN5Catch11MessageInfoEEENS0_16_Iter_equals_valIT_EERS6_ called 0 returned 0% blocks executed 0%
+    #####:  199:    __iter_equals_val(_Value& __val)
+    #####:  200:    { return _Iter_equals_val<_Value>(__val); }
+call    0 never executed
+call    1 never executed
+        -:  201:
+        -:  202:  template<typename _Iterator1>
+        -:  203:    struct _Iter_equals_iter
+        -:  204:    {
+        -:  205:      typename std::iterator_traits<_Iterator1>::reference _M_ref;
+        -:  206:
+        -:  207:      _Iter_equals_iter(_Iterator1 __it1)
+        -:  208:	: _M_ref(*__it1)
+        -:  209:      { }
+        -:  210:
+        -:  211:      template<typename _Iterator2>
+        -:  212:	bool
+        -:  213:	operator()(_Iterator2 __it2)
+        -:  214:	{ return *__it2 == _M_ref; }
+        -:  215:    };
+        -:  216:
+        -:  217:  template<typename _Iterator>
+        -:  218:    inline _Iter_equals_iter<_Iterator>
+        -:  219:    __iter_comp_iter(_Iter_equal_to_iter, _Iterator __it)
+        -:  220:    { return _Iter_equals_iter<_Iterator>(__it); }
+        -:  221:
+        -:  222:  template<typename _Predicate>
+function _ZN9__gnu_cxx5__ops10_Iter_predIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE13BySectionInfoEEC2ERKS7_ called 0 returned 0% blocks executed 0%
+    #####:  223:    struct _Iter_pred
+call    0 never executed
+        -:  224:    {
+        -:  225:      _Predicate _M_pred;
+        -:  226:
+function _ZN9__gnu_cxx5__ops10_Iter_predIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE13BySectionInfoEEC2ES6_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops10_Iter_predIZNK5Catch8TestSpec7matchesERKNS2_12TestCaseInfoEEUlRKNS3_6FilterEE_EC2ESA_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops10_Iter_predIZNK5Catch8TestSpec6Filter7matchesERKNS2_12TestCaseInfoEEUlRKSt10shared_ptrINS3_7PatternEEE_EC2ESD_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops10_Iter_predIZN5Catch16TestCaseTracking11TrackerBase5closeEvEUlRKSt10shared_ptrINS3_8ITrackerEEE_EC2ESA_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops10_Iter_predIZN5Catch12_GLOBAL__N_111fileNameTagERKSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISA_EEEUlRKSA_E_EC2ESH_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops10_Iter_predIZN5Catch16TestCaseTracking11TrackerBase9findChildERKNS3_15NameAndLocationEEUlRKSt10shared_ptrINS3_8ITrackerEEE_EC2ESD_ called 2 returned 100% blocks executed 100%
+        2:  227:      _Iter_pred(_Predicate __pred)
+        2:  228:	: _M_pred(__pred)
+call    0 never executed
+        2:  229:      { }
+        -:  230:
+        -:  231:      template<typename _Iterator>
+        -:  232:	bool
+function _ZN9__gnu_cxx5__ops10_Iter_predIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE13BySectionInfoEEclINS_17__normal_iteratorIPSt10shared_ptrINS5_11SectionNodeEESt6vectorISC_SaISC_EEEEEEbT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops10_Iter_predIZNK5Catch8TestSpec7matchesERKNS2_12TestCaseInfoEEUlRKNS3_6FilterEE_EclINS_17__normal_iteratorIPS8_St6vectorIS7_SaIS7_EEEEEEbT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops10_Iter_predIZN5Catch12_GLOBAL__N_111fileNameTagERKSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISA_EEEUlRKSA_E_EclINS_17__normal_iteratorIPSF_SC_EEEEbT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops10_Iter_predIZN5Catch16TestCaseTracking11TrackerBase9findChildERKNS3_15NameAndLocationEEUlRKSt10shared_ptrINS3_8ITrackerEEE_EclINS_17__normal_iteratorIPSA_St6vectorISA_SaISA_EEEEEEbT_ called 0 returned 0% blocks executed 0%
+    #####:  233:	operator()(_Iterator __it)
+    #####:  234:	{ return bool(_M_pred(*__it)); }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+        -:  235:    };
+        -:  236:
+        -:  237:  template<typename _Predicate>
+        -:  238:    inline _Iter_pred<_Predicate>
+function _ZN9__gnu_cxx5__ops11__pred_iterIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE13BySectionInfoEEENS0_10_Iter_predIT_EES8_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops11__pred_iterIZNK5Catch8TestSpec7matchesERKNS2_12TestCaseInfoEEUlRKNS3_6FilterEE_EENS0_10_Iter_predIT_EESC_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops11__pred_iterIZNK5Catch8TestSpec6Filter7matchesERKNS2_12TestCaseInfoEEUlRKSt10shared_ptrINS3_7PatternEEE_EENS0_10_Iter_predIT_EESF_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops11__pred_iterIZN5Catch16TestCaseTracking11TrackerBase5closeEvEUlRKSt10shared_ptrINS3_8ITrackerEEE_EENS0_10_Iter_predIT_EESC_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops11__pred_iterIZN5Catch12_GLOBAL__N_111fileNameTagERKSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISA_EEEUlRKSA_E_EENS0_10_Iter_predIT_EESJ_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops11__pred_iterIZN5Catch16TestCaseTracking11TrackerBase9findChildERKNS3_15NameAndLocationEEUlRKSt10shared_ptrINS3_8ITrackerEEE_EENS0_10_Iter_predIT_EESF_ called 2 returned 100% blocks executed 100%
+        2:  239:    __pred_iter(_Predicate __pred)
+        2:  240:    { return _Iter_pred<_Predicate>(__pred); }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 returned 100%
+        -:  241:
+        -:  242:  template<typename _Compare, typename _Value>
+        -:  243:    struct _Iter_comp_to_val
+        -:  244:    {
+        -:  245:      _Compare _M_comp;
+        -:  246:      _Value& _M_value;
+        -:  247:
+        -:  248:      _Iter_comp_to_val(_Compare __comp, _Value& __value)
+        -:  249:	: _M_comp(__comp), _M_value(__value)
+        -:  250:      { }
+        -:  251:
+        -:  252:      template<typename _Iterator>
+        -:  253:	bool
+        -:  254:	operator()(_Iterator __it)
+        -:  255:	{ return bool(_M_comp(*__it, _M_value)); }
+        -:  256:    };
+        -:  257:
+        -:  258:  template<typename _Compare, typename _Value>
+        -:  259:    _Iter_comp_to_val<_Compare, _Value>
+        -:  260:    __iter_comp_val(_Compare __comp, _Value &__val)
+        -:  261:    { return _Iter_comp_to_val<_Compare, _Value>(__comp, __val); }
+        -:  262:
+        -:  263:  template<typename _Compare, typename _Iterator1>
+        -:  264:    struct _Iter_comp_to_iter
+        -:  265:    {
+        -:  266:      _Compare _M_comp;
+        -:  267:      typename std::iterator_traits<_Iterator1>::reference _M_ref;
+        -:  268:
+        -:  269:      _Iter_comp_to_iter(_Compare __comp, _Iterator1 __it1)
+        -:  270:	: _M_comp(__comp), _M_ref(*__it1)
+        -:  271:      { }
+        -:  272:
+        -:  273:      template<typename _Iterator2>
+        -:  274:	bool
+        -:  275:	operator()(_Iterator2 __it2)
+        -:  276:	{ return bool(_M_comp(*__it2, _M_ref)); }
+        -:  277:    };
+        -:  278:
+        -:  279:  template<typename _Compare, typename _Iterator>
+        -:  280:    inline _Iter_comp_to_iter<_Compare, _Iterator>
+        -:  281:    __iter_comp_iter(_Iter_comp_iter<_Compare> __comp, _Iterator __it)
+        -:  282:    { return _Iter_comp_to_iter<_Compare, _Iterator>(__comp._M_comp, __it); }
+        -:  283:
+        -:  284:  template<typename _Predicate>
+        -:  285:    struct _Iter_negate
+        -:  286:    {
+        -:  287:      _Predicate _M_pred;
+        -:  288:
+function _ZN9__gnu_cxx5__ops12_Iter_negateIZNK5Catch8TestSpec6Filter7matchesERKNS2_12TestCaseInfoEEUlRKSt10shared_ptrINS3_7PatternEEE_EC2ESD_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops12_Iter_negateIZN5Catch16TestCaseTracking11TrackerBase5closeEvEUlRKSt10shared_ptrINS3_8ITrackerEEE_EC2ESA_ called 0 returned 0% blocks executed 0%
+    #####:  289:      _Iter_negate(_Predicate __pred)
+    #####:  290:	: _M_pred(__pred)
+    #####:  291:      { }
+        -:  292:
+        -:  293:      template<typename _Iterator>
+        -:  294:	bool
+function _ZN9__gnu_cxx5__ops12_Iter_negateIZNK5Catch8TestSpec6Filter7matchesERKNS2_12TestCaseInfoEEUlRKSt10shared_ptrINS3_7PatternEEE_EclINS_17__normal_iteratorIPSB_St6vectorISA_SaISA_EEEEEEbT_ called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops12_Iter_negateIZN5Catch16TestCaseTracking11TrackerBase5closeEvEUlRKSt10shared_ptrINS3_8ITrackerEEE_EclINS_17__normal_iteratorIPS7_St6vectorIS7_SaIS7_EEEEEEbT_ called 0 returned 0% blocks executed 0%
+    #####:  295:	operator()(_Iterator __it)
+    #####:  296:	{ return !bool(_M_pred(*__it)); }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  297:    };
+        -:  298:
+        -:  299:  template<typename _Predicate>
+        -:  300:    inline _Iter_negate<_Predicate>
+function _ZN9__gnu_cxx5__ops8__negateIZNK5Catch8TestSpec6Filter7matchesERKNS2_12TestCaseInfoEEUlRKSt10shared_ptrINS3_7PatternEEE_EENS0_12_Iter_negateIT_EENS0_10_Iter_predISF_EE called 0 returned 0% blocks executed 0%
+function _ZN9__gnu_cxx5__ops8__negateIZN5Catch16TestCaseTracking11TrackerBase5closeEvEUlRKSt10shared_ptrINS3_8ITrackerEEE_EENS0_12_Iter_negateIT_EENS0_10_Iter_predISC_EE called 0 returned 0% blocks executed 0%
+    #####:  301:    __negate(_Iter_pred<_Predicate> __pred)
+    #####:  302:    { return _Iter_negate<_Predicate>(__pred._M_pred); }
+call    0 never executed
+call    1 never executed
+        -:  303:
+        -:  304:} // namespace __ops
+        -:  305:} // namespace __gnu_cxx
+        -:  306:
+        -:  307:#endif

@@ -1,0 +1,351 @@
+        -:    0:Source:/usr/include/c++/5/bits/stl_stack.h
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// Stack implementation -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/*
+        -:   26: *
+        -:   27: * Copyright (c) 1994
+        -:   28: * Hewlett-Packard Company
+        -:   29: *
+        -:   30: * Permission to use, copy, modify, distribute and sell this software
+        -:   31: * and its documentation for any purpose is hereby granted without fee,
+        -:   32: * provided that the above copyright notice appear in all copies and
+        -:   33: * that both that copyright notice and this permission notice appear
+        -:   34: * in supporting documentation.  Hewlett-Packard Company makes no
+        -:   35: * representations about the suitability of this software for any
+        -:   36: * purpose.  It is provided "as is" without express or implied warranty.
+        -:   37: *
+        -:   38: *
+        -:   39: * Copyright (c) 1996,1997
+        -:   40: * Silicon Graphics Computer Systems, Inc.
+        -:   41: *
+        -:   42: * Permission to use, copy, modify, distribute and sell this software
+        -:   43: * and its documentation for any purpose is hereby granted without fee,
+        -:   44: * provided that the above copyright notice appear in all copies and
+        -:   45: * that both that copyright notice and this permission notice appear
+        -:   46: * in supporting documentation.  Silicon Graphics makes no
+        -:   47: * representations about the suitability of this software for any
+        -:   48: * purpose.  It is provided "as is" without express or implied warranty.
+        -:   49: */
+        -:   50:
+        -:   51:/** @file bits/stl_stack.h
+        -:   52: *  This is an internal header file, included by other library headers.
+        -:   53: *  Do not attempt to use it directly. @headername{stack}
+        -:   54: */
+        -:   55:
+        -:   56:#ifndef _STL_STACK_H
+        -:   57:#define _STL_STACK_H 1
+        -:   58:
+        -:   59:#include <bits/concept_check.h>
+        -:   60:#include <debug/debug.h>
+        -:   61:#if __cplusplus >= 201103L
+        -:   62:# include <bits/uses_allocator.h>
+        -:   63:#endif
+        -:   64:
+        -:   65:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   66:{
+        -:   67:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   68:
+        -:   69:  /**
+        -:   70:   *  @brief  A standard container giving FILO behavior.
+        -:   71:   *
+        -:   72:   *  @ingroup sequences
+        -:   73:   *
+        -:   74:   *  @tparam _Tp  Type of element.
+        -:   75:   *  @tparam _Sequence  Type of underlying sequence, defaults to deque<_Tp>.
+        -:   76:   *
+        -:   77:   *  Meets many of the requirements of a
+        -:   78:   *  <a href="tables.html#65">container</a>,
+        -:   79:   *  but does not define anything to do with iterators.  Very few of the
+        -:   80:   *  other standard container interfaces are defined.
+        -:   81:   *
+        -:   82:   *  This is not a true container, but an @e adaptor.  It holds
+        -:   83:   *  another container, and provides a wrapper interface to that
+        -:   84:   *  container.  The wrapper is what enforces strict
+        -:   85:   *  first-in-last-out %stack behavior.
+        -:   86:   *
+        -:   87:   *  The second template parameter defines the type of the underlying
+        -:   88:   *  sequence/container.  It defaults to std::deque, but it can be
+        -:   89:   *  any type that supports @c back, @c push_back, and @c pop_front,
+        -:   90:   *  such as std::list, std::vector, or an appropriate user-defined
+        -:   91:   *  type.
+        -:   92:   *
+        -:   93:   *  Members not found in @a normal containers are @c container_type,
+        -:   94:   *  which is a typedef for the second Sequence parameter, and @c
+        -:   95:   *  push, @c pop, and @c top, which are standard %stack/FILO
+        -:   96:   *  operations.
+        -:   97:  */
+        -:   98:  template<typename _Tp, typename _Sequence = deque<_Tp> >
+function _ZNSt5stackIlSt5dequeIlSaIlEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZNSt5stackINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEESt5dequeIS5_SaIS5_EEED2Ev called 0 returned 0% blocks executed 0%
+function _ZNSt5stackIcSt5dequeIcSaIcEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:   99:    class stack
+call    0 never executed
+call    1 never executed
+call    2 never executed
+        -:  100:    {
+        -:  101:      // concept requirements
+        -:  102:      typedef typename _Sequence::value_type _Sequence_value_type;
+        -:  103:      __glibcxx_class_requires(_Tp, _SGIAssignableConcept)
+        -:  104:      __glibcxx_class_requires(_Sequence, _BackInsertionSequenceConcept)
+        -:  105:      __glibcxx_class_requires2(_Tp, _Sequence_value_type, _SameTypeConcept)
+        -:  106:
+        -:  107:      template<typename _Tp1, typename _Seq1>
+        -:  108:        friend bool
+        -:  109:        operator==(const stack<_Tp1, _Seq1>&, const stack<_Tp1, _Seq1>&);
+        -:  110:
+        -:  111:      template<typename _Tp1, typename _Seq1>
+        -:  112:        friend bool
+        -:  113:        operator<(const stack<_Tp1, _Seq1>&, const stack<_Tp1, _Seq1>&);
+        -:  114:
+        -:  115:    public:
+        -:  116:      typedef typename _Sequence::value_type                value_type;
+        -:  117:      typedef typename _Sequence::reference                 reference;
+        -:  118:      typedef typename _Sequence::const_reference           const_reference;
+        -:  119:      typedef typename _Sequence::size_type                 size_type;
+        -:  120:      typedef          _Sequence                            container_type;
+        -:  121:
+        -:  122:    protected:
+        -:  123:      //  See queue::c for notes on this name.
+        -:  124:      _Sequence c;
+        -:  125:
+        -:  126:    public:
+        -:  127:      // XXX removed old def ctor, added def arg to this one to match 14882
+        -:  128:      /**
+        -:  129:       *  @brief  Default constructor creates no elements.
+        -:  130:       */
+        -:  131:#if __cplusplus < 201103L
+        -:  132:      explicit
+        -:  133:      stack(const _Sequence& __c = _Sequence())
+        -:  134:      : c(__c) { }
+        -:  135:#else
+        -:  136:      explicit
+        -:  137:      stack(const _Sequence& __c)
+        -:  138:      : c(__c) { }
+        -:  139:
+        -:  140:      explicit
+function _ZNSt5stackIlSt5dequeIlSaIlEEEC2EOS2_ called 0 returned 0% blocks executed 0%
+function _ZNSt5stackINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEESt5dequeIS5_SaIS5_EEEC2EOS8_ called 0 returned 0% blocks executed 0%
+function _ZNSt5stackIcSt5dequeIcSaIcEEEC2EOS2_ called 0 returned 0% blocks executed 0%
+    #####:  141:      stack(_Sequence&& __c = _Sequence())
+    #####:  142:      : c(std::move(__c)) { }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+        -:  143:#endif
+        -:  144:
+        -:  145:      /**
+        -:  146:       *  Returns true if the %stack is empty.
+        -:  147:       */
+        -:  148:      bool
+function _ZNKSt5stackIlSt5dequeIlSaIlEEE5emptyEv called 0 returned 0% blocks executed 0%
+function _ZNKSt5stackINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEESt5dequeIS5_SaIS5_EEE5emptyEv called 0 returned 0% blocks executed 0%
+    #####:  149:      empty() const
+    #####:  150:      { return c.empty(); }
+call    0 never executed
+call    1 never executed
+        -:  151:
+        -:  152:      /**  Returns the number of elements in the %stack.  */
+        -:  153:      size_type
+function _ZNKSt5stackIcSt5dequeIcSaIcEEE4sizeEv called 0 returned 0% blocks executed 0%
+    #####:  154:      size() const
+    #####:  155:      { return c.size(); }
+call    0 never executed
+        -:  156:
+        -:  157:      /**
+        -:  158:       *  Returns a read/write reference to the data at the first
+        -:  159:       *  element of the %stack.
+        -:  160:       */
+        -:  161:      reference
+function _ZNSt5stackIlSt5dequeIlSaIlEEE3topEv called 0 returned 0% blocks executed 0%
+function _ZNSt5stackINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEESt5dequeIS5_SaIS5_EEE3topEv called 0 returned 0% blocks executed 0%
+    #####:  162:      top()
+        -:  163:      {
+        -:  164:	__glibcxx_requires_nonempty();
+    #####:  165:	return c.back();
+call    0 never executed
+call    1 never executed
+        -:  166:      }
+        -:  167:
+        -:  168:      /**
+        -:  169:       *  Returns a read-only (constant) reference to the data at the first
+        -:  170:       *  element of the %stack.
+        -:  171:       */
+        -:  172:      const_reference
+        -:  173:      top() const
+        -:  174:      {
+        -:  175:	__glibcxx_requires_nonempty();
+        -:  176:	return c.back();
+        -:  177:      }
+        -:  178:
+        -:  179:      /**
+        -:  180:       *  @brief  Add data to the top of the %stack.
+        -:  181:       *  @param  __x  Data to be added.
+        -:  182:       *
+        -:  183:       *  This is a typical %stack operation.  The function creates an
+        -:  184:       *  element at the top of the %stack and assigns the given data
+        -:  185:       *  to it.  The time complexity of the operation depends on the
+        -:  186:       *  underlying sequence.
+        -:  187:       */
+        -:  188:      void
+function _ZNSt5stackIlSt5dequeIlSaIlEEE4pushERKl called 0 returned 0% blocks executed 0%
+function _ZNSt5stackINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEESt5dequeIS5_SaIS5_EEE4pushERKS5_ called 0 returned 0% blocks executed 0%
+function _ZNSt5stackIcSt5dequeIcSaIcEEE4pushERKc called 0 returned 0% blocks executed 0%
+    #####:  189:      push(const value_type& __x)
+    #####:  190:      { c.push_back(__x); }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+        -:  191:
+        -:  192:#if __cplusplus >= 201103L
+        -:  193:      void
+function _ZNSt5stackINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEESt5dequeIS5_SaIS5_EEE4pushEOS5_ called 0 returned 0% blocks executed 0%
+    #####:  194:      push(value_type&& __x)
+    #####:  195:      { c.push_back(std::move(__x)); }
+call    0 never executed
+call    1 never executed
+        -:  196:
+        -:  197:      template<typename... _Args>
+        -:  198:        void
+        -:  199:        emplace(_Args&&... __args)
+        -:  200:	{ c.emplace_back(std::forward<_Args>(__args)...); }
+        -:  201:#endif
+        -:  202:
+        -:  203:      /**
+        -:  204:       *  @brief  Removes first element.
+        -:  205:       *
+        -:  206:       *  This is a typical %stack operation.  It shrinks the %stack
+        -:  207:       *  by one.  The time complexity of the operation depends on the
+        -:  208:       *  underlying sequence.
+        -:  209:       *
+        -:  210:       *  Note that no data is returned, and if the first element's
+        -:  211:       *  data is needed, it should be retrieved before pop() is
+        -:  212:       *  called.
+        -:  213:       */
+        -:  214:      void
+function _ZNSt5stackIlSt5dequeIlSaIlEEE3popEv called 0 returned 0% blocks executed 0%
+function _ZNSt5stackINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEESt5dequeIS5_SaIS5_EEE3popEv called 0 returned 0% blocks executed 0%
+function _ZNSt5stackIcSt5dequeIcSaIcEEE3popEv called 0 returned 0% blocks executed 0%
+    #####:  215:      pop()
+        -:  216:      {
+        -:  217:	__glibcxx_requires_nonempty();
+    #####:  218:	c.pop_back();
+call    0 never executed
+call    1 never executed
+call    2 never executed
+    #####:  219:      }
+        -:  220:
+        -:  221:#if __cplusplus >= 201103L
+        -:  222:      void
+        -:  223:      swap(stack& __s)
+        -:  224:      noexcept(noexcept(swap(c, __s.c)))
+        -:  225:      {
+        -:  226:	using std::swap;
+        -:  227:	swap(c, __s.c);
+        -:  228:      }
+        -:  229:#endif
+        -:  230:    };
+        -:  231:
+        -:  232:  /**
+        -:  233:   *  @brief  Stack equality comparison.
+        -:  234:   *  @param  __x  A %stack.
+        -:  235:   *  @param  __y  A %stack of the same type as @a __x.
+        -:  236:   *  @return  True iff the size and elements of the stacks are equal.
+        -:  237:   *
+        -:  238:   *  This is an equivalence relation.  Complexity and semantics
+        -:  239:   *  depend on the underlying sequence type, but the expected rules
+        -:  240:   *  are: this relation is linear in the size of the sequences, and
+        -:  241:   *  stacks are considered equivalent if their sequences compare
+        -:  242:   *  equal.
+        -:  243:  */
+        -:  244:  template<typename _Tp, typename _Seq>
+        -:  245:    inline bool
+        -:  246:    operator==(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
+        -:  247:    { return __x.c == __y.c; }
+        -:  248:
+        -:  249:  /**
+        -:  250:   *  @brief  Stack ordering relation.
+        -:  251:   *  @param  __x  A %stack.
+        -:  252:   *  @param  __y  A %stack of the same type as @a x.
+        -:  253:   *  @return  True iff @a x is lexicographically less than @a __y.
+        -:  254:   *
+        -:  255:   *  This is an total ordering relation.  Complexity and semantics
+        -:  256:   *  depend on the underlying sequence type, but the expected rules
+        -:  257:   *  are: this relation is linear in the size of the sequences, the
+        -:  258:   *  elements must be comparable with @c <, and
+        -:  259:   *  std::lexicographical_compare() is usually used to make the
+        -:  260:   *  determination.
+        -:  261:  */
+        -:  262:  template<typename _Tp, typename _Seq>
+        -:  263:    inline bool
+        -:  264:    operator<(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
+        -:  265:    { return __x.c < __y.c; }
+        -:  266:
+        -:  267:  /// Based on operator==
+        -:  268:  template<typename _Tp, typename _Seq>
+        -:  269:    inline bool
+        -:  270:    operator!=(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
+        -:  271:    { return !(__x == __y); }
+        -:  272:
+        -:  273:  /// Based on operator<
+        -:  274:  template<typename _Tp, typename _Seq>
+        -:  275:    inline bool
+        -:  276:    operator>(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
+        -:  277:    { return __y < __x; }
+        -:  278:
+        -:  279:  /// Based on operator<
+        -:  280:  template<typename _Tp, typename _Seq>
+        -:  281:    inline bool
+        -:  282:    operator<=(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
+        -:  283:    { return !(__y < __x); }
+        -:  284:
+        -:  285:  /// Based on operator<
+        -:  286:  template<typename _Tp, typename _Seq>
+        -:  287:    inline bool
+        -:  288:    operator>=(const stack<_Tp, _Seq>& __x, const stack<_Tp, _Seq>& __y)
+        -:  289:    { return !(__x < __y); }
+        -:  290:
+        -:  291:#if __cplusplus >= 201103L
+        -:  292:  template<typename _Tp, typename _Seq>
+        -:  293:    inline void
+        -:  294:    swap(stack<_Tp, _Seq>& __x, stack<_Tp, _Seq>& __y)
+        -:  295:    noexcept(noexcept(__x.swap(__y)))
+        -:  296:    { __x.swap(__y); }
+        -:  297:
+        -:  298:  template<typename _Tp, typename _Seq, typename _Alloc>
+        -:  299:    struct uses_allocator<stack<_Tp, _Seq>, _Alloc>
+        -:  300:    : public uses_allocator<_Seq, _Alloc>::type { };
+        -:  301:#endif
+        -:  302:
+        -:  303:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  304:} // namespace
+        -:  305:
+        -:  306:#endif /* _STL_STACK_H */

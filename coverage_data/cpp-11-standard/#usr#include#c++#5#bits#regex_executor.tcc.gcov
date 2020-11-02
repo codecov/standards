@@ -1,0 +1,946 @@
+        -:    0:Source:/usr/include/c++/5/bits/regex_executor.tcc
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// class template regex -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2013-2015 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/**
+        -:   26: *  @file bits/regex_executor.tcc
+        -:   27: *  This is an internal header file, included by other library headers.
+        -:   28: *  Do not attempt to use it directly. @headername{regex}
+        -:   29: */
+        -:   30:
+        -:   31:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   32:{
+        -:   33:namespace __detail
+        -:   34:{
+        -:   35:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   36:
+        -:   37:  template<typename _BiIter, typename _Alloc, typename _TraitsT,
+        -:   38:	   bool __dfs_mode>
+        -:   39:    bool _Executor<_BiIter, _Alloc, _TraitsT, __dfs_mode>::
+        -:   40:    _M_search()
+        -:   41:    {
+        -:   42:      if (_M_search_from_first())
+        -:   43:	return true;
+        -:   44:      if (_M_flags & regex_constants::match_continuous)
+        -:   45:	return false;
+        -:   46:      _M_flags |= regex_constants::match_prev_avail;
+        -:   47:      while (_M_begin != _M_end)
+        -:   48:	{
+        -:   49:	  ++_M_begin;
+        -:   50:	  if (_M_search_from_first())
+        -:   51:	    return true;
+        -:   52:	}
+        -:   53:      return false;
+        -:   54:    }
+        -:   55:
+        -:   56:  // The _M_main function operates in different modes, DFS mode or BFS mode,
+        -:   57:  // indicated by template parameter __dfs_mode, and dispatches to one of the
+        -:   58:  // _M_main_dispatch overloads.
+        -:   59:  //
+        -:   60:  // ------------------------------------------------------------
+        -:   61:  //
+        -:   62:  // DFS mode:
+        -:   63:  //
+        -:   64:  // It applies a Depth-First-Search (aka backtracking) on given NFA and input
+        -:   65:  // string.
+        -:   66:  // At the very beginning the executor stands in the start state, then it
+        -:   67:  // tries every possible state transition in current state recursively. Some
+        -:   68:  // state transitions consume input string, say, a single-char-matcher or a
+        -:   69:  // back-reference matcher; some don't, like assertion or other anchor nodes.
+        -:   70:  // When the input is exhausted and/or the current state is an accepting
+        -:   71:  // state, the whole executor returns true.
+        -:   72:  //
+        -:   73:  // TODO: This approach is exponentially slow for certain input.
+        -:   74:  //       Try to compile the NFA to a DFA.
+        -:   75:  //
+        -:   76:  // Time complexity: \Omega(match_length), O(2^(_M_nfa.size()))
+        -:   77:  // Space complexity: \theta(match_results.size() + match_length)
+        -:   78:  //
+        -:   79:  template<typename _BiIter, typename _Alloc, typename _TraitsT,
+        -:   80:	   bool __dfs_mode>
+function _ZNSt8__detail9_ExecutorIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEENS5_12regex_traitsIcEELb1EE16_M_main_dispatchENSH_11_Match_modeESt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:   81:    bool _Executor<_BiIter, _Alloc, _TraitsT, __dfs_mode>::
+        -:   82:    _M_main_dispatch(_Match_mode __match_mode, __dfs)
+        -:   83:    {
+    #####:   84:      _M_has_sol = false;
+    #####:   85:      *_M_states._M_get_sol_pos() = _BiIter();
+call    0 never executed
+call    1 never executed
+    #####:   86:      _M_cur_results = _M_results;
+call    0 never executed
+    #####:   87:      _M_dfs(__match_mode, _M_states._M_start);
+call    0 never executed
+    #####:   88:      return _M_has_sol;
+        -:   89:    }
+        -:   90:
+        -:   91:  // ------------------------------------------------------------
+        -:   92:  //
+        -:   93:  // BFS mode:
+        -:   94:  //
+        -:   95:  // Russ Cox's article (http://swtch.com/~rsc/regexp/regexp1.html)
+        -:   96:  // explained this algorithm clearly.
+        -:   97:  //
+        -:   98:  // It first computes epsilon closure (states that can be achieved without
+        -:   99:  // consuming characters) for every state that's still matching,
+        -:  100:  // using the same DFS algorithm, but doesn't re-enter states (using
+        -:  101:  // _M_states._M_visited to check), nor follow _S_opcode_match.
+        -:  102:  //
+        -:  103:  // Then apply DFS using every _S_opcode_match (in _M_states._M_match_queue)
+        -:  104:  // as the start state.
+        -:  105:  //
+        -:  106:  // It significantly reduces potential duplicate states, so has a better
+        -:  107:  // upper bound; but it requires more overhead.
+        -:  108:  //
+        -:  109:  // Time complexity: \Omega(match_length * match_results.size())
+        -:  110:  //                  O(match_length * _M_nfa.size() * match_results.size())
+        -:  111:  // Space complexity: \Omega(_M_nfa.size() + match_results.size())
+        -:  112:  //                   O(_M_nfa.size() * match_results.size())
+        -:  113:  template<typename _BiIter, typename _Alloc, typename _TraitsT,
+        -:  114:	   bool __dfs_mode>
+function _ZNSt8__detail9_ExecutorIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEENS5_12regex_traitsIcEELb0EE16_M_main_dispatchENSH_11_Match_modeESt17integral_constantIbLb0EE called 0 returned 0% blocks executed 0%
+    #####:  115:    bool _Executor<_BiIter, _Alloc, _TraitsT, __dfs_mode>::
+        -:  116:    _M_main_dispatch(_Match_mode __match_mode, __bfs)
+        -:  117:    {
+    #####:  118:      _M_states._M_queue(_M_states._M_start, _M_results);
+call    0 never executed
+    #####:  119:      bool __ret = false;
+    #####:  120:      while (1)
+        -:  121:	{
+    #####:  122:	  _M_has_sol = false;
+    #####:  123:	  if (_M_states._M_match_queue.empty())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  124:	    break;
+    #####:  125:	  std::fill_n(_M_states._M_visited_states.get(), _M_nfa.size(), false);
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  126:	  auto __old_queue = std::move(_M_states._M_match_queue);
+call    0 never executed
+call    1 never executed
+call    2 never executed
+    #####:  127:	  for (auto& __task : __old_queue)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+call    6 never executed
+        -:  128:	    {
+    #####:  129:	      _M_cur_results = std::move(__task.second);
+call    0 never executed
+call    1 never executed
+    #####:  130:	      _M_dfs(__match_mode, __task.first);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  131:	    }
+    #####:  132:	  if (__match_mode == _Match_mode::_Prefix)
+branch  0 never executed
+branch  1 never executed
+    #####:  133:	    __ret |= _M_has_sol;
+    #####:  134:	  if (_M_current == _M_end)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  135:	    break;
+    #####:  136:	  ++_M_current;
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  137:	}
+    #####:  138:      if (__match_mode == _Match_mode::_Exact)
+branch  0 never executed
+branch  1 never executed
+    #####:  139:	__ret = _M_has_sol;
+    #####:  140:      _M_states._M_match_queue.clear();
+call    0 never executed
+    #####:  141:      return __ret;
+        -:  142:    }
+        -:  143:
+        -:  144:  // Return whether now match the given sub-NFA.
+        -:  145:  template<typename _BiIter, typename _Alloc, typename _TraitsT,
+        -:  146:	   bool __dfs_mode>
+function _ZNSt8__detail9_ExecutorIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEENS5_12regex_traitsIcEELb1EE12_M_lookaheadENS_6_StateISG_EE called 0 returned 0% blocks executed 0%
+function _ZNSt8__detail9_ExecutorIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEENS5_12regex_traitsIcEELb0EE12_M_lookaheadENS_6_StateISG_EE called 0 returned 0% blocks executed 0%
+    #####:  147:    bool _Executor<_BiIter, _Alloc, _TraitsT, __dfs_mode>::
+        -:  148:    _M_lookahead(_State<_TraitsT> __state)
+        -:  149:    {
+        -:  150:      // Backreferences may refer to captured content.
+        -:  151:      // We may want to make this faster by not copying,
+        -:  152:      // but let's not be clever prematurely.
+    #####:  153:      _ResultsVec __what(_M_cur_results);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+call    8 never executed
+call    9 never executed
+    #####:  154:      _Executor __sub(_M_current, _M_end, __what, _M_re, _M_flags);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+call    8 never executed
+call    9 never executed
+    #####:  155:      __sub._M_states._M_start = __state._M_alt;
+    #####:  156:      if (__sub._M_search_from_first())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+        -:  157:	{
+    #####:  158:	  for (size_t __i = 0; __i < __what.size(); __i++)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  159:	    if (__what[__i].matched)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  160:	      _M_cur_results[__i] = __what[__i];
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+call    6 never executed
+call    7 never executed
+branch  8 never executed
+branch  9 never executed
+    #####:  161:	  return true;
+        -:  162:	}
+    #####:  163:      return false;
+        -:  164:    }
+        -:  165:
+        -:  166:  // __rep_count records how many times (__rep_count.second)
+        -:  167:  // this node is visited under certain input iterator
+        -:  168:  // (__rep_count.first). This prevent the executor from entering
+        -:  169:  // infinite loop by refusing to continue when it's already been
+        -:  170:  // visited more than twice. It's `twice` instead of `once` because
+        -:  171:  // we need to spare one more time for potential group capture.
+        -:  172:  template<typename _BiIter, typename _Alloc, typename _TraitsT,
+        -:  173:    bool __dfs_mode>
+function _ZNSt8__detail9_ExecutorIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEENS5_12regex_traitsIcEELb1EE16_M_rep_once_moreENSH_11_Match_modeEl called 0 returned 0% blocks executed 0%
+function _ZNSt8__detail9_ExecutorIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEENS5_12regex_traitsIcEELb0EE16_M_rep_once_moreENSH_11_Match_modeEl called 0 returned 0% blocks executed 0%
+    #####:  174:    void _Executor<_BiIter, _Alloc, _TraitsT, __dfs_mode>::
+        -:  175:    _M_rep_once_more(_Match_mode __match_mode, _StateIdT __i)
+        -:  176:    {
+    #####:  177:      const auto& __state = _M_nfa[__i];
+call    0 never executed
+call    1 never executed
+    #####:  178:      auto& __rep_count = _M_rep_count[__i];
+call    0 never executed
+call    1 never executed
+    #####:  179:      if (__rep_count.second == 0 || __rep_count.first != _M_current)
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+branch 13 never executed
+        -:  180:	{
+    #####:  181:	  auto __back = __rep_count;
+    #####:  182:	  __rep_count.first = _M_current;
+    #####:  183:	  __rep_count.second = 1;
+    #####:  184:	  _M_dfs(__match_mode, __state._M_alt);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  185:	  __rep_count = __back;
+call    0 never executed
+call    1 never executed
+        -:  186:	}
+        -:  187:      else
+        -:  188:	{
+    #####:  189:	  if (__rep_count.second < 2)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  190:	    {
+    #####:  191:	      __rep_count.second++;
+    #####:  192:	      _M_dfs(__match_mode, __state._M_alt);
+call    0 never executed
+call    1 never executed
+    #####:  193:	      __rep_count.second--;
+        -:  194:	    }
+        -:  195:	}
+    #####:  196:    };
+        -:  197:
+        -:  198:  template<typename _BiIter, typename _Alloc, typename _TraitsT,
+        -:  199:	   bool __dfs_mode>
+function _ZNSt8__detail9_ExecutorIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEENS5_12regex_traitsIcEELb1EE6_M_dfsENSH_11_Match_modeEl called 0 returned 0% blocks executed 0%
+function _ZNSt8__detail9_ExecutorIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEENS5_12regex_traitsIcEELb0EE6_M_dfsENSH_11_Match_modeEl called 0 returned 0% blocks executed 0%
+    #####:  200:    void _Executor<_BiIter, _Alloc, _TraitsT, __dfs_mode>::
+        -:  201:    _M_dfs(_Match_mode __match_mode, _StateIdT __i)
+        -:  202:    {
+    #####:  203:      if (_M_states._M_visited(__i))
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  204:	return;
+        -:  205:
+    #####:  206:      const auto& __state = _M_nfa[__i];
+call    0 never executed
+call    1 never executed
+        -:  207:      // Every change on _M_cur_results and _M_current will be rolled back after
+        -:  208:      // finishing the recursion step.
+    #####:  209:      switch (__state._M_opcode)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+branch 13 never executed
+branch 14 never executed
+branch 15 never executed
+branch 16 never executed
+branch 17 never executed
+branch 18 never executed
+branch 19 never executed
+branch 20 never executed
+branch 21 never executed
+branch 22 never executed
+branch 23 never executed
+        -:  210:	{
+        -:  211:	// _M_alt branch is "match once more", while _M_next is "get me out
+        -:  212:	// of this quantifier". Executing _M_next first or _M_alt first don't
+        -:  213:	// mean the same thing, and we need to choose the correct order under
+        -:  214:	// given greedy mode.
+        -:  215:	case _S_opcode_repeat:
+        -:  216:	  {
+        -:  217:	    // Greedy.
+    #####:  218:	    if (!__state._M_neg)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  219:	      {
+    #####:  220:		_M_rep_once_more(__match_mode, __i);
+call    0 never executed
+call    1 never executed
+        -:  221:		// If it's DFS executor and already accepted, we're done.
+    #####:  222:		if (!__dfs_mode || !_M_has_sol)
+branch  0 never executed
+branch  1 never executed
+    #####:  223:		  _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+call    1 never executed
+        -:  224:	      }
+        -:  225:	    else // Non-greedy mode
+        -:  226:	      {
+        -:  227:		if (__dfs_mode)
+        -:  228:		  {
+        -:  229:		    // vice-versa.
+    #####:  230:		    _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+    #####:  231:		    if (!_M_has_sol)
+branch  0 never executed
+branch  1 never executed
+    #####:  232:		      _M_rep_once_more(__match_mode, __i);
+call    0 never executed
+        -:  233:		  }
+        -:  234:		else
+        -:  235:		  {
+        -:  236:		    // DON'T attempt anything, because there's already another
+        -:  237:		    // state with higher priority accepted. This state cannot
+        -:  238:		    // be better by attempting its next node.
+    #####:  239:		    if (!_M_has_sol)
+branch  0 never executed
+branch  1 never executed
+        -:  240:		      {
+    #####:  241:			_M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+        -:  242:			// DON'T attempt anything if it's already accepted. An
+        -:  243:			// accepted state *must* be better than a solution that
+        -:  244:			// matches a non-greedy quantifier one more time.
+    #####:  245:			if (!_M_has_sol)
+branch  0 never executed
+branch  1 never executed
+    #####:  246:			  _M_rep_once_more(__match_mode, __i);
+call    0 never executed
+        -:  247:		      }
+        -:  248:		  }
+        -:  249:	      }
+        -:  250:	    }
+    #####:  251:	  break;
+        -:  252:	case _S_opcode_subexpr_begin:
+        -:  253:	  {
+    #####:  254:	    auto& __res = _M_cur_results[__state._M_subexpr];
+call    0 never executed
+call    1 never executed
+    #####:  255:	    auto __back = __res.first;
+    #####:  256:	    __res.first = _M_current;
+    #####:  257:	    _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  258:	    __res.first = __back;
+        -:  259:	  }
+    #####:  260:	  break;
+        -:  261:	case _S_opcode_subexpr_end:
+        -:  262:	  {
+    #####:  263:	    auto& __res = _M_cur_results[__state._M_subexpr];
+call    0 never executed
+call    1 never executed
+    #####:  264:	    auto __back = __res;
+    #####:  265:	    __res.second = _M_current;
+    #####:  266:	    __res.matched = true;
+    #####:  267:	    _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  268:	    __res = __back;
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  269:	  }
+    #####:  270:	  break;
+        -:  271:	case _S_opcode_line_begin_assertion:
+    #####:  272:	  if (_M_at_begin())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  273:	    _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+call    1 never executed
+    #####:  274:	  break;
+        -:  275:	case _S_opcode_line_end_assertion:
+    #####:  276:	  if (_M_at_end())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  277:	    _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+call    1 never executed
+    #####:  278:	  break;
+        -:  279:	case _S_opcode_word_boundary:
+    #####:  280:	  if (_M_word_boundary() == !__state._M_neg)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  281:	    _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+call    1 never executed
+    #####:  282:	  break;
+        -:  283:	// Here __state._M_alt offers a single start node for a sub-NFA.
+        -:  284:	// We recursively invoke our algorithm to match the sub-NFA.
+        -:  285:	case _S_opcode_subexpr_lookahead:
+    #####:  286:	  if (_M_lookahead(__state) == !__state._M_neg)
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+branch 11 never executed
+branch 12 never executed
+call   13 never executed
+branch 14 never executed
+branch 15 never executed
+call   16 never executed
+call   17 never executed
+    #####:  287:	    _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+call    1 never executed
+    #####:  288:	  break;
+        -:  289:	case _S_opcode_match:
+    #####:  290:	  if (_M_current == _M_end)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  291:	    break;
+        -:  292:	  if (__dfs_mode)
+        -:  293:	    {
+    #####:  294:	      if (__state._M_matches(*_M_current))
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  295:		{
+    #####:  296:		  ++_M_current;
+call    0 never executed
+    #####:  297:		  _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+    #####:  298:		  --_M_current;
+call    0 never executed
+        -:  299:		}
+        -:  300:	    }
+        -:  301:	  else
+    #####:  302:	    if (__state._M_matches(*_M_current))
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  303:	      _M_states._M_queue(__state._M_next, _M_cur_results);
+call    0 never executed
+    #####:  304:	  break;
+        -:  305:	// First fetch the matched result from _M_cur_results as __submatch;
+        -:  306:	// then compare it with
+        -:  307:	// (_M_current, _M_current + (__submatch.second - __submatch.first)).
+        -:  308:	// If matched, keep going; else just return and try another state.
+        -:  309:	case _S_opcode_backref:
+        -:  310:	  {
+        -:  311:	    _GLIBCXX_DEBUG_ASSERT(__dfs_mode);
+    #####:  312:	    auto& __submatch = _M_cur_results[__state._M_backref_index];
+call    0 never executed
+call    1 never executed
+    #####:  313:	    if (!__submatch.matched)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  314:	      break;
+    #####:  315:	    auto __last = _M_current;
+    #####:  316:	    for (auto __tmp = __submatch.first;
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+call   13 never executed
+    #####:  317:		 __last != _M_end && __tmp != __submatch.second;
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  318:		 ++__tmp)
+    #####:  319:	      ++__last;
+call    0 never executed
+call    1 never executed
+    #####:  320:	    if (_M_re._M_automaton->_M_traits.transform(__submatch.first,
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+        -:  321:							__submatch.second)
+    #####:  322:		== _M_re._M_automaton->_M_traits.transform(_M_current, __last))
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+branch 13 never executed
+branch 14 never executed
+call   15 never executed
+branch 16 never executed
+branch 17 never executed
+call   18 never executed
+call   19 never executed
+call   20 never executed
+        -:  323:	      {
+    #####:  324:		if (__last != _M_current)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  325:		  {
+    #####:  326:		    auto __backup = _M_current;
+    #####:  327:		    _M_current = __last;
+    #####:  328:		    _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  329:		    _M_current = __backup;
+        -:  330:		  }
+        -:  331:		else
+    #####:  332:		  _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  333:	      }
+        -:  334:	  }
+    #####:  335:	  break;
+        -:  336:	case _S_opcode_accept:
+        -:  337:	  if (__dfs_mode)
+        -:  338:	    {
+        -:  339:	      _GLIBCXX_DEBUG_ASSERT(!_M_has_sol);
+    #####:  340:	      if (__match_mode == _Match_mode::_Exact)
+branch  0 never executed
+branch  1 never executed
+    #####:  341:		_M_has_sol = _M_current == _M_end;
+call    0 never executed
+        -:  342:	      else
+    #####:  343:		_M_has_sol = true;
+    #####:  344:	      if (_M_current == _M_begin
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+    #####:  345:		  && (_M_flags & regex_constants::match_not_null))
+call    0 never executed
+    #####:  346:		_M_has_sol = false;
+    #####:  347:	      if (_M_has_sol)
+branch  0 never executed
+branch  1 never executed
+        -:  348:		{
+    #####:  349:		  if (_M_nfa._M_flags & regex_constants::ECMAScript)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  350:		    _M_results = _M_cur_results;
+call    0 never executed
+        -:  351:		  else // POSIX
+        -:  352:		    {
+        -:  353:		      _GLIBCXX_DEBUG_ASSERT(_M_states._M_get_sol_pos());
+        -:  354:		      // Here's POSIX's logic: match the longest one. However
+        -:  355:		      // we never know which one (lhs or rhs of "|") is longer
+        -:  356:		      // unless we try both of them and compare the results.
+        -:  357:		      // The member variable _M_sol_pos records the end
+        -:  358:		      // position of the last successful match. It's better
+        -:  359:		      // to be larger, because POSIX regex is always greedy.
+        -:  360:		      // TODO: This could be slow.
+    #####:  361:		      if (*_M_states._M_get_sol_pos() == _BiIter()
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+    #####:  362:			  || std::distance(_M_begin,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  363:					   *_M_states._M_get_sol_pos())
+call    0 never executed
+    #####:  364:			     < std::distance(_M_begin, _M_current))
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  365:			{
+    #####:  366:			  *_M_states._M_get_sol_pos() = _M_current;
+call    0 never executed
+    #####:  367:			  _M_results = _M_cur_results;
+call    0 never executed
+        -:  368:			}
+        -:  369:		    }
+        -:  370:		}
+        -:  371:	    }
+        -:  372:	  else
+        -:  373:	    {
+    #####:  374:	      if (_M_current == _M_begin
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+    #####:  375:		  && (_M_flags & regex_constants::match_not_null))
+call    0 never executed
+    #####:  376:		break;
+    #####:  377:	      if (__match_mode == _Match_mode::_Prefix || _M_current == _M_end)
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+    #####:  378:		if (!_M_has_sol)
+branch  0 never executed
+branch  1 never executed
+        -:  379:		  {
+    #####:  380:		    _M_has_sol = true;
+    #####:  381:		    _M_results = _M_cur_results;
+call    0 never executed
+        -:  382:		  }
+        -:  383:	    }
+    #####:  384:	  break;
+        -:  385:	case _S_opcode_alternative:
+    #####:  386:	  if (_M_nfa._M_flags & regex_constants::ECMAScript)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  387:	    {
+        -:  388:	      // TODO: Let BFS support ECMAScript's alternative operation.
+        -:  389:	      _GLIBCXX_DEBUG_ASSERT(__dfs_mode);
+    #####:  390:	      _M_dfs(__match_mode, __state._M_alt);
+call    0 never executed
+call    1 never executed
+        -:  391:	      // Pick lhs if it matches. Only try rhs if it doesn't.
+    #####:  392:	      if (!_M_has_sol)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  393:		_M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+call    1 never executed
+        -:  394:	    }
+        -:  395:	  else
+        -:  396:	    {
+        -:  397:	      // Try both and compare the result.
+        -:  398:	      // See "case _S_opcode_accept:" handling above.
+    #####:  399:	      _M_dfs(__match_mode, __state._M_alt);
+call    0 never executed
+call    1 never executed
+    #####:  400:	      auto __has_sol = _M_has_sol;
+    #####:  401:	      _M_has_sol = false;
+    #####:  402:	      _M_dfs(__match_mode, __state._M_next);
+call    0 never executed
+call    1 never executed
+    #####:  403:	      _M_has_sol |= __has_sol;
+        -:  404:	    }
+    #####:  405:	  break;
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  406:	default:
+        -:  407:	  _GLIBCXX_DEBUG_ASSERT(false);
+        -:  408:	}
+        -:  409:    }
+        -:  410:
+        -:  411:  // Return whether now is at some word boundary.
+        -:  412:  template<typename _BiIter, typename _Alloc, typename _TraitsT,
+        -:  413:	   bool __dfs_mode>
+function _ZNKSt8__detail9_ExecutorIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEENS5_12regex_traitsIcEELb1EE16_M_word_boundaryEv called 0 returned 0% blocks executed 0%
+function _ZNKSt8__detail9_ExecutorIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEENS5_12regex_traitsIcEELb0EE16_M_word_boundaryEv called 0 returned 0% blocks executed 0%
+    #####:  414:    bool _Executor<_BiIter, _Alloc, _TraitsT, __dfs_mode>::
+        -:  415:    _M_word_boundary() const
+        -:  416:    {
+    #####:  417:      bool __left_is_word = false;
+    #####:  418:      if (_M_current != _M_begin
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+branch  8 never executed
+branch  9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+branch 13 never executed
+    #####:  419:	  || (_M_flags & regex_constants::match_prev_avail))
+call    0 never executed
+call    1 never executed
+        -:  420:	{
+    #####:  421:	  auto __prev = _M_current;
+    #####:  422:	  if (_M_is_word(*std::prev(__prev)))
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+call   12 never executed
+call   13 never executed
+branch 14 never executed
+branch 15 never executed
+branch 16 never executed
+branch 17 never executed
+    #####:  423:	    __left_is_word = true;
+        -:  424:	}
+        -:  425:      bool __right_is_word =
+    #####:  426:        _M_current != _M_end && _M_is_word(*_M_current);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+branch  8 never executed
+branch  9 never executed
+call   10 never executed
+call   11 never executed
+branch 12 never executed
+branch 13 never executed
+        -:  427:
+    #####:  428:      if (__left_is_word == __right_is_word)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  429:	return false;
+    #####:  430:      if (__left_is_word && !(_M_flags & regex_constants::match_not_eow))
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+branch 13 never executed
+    #####:  431:	return true;
+    #####:  432:      if (__right_is_word && !(_M_flags & regex_constants::match_not_bow))
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+call    9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+branch 13 never executed
+    #####:  433:	return true;
+    #####:  434:      return false;
+        -:  435:    }
+        -:  436:
+        -:  437:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  438:} // namespace __detail
+        -:  439:} // namespace

@@ -1,0 +1,860 @@
+        -:    0:Source:/usr/include/c++/5/bits/regex.tcc
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// class template regex -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2013-2015 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/**
+        -:   26: *  @file bits/regex.tcc
+        -:   27: *  This is an internal header file, included by other library headers.
+        -:   28: *  Do not attempt to use it directly. @headername{regex}
+        -:   29: */
+        -:   30:
+        -:   31:// A non-standard switch to let the user pick the matching algorithm.
+        -:   32:// If _GLIBCXX_REGEX_USE_THOMPSON_NFA is defined, the thompson NFA
+        -:   33:// algorithm will be used. This algorithm is not enabled by default,
+        -:   34:// and cannot be used if the regex contains back-references, but has better
+        -:   35:// (polynomial instead of exponential) worst case performance.
+        -:   36:// See __regex_algo_impl below.
+        -:   37:
+        -:   38:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   39:{
+        -:   40:namespace __detail
+        -:   41:{
+        -:   42:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   43:
+        -:   44:  // Result of merging regex_match and regex_search.
+        -:   45:  //
+        -:   46:  // __policy now can be _S_auto (auto dispatch) and _S_alternate (use
+        -:   47:  // the other one if possible, for test purpose).
+        -:   48:  //
+        -:   49:  // That __match_mode is true means regex_match, else regex_search.
+        -:   50:  template<typename _BiIter, typename _Alloc,
+        -:   51:	   typename _CharT, typename _TraitsT,
+        -:   52:	   _RegexExecutorPolicy __policy,
+        -:   53:	   bool __match_mode>
+        -:   54:    bool
+function _ZNSt8__detail17__regex_algo_implIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaINS5_9sub_matchISB_EEEcNS5_12regex_traitsIcEELNS_20_RegexExecutorPolicyE0ELb1EEEbT_SI_RNS5_13match_resultsISI_T0_EERKNS5_11basic_regexIT1_T2_EENSt15regex_constants15match_flag_typeE called 0 returned 0% blocks executed 0%
+    #####:   55:    __regex_algo_impl(_BiIter                              __s,
+        -:   56:		      _BiIter                              __e,
+        -:   57:		      match_results<_BiIter, _Alloc>&      __m,
+        -:   58:		      const basic_regex<_CharT, _TraitsT>& __re,
+        -:   59:		      regex_constants::match_flag_type     __flags)
+        -:   60:    {
+    #####:   61:      if (__re._M_automaton == nullptr)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:   62:	return false;
+        -:   63:
+    #####:   64:      typename match_results<_BiIter, _Alloc>::_Base_type& __res = __m;
+    #####:   65:      __m._M_begin = __s;
+    #####:   66:      __m._M_resize(__re._M_automaton->_M_sub_count());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+    #####:   67:      for (auto& __it : __res)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+call    6 never executed
+    #####:   68:	__it.matched = false;
+        -:   69:
+        -:   70:      // __policy is used by testsuites so that they can use Thompson NFA
+        -:   71:      // without defining a macro. Users should define
+        -:   72:      // _GLIBCXX_REGEX_USE_THOMPSON_NFA if they need to use this approach.
+        -:   73:      bool __ret;
+    #####:   74:      if (!__re._M_automaton->_M_has_backref
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+    #####:   75:	  && !(__re._M_flags & regex_constants::ECMAScript)
+call    0 never executed
+        -:   76:#ifndef _GLIBCXX_REGEX_USE_THOMPSON_NFA
+        -:   77:	  && __policy == _RegexExecutorPolicy::_S_alternate
+        -:   78:#endif
+        -:   79:	  )
+        -:   80:	{
+        -:   81:	  _Executor<_BiIter, _Alloc, _TraitsT, false>
+    #####:   82:	    __executor(__s, __e, __m, __re, __flags);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+        -:   83:	  if (__match_mode)
+    #####:   84:	    __ret = __executor._M_match();
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:   85:	  else
+        -:   86:	    __ret = __executor._M_search();
+        -:   87:	}
+        -:   88:      else
+        -:   89:	{
+        -:   90:	  _Executor<_BiIter, _Alloc, _TraitsT, true>
+    #####:   91:	    __executor(__s, __e, __m, __re, __flags);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+call    4 never executed
+        -:   92:	  if (__match_mode)
+    #####:   93:	    __ret = __executor._M_match();
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:   94:	  else
+        -:   95:	    __ret = __executor._M_search();
+        -:   96:	}
+    #####:   97:      if (__ret)
+branch  0 never executed
+branch  1 never executed
+        -:   98:	{
+    #####:   99:	  for (auto& __it : __res)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+call    6 never executed
+    #####:  100:	    if (!__it.matched)
+branch  0 never executed
+branch  1 never executed
+    #####:  101:	      __it.first = __it.second = __e;
+    #####:  102:	  auto& __pre = __m._M_prefix();
+call    0 never executed
+    #####:  103:	  auto& __suf = __m._M_suffix();
+call    0 never executed
+        -:  104:	  if (__match_mode)
+        -:  105:	    {
+    #####:  106:	      __pre.matched = false;
+    #####:  107:	      __pre.first = __s;
+    #####:  108:	      __pre.second = __s;
+    #####:  109:	      __suf.matched = false;
+    #####:  110:	      __suf.first = __e;
+    #####:  111:	      __suf.second = __e;
+        -:  112:	    }
+        -:  113:	  else
+        -:  114:	    {
+        -:  115:	      __pre.first = __s;
+        -:  116:	      __pre.second = __res[0].first;
+        -:  117:	      __pre.matched = (__pre.first != __pre.second);
+        -:  118:	      __suf.first = __res[0].second;
+        -:  119:	      __suf.second = __e;
+        -:  120:	      __suf.matched = (__suf.first != __suf.second);
+        -:  121:	    }
+        -:  122:	}
+        -:  123:      else
+        -:  124:	{
+    #####:  125:	  __m._M_resize(0);
+call    0 never executed
+    #####:  126:	  for (auto& __it : __res)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+call    6 never executed
+        -:  127:	    {
+    #####:  128:	      __it.matched = false;
+    #####:  129:	      __it.first = __it.second = __e;
+        -:  130:	    }
+        -:  131:	}
+    #####:  132:      return __ret;
+        -:  133:    }
+        -:  134:
+        -:  135:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  136:}
+        -:  137:
+        -:  138:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:  139:
+        -:  140:  template<typename _Ch_type>
+        -:  141:  template<typename _Fwd_iter>
+        -:  142:    typename regex_traits<_Ch_type>::string_type
+function _ZNKSt7__cxx1112regex_traitsIcE18lookup_collatenameIPKcEENS_12basic_stringIcSt11char_traitsIcESaIcEEET_SA_ called 0 returned 0% blocks executed 0%
+    #####:  143:    regex_traits<_Ch_type>::
+        -:  144:    lookup_collatename(_Fwd_iter __first, _Fwd_iter __last) const
+        -:  145:    {
+        -:  146:      typedef std::ctype<char_type> __ctype_type;
+    #####:  147:      const __ctype_type& __fctyp(use_facet<__ctype_type>(_M_locale));
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  148:
+        -:  149:      static const char* __collatenames[] =
+        -:  150:	{
+        -:  151:	  "NUL",
+        -:  152:	  "SOH",
+        -:  153:	  "STX",
+        -:  154:	  "ETX",
+        -:  155:	  "EOT",
+        -:  156:	  "ENQ",
+        -:  157:	  "ACK",
+        -:  158:	  "alert",
+        -:  159:	  "backspace",
+        -:  160:	  "tab",
+        -:  161:	  "newline",
+        -:  162:	  "vertical-tab",
+        -:  163:	  "form-feed",
+        -:  164:	  "carriage-return",
+        -:  165:	  "SO",
+        -:  166:	  "SI",
+        -:  167:	  "DLE",
+        -:  168:	  "DC1",
+        -:  169:	  "DC2",
+        -:  170:	  "DC3",
+        -:  171:	  "DC4",
+        -:  172:	  "NAK",
+        -:  173:	  "SYN",
+        -:  174:	  "ETB",
+        -:  175:	  "CAN",
+        -:  176:	  "EM",
+        -:  177:	  "SUB",
+        -:  178:	  "ESC",
+        -:  179:	  "IS4",
+        -:  180:	  "IS3",
+        -:  181:	  "IS2",
+        -:  182:	  "IS1",
+        -:  183:	  "space",
+        -:  184:	  "exclamation-mark",
+        -:  185:	  "quotation-mark",
+        -:  186:	  "number-sign",
+        -:  187:	  "dollar-sign",
+        -:  188:	  "percent-sign",
+        -:  189:	  "ampersand",
+        -:  190:	  "apostrophe",
+        -:  191:	  "left-parenthesis",
+        -:  192:	  "right-parenthesis",
+        -:  193:	  "asterisk",
+        -:  194:	  "plus-sign",
+        -:  195:	  "comma",
+        -:  196:	  "hyphen",
+        -:  197:	  "period",
+        -:  198:	  "slash",
+        -:  199:	  "zero",
+        -:  200:	  "one",
+        -:  201:	  "two",
+        -:  202:	  "three",
+        -:  203:	  "four",
+        -:  204:	  "five",
+        -:  205:	  "six",
+        -:  206:	  "seven",
+        -:  207:	  "eight",
+        -:  208:	  "nine",
+        -:  209:	  "colon",
+        -:  210:	  "semicolon",
+        -:  211:	  "less-than-sign",
+        -:  212:	  "equals-sign",
+        -:  213:	  "greater-than-sign",
+        -:  214:	  "question-mark",
+        -:  215:	  "commercial-at",
+        -:  216:	  "A",
+        -:  217:	  "B",
+        -:  218:	  "C",
+        -:  219:	  "D",
+        -:  220:	  "E",
+        -:  221:	  "F",
+        -:  222:	  "G",
+        -:  223:	  "H",
+        -:  224:	  "I",
+        -:  225:	  "J",
+        -:  226:	  "K",
+        -:  227:	  "L",
+        -:  228:	  "M",
+        -:  229:	  "N",
+        -:  230:	  "O",
+        -:  231:	  "P",
+        -:  232:	  "Q",
+        -:  233:	  "R",
+        -:  234:	  "S",
+        -:  235:	  "T",
+        -:  236:	  "U",
+        -:  237:	  "V",
+        -:  238:	  "W",
+        -:  239:	  "X",
+        -:  240:	  "Y",
+        -:  241:	  "Z",
+        -:  242:	  "left-square-bracket",
+        -:  243:	  "backslash",
+        -:  244:	  "right-square-bracket",
+        -:  245:	  "circumflex",
+        -:  246:	  "underscore",
+        -:  247:	  "grave-accent",
+        -:  248:	  "a",
+        -:  249:	  "b",
+        -:  250:	  "c",
+        -:  251:	  "d",
+        -:  252:	  "e",
+        -:  253:	  "f",
+        -:  254:	  "g",
+        -:  255:	  "h",
+        -:  256:	  "i",
+        -:  257:	  "j",
+        -:  258:	  "k",
+        -:  259:	  "l",
+        -:  260:	  "m",
+        -:  261:	  "n",
+        -:  262:	  "o",
+        -:  263:	  "p",
+        -:  264:	  "q",
+        -:  265:	  "r",
+        -:  266:	  "s",
+        -:  267:	  "t",
+        -:  268:	  "u",
+        -:  269:	  "v",
+        -:  270:	  "w",
+        -:  271:	  "x",
+        -:  272:	  "y",
+        -:  273:	  "z",
+        -:  274:	  "left-curly-bracket",
+        -:  275:	  "vertical-line",
+        -:  276:	  "right-curly-bracket",
+        -:  277:	  "tilde",
+        -:  278:	  "DEL",
+        -:  279:	};
+        -:  280:
+    #####:  281:      string __s;
+call    0 never executed
+call    1 never executed
+call    2 never executed
+    #####:  282:      for (; __first != __last; ++__first)
+branch  0 never executed
+branch  1 never executed
+    #####:  283:	__s += __fctyp.narrow(*__first, 0);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  284:
+    #####:  285:      for (const auto& __it : __collatenames)
+branch  0 never executed
+branch  1 never executed
+    #####:  286:	if (__s == __it)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+        -:  287:	  return string_type(1, __fctyp.widen(
+    #####:  288:	    static_cast<char>(&__it - __collatenames)));
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+call    8 never executed
+        -:  289:
+        -:  290:      // TODO Add digraph support:
+        -:  291:      // http://boost.sourceforge.net/libs/regex/doc/collating_names.html
+        -:  292:
+    #####:  293:      return string_type();
+call    0 never executed
+        -:  294:    }
+        -:  295:
+        -:  296:  template<typename _Ch_type>
+        -:  297:  template<typename _Fwd_iter>
+        -:  298:    typename regex_traits<_Ch_type>::char_class_type
+function _ZNKSt7__cxx1112regex_traitsIcE16lookup_classnameIPKcEENS1_10_RegexMaskET_S6_b called 0 returned 0% blocks executed 0%
+    #####:  299:    regex_traits<_Ch_type>::
+        -:  300:    lookup_classname(_Fwd_iter __first, _Fwd_iter __last, bool __icase) const
+        -:  301:    {
+        -:  302:      typedef std::ctype<char_type> __ctype_type;
+    #####:  303:      const __ctype_type& __fctyp(use_facet<__ctype_type>(_M_locale));
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  304:
+        -:  305:      // Mappings from class name to class mask.
+        -:  306:      static const pair<const char*, char_class_type> __classnames[] =
+        -:  307:      {
+        -:  308:	{"d", ctype_base::digit},
+        -:  309:	{"w", {ctype_base::alnum, _RegexMask::_S_under}},
+        -:  310:	{"s", ctype_base::space},
+        -:  311:	{"alnum", ctype_base::alnum},
+        -:  312:	{"alpha", ctype_base::alpha},
+        -:  313:	{"blank", ctype_base::blank},
+        -:  314:	{"cntrl", ctype_base::cntrl},
+        -:  315:	{"digit", ctype_base::digit},
+        -:  316:	{"graph", ctype_base::graph},
+        -:  317:	{"lower", ctype_base::lower},
+        -:  318:	{"print", ctype_base::print},
+        -:  319:	{"punct", ctype_base::punct},
+        -:  320:	{"space", ctype_base::space},
+        -:  321:	{"upper", ctype_base::upper},
+        -:  322:	{"xdigit", ctype_base::xdigit},
+        -:  323:      };
+        -:  324:
+    #####:  325:      string __s;
+call    0 never executed
+call    1 never executed
+call    2 never executed
+    #####:  326:      for (; __first != __last; ++__first)
+branch  0 never executed
+branch  1 never executed
+    #####:  327:	__s += __fctyp.narrow(__fctyp.tolower(*__first), 0);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+        -:  328:
+    #####:  329:      for (const auto& __it : __classnames)
+branch  0 never executed
+branch  1 never executed
+    #####:  330:	if (__s == __it.first)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+        -:  331:	  {
+    #####:  332:	    if (__icase
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  333:		&& ((__it.second
+    #####:  334:		     & (ctype_base::lower | ctype_base::upper)) != 0))
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+    #####:  335:	      return ctype_base::alpha;
+call    0 never executed
+    #####:  336:	    return __it.second;
+        -:  337:	  }
+    #####:  338:      return 0;
+call    0 never executed
+        -:  339:    }
+        -:  340:
+        -:  341:  template<typename _Ch_type>
+        -:  342:    bool
+function _ZNKSt7__cxx1112regex_traitsIcE7isctypeEcNS1_10_RegexMaskE called 0 returned 0% blocks executed 0%
+    #####:  343:    regex_traits<_Ch_type>::
+        -:  344:    isctype(_Ch_type __c, char_class_type __f) const
+        -:  345:    {
+        -:  346:      typedef std::ctype<char_type> __ctype_type;
+    #####:  347:      const __ctype_type& __fctyp(use_facet<__ctype_type>(_M_locale));
+call    0 never executed
+        -:  348:
+        -:  349:      return __fctyp.is(__f._M_base, __c)
+        -:  350:	// [[:w:]]
+    #####:  351:	|| ((__f._M_extended & _RegexMask::_S_under)
+call    0 never executed
+    #####:  352:	    && __c == __fctyp.widen('_'));
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+        -:  353:    }
+        -:  354:
+        -:  355:  template<typename _Ch_type>
+        -:  356:    int
+function _ZNKSt7__cxx1112regex_traitsIcE5valueEci called 0 returned 0% blocks executed 0%
+    #####:  357:    regex_traits<_Ch_type>::
+        -:  358:    value(_Ch_type __ch, int __radix) const
+        -:  359:    {
+    #####:  360:      std::basic_istringstream<char_type> __is(string_type(1, __ch));
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+        -:  361:      long __v;
+    #####:  362:      if (__radix == 8)
+branch  0 never executed
+branch  1 never executed
+    #####:  363:	__is >> std::oct;
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  364:      else if (__radix == 16)
+branch  0 never executed
+branch  1 never executed
+    #####:  365:	__is >> std::hex;
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  366:      __is >> __v;
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  367:      return __is.fail() ? -1 : __v;
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+        -:  368:    }
+        -:  369:
+        -:  370:  template<typename _Bi_iter, typename _Alloc>
+        -:  371:  template<typename _Out_iter>
+        -:  372:    _Out_iter match_results<_Bi_iter, _Alloc>::
+        -:  373:    format(_Out_iter __out,
+        -:  374:	   const match_results<_Bi_iter, _Alloc>::char_type* __fmt_first,
+        -:  375:	   const match_results<_Bi_iter, _Alloc>::char_type* __fmt_last,
+        -:  376:	   match_flag_type __flags) const
+        -:  377:    {
+        -:  378:      _GLIBCXX_DEBUG_ASSERT( ready() );
+        -:  379:      regex_traits<char_type> __traits;
+        -:  380:      typedef std::ctype<char_type> __ctype_type;
+        -:  381:      const __ctype_type&
+        -:  382:	__fctyp(use_facet<__ctype_type>(__traits.getloc()));
+        -:  383:
+        -:  384:      auto __output = [&](size_t __idx)
+        -:  385:	{
+        -:  386:	  auto& __sub = (*this)[__idx];
+        -:  387:	  if (__sub.matched)
+        -:  388:	    __out = std::copy(__sub.first, __sub.second, __out);
+        -:  389:	};
+        -:  390:
+        -:  391:      if (__flags & regex_constants::format_sed)
+        -:  392:	{
+        -:  393:	  for (; __fmt_first != __fmt_last;)
+        -:  394:	    if (*__fmt_first == '&')
+        -:  395:	      {
+        -:  396:		__output(0);
+        -:  397:		++__fmt_first;
+        -:  398:	      }
+        -:  399:	    else if (*__fmt_first == '\\')
+        -:  400:	      {
+        -:  401:		if (++__fmt_first != __fmt_last
+        -:  402:		    && __fctyp.is(__ctype_type::digit, *__fmt_first))
+        -:  403:		  __output(__traits.value(*__fmt_first++, 10));
+        -:  404:		else
+        -:  405:		  *__out++ = '\\';
+        -:  406:	      }
+        -:  407:	    else
+        -:  408:	      *__out++ = *__fmt_first++;
+        -:  409:	}
+        -:  410:      else
+        -:  411:	{
+        -:  412:	  while (1)
+        -:  413:	    {
+        -:  414:	      auto __next = std::find(__fmt_first, __fmt_last, '$');
+        -:  415:	      if (__next == __fmt_last)
+        -:  416:		break;
+        -:  417:
+        -:  418:	      __out = std::copy(__fmt_first, __next, __out);
+        -:  419:
+        -:  420:	      auto __eat = [&](char __ch) -> bool
+        -:  421:		{
+        -:  422:		  if (*__next == __ch)
+        -:  423:		    {
+        -:  424:		      ++__next;
+        -:  425:		      return true;
+        -:  426:		    }
+        -:  427:		  return false;
+        -:  428:		};
+        -:  429:
+        -:  430:	      if (++__next == __fmt_last)
+        -:  431:		*__out++ = '$';
+        -:  432:	      else if (__eat('$'))
+        -:  433:		*__out++ = '$';
+        -:  434:	      else if (__eat('&'))
+        -:  435:		__output(0);
+        -:  436:	      else if (__eat('`'))
+        -:  437:		{
+        -:  438:		  auto& __sub = _M_prefix();
+        -:  439:		  if (__sub.matched)
+        -:  440:		    __out = std::copy(__sub.first, __sub.second, __out);
+        -:  441:		}
+        -:  442:	      else if (__eat('\''))
+        -:  443:		{
+        -:  444:		  auto& __sub = _M_suffix();
+        -:  445:		  if (__sub.matched)
+        -:  446:		    __out = std::copy(__sub.first, __sub.second, __out);
+        -:  447:		}
+        -:  448:	      else if (__fctyp.is(__ctype_type::digit, *__next))
+        -:  449:		{
+        -:  450:		  long __num = __traits.value(*__next, 10);
+        -:  451:		  if (++__next != __fmt_last
+        -:  452:		      && __fctyp.is(__ctype_type::digit, *__next))
+        -:  453:		    {
+        -:  454:		      __num *= 10;
+        -:  455:		      __num += __traits.value(*__next++, 10);
+        -:  456:		    }
+        -:  457:		  if (0 <= __num && __num < this->size())
+        -:  458:		    __output(__num);
+        -:  459:		}
+        -:  460:	      else
+        -:  461:		*__out++ = '$';
+        -:  462:	      __fmt_first = __next;
+        -:  463:	    }
+        -:  464:	  __out = std::copy(__fmt_first, __fmt_last, __out);
+        -:  465:	}
+        -:  466:      return __out;
+        -:  467:    }
+        -:  468:
+        -:  469:  template<typename _Out_iter, typename _Bi_iter,
+        -:  470:	   typename _Rx_traits, typename _Ch_type>
+        -:  471:    _Out_iter
+        -:  472:    regex_replace(_Out_iter __out, _Bi_iter __first, _Bi_iter __last,
+        -:  473:		  const basic_regex<_Ch_type, _Rx_traits>& __e,
+        -:  474:		  const _Ch_type* __fmt,
+        -:  475:		  regex_constants::match_flag_type __flags)
+        -:  476:    {
+        -:  477:      typedef regex_iterator<_Bi_iter, _Ch_type, _Rx_traits> _IterT;
+        -:  478:      _IterT __i(__first, __last, __e, __flags);
+        -:  479:      _IterT __end;
+        -:  480:      if (__i == __end)
+        -:  481:	{
+        -:  482:	  if (!(__flags & regex_constants::format_no_copy))
+        -:  483:	    __out = std::copy(__first, __last, __out);
+        -:  484:	}
+        -:  485:      else
+        -:  486:	{
+        -:  487:	  sub_match<_Bi_iter> __last;
+        -:  488:	  auto __len = char_traits<_Ch_type>::length(__fmt);
+        -:  489:	  for (; __i != __end; ++__i)
+        -:  490:	    {
+        -:  491:	      if (!(__flags & regex_constants::format_no_copy))
+        -:  492:		__out = std::copy(__i->prefix().first, __i->prefix().second,
+        -:  493:				  __out);
+        -:  494:	      __out = __i->format(__out, __fmt, __fmt + __len, __flags);
+        -:  495:	      __last = __i->suffix();
+        -:  496:	      if (__flags & regex_constants::format_first_only)
+        -:  497:		break;
+        -:  498:	    }
+        -:  499:	  if (!(__flags & regex_constants::format_no_copy))
+        -:  500:	    __out = std::copy(__last.first, __last.second, __out);
+        -:  501:	}
+        -:  502:      return __out;
+        -:  503:    }
+        -:  504:
+        -:  505:  template<typename _Bi_iter,
+        -:  506:	   typename _Ch_type,
+        -:  507:	   typename _Rx_traits>
+        -:  508:    bool
+        -:  509:    regex_iterator<_Bi_iter, _Ch_type, _Rx_traits>::
+        -:  510:    operator==(const regex_iterator& __rhs) const
+        -:  511:    {
+        -:  512:      return (_M_match.empty() && __rhs._M_match.empty())
+        -:  513:	|| (_M_begin == __rhs._M_begin
+        -:  514:	    && _M_end == __rhs._M_end
+        -:  515:	    && _M_pregex == __rhs._M_pregex
+        -:  516:	    && _M_flags == __rhs._M_flags
+        -:  517:	    && _M_match[0] == __rhs._M_match[0]);
+        -:  518:    }
+        -:  519:
+        -:  520:  template<typename _Bi_iter,
+        -:  521:	   typename _Ch_type,
+        -:  522:	   typename _Rx_traits>
+        -:  523:    regex_iterator<_Bi_iter, _Ch_type, _Rx_traits>&
+        -:  524:    regex_iterator<_Bi_iter, _Ch_type, _Rx_traits>::
+        -:  525:    operator++()
+        -:  526:    {
+        -:  527:      // In all cases in which the call to regex_search returns true,
+        -:  528:      // match.prefix().first shall be equal to the previous value of
+        -:  529:      // match[0].second, and for each index i in the half-open range
+        -:  530:      // [0, match.size()) for which match[i].matched is true,
+        -:  531:      // match[i].position() shall return distance(begin, match[i].first).
+        -:  532:      // [28.12.1.4.5]
+        -:  533:      if (_M_match[0].matched)
+        -:  534:	{
+        -:  535:	  auto __start = _M_match[0].second;
+        -:  536:	  auto __prefix_first = _M_match[0].second;
+        -:  537:	  if (_M_match[0].first == _M_match[0].second)
+        -:  538:	    {
+        -:  539:	      if (__start == _M_end)
+        -:  540:		{
+        -:  541:		  _M_match = value_type();
+        -:  542:		  return *this;
+        -:  543:		}
+        -:  544:	      else
+        -:  545:		{
+        -:  546:		  if (regex_search(__start, _M_end, _M_match, *_M_pregex,
+        -:  547:				   _M_flags
+        -:  548:				   | regex_constants::match_not_null
+        -:  549:				   | regex_constants::match_continuous))
+        -:  550:		    {
+        -:  551:		      _GLIBCXX_DEBUG_ASSERT(_M_match[0].matched);
+        -:  552:		      auto& __prefix = _M_match._M_prefix();
+        -:  553:		      __prefix.first = __prefix_first;
+        -:  554:		      __prefix.matched = __prefix.first != __prefix.second;
+        -:  555:		      // [28.12.1.4.5]
+        -:  556:		      _M_match._M_begin = _M_begin;
+        -:  557:		      return *this;
+        -:  558:		    }
+        -:  559:		  else
+        -:  560:		    ++__start;
+        -:  561:		}
+        -:  562:	    }
+        -:  563:	  _M_flags |= regex_constants::match_prev_avail;
+        -:  564:	  if (regex_search(__start, _M_end, _M_match, *_M_pregex, _M_flags))
+        -:  565:	    {
+        -:  566:	      _GLIBCXX_DEBUG_ASSERT(_M_match[0].matched);
+        -:  567:	      auto& __prefix = _M_match._M_prefix();
+        -:  568:	      __prefix.first = __prefix_first;
+        -:  569:	      __prefix.matched = __prefix.first != __prefix.second;
+        -:  570:	      // [28.12.1.4.5]
+        -:  571:	      _M_match._M_begin = _M_begin;
+        -:  572:	    }
+        -:  573:	  else
+        -:  574:	    _M_match = value_type();
+        -:  575:	}
+        -:  576:      return *this;
+        -:  577:    }
+        -:  578:
+        -:  579:  template<typename _Bi_iter,
+        -:  580:	   typename _Ch_type,
+        -:  581:	   typename _Rx_traits>
+        -:  582:    regex_token_iterator<_Bi_iter, _Ch_type, _Rx_traits>&
+        -:  583:    regex_token_iterator<_Bi_iter, _Ch_type, _Rx_traits>::
+        -:  584:    operator=(const regex_token_iterator& __rhs)
+        -:  585:    {
+        -:  586:      _M_position = __rhs._M_position;
+        -:  587:      _M_subs = __rhs._M_subs;
+        -:  588:      _M_n = __rhs._M_n;
+        -:  589:      _M_suffix = __rhs._M_suffix;
+        -:  590:      _M_has_m1 = __rhs._M_has_m1;
+        -:  591:      _M_normalize_result();
+        -:  592:      return *this;
+        -:  593:    }
+        -:  594:
+        -:  595:  template<typename _Bi_iter,
+        -:  596:	   typename _Ch_type,
+        -:  597:	   typename _Rx_traits>
+        -:  598:    bool
+        -:  599:    regex_token_iterator<_Bi_iter, _Ch_type, _Rx_traits>::
+        -:  600:    operator==(const regex_token_iterator& __rhs) const
+        -:  601:    {
+        -:  602:      if (_M_end_of_seq() && __rhs._M_end_of_seq())
+        -:  603:	return true;
+        -:  604:      if (_M_suffix.matched && __rhs._M_suffix.matched
+        -:  605:	  && _M_suffix == __rhs._M_suffix)
+        -:  606:	return true;
+        -:  607:      if (_M_end_of_seq() || _M_suffix.matched
+        -:  608:	  || __rhs._M_end_of_seq() || __rhs._M_suffix.matched)
+        -:  609:	return false;
+        -:  610:      return _M_position == __rhs._M_position
+        -:  611:	&& _M_n == __rhs._M_n
+        -:  612:	&& _M_subs == __rhs._M_subs;
+        -:  613:    }
+        -:  614:
+        -:  615:  template<typename _Bi_iter,
+        -:  616:	   typename _Ch_type,
+        -:  617:	   typename _Rx_traits>
+        -:  618:    regex_token_iterator<_Bi_iter, _Ch_type, _Rx_traits>&
+        -:  619:    regex_token_iterator<_Bi_iter, _Ch_type, _Rx_traits>::
+        -:  620:    operator++()
+        -:  621:    {
+        -:  622:      _Position __prev = _M_position;
+        -:  623:      if (_M_suffix.matched)
+        -:  624:	*this = regex_token_iterator();
+        -:  625:      else if (_M_n + 1 < _M_subs.size())
+        -:  626:	{
+        -:  627:	  _M_n++;
+        -:  628:	  _M_result = &_M_current_match();
+        -:  629:	}
+        -:  630:      else
+        -:  631:	{
+        -:  632:	  _M_n = 0;
+        -:  633:	  ++_M_position;
+        -:  634:	  if (_M_position != _Position())
+        -:  635:	    _M_result = &_M_current_match();
+        -:  636:	  else if (_M_has_m1 && __prev->suffix().length() != 0)
+        -:  637:	    {
+        -:  638:	      _M_suffix.matched = true;
+        -:  639:	      _M_suffix.first = __prev->suffix().first;
+        -:  640:	      _M_suffix.second = __prev->suffix().second;
+        -:  641:	      _M_result = &_M_suffix;
+        -:  642:	    }
+        -:  643:	  else
+        -:  644:	    *this = regex_token_iterator();
+        -:  645:	}
+        -:  646:      return *this;
+        -:  647:    }
+        -:  648:
+        -:  649:  template<typename _Bi_iter,
+        -:  650:	   typename _Ch_type,
+        -:  651:	   typename _Rx_traits>
+        -:  652:    void
+        -:  653:    regex_token_iterator<_Bi_iter, _Ch_type, _Rx_traits>::
+        -:  654:    _M_init(_Bi_iter __a, _Bi_iter __b)
+        -:  655:    {
+        -:  656:      _M_has_m1 = false;
+        -:  657:      for (auto __it : _M_subs)
+        -:  658:	if (__it == -1)
+        -:  659:	  {
+        -:  660:	    _M_has_m1 = true;
+        -:  661:	    break;
+        -:  662:	  }
+        -:  663:      if (_M_position != _Position())
+        -:  664:	_M_result = &_M_current_match();
+        -:  665:      else if (_M_has_m1)
+        -:  666:	{
+        -:  667:	  _M_suffix.matched = true;
+        -:  668:	  _M_suffix.first = __a;
+        -:  669:	  _M_suffix.second = __b;
+        -:  670:	  _M_result = &_M_suffix;
+        -:  671:	}
+        -:  672:      else
+        -:  673:	_M_result = nullptr;
+        -:  674:    }
+        -:  675:
+        -:  676:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  677:} // namespace
+        -:  678:

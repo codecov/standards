@@ -1,0 +1,234 @@
+        -:    0:Source:/usr/include/c++/5/bits/allocator.h
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// Allocators -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/*
+        -:   26: * Copyright (c) 1996-1997
+        -:   27: * Silicon Graphics Computer Systems, Inc.
+        -:   28: *
+        -:   29: * Permission to use, copy, modify, distribute and sell this software
+        -:   30: * and its documentation for any purpose is hereby granted without fee,
+        -:   31: * provided that the above copyright notice appear in all copies and
+        -:   32: * that both that copyright notice and this permission notice appear
+        -:   33: * in supporting documentation.  Silicon Graphics makes no
+        -:   34: * representations about the suitability of this software for any
+        -:   35: * purpose.  It is provided "as is" without express or implied warranty.
+        -:   36: */
+        -:   37:
+        -:   38:/** @file bits/allocator.h
+        -:   39: *  This is an internal header file, included by other library headers.
+        -:   40: *  Do not attempt to use it directly. @headername{memory}
+        -:   41: */
+        -:   42:
+        -:   43:#ifndef _ALLOCATOR_H
+        -:   44:#define _ALLOCATOR_H 1
+        -:   45:
+        -:   46:#include <bits/c++allocator.h> // Define the base class to std::allocator.
+        -:   47:#include <bits/memoryfwd.h>
+        -:   48:#if __cplusplus >= 201103L
+        -:   49:#include <type_traits>
+        -:   50:#endif
+        -:   51:
+        -:   52:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   53:{
+        -:   54:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   55:
+        -:   56:  /**
+        -:   57:   *  @addtogroup allocators
+        -:   58:   *  @{
+        -:   59:   */
+        -:   60:
+        -:   61:  /// allocator<void> specialization.
+        -:   62:  template<>
+        -:   63:    class allocator<void>
+        -:   64:    {
+        -:   65:    public:
+        -:   66:      typedef size_t      size_type;
+        -:   67:      typedef ptrdiff_t   difference_type;
+        -:   68:      typedef void*       pointer;
+        -:   69:      typedef const void* const_pointer;
+        -:   70:      typedef void        value_type;
+        -:   71:
+        -:   72:      template<typename _Tp1>
+        -:   73:        struct rebind
+        -:   74:        { typedef allocator<_Tp1> other; };
+        -:   75:
+        -:   76:#if __cplusplus >= 201103L
+        -:   77:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:   78:      // 2103. std::allocator propagate_on_container_move_assignment
+        -:   79:      typedef true_type propagate_on_container_move_assignment;
+        -:   80:#endif
+        -:   81:    };
+        -:   82:
+        -:   83:  /**
+        -:   84:   * @brief  The @a standard allocator, as per [20.4].
+        -:   85:   *
+        -:   86:   *  See https://gcc.gnu.org/onlinedocs/libstdc++/manual/memory.html#std.util.memory.allocator
+        -:   87:   *  for further details.
+        -:   88:   *
+        -:   89:   *  @tparam  _Tp  Type of allocated object.
+        -:   90:   */
+        -:   91:  template<typename _Tp>
+        -:   92:    class allocator: public __allocator_base<_Tp>
+        -:   93:    {
+        -:   94:   public:
+        -:   95:      typedef size_t     size_type;
+        -:   96:      typedef ptrdiff_t  difference_type;
+        -:   97:      typedef _Tp*       pointer;
+        -:   98:      typedef const _Tp* const_pointer;
+        -:   99:      typedef _Tp&       reference;
+        -:  100:      typedef const _Tp& const_reference;
+        -:  101:      typedef _Tp        value_type;
+        -:  102:
+        -:  103:      template<typename _Tp1>
+        -:  104:        struct rebind
+        -:  105:        { typedef allocator<_Tp1> other; };
+        -:  106:
+        -:  107:#if __cplusplus >= 201103L
+        -:  108:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  109:      // 2103. std::allocator propagate_on_container_move_assignment
+        -:  110:      typedef true_type propagate_on_container_move_assignment;
+        -:  111:#endif
+        -:  112:
+      118:  113:      allocator() throw() { }
+        -:  114:
+     2725:  115:      allocator(const allocator& __a) throw()
+     2725:  116:      : __allocator_base<_Tp>(__a) { }
+        -:  117:
+        -:  118:      template<typename _Tp1>
+       87:  119:        allocator(const allocator<_Tp1>&) throw() { }
+        -:  120:
+     2930:  121:      ~allocator() throw() { }
+        -:  122:
+        -:  123:      // Inherit everything else.
+        -:  124:    };
+        -:  125:
+        -:  126:  template<typename _T1, typename _T2>
+        -:  127:    inline bool
+        -:  128:    operator==(const allocator<_T1>&, const allocator<_T2>&)
+        -:  129:    _GLIBCXX_USE_NOEXCEPT
+        -:  130:    { return true; }
+        -:  131:
+        -:  132:  template<typename _Tp>
+        -:  133:    inline bool
+        -:  134:    operator==(const allocator<_Tp>&, const allocator<_Tp>&)
+        -:  135:    _GLIBCXX_USE_NOEXCEPT
+        -:  136:    { return true; }
+        -:  137:
+        -:  138:  template<typename _T1, typename _T2>
+        -:  139:    inline bool
+        -:  140:    operator!=(const allocator<_T1>&, const allocator<_T2>&)
+        -:  141:    _GLIBCXX_USE_NOEXCEPT
+        -:  142:    { return false; }
+        -:  143:
+        -:  144:  template<typename _Tp>
+        -:  145:    inline bool
+    #####:  146:    operator!=(const allocator<_Tp>&, const allocator<_Tp>&)
+        -:  147:    _GLIBCXX_USE_NOEXCEPT
+    #####:  148:    { return false; }
+        -:  149:
+        -:  150:  /// @} group allocator
+        -:  151:
+        -:  152:  // Inhibit implicit instantiations for required instantiations,
+        -:  153:  // which are defined via explicit instantiations elsewhere.
+        -:  154:#if _GLIBCXX_EXTERN_TEMPLATE
+        -:  155:  extern template class allocator<char>;
+        -:  156:  extern template class allocator<wchar_t>;
+        -:  157:#endif
+        -:  158:
+        -:  159:  // Undefine.
+        -:  160:#undef __allocator_base
+        -:  161:
+        -:  162:  // To implement Option 3 of DR 431.
+        -:  163:  template<typename _Alloc, bool = __is_empty(_Alloc)>
+        -:  164:    struct __alloc_swap
+        -:  165:    { static void _S_do_it(_Alloc&, _Alloc&) _GLIBCXX_NOEXCEPT { } };
+        -:  166:
+        -:  167:  template<typename _Alloc>
+        -:  168:    struct __alloc_swap<_Alloc, false>
+        -:  169:    {
+        -:  170:      static void
+        -:  171:      _S_do_it(_Alloc& __one, _Alloc& __two) _GLIBCXX_NOEXCEPT
+        -:  172:      {
+        -:  173:	// Precondition: swappable allocators.
+        -:  174:	if (__one != __two)
+        -:  175:	  swap(__one, __two);
+        -:  176:      }
+        -:  177:    };
+        -:  178:
+        -:  179:  // Optimize for stateless allocators.
+        -:  180:  template<typename _Alloc, bool = __is_empty(_Alloc)>
+        -:  181:    struct __alloc_neq
+        -:  182:    {
+        -:  183:      static bool
+        -:  184:      _S_do_it(const _Alloc&, const _Alloc&)
+        -:  185:      { return false; }
+        -:  186:    };
+        -:  187:
+        -:  188:  template<typename _Alloc>
+        -:  189:    struct __alloc_neq<_Alloc, false>
+        -:  190:    {
+        -:  191:      static bool
+        -:  192:      _S_do_it(const _Alloc& __one, const _Alloc& __two)
+        -:  193:      { return __one != __two; }
+        -:  194:    };
+        -:  195:
+        -:  196:#if __cplusplus >= 201103L
+        -:  197:  template<typename _Tp, bool
+        -:  198:    = __or_<is_copy_constructible<typename _Tp::value_type>,
+        -:  199:            is_nothrow_move_constructible<typename _Tp::value_type>>::value>
+        -:  200:    struct __shrink_to_fit_aux
+        -:  201:    { static bool _S_do_it(_Tp&) noexcept { return false; } };
+        -:  202:
+        -:  203:  template<typename _Tp>
+        -:  204:    struct __shrink_to_fit_aux<_Tp, true>
+        -:  205:    {
+        -:  206:      static bool
+        -:  207:      _S_do_it(_Tp& __c) noexcept
+        -:  208:      {
+        -:  209:#if __cpp_exceptions
+        -:  210:	try
+        -:  211:	  {
+        -:  212:	    _Tp(__make_move_if_noexcept_iterator(__c.begin()),
+        -:  213:		__make_move_if_noexcept_iterator(__c.end()),
+        -:  214:		__c.get_allocator()).swap(__c);
+        -:  215:	    return true;
+        -:  216:	  }
+        -:  217:	catch(...)
+        -:  218:	  { return false; }
+        -:  219:#else
+        -:  220:	return false;
+        -:  221:#endif
+        -:  222:      }
+        -:  223:    };
+        -:  224:#endif
+        -:  225:
+        -:  226:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  227:} // namespace std
+        -:  228:
+        -:  229:#endif
