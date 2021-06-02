@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/c++/5/ext/atomicity.h
+        -:    0:Source:/usr/include/c++/9/ext/atomicity.h
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// Support for atomic operations -*- C++ -*-
         -:    2:
-        -:    3:// Copyright (C) 2004-2015 Free Software Foundation, Inc.
+        -:    3:// Copyright (C) 2004-2019 Free Software Foundation, Inc.
         -:    4://
         -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
         -:    6:// software; you can redistribute it and/or modify it under the
@@ -113,10 +112,10 @@
         -:  108:// that the compiler doesn't reorder memory accesses across the
         -:  109:// barriers.
         -:  110:#ifndef _GLIBCXX_READ_MEM_BARRIER
-        -:  111:#define _GLIBCXX_READ_MEM_BARRIER __asm __volatile ("":::"memory")
+        -:  111:#define _GLIBCXX_READ_MEM_BARRIER __atomic_thread_fence (__ATOMIC_ACQUIRE)
         -:  112:#endif
         -:  113:#ifndef _GLIBCXX_WRITE_MEM_BARRIER
-        -:  114:#define _GLIBCXX_WRITE_MEM_BARRIER __asm __volatile ("":::"memory")
+        -:  114:#define _GLIBCXX_WRITE_MEM_BARRIER __atomic_thread_fence (__ATOMIC_RELEASE)
         -:  115:#endif
         -:  116:
         -:  117:#endif 

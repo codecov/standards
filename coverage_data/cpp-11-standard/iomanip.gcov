@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/c++/5/iomanip
+        -:    0:Source:/usr/include/c++/9/iomanip
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// Standard stream manipulators -*- C++ -*-
         -:    2:
-        -:    3:// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+        -:    3:// Copyright (C) 1997-2019 Free Software Foundation, Inc.
         -:    4://
         -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
         -:    6:// software; you can redistribute it and/or modify it under the
@@ -67,24 +66,24 @@
         -:   62:   *  Sent to a stream object, this manipulator resets the specified flags,
         -:   63:   *  via @e stream.setf(0,__mask).
         -:   64:  */
-        -:   65:  inline _Resetiosflags 
+        -:   65:  inline _Resetiosflags
         -:   66:  resetiosflags(ios_base::fmtflags __mask)
         -:   67:  { return { __mask }; }
         -:   68:
         -:   69:  template<typename _CharT, typename _Traits>
-        -:   70:    inline basic_istream<_CharT, _Traits>& 
+        -:   70:    inline basic_istream<_CharT, _Traits>&
         -:   71:    operator>>(basic_istream<_CharT, _Traits>& __is, _Resetiosflags __f)
-        -:   72:    { 
-        -:   73:      __is.setf(ios_base::fmtflags(0), __f._M_mask); 
-        -:   74:      return __is; 
+        -:   72:    {
+        -:   73:      __is.setf(ios_base::fmtflags(0), __f._M_mask);
+        -:   74:      return __is;
         -:   75:    }
         -:   76:
         -:   77:  template<typename _CharT, typename _Traits>
-        -:   78:    inline basic_ostream<_CharT, _Traits>& 
+        -:   78:    inline basic_ostream<_CharT, _Traits>&
         -:   79:    operator<<(basic_ostream<_CharT, _Traits>& __os, _Resetiosflags __f)
-        -:   80:    { 
-        -:   81:      __os.setf(ios_base::fmtflags(0), __f._M_mask); 
-        -:   82:      return __os; 
+        -:   80:    {
+        -:   81:      __os.setf(ios_base::fmtflags(0), __f._M_mask);
+        -:   82:      return __os;
         -:   83:    }
         -:   84:
         -:   85:
@@ -97,24 +96,24 @@
         -:   92:   *  Sent to a stream object, this manipulator sets the format flags
         -:   93:   *  to @a __mask.
         -:   94:  */
-        -:   95:  inline _Setiosflags 
+        -:   95:  inline _Setiosflags
         -:   96:  setiosflags(ios_base::fmtflags __mask)
         -:   97:  { return { __mask }; }
         -:   98:
         -:   99:  template<typename _CharT, typename _Traits>
-        -:  100:    inline basic_istream<_CharT, _Traits>& 
+        -:  100:    inline basic_istream<_CharT, _Traits>&
         -:  101:    operator>>(basic_istream<_CharT, _Traits>& __is, _Setiosflags __f)
-        -:  102:    { 
-        -:  103:      __is.setf(__f._M_mask); 
-        -:  104:      return __is; 
+        -:  102:    {
+        -:  103:      __is.setf(__f._M_mask);
+        -:  104:      return __is;
         -:  105:    }
         -:  106:
         -:  107:  template<typename _CharT, typename _Traits>
-        -:  108:    inline basic_ostream<_CharT, _Traits>& 
+        -:  108:    inline basic_ostream<_CharT, _Traits>&
         -:  109:    operator<<(basic_ostream<_CharT, _Traits>& __os, _Setiosflags __f)
-        -:  110:    { 
-        -:  111:      __os.setf(__f._M_mask); 
-        -:  112:      return __os; 
+        -:  110:    {
+        -:  111:      __os.setf(__f._M_mask);
+        -:  112:      return __os;
         -:  113:    }
         -:  114:
         -:  115:
@@ -128,32 +127,32 @@
         -:  123:   *  @c ios_base::basefield flags to @c oct, @c dec, or @c hex when @a base
         -:  124:   *  is 8, 10, or 16, accordingly, and to 0 if @a __base is any other value.
         -:  125:  */
-        -:  126:  inline _Setbase 
+        -:  126:  inline _Setbase
         -:  127:  setbase(int __base)
         -:  128:  { return { __base }; }
         -:  129:
         -:  130:  template<typename _CharT, typename _Traits>
-        -:  131:    inline basic_istream<_CharT, _Traits>& 
+        -:  131:    inline basic_istream<_CharT, _Traits>&
         -:  132:    operator>>(basic_istream<_CharT, _Traits>& __is, _Setbase __f)
         -:  133:    {
-        -:  134:      __is.setf(__f._M_base ==  8 ? ios_base::oct : 
-        -:  135:		__f._M_base == 10 ? ios_base::dec : 
-        -:  136:		__f._M_base == 16 ? ios_base::hex : 
+        -:  134:      __is.setf(__f._M_base ==  8 ? ios_base::oct :
+        -:  135:		__f._M_base == 10 ? ios_base::dec :
+        -:  136:		__f._M_base == 16 ? ios_base::hex :
         -:  137:		ios_base::fmtflags(0), ios_base::basefield);
-        -:  138:      return __is; 
+        -:  138:      return __is;
         -:  139:    }
-        -:  140:  
+        -:  140:
         -:  141:  template<typename _CharT, typename _Traits>
-        -:  142:    inline basic_ostream<_CharT, _Traits>& 
+        -:  142:    inline basic_ostream<_CharT, _Traits>&
         -:  143:    operator<<(basic_ostream<_CharT, _Traits>& __os, _Setbase __f)
         -:  144:    {
-        -:  145:      __os.setf(__f._M_base ==  8 ? ios_base::oct : 
-        -:  146:		__f._M_base == 10 ? ios_base::dec : 
-        -:  147:		__f._M_base == 16 ? ios_base::hex : 
+        -:  145:      __os.setf(__f._M_base ==  8 ? ios_base::oct :
+        -:  146:		__f._M_base == 10 ? ios_base::dec :
+        -:  147:		__f._M_base == 16 ? ios_base::hex :
         -:  148:		ios_base::fmtflags(0), ios_base::basefield);
-        -:  149:      return __os; 
+        -:  149:      return __os;
         -:  150:    }
-        -:  151:  
+        -:  151:
         -:  152:
         -:  153:  template<typename _CharT>
         -:  154:    struct _Setfill { _CharT _M_c; };
@@ -171,19 +170,19 @@
     #####:  166:    { return { __c }; }
         -:  167:
         -:  168:  template<typename _CharT, typename _Traits>
-        -:  169:    inline basic_istream<_CharT, _Traits>& 
+        -:  169:    inline basic_istream<_CharT, _Traits>&
         -:  170:    operator>>(basic_istream<_CharT, _Traits>& __is, _Setfill<_CharT> __f)
-        -:  171:    { 
-        -:  172:      __is.fill(__f._M_c); 
-        -:  173:      return __is; 
+        -:  171:    {
+        -:  172:      __is.fill(__f._M_c);
+        -:  173:      return __is;
         -:  174:    }
         -:  175:
         -:  176:  template<typename _CharT, typename _Traits>
-        -:  177:    inline basic_ostream<_CharT, _Traits>& 
+        -:  177:    inline basic_ostream<_CharT, _Traits>&
         -:  178:    operator<<(basic_ostream<_CharT, _Traits>& __os, _Setfill<_CharT> __f)
-        -:  179:    { 
-        -:  180:      __os.fill(__f._M_c); 
-        -:  181:      return __os; 
+        -:  179:    {
+        -:  180:      __os.fill(__f._M_c);
+        -:  181:      return __os;
         -:  182:    }
         -:  183:
         -:  184:
@@ -196,24 +195,24 @@
         -:  191:   *  Sent to a stream object, this manipulator calls @c precision(__n) for
         -:  192:   *  that object.
         -:  193:  */
-        -:  194:  inline _Setprecision 
+        -:  194:  inline _Setprecision
     #####:  195:  setprecision(int __n)
     #####:  196:  { return { __n }; }
         -:  197:
         -:  198:  template<typename _CharT, typename _Traits>
-        -:  199:    inline basic_istream<_CharT, _Traits>& 
+        -:  199:    inline basic_istream<_CharT, _Traits>&
         -:  200:    operator>>(basic_istream<_CharT, _Traits>& __is, _Setprecision __f)
-        -:  201:    { 
-        -:  202:      __is.precision(__f._M_n); 
-        -:  203:      return __is; 
+        -:  201:    {
+        -:  202:      __is.precision(__f._M_n);
+        -:  203:      return __is;
         -:  204:    }
         -:  205:
         -:  206:  template<typename _CharT, typename _Traits>
-        -:  207:    inline basic_ostream<_CharT, _Traits>& 
+        -:  207:    inline basic_ostream<_CharT, _Traits>&
         -:  208:    operator<<(basic_ostream<_CharT, _Traits>& __os, _Setprecision __f)
-        -:  209:    { 
-        -:  210:      __os.precision(__f._M_n); 
-        -:  211:      return __os; 
+        -:  209:    {
+        -:  210:      __os.precision(__f._M_n);
+        -:  211:      return __os;
         -:  212:    }
         -:  213:
         -:  214:
@@ -226,35 +225,35 @@
         -:  221:   *  Sent to a stream object, this manipulator calls @c width(__n) for
         -:  222:   *  that object.
         -:  223:  */
-        -:  224:  inline _Setw 
+        -:  224:  inline _Setw
     #####:  225:  setw(int __n)
     #####:  226:  { return { __n }; }
         -:  227:
         -:  228:  template<typename _CharT, typename _Traits>
-        -:  229:    inline basic_istream<_CharT, _Traits>& 
+        -:  229:    inline basic_istream<_CharT, _Traits>&
         -:  230:    operator>>(basic_istream<_CharT, _Traits>& __is, _Setw __f)
         -:  231:    {
         -:  232:      __is.width(__f._M_n);
-        -:  233:      return __is; 
+        -:  233:      return __is;
         -:  234:    }
         -:  235:
         -:  236:  template<typename _CharT, typename _Traits>
-        -:  237:    inline basic_ostream<_CharT, _Traits>& 
+        -:  237:    inline basic_ostream<_CharT, _Traits>&
         -:  238:    operator<<(basic_ostream<_CharT, _Traits>& __os, _Setw __f)
         -:  239:    {
         -:  240:      __os.width(__f._M_n);
-        -:  241:      return __os; 
+        -:  241:      return __os;
         -:  242:    }
         -:  243:
         -:  244:#if __cplusplus >= 201103L
-        -:  245:  
+        -:  245:
         -:  246:  template<typename _MoneyT>
         -:  247:    struct _Get_money { _MoneyT& _M_mon; bool _M_intl; };
         -:  248:
         -:  249:  /**
         -:  250:   *  @brief  Extended manipulator for extracting money.
         -:  251:   *  @param  __mon  Either long double or a specialization of @c basic_string.
-        -:  252:   *  @param  __intl A bool indicating whether international format 
+        -:  252:   *  @param  __intl A bool indicating whether international format
         -:  253:   *                 is to be used.
         -:  254:   *
         -:  255:   *  Sent to a stream object, this manipulator extracts @a __mon.
@@ -291,7 +290,7 @@
         -:  286:	  if (__err)
         -:  287:	    __is.setstate(__err);
         -:  288:	}
-        -:  289:      return __is; 
+        -:  289:      return __is;
         -:  290:    }
         -:  291:
         -:  292:
@@ -301,7 +300,7 @@
         -:  296:  /**
         -:  297:   *  @brief  Extended manipulator for inserting money.
         -:  298:   *  @param  __mon  Either long double or a specialization of @c basic_string.
-        -:  299:   *  @param  __intl A bool indicating whether international format 
+        -:  299:   *  @param  __intl A bool indicating whether international format
         -:  300:   *                 is to be used.
         -:  301:   *
         -:  302:   *  Sent to a stream object, this manipulator inserts @a __mon.
@@ -312,7 +311,7 @@
         -:  307:    { return { __mon, __intl }; }
         -:  308:
         -:  309:  template<typename _CharT, typename _Traits, typename _MoneyT>
-        -:  310:    basic_ostream<_CharT, _Traits>& 
+        -:  310:    basic_ostream<_CharT, _Traits>&
         -:  311:    operator<<(basic_ostream<_CharT, _Traits>& __os, _Put_money<_MoneyT> __f)
         -:  312:    {
         -:  313:      typename basic_ostream<_CharT, _Traits>::sentry __cerb(__os);
@@ -339,7 +338,7 @@
         -:  334:	  if (__err)
         -:  335:	    __os.setstate(__err);
         -:  336:	}
-        -:  337:      return __os; 
+        -:  337:      return __os;
         -:  338:    }
         -:  339:
         -:  340:  template<typename _CharT>
@@ -451,7 +450,7 @@
         -:  446:      return __is;
         -:  447:    }
         -:  448:
-        -:  449:#if __cplusplus > 201103L
+        -:  449:#if __cplusplus >= 201402L
         -:  450:
         -:  451:#define __cpp_lib_quoted_string_io 201304
         -:  452:
@@ -476,8 +475,8 @@
         -:  471:	   _CharT __delim = _CharT('"'), _CharT __escape = _CharT('\\'))
         -:  472:    {
         -:  473:      return __detail::_Quoted_string<
-        -:  474:			const basic_string<_CharT, _Traits, _Alloc>&, _CharT>(
-        -:  475:				__string, __delim, __escape);
+        -:  474:	const basic_string<_CharT, _Traits, _Alloc>&, _CharT>(
+        -:  475:	    __string, __delim, __escape);
         -:  476:    }
         -:  477:
         -:  478:  template<typename _CharT, typename _Traits, typename _Alloc>
@@ -486,48 +485,60 @@
         -:  481:	   _CharT __delim = _CharT('"'), _CharT __escape = _CharT('\\'))
         -:  482:    {
         -:  483:      return __detail::_Quoted_string<
-        -:  484:			basic_string<_CharT, _Traits, _Alloc>&, _CharT>(
-        -:  485:				__string, __delim, __escape);
+        -:  484:	basic_string<_CharT, _Traits, _Alloc>&, _CharT>(
+        -:  485:	    __string, __delim, __escape);
         -:  486:    }
         -:  487:
-        -:  488:#endif // __cplusplus > 201103L
-        -:  489:
-        -:  490:#endif // __cplusplus >= 201103L
-        -:  491:
-        -:  492:  // Inhibit implicit instantiations for required instantiations,
-        -:  493:  // which are defined via explicit instantiations elsewhere.  
-        -:  494:  // NB:  This syntax is a GNU extension.
-        -:  495:#if _GLIBCXX_EXTERN_TEMPLATE
-        -:  496:  extern template ostream& operator<<(ostream&, _Setfill<char>);
-        -:  497:  extern template ostream& operator<<(ostream&, _Setiosflags);
-        -:  498:  extern template ostream& operator<<(ostream&, _Resetiosflags);
-        -:  499:  extern template ostream& operator<<(ostream&, _Setbase);
-        -:  500:  extern template ostream& operator<<(ostream&, _Setprecision);
-        -:  501:  extern template ostream& operator<<(ostream&, _Setw);
-        -:  502:  extern template istream& operator>>(istream&, _Setfill<char>);
-        -:  503:  extern template istream& operator>>(istream&, _Setiosflags);
-        -:  504:  extern template istream& operator>>(istream&, _Resetiosflags);
-        -:  505:  extern template istream& operator>>(istream&, _Setbase);
-        -:  506:  extern template istream& operator>>(istream&, _Setprecision);
-        -:  507:  extern template istream& operator>>(istream&, _Setw);
-        -:  508:
-        -:  509:#ifdef _GLIBCXX_USE_WCHAR_T
-        -:  510:  extern template wostream& operator<<(wostream&, _Setfill<wchar_t>);
-        -:  511:  extern template wostream& operator<<(wostream&, _Setiosflags);
-        -:  512:  extern template wostream& operator<<(wostream&, _Resetiosflags);
-        -:  513:  extern template wostream& operator<<(wostream&, _Setbase);
-        -:  514:  extern template wostream& operator<<(wostream&, _Setprecision);
-        -:  515:  extern template wostream& operator<<(wostream&, _Setw);
-        -:  516:  extern template wistream& operator>>(wistream&, _Setfill<wchar_t>);
-        -:  517:  extern template wistream& operator>>(wistream&, _Setiosflags);
-        -:  518:  extern template wistream& operator>>(wistream&, _Resetiosflags);
-        -:  519:  extern template wistream& operator>>(wistream&, _Setbase);
-        -:  520:  extern template wistream& operator>>(wistream&, _Setprecision);
-        -:  521:  extern template wistream& operator>>(wistream&, _Setw);
-        -:  522:#endif
-        -:  523:#endif
-        -:  524:
-        -:  525:_GLIBCXX_END_NAMESPACE_VERSION
-        -:  526:} // namespace
-        -:  527:
-        -:  528:#endif /* _GLIBCXX_IOMANIP */
+        -:  488:#if __cplusplus >= 201703L
+        -:  489:  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  490:  // 2785. quoted should work with basic_string_view
+        -:  491:  template<typename _CharT, typename _Traits>
+        -:  492:    inline auto
+        -:  493:    quoted(basic_string_view<_CharT, _Traits> __sv,
+        -:  494:	   _CharT __delim = _CharT('"'), _CharT __escape = _CharT('\\'))
+        -:  495:    {
+        -:  496:      return __detail::_Quoted_string<
+        -:  497:	basic_string_view<_CharT, _Traits>, _CharT>(__sv, __delim, __escape);
+        -:  498:    }
+        -:  499:#endif // C++17
+        -:  500:#endif // C++14
+        -:  501:
+        -:  502:#endif // __cplusplus >= 201103L
+        -:  503:
+        -:  504:  // Inhibit implicit instantiations for required instantiations,
+        -:  505:  // which are defined via explicit instantiations elsewhere.
+        -:  506:  // NB:  This syntax is a GNU extension.
+        -:  507:#if _GLIBCXX_EXTERN_TEMPLATE
+        -:  508:  extern template ostream& operator<<(ostream&, _Setfill<char>);
+        -:  509:  extern template ostream& operator<<(ostream&, _Setiosflags);
+        -:  510:  extern template ostream& operator<<(ostream&, _Resetiosflags);
+        -:  511:  extern template ostream& operator<<(ostream&, _Setbase);
+        -:  512:  extern template ostream& operator<<(ostream&, _Setprecision);
+        -:  513:  extern template ostream& operator<<(ostream&, _Setw);
+        -:  514:  extern template istream& operator>>(istream&, _Setfill<char>);
+        -:  515:  extern template istream& operator>>(istream&, _Setiosflags);
+        -:  516:  extern template istream& operator>>(istream&, _Resetiosflags);
+        -:  517:  extern template istream& operator>>(istream&, _Setbase);
+        -:  518:  extern template istream& operator>>(istream&, _Setprecision);
+        -:  519:  extern template istream& operator>>(istream&, _Setw);
+        -:  520:
+        -:  521:#ifdef _GLIBCXX_USE_WCHAR_T
+        -:  522:  extern template wostream& operator<<(wostream&, _Setfill<wchar_t>);
+        -:  523:  extern template wostream& operator<<(wostream&, _Setiosflags);
+        -:  524:  extern template wostream& operator<<(wostream&, _Resetiosflags);
+        -:  525:  extern template wostream& operator<<(wostream&, _Setbase);
+        -:  526:  extern template wostream& operator<<(wostream&, _Setprecision);
+        -:  527:  extern template wostream& operator<<(wostream&, _Setw);
+        -:  528:  extern template wistream& operator>>(wistream&, _Setfill<wchar_t>);
+        -:  529:  extern template wistream& operator>>(wistream&, _Setiosflags);
+        -:  530:  extern template wistream& operator>>(wistream&, _Resetiosflags);
+        -:  531:  extern template wistream& operator>>(wistream&, _Setbase);
+        -:  532:  extern template wistream& operator>>(wistream&, _Setprecision);
+        -:  533:  extern template wistream& operator>>(wistream&, _Setw);
+        -:  534:#endif
+        -:  535:#endif
+        -:  536:
+        -:  537:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  538:} // namespace
+        -:  539:
+        -:  540:#endif /* _GLIBCXX_IOMANIP */

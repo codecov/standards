@@ -2,7 +2,6 @@
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:
         -:    2:namespace Index {
         1:    3:    bool uncovered_if(bool a = true) {

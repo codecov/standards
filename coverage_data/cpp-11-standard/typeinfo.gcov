@@ -1,10 +1,9 @@
-        -:    0:Source:/usr/include/c++/5/typeinfo
+        -:    0:Source:/usr/include/c++/9/typeinfo
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// RTTI support for -*- C++ -*-
-        -:    2:// Copyright (C) 1994-2015 Free Software Foundation, Inc.
+        -:    2:// Copyright (C) 1994-2019 Free Software Foundation, Inc.
         -:    3://
         -:    4:// This file is part of GCC.
         -:    5://
@@ -36,7 +35,7 @@
         -:   31:
         -:   32:#pragma GCC system_header
         -:   33:
-        -:   34:#include <exception>
+        -:   34:#include <bits/exception.h>
         -:   35:#if __cplusplus >= 201103L
         -:   36:#include <bits/hash_bytes.h>
         -:   37:#endif
@@ -122,11 +121,11 @@
         -:  117:	? __name < __arg.__name
         -:  118:	: __builtin_strcmp (__name, __arg.__name) < 0; }
         -:  119:
-       43:  120:    bool operator==(const type_info& __arg) const _GLIBCXX_NOEXCEPT
+    #####:  120:    bool operator==(const type_info& __arg) const _GLIBCXX_NOEXCEPT
         -:  121:    {
-       43:  122:      return ((__name == __arg.__name)
-       43:  123:	      || (__name[0] != '*' &&
-       43:  124:		  __builtin_strcmp (__name, __arg.__name) == 0));
+    #####:  122:      return ((__name == __arg.__name)
+    #####:  123:	      || (__name[0] != '*' &&
+    #####:  124:		  __builtin_strcmp (__name, __arg.__name) == 0));
         -:  125:    }
         -:  126:  #else
         -:  127:    // On some targets we can rely on type_info's NTBS being unique,

@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/c++/5/bits/regex_compiler.h
+        -:    0:Source:/usr/include/c++/9/bits/regex_compiler.h
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// class template regex -*- C++ -*-
         -:    2:
-        -:    3:// Copyright (C) 2010-2015 Free Software Foundation, Inc.
+        -:    3:// Copyright (C) 2010-2019 Free Software Foundation, Inc.
         -:    4://
         -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
         -:    6:// software; you can redistribute it and/or modify it under the
@@ -35,490 +34,1176 @@
         -:   30:
         -:   31:namespace std _GLIBCXX_VISIBILITY(default)
         -:   32:{
-        -:   33:namespace __detail
-        -:   34:{
-        -:   35:_GLIBCXX_BEGIN_NAMESPACE_VERSION
-        -:   36:
-        -:   37:  /**
-        -:   38:   * @addtogroup regex-detail
-        -:   39:   * @{
-        -:   40:   */
-        -:   41:
-        -:   42:  template<typename, bool, bool>
-        -:   43:    struct _BracketMatcher;
-        -:   44:
-        -:   45:  /**
-        -:   46:   * @brief Builds an NFA from an input iterator range.
-        -:   47:   *
-        -:   48:   * The %_TraitsT type should fulfill requirements [28.3].
-        -:   49:   */
-        -:   50:  template<typename _TraitsT>
-    #####:   51:    class _Compiler
-        -:   52:    {
-        -:   53:    public:
-        -:   54:      typedef typename _TraitsT::char_type        _CharT;
-        -:   55:      typedef const _CharT*                       _IterT;
-        -:   56:      typedef _NFA<_TraitsT>              	  _RegexT;
-        -:   57:      typedef regex_constants::syntax_option_type _FlagT;
-        -:   58:
-        -:   59:      _Compiler(_IterT __b, _IterT __e,
-        -:   60:		const typename _TraitsT::locale_type& __traits, _FlagT __flags);
-        -:   61:
-        -:   62:      shared_ptr<const _RegexT>
-    #####:   63:      _M_get_nfa()
-    #####:   64:      { return std::move(_M_nfa); }
-        -:   65:
-        -:   66:    private:
-        -:   67:      typedef _Scanner<_CharT>               _ScannerT;
-        -:   68:      typedef typename _TraitsT::string_type _StringT;
-        -:   69:      typedef typename _ScannerT::_TokenT    _TokenT;
-        -:   70:      typedef _StateSeq<_TraitsT>            _StateSeqT;
-        -:   71:      typedef std::stack<_StateSeqT>         _StackT;
-        -:   72:      typedef std::ctype<_CharT>             _CtypeT;
-        -:   73:
-        -:   74:      // accepts a specific token or returns false.
-        -:   75:      bool
-        -:   76:      _M_match_token(_TokenT __token);
-        -:   77:
-        -:   78:      void
-        -:   79:      _M_disjunction();
-        -:   80:
-        -:   81:      void
-        -:   82:      _M_alternative();
+        -:   33:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   34:_GLIBCXX_BEGIN_NAMESPACE_CXX11
+        -:   35:
+        -:   36:  template<typename>
+        -:   37:    class regex_traits;
+        -:   38:
+        -:   39:_GLIBCXX_END_NAMESPACE_CXX11
+        -:   40:
+        -:   41:namespace __detail
+        -:   42:{
+        -:   43:  /**
+        -:   44:   * @addtogroup regex-detail
+        -:   45:   * @{
+        -:   46:   */
+        -:   47:
+        -:   48:  template<typename, bool, bool>
+        -:   49:    struct _BracketMatcher;
+        -:   50:
+        -:   51:  /**
+        -:   52:   * @brief Builds an NFA from an input iterator range.
+        -:   53:   *
+        -:   54:   * The %_TraitsT type should fulfill requirements [28.3].
+        -:   55:   */
+        -:   56:  template<typename _TraitsT>
+        -:   57:    class _Compiler
+        -:   58:    {
+        -:   59:    public:
+        -:   60:      typedef typename _TraitsT::char_type        _CharT;
+        -:   61:      typedef const _CharT*                       _IterT;
+        -:   62:      typedef _NFA<_TraitsT>              	  _RegexT;
+        -:   63:      typedef regex_constants::syntax_option_type _FlagT;
+        -:   64:
+        -:   65:      _Compiler(_IterT __b, _IterT __e,
+        -:   66:		const typename _TraitsT::locale_type& __traits, _FlagT __flags);
+        -:   67:
+        -:   68:      shared_ptr<const _RegexT>
+    #####:   69:      _M_get_nfa()
+    #####:   70:      { return std::move(_M_nfa); }
+        -:   71:
+        -:   72:    private:
+        -:   73:      typedef _Scanner<_CharT>               _ScannerT;
+        -:   74:      typedef typename _TraitsT::string_type _StringT;
+        -:   75:      typedef typename _ScannerT::_TokenT    _TokenT;
+        -:   76:      typedef _StateSeq<_TraitsT>            _StateSeqT;
+        -:   77:      typedef std::stack<_StateSeqT>         _StackT;
+        -:   78:      typedef std::ctype<_CharT>             _CtypeT;
+        -:   79:
+        -:   80:      // accepts a specific token or returns false.
+        -:   81:      bool
+        -:   82:      _M_match_token(_TokenT __token);
         -:   83:
-        -:   84:      bool
-        -:   85:      _M_term();
+        -:   84:      void
+        -:   85:      _M_disjunction();
         -:   86:
-        -:   87:      bool
-        -:   88:      _M_assertion();
+        -:   87:      void
+        -:   88:      _M_alternative();
         -:   89:
         -:   90:      bool
-        -:   91:      _M_quantifier();
+        -:   91:      _M_term();
         -:   92:
         -:   93:      bool
-        -:   94:      _M_atom();
+        -:   94:      _M_assertion();
         -:   95:
         -:   96:      bool
-        -:   97:      _M_bracket_expression();
+        -:   97:      _M_quantifier();
         -:   98:
-        -:   99:      template<bool __icase, bool __collate>
-        -:  100:	void
-        -:  101:	_M_insert_any_matcher_ecma();
-        -:  102:
-        -:  103:      template<bool __icase, bool __collate>
-        -:  104:	void
-        -:  105:	_M_insert_any_matcher_posix();
-        -:  106:
-        -:  107:      template<bool __icase, bool __collate>
-        -:  108:	void
-        -:  109:	_M_insert_char_matcher();
-        -:  110:
-        -:  111:      template<bool __icase, bool __collate>
-        -:  112:	void
-        -:  113:	_M_insert_character_class_matcher();
-        -:  114:
-        -:  115:      template<bool __icase, bool __collate>
-        -:  116:	void
-        -:  117:	_M_insert_bracket_matcher(bool __neg);
-        -:  118:
-        -:  119:      // Returns true if successfully matched one term and should continue.
-        -:  120:      // Returns false if the compiler should move on.
+        -:   99:      bool
+        -:  100:      _M_atom();
+        -:  101:
+        -:  102:      bool
+        -:  103:      _M_bracket_expression();
+        -:  104:
+        -:  105:      template<bool __icase, bool __collate>
+        -:  106:	void
+        -:  107:	_M_insert_any_matcher_ecma();
+        -:  108:
+        -:  109:      template<bool __icase, bool __collate>
+        -:  110:	void
+        -:  111:	_M_insert_any_matcher_posix();
+        -:  112:
+        -:  113:      template<bool __icase, bool __collate>
+        -:  114:	void
+        -:  115:	_M_insert_char_matcher();
+        -:  116:
+        -:  117:      template<bool __icase, bool __collate>
+        -:  118:	void
+        -:  119:	_M_insert_character_class_matcher();
+        -:  120:
         -:  121:      template<bool __icase, bool __collate>
-        -:  122:	bool
-        -:  123:	_M_expression_term(pair<bool, _CharT>& __last_char,
-        -:  124:			   _BracketMatcher<_TraitsT, __icase, __collate>&
-        -:  125:			   __matcher);
-        -:  126:
-        -:  127:      int
-        -:  128:      _M_cur_int_value(int __radix);
-        -:  129:
-        -:  130:      bool
-        -:  131:      _M_try_char();
+        -:  122:	void
+        -:  123:	_M_insert_bracket_matcher(bool __neg);
+        -:  124:
+        -:  125:      // Returns true if successfully matched one term and should continue.
+        -:  126:      // Returns false if the compiler should move on.
+        -:  127:      template<bool __icase, bool __collate>
+        -:  128:	bool
+        -:  129:	_M_expression_term(pair<bool, _CharT>& __last_char,
+        -:  130:			   _BracketMatcher<_TraitsT, __icase, __collate>&
+        -:  131:			   __matcher);
         -:  132:
-        -:  133:      _StateSeqT
-    #####:  134:      _M_pop()
-        -:  135:      {
-    #####:  136:	auto ret = _M_stack.top();
-    #####:  137:	_M_stack.pop();
-    #####:  138:	return ret;
-        -:  139:      }
-        -:  140:
-        -:  141:      _FlagT              _M_flags;
-        -:  142:      _ScannerT           _M_scanner;
-        -:  143:      shared_ptr<_RegexT> _M_nfa;
-        -:  144:      _StringT            _M_value;
-        -:  145:      _StackT             _M_stack;
-        -:  146:      const _TraitsT&     _M_traits;
-        -:  147:      const _CtypeT&      _M_ctype;
-        -:  148:    };
-        -:  149:
-        -:  150:  template<typename _Tp>
-        -:  151:    struct __has_contiguous_iter : std::false_type { };
-        -:  152:
-        -:  153:  template<typename _Ch, typename _Tr, typename _Alloc>
-        -:  154:    struct __has_contiguous_iter<std::basic_string<_Ch, _Tr, _Alloc>>
-        -:  155:    : std::true_type
-        -:  156:    { };
-        -:  157:
-        -:  158:  template<typename _Tp, typename _Alloc>
-        -:  159:    struct __has_contiguous_iter<std::vector<_Tp, _Alloc>>
-        -:  160:    : std::true_type
-        -:  161:    { };
-        -:  162:
-        -:  163:  template<typename _Tp>
-        -:  164:    struct __is_contiguous_normal_iter : std::false_type { };
-        -:  165:
-        -:  166:  template<typename _CharT>
-        -:  167:    struct __is_contiguous_normal_iter<_CharT*> : std::true_type { };
+        -:  133:      int
+        -:  134:      _M_cur_int_value(int __radix);
+        -:  135:
+        -:  136:      bool
+        -:  137:      _M_try_char();
+        -:  138:
+        -:  139:      _StateSeqT
+    #####:  140:      _M_pop()
+        -:  141:      {
+    #####:  142:	auto ret = _M_stack.top();
+    #####:  143:	_M_stack.pop();
+    #####:  144:	return ret;
+        -:  145:      }
+        -:  146:
+        -:  147:      _FlagT              _M_flags;
+        -:  148:      _ScannerT           _M_scanner;
+        -:  149:      shared_ptr<_RegexT> _M_nfa;
+        -:  150:      _StringT            _M_value;
+        -:  151:      _StackT             _M_stack;
+        -:  152:      const _TraitsT&     _M_traits;
+        -:  153:      const _CtypeT&      _M_ctype;
+        -:  154:    };
+        -:  155:
+        -:  156:  template<typename _Tp>
+        -:  157:    struct __is_contiguous_iter : is_pointer<_Tp>::type { };
+        -:  158:
+        -:  159:  template<typename _Tp, typename _Cont>
+        -:  160:    struct
+        -:  161:    __is_contiguous_iter<__gnu_cxx::__normal_iterator<_Tp*, _Cont>>
+        -:  162:    : true_type { };
+        -:  163:
+        -:  164:  template<typename _Iter, typename _TraitsT>
+        -:  165:    using __enable_if_contiguous_iter
+        -:  166:      = __enable_if_t< __is_contiguous_iter<_Iter>::value,
+        -:  167:                       std::shared_ptr<const _NFA<_TraitsT>> >;
         -:  168:
-        -:  169:  template<typename _Tp, typename _Cont>
-        -:  170:    struct
-        -:  171:    __is_contiguous_normal_iter<__gnu_cxx::__normal_iterator<_Tp, _Cont>>
-        -:  172:    : __has_contiguous_iter<_Cont>::type
-        -:  173:    { };
-        -:  174:
-        -:  175:  template<typename _Iter, typename _TraitsT>
-        -:  176:    using __enable_if_contiguous_normal_iter
-        -:  177:      = typename enable_if< __is_contiguous_normal_iter<_Iter>::value,
-        -:  178:                           std::shared_ptr<const _NFA<_TraitsT>> >::type;
-        -:  179:
-        -:  180:  template<typename _Iter, typename _TraitsT>
-        -:  181:    using __disable_if_contiguous_normal_iter
-        -:  182:      = typename enable_if< !__is_contiguous_normal_iter<_Iter>::value,
-        -:  183:                           std::shared_ptr<const _NFA<_TraitsT>> >::type;
-        -:  184:
-        -:  185:  template<typename _FwdIter, typename _TraitsT>
-        -:  186:    inline __enable_if_contiguous_normal_iter<_FwdIter, _TraitsT>
-    #####:  187:    __compile_nfa(_FwdIter __first, _FwdIter __last,
-        -:  188:		  const typename _TraitsT::locale_type& __loc,
-        -:  189:		  regex_constants::syntax_option_type __flags)
-        -:  190:    {
-    #####:  191:      size_t __len = __last - __first;
-    #####:  192:      const auto* __cfirst = __len ? std::__addressof(*__first) : nullptr;
-        -:  193:      using _Cmplr = _Compiler<_TraitsT>;
-    #####:  194:      return _Cmplr(__cfirst, __cfirst + __len, __loc, __flags)._M_get_nfa();
+        -:  169:  template<typename _Iter, typename _TraitsT>
+        -:  170:    using __disable_if_contiguous_iter
+        -:  171:      = __enable_if_t< !__is_contiguous_iter<_Iter>::value,
+        -:  172:                       std::shared_ptr<const _NFA<_TraitsT>> >;
+        -:  173:
+        -:  174:  template<typename _TraitsT, typename _FwdIter>
+        -:  175:    inline __enable_if_contiguous_iter<_FwdIter, _TraitsT>
+    #####:  176:    __compile_nfa(_FwdIter __first, _FwdIter __last,
+        -:  177:		  const typename _TraitsT::locale_type& __loc,
+        -:  178:		  regex_constants::syntax_option_type __flags)
+        -:  179:    {
+    #####:  180:      size_t __len = __last - __first;
+    #####:  181:      const auto* __cfirst = __len ? std::__addressof(*__first) : nullptr;
+        -:  182:      using _Cmplr = _Compiler<_TraitsT>;
+    #####:  183:      return _Cmplr(__cfirst, __cfirst + __len, __loc, __flags)._M_get_nfa();
+        -:  184:    }
+        -:  185:
+        -:  186:  template<typename _TraitsT, typename _FwdIter>
+        -:  187:    inline __disable_if_contiguous_iter<_FwdIter, _TraitsT>
+        -:  188:    __compile_nfa(_FwdIter __first, _FwdIter __last,
+        -:  189:		  const typename _TraitsT::locale_type& __loc,
+        -:  190:		  regex_constants::syntax_option_type __flags)
+        -:  191:    {
+        -:  192:      const basic_string<typename _TraitsT::char_type> __str(__first, __last);
+        -:  193:      return __compile_nfa<_TraitsT>(__str.data(), __str.data() + __str.size(),
+        -:  194:				     __loc, __flags);
         -:  195:    }
         -:  196:
-        -:  197:  template<typename _FwdIter, typename _TraitsT>
-        -:  198:    inline __disable_if_contiguous_normal_iter<_FwdIter, _TraitsT>
-        -:  199:    __compile_nfa(_FwdIter __first, _FwdIter __last,
-        -:  200:		  const typename _TraitsT::locale_type& __loc,
-        -:  201:		  regex_constants::syntax_option_type __flags)
-        -:  202:    {
-        -:  203:      basic_string<typename _TraitsT::char_type> __str(__first, __last);
-        -:  204:      return __compile_nfa(__str.data(), __str.data() + __str.size(), __loc,
-        -:  205:          __flags);
-        -:  206:    }
-        -:  207:
-        -:  208:  // [28.13.14]
-        -:  209:  template<typename _TraitsT, bool __icase, bool __collate>
-        -:  210:    class _RegexTranslator
-        -:  211:    {
-        -:  212:    public:
-        -:  213:      typedef typename _TraitsT::char_type	      _CharT;
-        -:  214:      typedef typename _TraitsT::string_type	      _StringT;
-        -:  215:      typedef typename std::conditional<__collate,
-        -:  216:					_StringT,
-        -:  217:					_CharT>::type _StrTransT;
-        -:  218:
-        -:  219:      explicit
-    #####:  220:      _RegexTranslator(const _TraitsT& __traits)
-    #####:  221:      : _M_traits(__traits)
-    #####:  222:      { }
-        -:  223:
-        -:  224:      _CharT
-    #####:  225:      _M_translate(_CharT __ch) const
-        -:  226:      {
-        -:  227:	if (__icase)
-    #####:  228:	  return _M_traits.translate_nocase(__ch);
-        -:  229:	else if (__collate)
-    #####:  230:	  return _M_traits.translate(__ch);
-        -:  231:	else
-        -:  232:	  return __ch;
-        -:  233:      }
-        -:  234:
-        -:  235:      _StrTransT
-    #####:  236:      _M_transform(_CharT __ch) const
-        -:  237:      {
-    #####:  238:	return _M_transform_impl(__ch, typename integral_constant<bool,
-    #####:  239:				 __collate>::type());
-        -:  240:      }
-        -:  241:
-        -:  242:    private:
-        -:  243:      _StrTransT
-    #####:  244:      _M_transform_impl(_CharT __ch, false_type) const
-    #####:  245:      { return __ch; }
-        -:  246:
-        -:  247:      _StrTransT
-    #####:  248:      _M_transform_impl(_CharT __ch, true_type) const
-        -:  249:      {
-    #####:  250:	_StrTransT __str = _StrTransT(1, _M_translate(__ch));
-    #####:  251:	return _M_traits.transform(__str.begin(), __str.end());
-        -:  252:      }
-        -:  253:
-        -:  254:      const _TraitsT& _M_traits;
-        -:  255:    };
-        -:  256:
-        -:  257:  template<typename _TraitsT>
-        -:  258:    class _RegexTranslator<_TraitsT, false, false>
-        -:  259:    {
-        -:  260:    public:
-        -:  261:      typedef typename _TraitsT::char_type _CharT;
-        -:  262:      typedef _CharT                       _StrTransT;
-        -:  263:
-        -:  264:      explicit
-    #####:  265:      _RegexTranslator(const _TraitsT&)
-    #####:  266:      { }
-        -:  267:
-        -:  268:      _CharT
-    #####:  269:      _M_translate(_CharT __ch) const
-    #####:  270:      { return __ch; }
-        -:  271:
-        -:  272:      _StrTransT
-    #####:  273:      _M_transform(_CharT __ch) const
-    #####:  274:      { return __ch; }
-        -:  275:    };
-        -:  276:
-        -:  277:  template<typename _TraitsT, bool __is_ecma, bool __icase, bool __collate>
-        -:  278:    struct _AnyMatcher;
-        -:  279:
-        -:  280:  template<typename _TraitsT, bool __icase, bool __collate>
-        -:  281:    struct _AnyMatcher<_TraitsT, false, __icase, __collate>
-        -:  282:    {
-        -:  283:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
-        -:  284:      typedef typename _TransT::_CharT                       _CharT;
-        -:  285:
-        -:  286:      explicit
-    #####:  287:      _AnyMatcher(const _TraitsT& __traits)
-    #####:  288:      : _M_translator(__traits)
-    #####:  289:      { }
-        -:  290:
-        -:  291:      bool
-    #####:  292:      operator()(_CharT __ch) const
-        -:  293:      {
-    #####:  294:	static auto __nul = _M_translator._M_translate('\0');
-    #####:  295:	return _M_translator._M_translate(__ch) != __nul;
-        -:  296:      }
-        -:  297:
-        -:  298:      _TransT _M_translator;
-        -:  299:    };
-        -:  300:
-        -:  301:  template<typename _TraitsT, bool __icase, bool __collate>
-        -:  302:    struct _AnyMatcher<_TraitsT, true, __icase, __collate>
-        -:  303:    {
-        -:  304:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
-        -:  305:      typedef typename _TransT::_CharT                       _CharT;
+        -:  197:  // [28.13.14]
+        -:  198:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  199:    class _RegexTranslatorBase
+        -:  200:    {
+        -:  201:    public:
+        -:  202:      typedef typename _TraitsT::char_type	      _CharT;
+        -:  203:      typedef typename _TraitsT::string_type	      _StringT;
+        -:  204:      typedef _StringT _StrTransT;
+        -:  205:
+        -:  206:      explicit
+    #####:  207:      _RegexTranslatorBase(const _TraitsT& __traits)
+    #####:  208:      : _M_traits(__traits)
+    #####:  209:      { }
+------------------
+_ZNSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EEC2ERKS3_:
+    #####:  207:      _RegexTranslatorBase(const _TraitsT& __traits)
+    #####:  208:      : _M_traits(__traits)
+    #####:  209:      { }
+------------------
+_ZNSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb0EEC2ERKS3_:
+    #####:  207:      _RegexTranslatorBase(const _TraitsT& __traits)
+    #####:  208:      : _M_traits(__traits)
+    #####:  209:      { }
+------------------
+_ZNSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb0ELb1EEC2ERKS3_:
+    #####:  207:      _RegexTranslatorBase(const _TraitsT& __traits)
+    #####:  208:      : _M_traits(__traits)
+    #####:  209:      { }
+------------------
+        -:  210:
+        -:  211:      _CharT
+    #####:  212:      _M_translate(_CharT __ch) const
+        -:  213:      {
+        -:  214:	if (__icase)
+    #####:  215:	  return _M_traits.translate_nocase(__ch);
+        -:  216:	else if (__collate)
+    #####:  217:	  return _M_traits.translate(__ch);
+        -:  218:	else
+        -:  219:	  return __ch;
+        -:  220:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EE12_M_translateEc:
+    #####:  212:      _M_translate(_CharT __ch) const
+        -:  213:      {
+        -:  214:	if (__icase)
+    #####:  215:	  return _M_traits.translate_nocase(__ch);
+        -:  216:	else if (__collate)
+        -:  217:	  return _M_traits.translate(__ch);
+        -:  218:	else
+        -:  219:	  return __ch;
+        -:  220:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb0EE12_M_translateEc:
+    #####:  212:      _M_translate(_CharT __ch) const
+        -:  213:      {
+        -:  214:	if (__icase)
+    #####:  215:	  return _M_traits.translate_nocase(__ch);
+        -:  216:	else if (__collate)
+        -:  217:	  return _M_traits.translate(__ch);
+        -:  218:	else
+        -:  219:	  return __ch;
+        -:  220:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb0ELb1EE12_M_translateEc:
+    #####:  212:      _M_translate(_CharT __ch) const
+        -:  213:      {
+        -:  214:	if (__icase)
+        -:  215:	  return _M_traits.translate_nocase(__ch);
+        -:  216:	else if (__collate)
+    #####:  217:	  return _M_traits.translate(__ch);
+        -:  218:	else
+        -:  219:	  return __ch;
+        -:  220:      }
+------------------
+        -:  221:
+        -:  222:      _StrTransT
+    #####:  223:      _M_transform(_CharT __ch) const
+        -:  224:      {
+    #####:  225:	_StrTransT __str(1, __ch);
+    #####:  226:	return _M_traits.transform(__str.begin(), __str.end());
+        -:  227:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EE12_M_transformEc:
+    #####:  223:      _M_transform(_CharT __ch) const
+        -:  224:      {
+    #####:  225:	_StrTransT __str(1, __ch);
+    #####:  226:	return _M_traits.transform(__str.begin(), __str.end());
+        -:  227:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb0ELb1EE12_M_transformEc:
+    #####:  223:      _M_transform(_CharT __ch) const
+        -:  224:      {
+    #####:  225:	_StrTransT __str(1, __ch);
+    #####:  226:	return _M_traits.transform(__str.begin(), __str.end());
+        -:  227:      }
+------------------
+        -:  228:
+        -:  229:      // See LWG 523. It's not efficiently implementable when _TraitsT is not
+        -:  230:      // std::regex_traits<>, and __collate is true. See specializations for
+        -:  231:      // implementations of other cases.
+        -:  232:      bool
+    #####:  233:      _M_match_range(const _StrTransT& __first, const _StrTransT& __last,
+        -:  234:		     const _StrTransT& __s) const
+    #####:  235:      { return __first <= __s && __s <= __last; }
+        -:  236:
+        -:  237:    protected:
+    #####:  238:      bool _M_in_range_icase(_CharT __first, _CharT __last, _CharT __ch) const
+        -:  239:      {
+        -:  240:	typedef std::ctype<_CharT> __ctype_type;
+    #####:  241:	const auto& __fctyp = use_facet<__ctype_type>(this->_M_traits.getloc());
+    #####:  242:	auto __lower = __fctyp.tolower(__ch);
+    #####:  243:	auto __upper = __fctyp.toupper(__ch);
+    #####:  244:	return (__first <= __lower && __lower <= __last)
+    #####:  245:	  || (__first <= __upper && __upper <= __last);
+        -:  246:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EE17_M_in_range_icaseEccc:
+    #####:  238:      bool _M_in_range_icase(_CharT __first, _CharT __last, _CharT __ch) const
+        -:  239:      {
+        -:  240:	typedef std::ctype<_CharT> __ctype_type;
+    #####:  241:	const auto& __fctyp = use_facet<__ctype_type>(this->_M_traits.getloc());
+    #####:  242:	auto __lower = __fctyp.tolower(__ch);
+    #####:  243:	auto __upper = __fctyp.toupper(__ch);
+    #####:  244:	return (__first <= __lower && __lower <= __last)
+    #####:  245:	  || (__first <= __upper && __upper <= __last);
+        -:  246:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb0EE17_M_in_range_icaseEccc:
+    #####:  238:      bool _M_in_range_icase(_CharT __first, _CharT __last, _CharT __ch) const
+        -:  239:      {
+        -:  240:	typedef std::ctype<_CharT> __ctype_type;
+    #####:  241:	const auto& __fctyp = use_facet<__ctype_type>(this->_M_traits.getloc());
+    #####:  242:	auto __lower = __fctyp.tolower(__ch);
+    #####:  243:	auto __upper = __fctyp.toupper(__ch);
+    #####:  244:	return (__first <= __lower && __lower <= __last)
+    #####:  245:	  || (__first <= __upper && __upper <= __last);
+        -:  246:      }
+------------------
+        -:  247:
+        -:  248:      const _TraitsT& _M_traits;
+        -:  249:    };
+        -:  250:
+        -:  251:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  252:    class _RegexTranslator
+        -:  253:    : public _RegexTranslatorBase<_TraitsT, __icase, __collate>
+        -:  254:    {
+        -:  255:    public:
+        -:  256:      typedef _RegexTranslatorBase<_TraitsT, __icase, __collate> _Base;
+        -:  257:      using _Base::_Base;
+        -:  258:    };
+        -:  259:
+        -:  260:  template<typename _TraitsT, bool __icase>
+        -:  261:    class _RegexTranslator<_TraitsT, __icase, false>
+        -:  262:    : public _RegexTranslatorBase<_TraitsT, __icase, false>
+        -:  263:    {
+        -:  264:    public:
+        -:  265:      typedef _RegexTranslatorBase<_TraitsT, __icase, false> _Base;
+        -:  266:      typedef typename _Base::_CharT _CharT;
+        -:  267:      typedef _CharT _StrTransT;
+        -:  268:
+        -:  269:      using _Base::_Base;
+        -:  270:
+        -:  271:      _StrTransT
+    #####:  272:      _M_transform(_CharT __ch) const
+    #####:  273:      { return __ch; }
+        -:  274:
+        -:  275:      bool
+    #####:  276:      _M_match_range(_CharT __first, _CharT __last, _CharT __ch) const
+        -:  277:      {
+        -:  278:	if (!__icase)
+        -:  279:	  return __first <= __ch && __ch <= __last;
+    #####:  280:	return this->_M_in_range_icase(__first, __last, __ch);
+        -:  281:      }
+        -:  282:    };
+        -:  283:
+        -:  284:  template<typename _CharType>
+        -:  285:    class _RegexTranslator<std::regex_traits<_CharType>, true, true>
+        -:  286:    : public _RegexTranslatorBase<std::regex_traits<_CharType>, true, true>
+        -:  287:    {
+        -:  288:    public:
+        -:  289:      typedef _RegexTranslatorBase<std::regex_traits<_CharType>, true, true>
+        -:  290:	_Base;
+        -:  291:      typedef typename _Base::_CharT _CharT;
+        -:  292:      typedef typename _Base::_StrTransT _StrTransT;
+        -:  293:
+        -:  294:      using _Base::_Base;
+        -:  295:
+        -:  296:      bool
+    #####:  297:      _M_match_range(const _StrTransT& __first, const _StrTransT& __last,
+        -:  298:		     const _StrTransT& __str) const
+        -:  299:      {
+        -:  300:	__glibcxx_assert(__first.size() == 1);
+        -:  301:	__glibcxx_assert(__last.size() == 1);
+        -:  302:	__glibcxx_assert(__str.size() == 1);
+    #####:  303:	return this->_M_in_range_icase(__first[0], __last[0], __str[0]);
+        -:  304:      }
+        -:  305:    };
         -:  306:
-        -:  307:      explicit
-    #####:  308:      _AnyMatcher(const _TraitsT& __traits)
-    #####:  309:      : _M_translator(__traits)
-    #####:  310:      { }
-        -:  311:
-        -:  312:      bool
-    #####:  313:      operator()(_CharT __ch) const
-    #####:  314:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
-        -:  315:
-        -:  316:      bool
-    #####:  317:      _M_apply(_CharT __ch, true_type) const
-        -:  318:      {
-    #####:  319:	auto __c = _M_translator._M_translate(__ch);
-    #####:  320:	auto __n = _M_translator._M_translate('\n');
-    #####:  321:	auto __r = _M_translator._M_translate('\r');
-    #####:  322:	return __c != __n && __c != __r;
-        -:  323:      }
-        -:  324:
-        -:  325:      bool
-        -:  326:      _M_apply(_CharT __ch, false_type) const
-        -:  327:      {
-        -:  328:	auto __c = _M_translator._M_translate(__ch);
-        -:  329:	auto __n = _M_translator._M_translate('\n');
-        -:  330:	auto __r = _M_translator._M_translate('\r');
-        -:  331:	auto __u2028 = _M_translator._M_translate(u'\u2028');
-        -:  332:	auto __u2029 = _M_translator._M_translate(u'\u2029');
-        -:  333:	return __c != __n && __c != __r && __c != __u2028 && __c != __u2029;
-        -:  334:      }
-        -:  335:
-        -:  336:      _TransT _M_translator;
-        -:  337:    };
-        -:  338:
-        -:  339:  template<typename _TraitsT, bool __icase, bool __collate>
-        -:  340:    struct _CharMatcher
-        -:  341:    {
-        -:  342:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
-        -:  343:      typedef typename _TransT::_CharT                       _CharT;
+        -:  307:  template<typename _TraitsT>
+        -:  308:    class _RegexTranslator<_TraitsT, false, false>
+        -:  309:    {
+        -:  310:    public:
+        -:  311:      typedef typename _TraitsT::char_type _CharT;
+        -:  312:      typedef _CharT                       _StrTransT;
+        -:  313:
+        -:  314:      explicit
+    #####:  315:      _RegexTranslator(const _TraitsT&)
+    #####:  316:      { }
+        -:  317:
+        -:  318:      _CharT
+    #####:  319:      _M_translate(_CharT __ch) const
+    #####:  320:      { return __ch; }
+        -:  321:
+        -:  322:      _StrTransT
+    #####:  323:      _M_transform(_CharT __ch) const
+    #####:  324:      { return __ch; }
+        -:  325:
+        -:  326:      bool
+    #####:  327:      _M_match_range(_CharT __first, _CharT __last, _CharT __ch) const
+    #####:  328:      { return __first <= __ch && __ch <= __last; }
+        -:  329:    };
+        -:  330:
+        -:  331:  template<typename _TraitsT, bool __is_ecma, bool __icase, bool __collate>
+        -:  332:    struct _AnyMatcher;
+        -:  333:
+        -:  334:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  335:    struct _AnyMatcher<_TraitsT, false, __icase, __collate>
+        -:  336:    {
+        -:  337:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
+        -:  338:      typedef typename _TransT::_CharT                       _CharT;
+        -:  339:
+        -:  340:      explicit
+    #####:  341:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  342:      : _M_translator(__traits)
+    #####:  343:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEC2ERKS3_:
+    #####:  341:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  342:      : _M_translator(__traits)
+    #####:  343:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEC2ERKS3_:
+    #####:  341:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  342:      : _M_translator(__traits)
+    #####:  343:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEC2ERKS3_:
+    #####:  341:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  342:      : _M_translator(__traits)
+    #####:  343:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEC2ERKS3_:
+    #####:  341:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  342:      : _M_translator(__traits)
+    #####:  343:      { }
+------------------
         -:  344:
-    #####:  345:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
-    #####:  346:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
-    #####:  347:      { }
-        -:  348:
-        -:  349:      bool
-    #####:  350:      operator()(_CharT __ch) const
-    #####:  351:      { return _M_ch == _M_translator._M_translate(__ch); }
-        -:  352:
-        -:  353:      _TransT _M_translator;
-        -:  354:      _CharT  _M_ch;
-        -:  355:    };
-        -:  356:
-        -:  357:  /// Matches a character range (bracket expression)
-        -:  358:  template<typename _TraitsT, bool __icase, bool __collate>
-    #####:  359:    struct _BracketMatcher
-        -:  360:    {
-        -:  361:    public:
-        -:  362:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
-        -:  363:      typedef typename _TransT::_CharT                       _CharT;
-        -:  364:      typedef typename _TransT::_StrTransT                   _StrTransT;
-        -:  365:      typedef typename _TraitsT::string_type                 _StringT;
-        -:  366:      typedef typename _TraitsT::char_class_type             _CharClassT;
-        -:  367:
-        -:  368:    public:
-    #####:  369:      _BracketMatcher(bool __is_non_matching,
-        -:  370:		      const _TraitsT& __traits)
-        -:  371:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
-    #####:  372:      _M_is_non_matching(__is_non_matching)
-        -:  373:#ifdef _GLIBCXX_DEBUG
-        -:  374:      , _M_is_ready(false)
-        -:  375:#endif
-    #####:  376:      { }
-        -:  377:
-        -:  378:      bool
-    #####:  379:      operator()(_CharT __ch) const
-        -:  380:      {
-        -:  381:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
-    #####:  382:	return _M_apply(__ch, _UseCache());
-        -:  383:      }
-        -:  384:
-        -:  385:      void
-    #####:  386:      _M_add_char(_CharT __c)
-        -:  387:      {
-    #####:  388:	_M_char_set.push_back(_M_translator._M_translate(__c));
-        -:  389:#ifdef _GLIBCXX_DEBUG
-        -:  390:	_M_is_ready = false;
-        -:  391:#endif
-    #####:  392:      }
-        -:  393:
-        -:  394:      _StringT
-    #####:  395:      _M_add_collate_element(const _StringT& __s)
-        -:  396:      {
-        -:  397:	auto __st = _M_traits.lookup_collatename(__s.data(),
-    #####:  398:						 __s.data() + __s.size());
-    #####:  399:	if (__st.empty())
-    #####:  400:	  __throw_regex_error(regex_constants::error_collate);
-    #####:  401:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
-        -:  402:#ifdef _GLIBCXX_DEBUG
-        -:  403:	_M_is_ready = false;
-        -:  404:#endif
-    #####:  405:	return __st;
-        -:  406:      }
-        -:  407:
-        -:  408:      void
-    #####:  409:      _M_add_equivalence_class(const _StringT& __s)
-        -:  410:      {
-        -:  411:	auto __st = _M_traits.lookup_collatename(__s.data(),
-    #####:  412:						 __s.data() + __s.size());
-    #####:  413:	if (__st.empty())
-    #####:  414:	  __throw_regex_error(regex_constants::error_collate);
-    #####:  415:	__st = _M_traits.transform_primary(__st.data(),
-    #####:  416:					   __st.data() + __st.size());
-    #####:  417:	_M_equiv_set.push_back(__st);
-        -:  418:#ifdef _GLIBCXX_DEBUG
-        -:  419:	_M_is_ready = false;
-        -:  420:#endif
-    #####:  421:      }
-        -:  422:
-        -:  423:      // __neg should be true for \D, \S and \W only.
-        -:  424:      void
-    #####:  425:      _M_add_character_class(const _StringT& __s, bool __neg)
-        -:  426:      {
-        -:  427:	auto __mask = _M_traits.lookup_classname(__s.data(),
-    #####:  428:						 __s.data() + __s.size(),
-    #####:  429:						 __icase);
-    #####:  430:	if (__mask == 0)
-    #####:  431:	  __throw_regex_error(regex_constants::error_ctype);
-    #####:  432:	if (!__neg)
-    #####:  433:	  _M_class_set |= __mask;
-        -:  434:	else
-    #####:  435:	  _M_neg_class_set.push_back(__mask);
-        -:  436:#ifdef _GLIBCXX_DEBUG
-        -:  437:	_M_is_ready = false;
-        -:  438:#endif
-    #####:  439:      }
-        -:  440:
-        -:  441:      void
-    #####:  442:      _M_make_range(_CharT __l, _CharT __r)
-        -:  443:      {
-    #####:  444:	if (__l > __r)
-    #####:  445:	  __throw_regex_error(regex_constants::error_range);
-    #####:  446:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
-        -:  447:					 _M_translator._M_transform(__r)));
-        -:  448:#ifdef _GLIBCXX_DEBUG
-        -:  449:	_M_is_ready = false;
-        -:  450:#endif
-    #####:  451:      }
-        -:  452:
-        -:  453:      void
-    #####:  454:      _M_ready()
-        -:  455:      {
-    #####:  456:	std::sort(_M_char_set.begin(), _M_char_set.end());
-    #####:  457:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
-    #####:  458:	_M_char_set.erase(__end, _M_char_set.end());
-    #####:  459:	_M_make_cache(_UseCache());
-        -:  460:#ifdef _GLIBCXX_DEBUG
-        -:  461:	_M_is_ready = true;
-        -:  462:#endif
-    #####:  463:      }
-        -:  464:
-        -:  465:    private:
-        -:  466:      // Currently we only use the cache for char
-        -:  467:      typedef typename std::is_same<_CharT, char>::type _UseCache;
-        -:  468:
-        -:  469:      static constexpr size_t
-        -:  470:      _S_cache_size()
-        -:  471:      {
-        -:  472:	return 1ul << (sizeof(_CharT) * __CHAR_BIT__ * int(_UseCache::value));
-        -:  473:      }
-        -:  474:
-        -:  475:      struct _Dummy { };
-        -:  476:      typedef typename std::conditional<_UseCache::value,
-        -:  477:					std::bitset<_S_cache_size()>,
-        -:  478:					_Dummy>::type _CacheT;
-        -:  479:      typedef typename std::make_unsigned<_CharT>::type _UnsignedCharT;
-        -:  480:
-        -:  481:      bool
-        -:  482:      _M_apply(_CharT __ch, false_type) const;
-        -:  483:
-        -:  484:      bool
-    #####:  485:      _M_apply(_CharT __ch, true_type) const
-    #####:  486:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
-        -:  487:
-        -:  488:      void
-    #####:  489:      _M_make_cache(true_type)
-        -:  490:      {
-    #####:  491:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
-    #####:  492:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
-    #####:  493:      }
-        -:  494:
-        -:  495:      void
-        -:  496:      _M_make_cache(false_type)
-        -:  497:      { }
-        -:  498:
-        -:  499:    private:
-        -:  500:      std::vector<_CharT>                       _M_char_set;
-        -:  501:      std::vector<_StringT>                     _M_equiv_set;
-        -:  502:      std::vector<pair<_StrTransT, _StrTransT>> _M_range_set;
-        -:  503:      std::vector<_CharClassT>                  _M_neg_class_set;
-        -:  504:      _CharClassT                               _M_class_set;
-        -:  505:      _TransT                                   _M_translator;
-        -:  506:      const _TraitsT&                           _M_traits;
-        -:  507:      bool                                      _M_is_non_matching;
-        -:  508:      _CacheT					_M_cache;
-        -:  509:#ifdef _GLIBCXX_DEBUG
-        -:  510:      bool                                      _M_is_ready;
-        -:  511:#endif
-        -:  512:    };
-        -:  513:
-        -:  514: //@} regex-detail
-        -:  515:_GLIBCXX_END_NAMESPACE_VERSION
-        -:  516:} // namespace __detail
-        -:  517:} // namespace std
-        -:  518:
-        -:  519:#include <bits/regex_compiler.tcc>
+        -:  345:      bool
+    #####:  346:      operator()(_CharT __ch) const
+        -:  347:      {
+    #####:  348:	static auto __nul = _M_translator._M_translate('\0');
+    #####:  349:	return _M_translator._M_translate(__ch) != __nul;
+        -:  350:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEclEc:
+    #####:  346:      operator()(_CharT __ch) const
+        -:  347:      {
+    #####:  348:	static auto __nul = _M_translator._M_translate('\0');
+    #####:  349:	return _M_translator._M_translate(__ch) != __nul;
+        -:  350:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEclEc:
+    #####:  346:      operator()(_CharT __ch) const
+        -:  347:      {
+    #####:  348:	static auto __nul = _M_translator._M_translate('\0');
+    #####:  349:	return _M_translator._M_translate(__ch) != __nul;
+        -:  350:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEclEc:
+    #####:  346:      operator()(_CharT __ch) const
+        -:  347:      {
+    #####:  348:	static auto __nul = _M_translator._M_translate('\0');
+    #####:  349:	return _M_translator._M_translate(__ch) != __nul;
+        -:  350:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEclEc:
+    #####:  346:      operator()(_CharT __ch) const
+        -:  347:      {
+    #####:  348:	static auto __nul = _M_translator._M_translate('\0');
+    #####:  349:	return _M_translator._M_translate(__ch) != __nul;
+        -:  350:      }
+------------------
+        -:  351:
+        -:  352:      _TransT _M_translator;
+        -:  353:    };
+        -:  354:
+        -:  355:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  356:    struct _AnyMatcher<_TraitsT, true, __icase, __collate>
+        -:  357:    {
+        -:  358:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
+        -:  359:      typedef typename _TransT::_CharT                       _CharT;
+        -:  360:
+        -:  361:      explicit
+    #####:  362:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  363:      : _M_translator(__traits)
+    #####:  364:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEC2ERKS3_:
+    #####:  362:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  363:      : _M_translator(__traits)
+    #####:  364:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEC2ERKS3_:
+    #####:  362:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  363:      : _M_translator(__traits)
+    #####:  364:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEC2ERKS3_:
+    #####:  362:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  363:      : _M_translator(__traits)
+    #####:  364:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEC2ERKS3_:
+    #####:  362:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  363:      : _M_translator(__traits)
+    #####:  364:      { }
+------------------
+        -:  365:
+        -:  366:      bool
+    #####:  367:      operator()(_CharT __ch) const
+    #####:  368:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEclEc:
+    #####:  367:      operator()(_CharT __ch) const
+    #####:  368:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEclEc:
+    #####:  367:      operator()(_CharT __ch) const
+    #####:  368:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEclEc:
+    #####:  367:      operator()(_CharT __ch) const
+    #####:  368:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEclEc:
+    #####:  367:      operator()(_CharT __ch) const
+    #####:  368:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
+------------------
+        -:  369:
+        -:  370:      bool
+    #####:  371:      _M_apply(_CharT __ch, true_type) const
+        -:  372:      {
+    #####:  373:	auto __c = _M_translator._M_translate(__ch);
+    #####:  374:	auto __n = _M_translator._M_translate('\n');
+    #####:  375:	auto __r = _M_translator._M_translate('\r');
+    #####:  376:	return __c != __n && __c != __r;
+        -:  377:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EE8_M_applyEcSt17integral_constantIbLb1EE:
+    #####:  371:      _M_apply(_CharT __ch, true_type) const
+        -:  372:      {
+    #####:  373:	auto __c = _M_translator._M_translate(__ch);
+    #####:  374:	auto __n = _M_translator._M_translate('\n');
+    #####:  375:	auto __r = _M_translator._M_translate('\r');
+    #####:  376:	return __c != __n && __c != __r;
+        -:  377:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EE8_M_applyEcSt17integral_constantIbLb1EE:
+    #####:  371:      _M_apply(_CharT __ch, true_type) const
+        -:  372:      {
+    #####:  373:	auto __c = _M_translator._M_translate(__ch);
+    #####:  374:	auto __n = _M_translator._M_translate('\n');
+    #####:  375:	auto __r = _M_translator._M_translate('\r');
+    #####:  376:	return __c != __n && __c != __r;
+        -:  377:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EE8_M_applyEcSt17integral_constantIbLb1EE:
+    #####:  371:      _M_apply(_CharT __ch, true_type) const
+        -:  372:      {
+    #####:  373:	auto __c = _M_translator._M_translate(__ch);
+    #####:  374:	auto __n = _M_translator._M_translate('\n');
+    #####:  375:	auto __r = _M_translator._M_translate('\r');
+    #####:  376:	return __c != __n && __c != __r;
+        -:  377:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EE8_M_applyEcSt17integral_constantIbLb1EE:
+    #####:  371:      _M_apply(_CharT __ch, true_type) const
+        -:  372:      {
+    #####:  373:	auto __c = _M_translator._M_translate(__ch);
+    #####:  374:	auto __n = _M_translator._M_translate('\n');
+    #####:  375:	auto __r = _M_translator._M_translate('\r');
+    #####:  376:	return __c != __n && __c != __r;
+        -:  377:      }
+------------------
+        -:  378:
+        -:  379:      bool
+        -:  380:      _M_apply(_CharT __ch, false_type) const
+        -:  381:      {
+        -:  382:	auto __c = _M_translator._M_translate(__ch);
+        -:  383:	auto __n = _M_translator._M_translate('\n');
+        -:  384:	auto __r = _M_translator._M_translate('\r');
+        -:  385:	auto __u2028 = _M_translator._M_translate(u'\u2028');
+        -:  386:	auto __u2029 = _M_translator._M_translate(u'\u2029');
+        -:  387:	return __c != __n && __c != __r && __c != __u2028 && __c != __u2029;
+        -:  388:      }
+        -:  389:
+        -:  390:      _TransT _M_translator;
+        -:  391:    };
+        -:  392:
+        -:  393:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  394:    struct _CharMatcher
+        -:  395:    {
+        -:  396:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
+        -:  397:      typedef typename _TransT::_CharT                       _CharT;
+        -:  398:
+    #####:  399:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
+    #####:  400:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
+    #####:  401:      { }
+------------------
+_ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEC2EcRKS3_:
+    #####:  399:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
+    #####:  400:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
+    #####:  401:      { }
+------------------
+_ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEC2EcRKS3_:
+    #####:  399:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
+    #####:  400:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
+    #####:  401:      { }
+------------------
+_ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEC2EcRKS3_:
+    #####:  399:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
+    #####:  400:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
+    #####:  401:      { }
+------------------
+_ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEC2EcRKS3_:
+    #####:  399:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
+    #####:  400:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
+    #####:  401:      { }
+------------------
+        -:  402:
+        -:  403:      bool
+    #####:  404:      operator()(_CharT __ch) const
+    #####:  405:      { return _M_ch == _M_translator._M_translate(__ch); }
+------------------
+_ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEclEc:
+    #####:  404:      operator()(_CharT __ch) const
+    #####:  405:      { return _M_ch == _M_translator._M_translate(__ch); }
+------------------
+_ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEclEc:
+    #####:  404:      operator()(_CharT __ch) const
+    #####:  405:      { return _M_ch == _M_translator._M_translate(__ch); }
+------------------
+_ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEclEc:
+    #####:  404:      operator()(_CharT __ch) const
+    #####:  405:      { return _M_ch == _M_translator._M_translate(__ch); }
+------------------
+_ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEclEc:
+    #####:  404:      operator()(_CharT __ch) const
+    #####:  405:      { return _M_ch == _M_translator._M_translate(__ch); }
+------------------
+        -:  406:
+        -:  407:      _TransT _M_translator;
+        -:  408:      _CharT  _M_ch;
+        -:  409:    };
+        -:  410:
+        -:  411:  /// Matches a character range (bracket expression)
+        -:  412:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  413:    struct _BracketMatcher
+        -:  414:    {
+        -:  415:    public:
+        -:  416:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
+        -:  417:      typedef typename _TransT::_CharT                       _CharT;
+        -:  418:      typedef typename _TransT::_StrTransT                   _StrTransT;
+        -:  419:      typedef typename _TraitsT::string_type                 _StringT;
+        -:  420:      typedef typename _TraitsT::char_class_type             _CharClassT;
+        -:  421:
+        -:  422:    public:
+    #####:  423:      _BracketMatcher(bool __is_non_matching,
+        -:  424:		      const _TraitsT& __traits)
+        -:  425:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
+    #####:  426:      _M_is_non_matching(__is_non_matching)
+    #####:  427:      { }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEC2EbRKS3_:
+    #####:  423:      _BracketMatcher(bool __is_non_matching,
+        -:  424:		      const _TraitsT& __traits)
+        -:  425:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
+    #####:  426:      _M_is_non_matching(__is_non_matching)
+    #####:  427:      { }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEC2EbRKS3_:
+    #####:  423:      _BracketMatcher(bool __is_non_matching,
+        -:  424:		      const _TraitsT& __traits)
+        -:  425:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
+    #####:  426:      _M_is_non_matching(__is_non_matching)
+    #####:  427:      { }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEC2EbRKS3_:
+    #####:  423:      _BracketMatcher(bool __is_non_matching,
+        -:  424:		      const _TraitsT& __traits)
+        -:  425:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
+    #####:  426:      _M_is_non_matching(__is_non_matching)
+    #####:  427:      { }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEC2EbRKS3_:
+    #####:  423:      _BracketMatcher(bool __is_non_matching,
+        -:  424:		      const _TraitsT& __traits)
+        -:  425:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
+    #####:  426:      _M_is_non_matching(__is_non_matching)
+    #####:  427:      { }
+------------------
+        -:  428:
+        -:  429:      bool
+    #####:  430:      operator()(_CharT __ch) const
+        -:  431:      {
+        -:  432:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
+    #####:  433:	return _M_apply(__ch, _UseCache());
+        -:  434:      }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEclEc:
+    #####:  430:      operator()(_CharT __ch) const
+        -:  431:      {
+        -:  432:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
+    #####:  433:	return _M_apply(__ch, _UseCache());
+        -:  434:      }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEclEc:
+    #####:  430:      operator()(_CharT __ch) const
+        -:  431:      {
+        -:  432:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
+    #####:  433:	return _M_apply(__ch, _UseCache());
+        -:  434:      }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEclEc:
+    #####:  430:      operator()(_CharT __ch) const
+        -:  431:      {
+        -:  432:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
+    #####:  433:	return _M_apply(__ch, _UseCache());
+        -:  434:      }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEclEc:
+    #####:  430:      operator()(_CharT __ch) const
+        -:  431:      {
+        -:  432:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
+    #####:  433:	return _M_apply(__ch, _UseCache());
+        -:  434:      }
+------------------
+        -:  435:
+        -:  436:      void
+    #####:  437:      _M_add_char(_CharT __c)
+        -:  438:      {
+    #####:  439:	_M_char_set.push_back(_M_translator._M_translate(__c));
+        -:  440:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  441:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE11_M_add_charEc:
+    #####:  437:      _M_add_char(_CharT __c)
+        -:  438:      {
+    #####:  439:	_M_char_set.push_back(_M_translator._M_translate(__c));
+        -:  440:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  441:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE11_M_add_charEc:
+    #####:  437:      _M_add_char(_CharT __c)
+        -:  438:      {
+    #####:  439:	_M_char_set.push_back(_M_translator._M_translate(__c));
+        -:  440:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  441:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE11_M_add_charEc:
+    #####:  437:      _M_add_char(_CharT __c)
+        -:  438:      {
+    #####:  439:	_M_char_set.push_back(_M_translator._M_translate(__c));
+        -:  440:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  441:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE11_M_add_charEc:
+    #####:  437:      _M_add_char(_CharT __c)
+        -:  438:      {
+    #####:  439:	_M_char_set.push_back(_M_translator._M_translate(__c));
+        -:  440:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  441:      }
+------------------
+        -:  442:
+        -:  443:      _StringT
+    #####:  444:      _M_add_collate_element(const _StringT& __s)
+        -:  445:      {
+    #####:  446:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  447:						 __s.data() + __s.size());
+    #####:  448:	if (__st.empty())
+    #####:  449:	  __throw_regex_error(regex_constants::error_collate,
+        -:  450:			      "Invalid collate element.");
+    #####:  451:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
+        -:  452:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  453:	return __st;
+        -:  454:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+    #####:  444:      _M_add_collate_element(const _StringT& __s)
+        -:  445:      {
+    #####:  446:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  447:						 __s.data() + __s.size());
+    #####:  448:	if (__st.empty())
+    #####:  449:	  __throw_regex_error(regex_constants::error_collate,
+        -:  450:			      "Invalid collate element.");
+    #####:  451:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
+        -:  452:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  453:	return __st;
+        -:  454:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+    #####:  444:      _M_add_collate_element(const _StringT& __s)
+        -:  445:      {
+    #####:  446:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  447:						 __s.data() + __s.size());
+    #####:  448:	if (__st.empty())
+    #####:  449:	  __throw_regex_error(regex_constants::error_collate,
+        -:  450:			      "Invalid collate element.");
+    #####:  451:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
+        -:  452:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  453:	return __st;
+        -:  454:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+    #####:  444:      _M_add_collate_element(const _StringT& __s)
+        -:  445:      {
+    #####:  446:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  447:						 __s.data() + __s.size());
+    #####:  448:	if (__st.empty())
+    #####:  449:	  __throw_regex_error(regex_constants::error_collate,
+        -:  450:			      "Invalid collate element.");
+    #####:  451:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
+        -:  452:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  453:	return __st;
+        -:  454:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+    #####:  444:      _M_add_collate_element(const _StringT& __s)
+        -:  445:      {
+    #####:  446:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  447:						 __s.data() + __s.size());
+    #####:  448:	if (__st.empty())
+    #####:  449:	  __throw_regex_error(regex_constants::error_collate,
+        -:  450:			      "Invalid collate element.");
+    #####:  451:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
+        -:  452:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  453:	return __st;
+        -:  454:      }
+------------------
+        -:  455:
+        -:  456:      void
+    #####:  457:      _M_add_equivalence_class(const _StringT& __s)
+        -:  458:      {
+    #####:  459:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  460:						 __s.data() + __s.size());
+    #####:  461:	if (__st.empty())
+    #####:  462:	  __throw_regex_error(regex_constants::error_collate,
+        -:  463:			      "Invalid equivalence class.");
+    #####:  464:	__st = _M_traits.transform_primary(__st.data(),
+    #####:  465:					   __st.data() + __st.size());
+    #####:  466:	_M_equiv_set.push_back(__st);
+        -:  467:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  468:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+    #####:  457:      _M_add_equivalence_class(const _StringT& __s)
+        -:  458:      {
+    #####:  459:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  460:						 __s.data() + __s.size());
+    #####:  461:	if (__st.empty())
+    #####:  462:	  __throw_regex_error(regex_constants::error_collate,
+        -:  463:			      "Invalid equivalence class.");
+    #####:  464:	__st = _M_traits.transform_primary(__st.data(),
+    #####:  465:					   __st.data() + __st.size());
+    #####:  466:	_M_equiv_set.push_back(__st);
+        -:  467:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  468:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+    #####:  457:      _M_add_equivalence_class(const _StringT& __s)
+        -:  458:      {
+    #####:  459:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  460:						 __s.data() + __s.size());
+    #####:  461:	if (__st.empty())
+    #####:  462:	  __throw_regex_error(regex_constants::error_collate,
+        -:  463:			      "Invalid equivalence class.");
+    #####:  464:	__st = _M_traits.transform_primary(__st.data(),
+    #####:  465:					   __st.data() + __st.size());
+    #####:  466:	_M_equiv_set.push_back(__st);
+        -:  467:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  468:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+    #####:  457:      _M_add_equivalence_class(const _StringT& __s)
+        -:  458:      {
+    #####:  459:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  460:						 __s.data() + __s.size());
+    #####:  461:	if (__st.empty())
+    #####:  462:	  __throw_regex_error(regex_constants::error_collate,
+        -:  463:			      "Invalid equivalence class.");
+    #####:  464:	__st = _M_traits.transform_primary(__st.data(),
+    #####:  465:					   __st.data() + __st.size());
+    #####:  466:	_M_equiv_set.push_back(__st);
+        -:  467:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  468:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+    #####:  457:      _M_add_equivalence_class(const _StringT& __s)
+        -:  458:      {
+    #####:  459:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  460:						 __s.data() + __s.size());
+    #####:  461:	if (__st.empty())
+    #####:  462:	  __throw_regex_error(regex_constants::error_collate,
+        -:  463:			      "Invalid equivalence class.");
+    #####:  464:	__st = _M_traits.transform_primary(__st.data(),
+    #####:  465:					   __st.data() + __st.size());
+    #####:  466:	_M_equiv_set.push_back(__st);
+        -:  467:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  468:      }
+------------------
+        -:  469:
+        -:  470:      // __neg should be true for \D, \S and \W only.
+        -:  471:      void
+    #####:  472:      _M_add_character_class(const _StringT& __s, bool __neg)
+        -:  473:      {
+    #####:  474:	auto __mask = _M_traits.lookup_classname(__s.data(),
+    #####:  475:						 __s.data() + __s.size(),
+        -:  476:						 __icase);
+    #####:  477:	if (__mask == 0)
+    #####:  478:	  __throw_regex_error(regex_constants::error_collate,
+        -:  479:			      "Invalid character class.");
+    #####:  480:	if (!__neg)
+    #####:  481:	  _M_class_set |= __mask;
+        -:  482:	else
+    #####:  483:	  _M_neg_class_set.push_back(__mask);
+        -:  484:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  485:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb:
+    #####:  472:      _M_add_character_class(const _StringT& __s, bool __neg)
+        -:  473:      {
+    #####:  474:	auto __mask = _M_traits.lookup_classname(__s.data(),
+    #####:  475:						 __s.data() + __s.size(),
+        -:  476:						 __icase);
+    #####:  477:	if (__mask == 0)
+    #####:  478:	  __throw_regex_error(regex_constants::error_collate,
+        -:  479:			      "Invalid character class.");
+    #####:  480:	if (!__neg)
+    #####:  481:	  _M_class_set |= __mask;
+        -:  482:	else
+    #####:  483:	  _M_neg_class_set.push_back(__mask);
+        -:  484:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  485:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb:
+    #####:  472:      _M_add_character_class(const _StringT& __s, bool __neg)
+        -:  473:      {
+    #####:  474:	auto __mask = _M_traits.lookup_classname(__s.data(),
+    #####:  475:						 __s.data() + __s.size(),
+        -:  476:						 __icase);
+    #####:  477:	if (__mask == 0)
+    #####:  478:	  __throw_regex_error(regex_constants::error_collate,
+        -:  479:			      "Invalid character class.");
+    #####:  480:	if (!__neg)
+    #####:  481:	  _M_class_set |= __mask;
+        -:  482:	else
+    #####:  483:	  _M_neg_class_set.push_back(__mask);
+        -:  484:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  485:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb:
+    #####:  472:      _M_add_character_class(const _StringT& __s, bool __neg)
+        -:  473:      {
+    #####:  474:	auto __mask = _M_traits.lookup_classname(__s.data(),
+    #####:  475:						 __s.data() + __s.size(),
+        -:  476:						 __icase);
+    #####:  477:	if (__mask == 0)
+    #####:  478:	  __throw_regex_error(regex_constants::error_collate,
+        -:  479:			      "Invalid character class.");
+    #####:  480:	if (!__neg)
+    #####:  481:	  _M_class_set |= __mask;
+        -:  482:	else
+    #####:  483:	  _M_neg_class_set.push_back(__mask);
+        -:  484:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  485:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb:
+    #####:  472:      _M_add_character_class(const _StringT& __s, bool __neg)
+        -:  473:      {
+    #####:  474:	auto __mask = _M_traits.lookup_classname(__s.data(),
+    #####:  475:						 __s.data() + __s.size(),
+        -:  476:						 __icase);
+    #####:  477:	if (__mask == 0)
+    #####:  478:	  __throw_regex_error(regex_constants::error_collate,
+        -:  479:			      "Invalid character class.");
+    #####:  480:	if (!__neg)
+    #####:  481:	  _M_class_set |= __mask;
+        -:  482:	else
+    #####:  483:	  _M_neg_class_set.push_back(__mask);
+        -:  484:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  485:      }
+------------------
+        -:  486:
+        -:  487:      void
+    #####:  488:      _M_make_range(_CharT __l, _CharT __r)
+        -:  489:      {
+    #####:  490:	if (__l > __r)
+    #####:  491:	  __throw_regex_error(regex_constants::error_range,
+        -:  492:			      "Invalid range in bracket expression.");
+    #####:  493:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
+        -:  494:					 _M_translator._M_transform(__r)));
+        -:  495:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  496:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE13_M_make_rangeEcc:
+    #####:  488:      _M_make_range(_CharT __l, _CharT __r)
+        -:  489:      {
+    #####:  490:	if (__l > __r)
+    #####:  491:	  __throw_regex_error(regex_constants::error_range,
+        -:  492:			      "Invalid range in bracket expression.");
+    #####:  493:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
+        -:  494:					 _M_translator._M_transform(__r)));
+        -:  495:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  496:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE13_M_make_rangeEcc:
+    #####:  488:      _M_make_range(_CharT __l, _CharT __r)
+        -:  489:      {
+    #####:  490:	if (__l > __r)
+    #####:  491:	  __throw_regex_error(regex_constants::error_range,
+        -:  492:			      "Invalid range in bracket expression.");
+    #####:  493:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
+        -:  494:					 _M_translator._M_transform(__r)));
+        -:  495:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  496:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE13_M_make_rangeEcc:
+    #####:  488:      _M_make_range(_CharT __l, _CharT __r)
+        -:  489:      {
+    #####:  490:	if (__l > __r)
+    #####:  491:	  __throw_regex_error(regex_constants::error_range,
+        -:  492:			      "Invalid range in bracket expression.");
+    #####:  493:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
+        -:  494:					 _M_translator._M_transform(__r)));
+        -:  495:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  496:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE13_M_make_rangeEcc:
+    #####:  488:      _M_make_range(_CharT __l, _CharT __r)
+        -:  489:      {
+    #####:  490:	if (__l > __r)
+    #####:  491:	  __throw_regex_error(regex_constants::error_range,
+        -:  492:			      "Invalid range in bracket expression.");
+    #####:  493:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
+        -:  494:					 _M_translator._M_transform(__r)));
+        -:  495:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  496:      }
+------------------
+        -:  497:
+        -:  498:      void
+    #####:  499:      _M_ready()
+        -:  500:      {
+    #####:  501:	std::sort(_M_char_set.begin(), _M_char_set.end());
+    #####:  502:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
+    #####:  503:	_M_char_set.erase(__end, _M_char_set.end());
+    #####:  504:	_M_make_cache(_UseCache());
+        -:  505:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = true);
+    #####:  506:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE8_M_readyEv:
+    #####:  499:      _M_ready()
+        -:  500:      {
+    #####:  501:	std::sort(_M_char_set.begin(), _M_char_set.end());
+    #####:  502:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
+    #####:  503:	_M_char_set.erase(__end, _M_char_set.end());
+    #####:  504:	_M_make_cache(_UseCache());
+        -:  505:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = true);
+    #####:  506:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE8_M_readyEv:
+    #####:  499:      _M_ready()
+        -:  500:      {
+    #####:  501:	std::sort(_M_char_set.begin(), _M_char_set.end());
+    #####:  502:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
+    #####:  503:	_M_char_set.erase(__end, _M_char_set.end());
+    #####:  504:	_M_make_cache(_UseCache());
+        -:  505:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = true);
+    #####:  506:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE8_M_readyEv:
+    #####:  499:      _M_ready()
+        -:  500:      {
+    #####:  501:	std::sort(_M_char_set.begin(), _M_char_set.end());
+    #####:  502:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
+    #####:  503:	_M_char_set.erase(__end, _M_char_set.end());
+    #####:  504:	_M_make_cache(_UseCache());
+        -:  505:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = true);
+    #####:  506:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE8_M_readyEv:
+    #####:  499:      _M_ready()
+        -:  500:      {
+    #####:  501:	std::sort(_M_char_set.begin(), _M_char_set.end());
+    #####:  502:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
+    #####:  503:	_M_char_set.erase(__end, _M_char_set.end());
+    #####:  504:	_M_make_cache(_UseCache());
+        -:  505:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = true);
+    #####:  506:      }
+------------------
+        -:  507:
+        -:  508:    private:
+        -:  509:      // Currently we only use the cache for char
+        -:  510:      typedef typename std::is_same<_CharT, char>::type _UseCache;
+        -:  511:
+        -:  512:      static constexpr size_t
+        -:  513:      _S_cache_size =
+        -:  514:	1ul << (sizeof(_CharT) * __CHAR_BIT__ * int(_UseCache::value));
+        -:  515:
+        -:  516:      struct _Dummy { };
+        -:  517:      typedef typename std::conditional<_UseCache::value,
+        -:  518:					std::bitset<_S_cache_size>,
+        -:  519:					_Dummy>::type _CacheT;
+        -:  520:      typedef typename std::make_unsigned<_CharT>::type _UnsignedCharT;
+        -:  521:
+        -:  522:      bool
+        -:  523:      _M_apply(_CharT __ch, false_type) const;
+        -:  524:
+        -:  525:      bool
+    #####:  526:      _M_apply(_CharT __ch, true_type) const
+    #####:  527:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE8_M_applyEcSt17integral_constantIbLb1EE:
+    #####:  526:      _M_apply(_CharT __ch, true_type) const
+    #####:  527:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE8_M_applyEcSt17integral_constantIbLb1EE:
+    #####:  526:      _M_apply(_CharT __ch, true_type) const
+    #####:  527:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE8_M_applyEcSt17integral_constantIbLb1EE:
+    #####:  526:      _M_apply(_CharT __ch, true_type) const
+    #####:  527:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE8_M_applyEcSt17integral_constantIbLb1EE:
+    #####:  526:      _M_apply(_CharT __ch, true_type) const
+    #####:  527:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
+------------------
+        -:  528:
+        -:  529:      void
+    #####:  530:      _M_make_cache(true_type)
+        -:  531:      {
+    #####:  532:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
+    #####:  533:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
+    #####:  534:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE13_M_make_cacheESt17integral_constantIbLb1EE:
+    #####:  530:      _M_make_cache(true_type)
+        -:  531:      {
+    #####:  532:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
+    #####:  533:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
+    #####:  534:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE13_M_make_cacheESt17integral_constantIbLb1EE:
+    #####:  530:      _M_make_cache(true_type)
+        -:  531:      {
+    #####:  532:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
+    #####:  533:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
+    #####:  534:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE13_M_make_cacheESt17integral_constantIbLb1EE:
+    #####:  530:      _M_make_cache(true_type)
+        -:  531:      {
+    #####:  532:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
+    #####:  533:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
+    #####:  534:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE13_M_make_cacheESt17integral_constantIbLb1EE:
+    #####:  530:      _M_make_cache(true_type)
+        -:  531:      {
+    #####:  532:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
+    #####:  533:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
+    #####:  534:      }
+------------------
+        -:  535:
+        -:  536:      void
+        -:  537:      _M_make_cache(false_type)
+        -:  538:      { }
+        -:  539:
+        -:  540:    private:
+        -:  541:      std::vector<_CharT>                       _M_char_set;
+        -:  542:      std::vector<_StringT>                     _M_equiv_set;
+        -:  543:      std::vector<pair<_StrTransT, _StrTransT>> _M_range_set;
+        -:  544:      std::vector<_CharClassT>                  _M_neg_class_set;
+        -:  545:      _CharClassT                               _M_class_set;
+        -:  546:      _TransT                                   _M_translator;
+        -:  547:      const _TraitsT&                           _M_traits;
+        -:  548:      bool                                      _M_is_non_matching;
+        -:  549:      _CacheT					_M_cache;
+        -:  550:#ifdef _GLIBCXX_DEBUG
+        -:  551:      bool                                      _M_is_ready = false;
+        -:  552:#endif
+        -:  553:    };
+        -:  554:
+        -:  555: //@} regex-detail
+        -:  556:} // namespace __detail
+        -:  557:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  558:} // namespace std
+        -:  559:
+        -:  560:#include <bits/regex_compiler.tcc>

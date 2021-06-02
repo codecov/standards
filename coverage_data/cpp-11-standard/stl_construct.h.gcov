@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/c++/5/bits/stl_construct.h
+        -:    0:Source:/usr/include/c++/9/bits/stl_construct.h
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// nonstandard construct and destroy functions -*- C++ -*-
         -:    2:
-        -:    3:// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+        -:    3:// Copyright (C) 2001-2019 Free Software Foundation, Inc.
         -:    4://
         -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
         -:    6:// software; you can redistribute it and/or modify it under the
@@ -76,8 +75,249 @@
         -:   71:#if __cplusplus >= 201103L
         -:   72:  template<typename _T1, typename... _Args>
         -:   73:    inline void
-     3117:   74:    _Construct(_T1* __p, _Args&&... __args)
-     3117:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+    2690*:   74:    _Construct(_T1* __p, _Args&&... __args)
+    2690*:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail3ArgEJRKS3_EEvPT_DpOT0_:
+        1:   74:    _Construct(_T1* __p, _Args&&... __args)
+        1:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch13ScopedMessageEJS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch14SectionEndInfoEJS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10shared_ptrIN5Catch16IReporterFactoryEEJS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch11MessageInfoEJS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail11HelpColumnsEJRS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail3OptEJS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail3ArgEJS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail5TokenEJS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara8TextFlow6ColumnEJS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch12_GLOBAL__N_110ColumnInfoEJRKS2_EEvPT_DpOT0_:
+        4:   74:    _Construct(_T1* __p, _Args&&... __args)
+        4:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch8TestSpec11FilterMatchEJEEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch8TestCaseEJS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEJS7_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEJS5_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt15__exception_ptr13exception_ptrEJS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail3OptEJRKS3_EEvPT_DpOT0_:
+      899:   74:    _Construct(_T1* __p, _Args&&... __args)
+      899:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail11HelpColumnsEJRKS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail5TokenEJEEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEJRKPKcEEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara8TextFlow6Column8iteratorEJS4_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch8TestCaseEJRKS1_EEvPT_DpOT0_:
+        2:   74:    _Construct(_T1* __p, _Args&&... __args)
+        2:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail3ArgEJRS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail3OptEJRS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEJRS5_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch8TestSpec6FilterEJRKS2_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch11MessageInfoEJRKS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEJRKS5_EEvPT_DpOT0_:
+     1784:   74:    _Construct(_T1* __p, _Args&&... __args)
+     1784:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail5TokenEJRKS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara8TextFlow6ColumnEJRKS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEJSB_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_EJS7_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt4pairIccEJS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_EJRKS7_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt7__cxx1112regex_traitsIcE10_RegexMaskEJRKS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt4pairIccEJRKS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt7__cxx1112regex_traitsIcE10_RegexMaskEJS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS2_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEJSH_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt8__detail6_StateIcEEJRKS2_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS0_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEJRKSC_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS0_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEJRSC_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS0_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEJSC_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEJEEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS0_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEJEEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS2_EEJS5_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEEJSD_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEEJS9_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEEJS6_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch14AssertionStatsEJRKS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch13SummaryColumnEJS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch11SectionInfoEJS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10shared_ptrIN5Catch8TestSpec7PatternEEJRKS4_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10shared_ptrIN5Catch8TestSpec7PatternEEJS4_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch9StringRefEJS1_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS6_EEJS9_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS3_EEJS6_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS3_EEJS6_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch5clara6detail11HelpColumnsEJS3_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructIN5Catch8TestSpec6FilterEJS2_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
+_ZSt10_ConstructISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEJS4_EEvPT_DpOT0_:
+    #####:   74:    _Construct(_T1* __p, _Args&&... __args)
+    #####:   75:    { ::new(static_cast<void*>(__p)) _T1(std::forward<_Args>(__args)...); }
+------------------
         -:   76:#else
         -:   77:  template<typename _T1, typename _T2>
         -:   78:    inline void
@@ -89,75 +329,1594 @@
         -:   84:    }
         -:   85:#endif
         -:   86:
-        -:   87:  /**
-        -:   88:   * Destroy the object pointed to by a pointer type.
-        -:   89:   */
-        -:   90:  template<typename _Tp>
-        -:   91:    inline void
-     3203:   92:    _Destroy(_Tp* __pointer)
-     3203:   93:    { __pointer->~_Tp(); }
-        -:   94:
-        -:   95:  template<bool>
-        -:   96:    struct _Destroy_aux
-        -:   97:    {
-        -:   98:      template<typename _ForwardIterator>
-        -:   99:        static void
-     4869:  100:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
-        -:  101:	{
-     8072:  102:	  for (; __first != __last; ++__first)
-     3203:  103:	    std::_Destroy(std::__addressof(*__first));
-     1666:  104:	}
-        -:  105:    };
-        -:  106:
-        -:  107:  template<>
-        -:  108:    struct _Destroy_aux<true>
-        -:  109:    {
-        -:  110:      template<typename _ForwardIterator>
-        -:  111:        static void
-        4:  112:        __destroy(_ForwardIterator, _ForwardIterator) { }
-        -:  113:    };
-        -:  114:
-        -:  115:  /**
-        -:  116:   * Destroy a range of objects.  If the value_type of the object has
-        -:  117:   * a trivial destructor, the compiler should optimize all of this
-        -:  118:   * away, otherwise the objects' destructors must be invoked.
-        -:  119:   */
-        -:  120:  template<typename _ForwardIterator>
-        -:  121:    inline void
-     1670:  122:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
-        -:  123:    {
-        -:  124:      typedef typename iterator_traits<_ForwardIterator>::value_type
-        -:  125:                       _Value_type;
-     1670:  126:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
-        -:  127:	__destroy(__first, __last);
-     1670:  128:    }
-        -:  129:
-        -:  130:  /**
-        -:  131:   * Destroy a range of objects using the supplied allocator.  For
-        -:  132:   * nondefault allocators we do not optimize away invocation of 
-        -:  133:   * destroy() even if _Tp has a trivial destructor.
-        -:  134:   */
-        -:  135:
-        -:  136:  template<typename _ForwardIterator, typename _Allocator>
-        -:  137:    void
-        -:  138:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
-        -:  139:	     _Allocator& __alloc)
-        -:  140:    {
-        -:  141:      typedef __gnu_cxx::__alloc_traits<_Allocator> __traits;
-        -:  142:      for (; __first != __last; ++__first)
-        -:  143:	__traits::destroy(__alloc, std::__addressof(*__first));
-        -:  144:    }
-        -:  145:
-        -:  146:  template<typename _ForwardIterator, typename _Tp>
-        -:  147:    inline void
-     1670:  148:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
-        -:  149:	     allocator<_Tp>&)
-        -:  150:    {
-     1670:  151:      _Destroy(__first, __last);
-     1670:  152:    }
-        -:  153:
-        -:  154:_GLIBCXX_END_NAMESPACE_VERSION
-        -:  155:} // namespace std
-        -:  156:
-        -:  157:#endif /* _STL_CONSTRUCT_H */
-        -:  158:
+        -:   87:  template<typename _T1>
+        -:   88:    inline void
+        -:   89:    _Construct_novalue(_T1* __p)
+        -:   90:    { ::new(static_cast<void*>(__p)) _T1; }
+        -:   91:
+        -:   92:  /**
+        -:   93:   * Destroy the object pointed to by a pointer type.
+        -:   94:   */
+        -:   95:  template<typename _Tp>
+        -:   96:    inline void
+    2776*:   97:    _Destroy(_Tp* __pointer)
+    2776*:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10shared_ptrIN5Catch8TestSpec7PatternEEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch13ScopedMessageEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEEvPT_:
+        2:   97:    _Destroy(_Tp* __pointer)
+        2:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10shared_ptrIN5Catch16IReporterFactoryEEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch8TestCaseEEvPT_:
+        4:   97:    _Destroy(_Tp* __pointer)
+        4:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch11MessageInfoEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS3_EEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch9StringRefEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch14SectionEndInfoEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch8TestSpec6FilterEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch5clara6detail3ArgEEvPT_:
+        2:   97:    _Destroy(_Tp* __pointer)
+        2:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch5clara6detail3OptEEvPT_:
+      928:   97:    _Destroy(_Tp* __pointer)
+      928:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch5clara6detail11HelpColumnsEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch5clara6detail5TokenEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch5clara8TextFlow6ColumnEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEvPT_:
+     1836:   97:    _Destroy(_Tp* __pointer)
+     1836:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyINSt8__detail6_StateIcEEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS2_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS6_EEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS3_EEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyINSt15__exception_ptr13exception_ptrEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS2_EEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_EEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyISt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeEESaIS7_EEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch14AssertionStatsEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch13SummaryColumnEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch12_GLOBAL__N_110ColumnInfoEEvPT_:
+        4:   97:    _Destroy(_Tp* __pointer)
+        4:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch11SectionInfoEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+_ZSt8_DestroyIN5Catch8TestSpec11FilterMatchEEvPT_:
+    #####:   97:    _Destroy(_Tp* __pointer)
+    #####:   98:    { __pointer->~_Tp(); }
+------------------
+        -:   99:
+        -:  100:  template<bool>
+        -:  101:    struct _Destroy_aux
+        -:  102:    {
+        -:  103:      template<typename _ForwardIterator>
+        -:  104:        static void
+    4345*:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    4345*:  107:	  for (; __first != __last; ++__first)
+    2776*:  108:	    std::_Destroy(std::__addressof(*__first));
+    1569*:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch9StringRefEEEvT_S5_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch8TestSpec11FilterMatchEEEvT_S6_:
+        3:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       3*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        3:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch14SectionEndInfoEEEvT_S5_:
+        1:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       1*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        1:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch13ScopedMessageEEEvT_S5_:
+        1:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       1*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        1:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEEEvT_S8_:
+        6:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+        6:  107:	  for (; __first != __last; ++__first)
+        2:  108:	    std::_Destroy(std::__addressof(*__first));
+        4:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10shared_ptrIN5Catch16IReporterFactoryEEEEvT_S7_:
+        1:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       1*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        1:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch8TestCaseEEEvT_S5_:
+        8:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+        8:  107:	  for (; __first != __last; ++__first)
+        4:  108:	    std::_Destroy(std::__addressof(*__first));
+        4:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch11MessageInfoEEEvT_S5_:
+        1:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       1*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        1:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS5_EEEEvT_SA_:
+        1:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       1*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        1:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEvT_SB_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIN9__gnu_cxx17__normal_iteratorIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS9_SaIS9_EEEEEEvT_SF_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10shared_ptrIN5Catch8TestSpec7PatternEEEEvT_S8_:
+        1:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       1*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        1:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch8TestSpec6FilterEEEvT_S6_:
+        4:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       4*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        4:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch5clara6detail3ArgEEEvT_S7_:
+       67:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       67:  107:	  for (; __first != __last; ++__first)
+        2:  108:	    std::_Destroy(std::__addressof(*__first));
+       65:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch5clara6detail3OptEEEvT_S7_:
+      993:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+      993:  107:	  for (; __first != __last; ++__first)
+      928:  108:	    std::_Destroy(std::__addressof(*__first));
+       65:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch5clara6detail11HelpColumnsEEEvT_S7_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch5clara6detail5TokenEEEvT_S7_:
+        5:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       5*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        5:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch5clara8TextFlow6ColumnEEEvT_S7_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEvT_S9_:
+     3244:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+     3244:  107:	  for (; __first != __last; ++__first)
+     1836:  108:	    std::_Destroy(std::__addressof(*__first));
+     1408:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS3_13JunitReporterEE4NodeINS3_14TestGroupStatsENS7_INS3_13TestCaseStatsENS6_11SectionNodeEEEEEEEEvT_SF_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPNSt8__detail6_StateIcEEEEvT_S6_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS4_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISG_EEEEEvT_SL_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS8_EEEEvT_SD_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS5_EEEEvT_SA_:
+        1:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       1*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        1:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPNSt15__exception_ptr13exception_ptrEEEvT_S5_:
+        1:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       1*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        1:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS4_EEEEvT_S9_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS3_13JunitReporterEE11SectionNodeEEEEvT_SA_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS3_13JunitReporterEE4NodeINS3_12TestRunStatsENS7_INS3_14TestGroupStatsENS7_INS3_13TestCaseStatsENS6_11SectionNodeEEEEEEEEEEvT_SH_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES8_EEEvT_SB_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS3_13JunitReporterEE4NodeINS3_13TestCaseStatsENS6_11SectionNodeEEEEEEvT_SD_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPSt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS4_13JunitReporterEE11SectionNodeEESaIS9_EEEEvT_SD_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch14AssertionStatsEEEvT_S5_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch13SummaryColumnEEEvT_S5_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch12_GLOBAL__N_110ColumnInfoEEEvT_S6_:
+        6:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+        6:  107:	  for (; __first != __last; ++__first)
+        4:  108:	    std::_Destroy(std::__addressof(*__first));
+        2:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPN5Catch11SectionInfoEEEvT_S5_:
+        1:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+       1*:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+        1:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail3ArgESt6vectorIS7_SaIS7_EEEEEEvT_SD_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail3OptESt6vectorIS7_SaIS7_EEEEEEvT_SD_:
+    #####:  105:        __destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  106:	{
+    #####:  107:	  for (; __first != __last; ++__first)
+    #####:  108:	    std::_Destroy(std::__addressof(*__first));
+    #####:  109:	}
+------------------
+        -:  110:    };
+        -:  111:
+        -:  112:  template<>
+        -:  113:    struct _Destroy_aux<true>
+        -:  114:    {
+        -:  115:      template<typename _ForwardIterator>
+        -:  116:        static void
+       4*:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIPNSt7__cxx1112regex_traitsIcE10_RegexMaskEEEvT_S7_:
+    #####:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIPSt4pairIccEEEvT_S5_:
+    #####:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIN9__gnu_cxx17__normal_iteratorIPNSt7__cxx119sub_matchINS3_IPKcNS4_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESt6vectorISE_SaISE_EEEEEEvT_SK_:
+    #####:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIPSt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEEEvT_SG_:
+    #####:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIPcEEvT_S3_:
+    #####:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIPNSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS2_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEEEvT_SG_:
+    #####:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIPPKN5Catch8TestCaseEEEvT_S7_:
+    #####:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIPPN5Catch10ISingletonEEEvT_S6_:
+        2:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIPPN5Catch16TestCaseTracking8ITrackerEEEvT_S7_:
+        1:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIPmEEvT_S3_:
+        1:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+_ZNSt12_Destroy_auxILb1EE9__destroyIPN5Catch5clara8TextFlow6Column8iteratorEEEvT_S8_:
+    #####:  117:        __destroy(_ForwardIterator, _ForwardIterator) { }
+------------------
+        -:  118:    };
+        -:  119:
+        -:  120:  /**
+        -:  121:   * Destroy a range of objects.  If the value_type of the object has
+        -:  122:   * a trivial destructor, the compiler should optimize all of this
+        -:  123:   * away, otherwise the objects' destructors must be invoked.
+        -:  124:   */
+        -:  125:  template<typename _ForwardIterator>
+        -:  126:    inline void
+    1573*:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    1573*:  137:	__destroy(__first, __last);
+    1573*:  138:    }
+------------------
+_ZSt8_DestroyIPSt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEvT_S9_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail3OptESt6vectorIS5_SaIS5_EEEEEvT_SB_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIN9__gnu_cxx17__normal_iteratorIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS7_SaIS7_EEEEEvT_SD_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch8TestSpec11FilterMatchEEvT_S4_:
+        3:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        3:  137:	__destroy(__first, __last);
+        3:  138:    }
+------------------
+_ZSt8_DestroyIPPN5Catch16TestCaseTracking8ITrackerEEvT_S5_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch14SectionEndInfoEEvT_S3_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch13ScopedMessageEEvT_S3_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEEvT_S6_:
+        4:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        4:  137:	__destroy(__first, __last);
+        4:  138:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch16IReporterFactoryEEEvT_S5_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch8TestCaseEEvT_S3_:
+        4:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        4:  137:	__destroy(__first, __last);
+        4:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch11MessageInfoEEvT_S3_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIPSt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS3_EEEvT_S8_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail3ArgESt6vectorIS5_SaIS5_EEEEEvT_SB_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch9StringRefEEvT_S3_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch8TestSpec7PatternEEEvT_S6_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIPmEvT_S1_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch8TestSpec6FilterEEvT_S4_:
+        4:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        4:  137:	__destroy(__first, __last);
+        4:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara6detail3ArgEEvT_S5_:
+       65:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+       65:  137:	__destroy(__first, __last);
+       65:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara6detail3OptEEvT_S5_:
+       65:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+       65:  137:	__destroy(__first, __last);
+       65:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara6detail11HelpColumnsEEvT_S5_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara6detail5TokenEEvT_S5_:
+        5:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        5:  137:	__destroy(__first, __last);
+        5:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara8TextFlow6ColumnEEvT_S5_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara8TextFlow6Column8iteratorEEvT_S6_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEvT_S7_:
+     1408:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+     1408:  137:	__destroy(__first, __last);
+     1408:  138:    }
+------------------
+_ZSt8_DestroyIPSt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS2_EEEvT_S7_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPNSt7__cxx1112regex_traitsIcE10_RegexMaskEEvT_S5_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt4pairIccEEvT_S3_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPNSt8__detail6_StateIcEEEvT_S4_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIN9__gnu_cxx17__normal_iteratorIPNSt7__cxx119sub_matchINS1_IPKcNS2_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESt6vectorISC_SaISC_EEEEEvT_SI_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS2_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEEEvT_SJ_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEEvT_SE_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS6_EEEvT_SB_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPcEvT_S1_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPNSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS0_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEEvT_SE_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS3_EEEvT_S8_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIPNSt15__exception_ptr13exception_ptrEEvT_S3_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIPSt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_EEvT_S9_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEEEvT_S8_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEEEvT_SF_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEvT_SD_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEEEvT_SB_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPSt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeEESaIS7_EEEvT_SB_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch14AssertionStatsEEvT_S3_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch13SummaryColumnEEvT_S3_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch12_GLOBAL__N_110ColumnInfoEEvT_S4_:
+        2:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        2:  137:	__destroy(__first, __last);
+        2:  138:    }
+------------------
+_ZSt8_DestroyIPN5Catch11SectionInfoEEvT_S3_:
+        1:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        1:  137:	__destroy(__first, __last);
+        1:  138:    }
+------------------
+_ZSt8_DestroyIPPKN5Catch8TestCaseEEvT_S5_:
+    #####:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  137:	__destroy(__first, __last);
+    #####:  138:    }
+------------------
+_ZSt8_DestroyIPPN5Catch10ISingletonEEvT_S4_:
+        2:  127:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  128:    {
+        -:  129:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  130:                       _Value_type;
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  133:      static_assert(is_destructible<_Value_type>::value,
+        -:  134:		    "value type is destructible");
+        -:  135:#endif
+        -:  136:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+        2:  137:	__destroy(__first, __last);
+        2:  138:    }
+------------------
+        -:  139:
+        -:  140:  template<bool>
+        -:  141:    struct _Destroy_n_aux
+        -:  142:    {
+        -:  143:      template<typename _ForwardIterator, typename _Size>
+        -:  144:        static _ForwardIterator
+        -:  145:        __destroy_n(_ForwardIterator __first, _Size __count)
+        -:  146:	{
+        -:  147:	  for (; __count > 0; (void)++__first, --__count)
+        -:  148:	    std::_Destroy(std::__addressof(*__first));
+        -:  149:	  return __first;
+        -:  150:	}
+        -:  151:    };
+        -:  152:
+        -:  153:  template<>
+        -:  154:    struct _Destroy_n_aux<true>
+        -:  155:    {
+        -:  156:      template<typename _ForwardIterator, typename _Size>
+        -:  157:        static _ForwardIterator
+        -:  158:        __destroy_n(_ForwardIterator __first, _Size __count)
+        -:  159:	{
+        -:  160:	  std::advance(__first, __count);
+        -:  161:	  return __first;
+        -:  162:	}
+        -:  163:    };
+        -:  164:
+        -:  165:  /**
+        -:  166:   * Destroy a range of objects.  If the value_type of the object has
+        -:  167:   * a trivial destructor, the compiler should optimize all of this
+        -:  168:   * away, otherwise the objects' destructors must be invoked.
+        -:  169:   */
+        -:  170:  template<typename _ForwardIterator, typename _Size>
+        -:  171:    inline _ForwardIterator
+        -:  172:    _Destroy_n(_ForwardIterator __first, _Size __count)
+        -:  173:    {
+        -:  174:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  175:                       _Value_type;
+        -:  176:#if __cplusplus >= 201103L
+        -:  177:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  178:      static_assert(is_destructible<_Value_type>::value,
+        -:  179:		    "value type is destructible");
+        -:  180:#endif
+        -:  181:      return std::_Destroy_n_aux<__has_trivial_destructor(_Value_type)>::
+        -:  182:	__destroy_n(__first, __count);
+        -:  183:    }
+        -:  184:
+        -:  185:  /**
+        -:  186:   * Destroy a range of objects using the supplied allocator.  For
+        -:  187:   * nondefault allocators we do not optimize away invocation of 
+        -:  188:   * destroy() even if _Tp has a trivial destructor.
+        -:  189:   */
+        -:  190:
+        -:  191:  template<typename _ForwardIterator, typename _Allocator>
+        -:  192:    void
+        -:  193:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  194:	     _Allocator& __alloc)
+        -:  195:    {
+        -:  196:      typedef __gnu_cxx::__alloc_traits<_Allocator> __traits;
+        -:  197:      for (; __first != __last; ++__first)
+        -:  198:	__traits::destroy(__alloc, std::__addressof(*__first));
+        -:  199:    }
+        -:  200:
+        -:  201:  template<typename _ForwardIterator, typename _Tp>
+        -:  202:    inline void
+    1573*:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    1573*:  206:      _Destroy(__first, __last);
+    1573*:  207:    }
+------------------
+_ZSt8_DestroyIPSt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEES7_EvT_S9_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail3OptESt6vectorIS5_SaIS5_EEEES5_EvT_SB_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIN9__gnu_cxx17__normal_iteratorIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS7_SaIS7_EEEES7_EvT_SD_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch8TestSpec11FilterMatchES2_EvT_S4_RSaIT0_E:
+        3:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        3:  206:      _Destroy(__first, __last);
+        3:  207:    }
+------------------
+_ZSt8_DestroyIPPN5Catch16TestCaseTracking8ITrackerES3_EvT_S5_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch14SectionEndInfoES1_EvT_S3_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch13ScopedMessageES1_EvT_S3_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEES4_EvT_S6_RSaIT0_E:
+        4:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        4:  206:      _Destroy(__first, __last);
+        4:  207:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch16IReporterFactoryEES3_EvT_S5_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch8TestCaseES1_EvT_S3_RSaIT0_E:
+        4:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        4:  206:      _Destroy(__first, __last);
+        4:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch11MessageInfoES1_EvT_S3_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIPSt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS3_EES6_EvT_S8_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail3ArgESt6vectorIS5_SaIS5_EEEES5_EvT_SB_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch9StringRefES1_EvT_S3_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch8TestSpec7PatternEES4_EvT_S6_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIPmmEvT_S1_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch8TestSpec6FilterES2_EvT_S4_RSaIT0_E:
+        4:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        4:  206:      _Destroy(__first, __last);
+        4:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara6detail3ArgES3_EvT_S5_RSaIT0_E:
+       65:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+       65:  206:      _Destroy(__first, __last);
+       65:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara6detail3OptES3_EvT_S5_RSaIT0_E:
+       65:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+       65:  206:      _Destroy(__first, __last);
+       65:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara6detail11HelpColumnsES3_EvT_S5_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara6detail5TokenES3_EvT_S5_RSaIT0_E:
+        5:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        5:  206:      _Destroy(__first, __last);
+        5:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara8TextFlow6ColumnES3_EvT_S5_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch5clara8TextFlow6Column8iteratorES4_EvT_S6_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_EvT_S7_RSaIT0_E:
+     1408:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+     1408:  206:      _Destroy(__first, __last);
+     1408:  207:    }
+------------------
+_ZSt8_DestroyIPSt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS2_EES5_EvT_S7_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPNSt7__cxx1112regex_traitsIcE10_RegexMaskES3_EvT_S5_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt4pairIccES1_EvT_S3_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPNSt8__detail6_StateIcEES2_EvT_S4_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIN9__gnu_cxx17__normal_iteratorIPNSt7__cxx119sub_matchINS1_IPKcNS2_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESt6vectorISC_SaISC_EEEESC_EvT_SI_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS2_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISE_EEESH_EvT_SJ_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiESC_EvT_SE_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS6_EES9_EvT_SB_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPccEvT_S1_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPNSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS0_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESC_EvT_SE_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS3_EES6_EvT_S8_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIPNSt15__exception_ptr13exception_ptrES1_EvT_S3_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIPSt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_ES7_EvT_S9_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEES6_EvT_S8_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEESD_EvT_SF_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEESB_EvT_SD_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEES9_EvT_SB_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPSt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS2_13JunitReporterEE11SectionNodeEESaIS7_EES9_EvT_SB_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch14AssertionStatsES1_EvT_S3_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch13SummaryColumnES1_EvT_S3_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch12_GLOBAL__N_110ColumnInfoES2_EvT_S4_RSaIT0_E:
+        2:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        2:  206:      _Destroy(__first, __last);
+        2:  207:    }
+------------------
+_ZSt8_DestroyIPN5Catch11SectionInfoES1_EvT_S3_RSaIT0_E:
+        1:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        1:  206:      _Destroy(__first, __last);
+        1:  207:    }
+------------------
+_ZSt8_DestroyIPPKN5Catch8TestCaseES3_EvT_S5_RSaIT0_E:
+    #####:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+    #####:  206:      _Destroy(__first, __last);
+    #####:  207:    }
+------------------
+_ZSt8_DestroyIPPN5Catch10ISingletonES2_EvT_S4_RSaIT0_E:
+        2:  203:    _Destroy(_ForwardIterator __first, _ForwardIterator __last,
+        -:  204:	     allocator<_Tp>&)
+        -:  205:    {
+        2:  206:      _Destroy(__first, __last);
+        2:  207:    }
+------------------
+        -:  208:
+        -:  209:#if __cplusplus > 201402L
+        -:  210:  template <typename _Tp>
+        -:  211:    inline void
+        -:  212:    destroy_at(_Tp* __location)
+        -:  213:    {
+        -:  214:      std::_Destroy(__location);
+        -:  215:    }
+        -:  216:
+        -:  217:  template <typename _ForwardIterator>
+        -:  218:    inline void
+        -:  219:    destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  220:    {
+        -:  221:      std::_Destroy(__first, __last);
+        -:  222:    }
+        -:  223:
+        -:  224:  template <typename _ForwardIterator, typename _Size>
+        -:  225:    inline _ForwardIterator
+        -:  226:    destroy_n(_ForwardIterator __first, _Size __count)
+        -:  227:    {
+        -:  228:      return std::_Destroy_n(__first, __count);
+        -:  229:    }
+        -:  230:#endif
+        -:  231:
+        -:  232:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  233:} // namespace std
+        -:  234:
+        -:  235:#endif /* _STL_CONSTRUCT_H */
+        -:  236:

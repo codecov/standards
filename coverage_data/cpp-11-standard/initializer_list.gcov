@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/c++/5/initializer_list
+        -:    0:Source:/usr/include/c++/9/initializer_list
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// std::initializer_list support -*- C++ -*-
         -:    2:
-        -:    3:// Copyright (C) 2008-2015 Free Software Foundation, Inc.
+        -:    3:// Copyright (C) 2008-2019 Free Software Foundation, Inc.
         -:    4://
         -:    5:// This file is part of GCC.
         -:    6://
@@ -73,15 +72,45 @@
         -:   68:
         -:   69:      // Number of elements.
         -:   70:      constexpr size_type
-        2:   71:      size() const noexcept { return _M_len; }
+       2*:   71:      size() const noexcept { return _M_len; }
+------------------
+_ZNKSt16initializer_listIN5Catch12_GLOBAL__N_110ColumnInfoEE4sizeEv:
+        1:   71:      size() const noexcept { return _M_len; }
+------------------
+_ZNKSt16initializer_listIN5Catch9VerbosityEE4sizeEv:
+        1:   71:      size() const noexcept { return _M_len; }
+------------------
+_ZNKSt16initializer_listIN5Catch5clara6detail11HelpColumnsEE4sizeEv:
+    #####:   71:      size() const noexcept { return _M_len; }
+------------------
         -:   72:
         -:   73:      // First element.
         -:   74:      constexpr const_iterator
-        4:   75:      begin() const noexcept { return _M_array; }
+       4*:   75:      begin() const noexcept { return _M_array; }
+------------------
+_ZNKSt16initializer_listIN5Catch12_GLOBAL__N_110ColumnInfoEE5beginEv:
+        2:   75:      begin() const noexcept { return _M_array; }
+------------------
+_ZNKSt16initializer_listIN5Catch9VerbosityEE5beginEv:
+        2:   75:      begin() const noexcept { return _M_array; }
+------------------
+_ZNKSt16initializer_listIN5Catch5clara6detail11HelpColumnsEE5beginEv:
+    #####:   75:      begin() const noexcept { return _M_array; }
+------------------
         -:   76:
         -:   77:      // One past the last element.
         -:   78:      constexpr const_iterator
-        2:   79:      end() const noexcept { return begin() + size(); }
+       2*:   79:      end() const noexcept { return begin() + size(); }
+------------------
+_ZNKSt16initializer_listIN5Catch12_GLOBAL__N_110ColumnInfoEE3endEv:
+        1:   79:      end() const noexcept { return begin() + size(); }
+------------------
+_ZNKSt16initializer_listIN5Catch9VerbosityEE3endEv:
+        1:   79:      end() const noexcept { return begin() + size(); }
+------------------
+_ZNKSt16initializer_listIN5Catch5clara6detail11HelpColumnsEE3endEv:
+    #####:   79:      end() const noexcept { return begin() + size(); }
+------------------
         -:   80:    };
         -:   81:
         -:   82:  /**

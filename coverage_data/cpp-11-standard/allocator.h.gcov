@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/c++/5/bits/allocator.h
+        -:    0:Source:/usr/include/c++/9/bits/allocator.h
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// Allocators -*- C++ -*-
         -:    2:
-        -:    3:// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+        -:    3:// Copyright (C) 2001-2019 Free Software Foundation, Inc.
         -:    4://
         -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
         -:    6:// software; you can redistribute it and/or modify it under the
@@ -54,181 +53,1207 @@
         -:   49:#include <type_traits>
         -:   50:#endif
         -:   51:
-        -:   52:namespace std _GLIBCXX_VISIBILITY(default)
-        -:   53:{
-        -:   54:_GLIBCXX_BEGIN_NAMESPACE_VERSION
-        -:   55:
-        -:   56:  /**
-        -:   57:   *  @addtogroup allocators
-        -:   58:   *  @{
-        -:   59:   */
+        -:   52:#define __cpp_lib_incomplete_container_elements 201505
+        -:   53:#if __cplusplus >= 201103L
+        -:   54:# define __cpp_lib_allocator_is_always_equal 201411
+        -:   55:#endif
+        -:   56:
+        -:   57:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   58:{
+        -:   59:_GLIBCXX_BEGIN_NAMESPACE_VERSION
         -:   60:
-        -:   61:  /// allocator<void> specialization.
-        -:   62:  template<>
-        -:   63:    class allocator<void>
-        -:   64:    {
-        -:   65:    public:
-        -:   66:      typedef size_t      size_type;
-        -:   67:      typedef ptrdiff_t   difference_type;
-        -:   68:      typedef void*       pointer;
-        -:   69:      typedef const void* const_pointer;
-        -:   70:      typedef void        value_type;
-        -:   71:
-        -:   72:      template<typename _Tp1>
-        -:   73:        struct rebind
-        -:   74:        { typedef allocator<_Tp1> other; };
-        -:   75:
-        -:   76:#if __cplusplus >= 201103L
-        -:   77:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
-        -:   78:      // 2103. std::allocator propagate_on_container_move_assignment
-        -:   79:      typedef true_type propagate_on_container_move_assignment;
-        -:   80:#endif
-        -:   81:    };
-        -:   82:
-        -:   83:  /**
-        -:   84:   * @brief  The @a standard allocator, as per [20.4].
-        -:   85:   *
-        -:   86:   *  See https://gcc.gnu.org/onlinedocs/libstdc++/manual/memory.html#std.util.memory.allocator
-        -:   87:   *  for further details.
-        -:   88:   *
-        -:   89:   *  @tparam  _Tp  Type of allocated object.
-        -:   90:   */
-        -:   91:  template<typename _Tp>
-        -:   92:    class allocator: public __allocator_base<_Tp>
-        -:   93:    {
-        -:   94:   public:
-        -:   95:      typedef size_t     size_type;
-        -:   96:      typedef ptrdiff_t  difference_type;
-        -:   97:      typedef _Tp*       pointer;
-        -:   98:      typedef const _Tp* const_pointer;
-        -:   99:      typedef _Tp&       reference;
-        -:  100:      typedef const _Tp& const_reference;
-        -:  101:      typedef _Tp        value_type;
+        -:   61:  /**
+        -:   62:   *  @addtogroup allocators
+        -:   63:   *  @{
+        -:   64:   */
+        -:   65:
+        -:   66:  /// allocator<void> specialization.
+        -:   67:  template<>
+        -:   68:    class allocator<void>
+        -:   69:    {
+        -:   70:    public:
+        -:   71:      typedef size_t      size_type;
+        -:   72:      typedef ptrdiff_t   difference_type;
+        -:   73:      typedef void*       pointer;
+        -:   74:      typedef const void* const_pointer;
+        -:   75:      typedef void        value_type;
+        -:   76:
+        -:   77:      template<typename _Tp1>
+        -:   78:	struct rebind
+        -:   79:	{ typedef allocator<_Tp1> other; };
+        -:   80:
+        -:   81:#if __cplusplus >= 201103L
+        -:   82:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:   83:      // 2103. std::allocator propagate_on_container_move_assignment
+        -:   84:      typedef true_type propagate_on_container_move_assignment;
+        -:   85:
+        -:   86:      typedef true_type is_always_equal;
+        -:   87:
+        -:   88:      template<typename _Up, typename... _Args>
+        -:   89:	void
+        -:   90:	construct(_Up* __p, _Args&&... __args)
+        -:   91:	noexcept(noexcept(::new((void *)__p)
+        -:   92:			    _Up(std::forward<_Args>(__args)...)))
+        -:   93:	{ ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+        -:   94:
+        -:   95:      template<typename _Up>
+        -:   96:	void
+        -:   97:	destroy(_Up* __p)
+        -:   98:	noexcept(noexcept(__p->~_Up()))
+        -:   99:	{ __p->~_Up(); }
+        -:  100:#endif
+        -:  101:    };
         -:  102:
-        -:  103:      template<typename _Tp1>
-        -:  104:        struct rebind
-        -:  105:        { typedef allocator<_Tp1> other; };
-        -:  106:
-        -:  107:#if __cplusplus >= 201103L
-        -:  108:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
-        -:  109:      // 2103. std::allocator propagate_on_container_move_assignment
-        -:  110:      typedef true_type propagate_on_container_move_assignment;
-        -:  111:#endif
-        -:  112:
-      118:  113:      allocator() throw() { }
-        -:  114:
-     2725:  115:      allocator(const allocator& __a) throw()
-     2725:  116:      : __allocator_base<_Tp>(__a) { }
-        -:  117:
-        -:  118:      template<typename _Tp1>
-       87:  119:        allocator(const allocator<_Tp1>&) throw() { }
-        -:  120:
-     2930:  121:      ~allocator() throw() { }
+        -:  103:  /**
+        -:  104:   * @brief  The @a standard allocator, as per [20.4].
+        -:  105:   *
+        -:  106:   *  See https://gcc.gnu.org/onlinedocs/libstdc++/manual/memory.html#std.util.memory.allocator
+        -:  107:   *  for further details.
+        -:  108:   *
+        -:  109:   *  @tparam  _Tp  Type of allocated object.
+        -:  110:   */
+        -:  111:  template<typename _Tp>
+        -:  112:    class allocator : public __allocator_base<_Tp>
+        -:  113:    {
+        -:  114:   public:
+        -:  115:      typedef size_t     size_type;
+        -:  116:      typedef ptrdiff_t  difference_type;
+        -:  117:      typedef _Tp*       pointer;
+        -:  118:      typedef const _Tp* const_pointer;
+        -:  119:      typedef _Tp&       reference;
+        -:  120:      typedef const _Tp& const_reference;
+        -:  121:      typedef _Tp        value_type;
         -:  122:
-        -:  123:      // Inherit everything else.
-        -:  124:    };
-        -:  125:
-        -:  126:  template<typename _T1, typename _T2>
-        -:  127:    inline bool
-        -:  128:    operator==(const allocator<_T1>&, const allocator<_T2>&)
-        -:  129:    _GLIBCXX_USE_NOEXCEPT
-        -:  130:    { return true; }
+        -:  123:      template<typename _Tp1>
+        -:  124:	struct rebind
+        -:  125:	{ typedef allocator<_Tp1> other; };
+        -:  126:
+        -:  127:#if __cplusplus >= 201103L
+        -:  128:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  129:      // 2103. std::allocator propagate_on_container_move_assignment
+        -:  130:      typedef true_type propagate_on_container_move_assignment;
         -:  131:
-        -:  132:  template<typename _Tp>
-        -:  133:    inline bool
-        -:  134:    operator==(const allocator<_Tp>&, const allocator<_Tp>&)
-        -:  135:    _GLIBCXX_USE_NOEXCEPT
-        -:  136:    { return true; }
-        -:  137:
-        -:  138:  template<typename _T1, typename _T2>
-        -:  139:    inline bool
-        -:  140:    operator!=(const allocator<_T1>&, const allocator<_T2>&)
-        -:  141:    _GLIBCXX_USE_NOEXCEPT
-        -:  142:    { return false; }
+        -:  132:      typedef true_type is_always_equal;
+        -:  133:#endif
+        -:  134:
+        -:  135:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  136:      // 3035. std::allocator's constructors should be constexpr
+        -:  137:      _GLIBCXX20_CONSTEXPR
+     119*:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch8TestSpec7PatternEEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail3OptEEC2Ev:
+        2:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail3ArgEEC2Ev:
+        2:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch6ConfigEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPN5Catch10ISingletonEEC2Ev:
+        2:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch9StringRefEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch8TestCaseEEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestCaseEEC2Ev:
+        2:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch16TestCaseTracking14SectionTrackerEEC2Ev:
+        4:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEEC2Ev:
+        4:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPKN5Catch8TestCaseEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch13SummaryColumnEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS1_EEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS1_4HelpC4ERbEUlbE_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE7_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS9_EEEEEC2Ev:
+        2:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestSpec11NamePatternEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestSpec15ExcludedPatternEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestSpec10TagPatternEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch11SectionInfoEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestSpec6FilterEEC2Ev:
+        2:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2Ev:
+       45:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11HelpColumnsEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestSpec11FilterMatchEEC2Ev:
+        2:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch9VerbosityEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch12_GLOBAL__N_110ColumnInfoEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara8TextFlow6Column8iteratorEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara8TextFlow6ColumnEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail5TokenEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEC2Ev:
+        3:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail12BoundFlagRefEEC2Ev:
+       11:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15CompactReporterEE15ReporterFactoryEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaImEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch11MessageInfoEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch10Generators16GeneratorTrackerEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch13ScopedMessageEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch14SectionEndInfoEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPN5Catch16TestCaseTracking8ITrackerEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIjEEEC2Ev:
+        2:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIdEEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch16IReporterFactoryEEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS2_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt15__exception_ptr13exception_ptrEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS2_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS5_EEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKllEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt4pairIccEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt7__cxx1112regex_traitsIcE10_RegexMaskEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_EEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIlEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt8__detail6_StateIcEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE11SectionNodeEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_11XmlReporterEE15ReporterFactoryEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15ConsoleReporterEE15ReporterFactoryEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch14AssertionStatsEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEESaIS6_EEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_13TestCaseStatsENS2_11SectionNodeEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_13JunitReporterEE15ReporterFactoryEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_12TestRunStatsENS3_INS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEEEC2Ev:
+    #####:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUliE8_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE9_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEEC2Ev:
+        1:  138:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+        -:  139:
+        -:  140:      _GLIBCXX20_CONSTEXPR
+    2728*:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    2728*:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch12_GLOBAL__N_110ColumnInfoEEC2ERKS2_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch8TestSpec15ExcludedPatternEEC2ERKS2_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch8TestSpec11NamePatternEEC2ERKS2_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS9_EEEEEC2ERKSD_:
+        6:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        6:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE7_EEEC2ERKS7_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS1_4HelpC4ERbEUlbE_EEEC2ERKS7_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch16TestCaseTracking14SectionTrackerEEC2ERKS2_:
+       12:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+       12:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch6ConfigEEC2ERKS1_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch10Generators16GeneratorTrackerEEC2ERKS2_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail12BoundFlagRefEEC2ERKS3_:
+       33:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+       33:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEC2ERKSA_:
+        9:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        9:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch8TestSpec7PatternEEEC2ERKS4_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch11MessageInfoEEC2ERKS1_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail5TokenEEC2ERKS3_:
+        8:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        8:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch8TestSpec10TagPatternEEC2ERKS2_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch9VerbosityEEC2ERKS1_:
+        1:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        1:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch8TestSpec6FilterEEC2ERKS2_:
+        4:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        4:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch8TestSpec11FilterMatchEEC2ERKS2_:
+        4:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        4:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIPKN5Catch8TestCaseEEC2ERKS3_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC2ERKS7_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch8TestCaseEEC2ERKS1_:
+        4:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        4:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2ERKS5_:
+     2331:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+     2331:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail3ArgEEC2ERKS3_:
+      126:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+      126:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail3OptEEC2ERKS3_:
+      126:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+      126:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11HelpColumnsEEC2ERKS3_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara8TextFlow6ColumnEEC2ERKS3_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2ERKS3_:
+        1:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        1:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEEC2ERKSF_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE11SectionNodeEEC2ERKS4_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_EEC2ERKS7_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaINSt7__cxx1112regex_traitsIcE10_RegexMaskEEC2ERKS3_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaISt4pairIccEEC2ERKS1_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEEC2ERKS5_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEEEC2ERKSH_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaISt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEEC2ERKSC_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEEC2ERKSC_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIdEEEC2ERKS4_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIjEEEC2ERKS4_:
+        6:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        6:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEEC2ERKSF_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEEC2ERKSF_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEEC2ERKSF_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_12TestRunStatsENS3_INS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEEEC2ERKSB_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEEC2ERKSF_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEEC2ERKSF_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE9_EEEC2ERKS7_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEEC2ERKSF_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUliE8_EEEC2ERKS7_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEEC2ERKSF_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_11XmlReporterEE15ReporterFactoryEEC2ERKS4_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_13JunitReporterEE15ReporterFactoryEEC2ERKS4_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEC2ERKS9_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_13TestCaseStatsENS2_11SectionNodeEEEEC2ERKS7_:
+    #####:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15ConsoleReporterEE15ReporterFactoryEEC2ERKS4_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15CompactReporterEE15ReporterFactoryEEC2ERKS4_:
+        3:  141:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  142:      : __allocator_base<_Tp>(__a) { }
+------------------
         -:  143:
-        -:  144:  template<typename _Tp>
-        -:  145:    inline bool
-    #####:  146:    operator!=(const allocator<_Tp>&, const allocator<_Tp>&)
-        -:  147:    _GLIBCXX_USE_NOEXCEPT
-    #####:  148:    { return false; }
-        -:  149:
-        -:  150:  /// @} group allocator
-        -:  151:
-        -:  152:  // Inhibit implicit instantiations for required instantiations,
-        -:  153:  // which are defined via explicit instantiations elsewhere.
-        -:  154:#if _GLIBCXX_EXTERN_TEMPLATE
-        -:  155:  extern template class allocator<char>;
-        -:  156:  extern template class allocator<wchar_t>;
-        -:  157:#endif
+        -:  144:#if __cplusplus >= 201103L
+        -:  145:      // Avoid implicit deprecation.
+        -:  146:      allocator& operator=(const allocator&) = default;
+        -:  147:#endif
+        -:  148:
+        -:  149:      template<typename _Tp1>
+        -:  150:	_GLIBCXX20_CONSTEXPR
+      87*:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_4HelpC4ERbEUlbE_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEESaIS9_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS9_EERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15ConsoleReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15CompactReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISA_EEEESaISD_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISD_EERKSaIT_E:
+        4:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE7_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_13JunitReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E:
+        8:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS1_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS1_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS3_EERKSaIT_E:
+       22:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISA_EERKSaIT_E:
+        6:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS5_EERKSaIT_E:
+        6:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPcEC2IcEERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2IS1_EERKSaIT_E:
+        1:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPlEC2IlEERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS5_EERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEEC2IS4_EERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+        4:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISB_EERKSaIT_E:
+    #####:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE9_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUliE8_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_11XmlReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+        2:  151:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+        -:  152:
+    2934*:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE7_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEED2Ev:
+       12:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail12BoundFlagRefEED2Ev:
+       44:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch10Generators16GeneratorTrackerEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch6ConfigEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch16TestCaseTracking14SectionTrackerEED2Ev:
+       16:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch11SectionInfoEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch14AssertionStatsEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEESaIS6_EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS1_4HelpC4ERbEUlbE_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS9_EEEEED2Ev:
+        8:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS2_EEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch16IReporterFactoryEEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt15__exception_ptr13exception_ptrEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS2_EEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS5_EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestSpec11NamePatternEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestSpec15ExcludedPatternEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestSpec10TagPatternEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15CompactReporterEE15ReporterFactoryEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15ConsoleReporterEE15ReporterFactoryEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_13TestCaseStatsENS2_11SectionNodeEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_13JunitReporterEE15ReporterFactoryEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch11MessageInfoEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEED2Ev:
+     2376:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara8TextFlow6Column8iteratorEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara8TextFlow6ColumnEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail5TokenEED2Ev:
+        9:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11HelpColumnsEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail3OptEED2Ev:
+      128:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail3ArgEED2Ev:
+      128:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestSpec6FilterEED2Ev:
+        6:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch9StringRefEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt4pairIiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestCaseEED2Ev:
+        6:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaImED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_11XmlReporterEE15ReporterFactoryEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch13ScopedMessageEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch14SectionEndInfoEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPN5Catch16TestCaseTracking8ITrackerEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch8TestSpec11FilterMatchEED2Ev:
+        6:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPN5Catch10ISingletonEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch8TestCaseEEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPKN5Catch8TestCaseEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch8TestSpec7PatternEEED2Ev:
+        1:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch9VerbosityEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch12_GLOBAL__N_110ColumnInfoEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch13SummaryColumnEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS1_EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15CompactReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15ConsoleReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEESaIS9_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_13JunitReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_11XmlReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUliE8_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE9_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt4pairIccEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt7__cxx1112regex_traitsIcE10_RegexMaskEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_EED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKllEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIlED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPlED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt8__detail6_StateIcEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE11SectionNodeEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_12TestRunStatsENS3_INS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        6:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUliE8_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE9_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIjEEED2Ev:
+        8:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIdEEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIPcED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        6:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+       22:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS1_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        8:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_4HelpC4ERbEUlbE_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE7_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        2:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISA_EEEESaISD_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+        4:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+    #####:  153:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+        -:  154:
+        -:  155:      friend bool
+        -:  156:      operator==(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+        -:  157:      { return true; }
         -:  158:
-        -:  159:  // Undefine.
-        -:  160:#undef __allocator_base
-        -:  161:
-        -:  162:  // To implement Option 3 of DR 431.
-        -:  163:  template<typename _Alloc, bool = __is_empty(_Alloc)>
-        -:  164:    struct __alloc_swap
-        -:  165:    { static void _S_do_it(_Alloc&, _Alloc&) _GLIBCXX_NOEXCEPT { } };
-        -:  166:
-        -:  167:  template<typename _Alloc>
-        -:  168:    struct __alloc_swap<_Alloc, false>
-        -:  169:    {
-        -:  170:      static void
-        -:  171:      _S_do_it(_Alloc& __one, _Alloc& __two) _GLIBCXX_NOEXCEPT
-        -:  172:      {
-        -:  173:	// Precondition: swappable allocators.
-        -:  174:	if (__one != __two)
-        -:  175:	  swap(__one, __two);
-        -:  176:      }
-        -:  177:    };
-        -:  178:
-        -:  179:  // Optimize for stateless allocators.
-        -:  180:  template<typename _Alloc, bool = __is_empty(_Alloc)>
-        -:  181:    struct __alloc_neq
+        -:  159:      friend bool
+    #####:  160:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  161:      { return false; }
+------------------
+_ZStneRKSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEESE_:
+    #####:  160:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  161:      { return false; }
+------------------
+_ZStneRKSaIN5Catch5clara6detail3ArgEES5_:
+    #####:  160:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  161:      { return false; }
+------------------
+_ZStneRKSaIN5Catch5clara6detail3OptEES5_:
+    #####:  160:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  161:      { return false; }
+------------------
+_ZStneRKSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEES7_:
+    #####:  160:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  161:      { return false; }
+------------------
+        -:  162:
+        -:  163:      // Inherit everything else.
+        -:  164:    };
+        -:  165:
+        -:  166:  template<typename _T1, typename _T2>
+        -:  167:    inline bool
+        -:  168:    operator==(const allocator<_T1>&, const allocator<_T2>&)
+        -:  169:    _GLIBCXX_NOTHROW
+        -:  170:    { return true; }
+        -:  171:
+        -:  172:  template<typename _T1, typename _T2>
+        -:  173:    inline bool
+        -:  174:    operator!=(const allocator<_T1>&, const allocator<_T2>&)
+        -:  175:    _GLIBCXX_NOTHROW
+        -:  176:    { return false; }
+        -:  177:
+        -:  178:  // Invalid allocator<cv T> partial specializations.
+        -:  179:  // allocator_traits::rebind_alloc can be used to form a valid allocator type.
+        -:  180:  template<typename _Tp>
+        -:  181:    class allocator<const _Tp>
         -:  182:    {
-        -:  183:      static bool
-        -:  184:      _S_do_it(const _Alloc&, const _Alloc&)
-        -:  185:      { return false; }
+        -:  183:    public:
+        -:  184:      typedef _Tp value_type;
+        -:  185:      template<typename _Up> allocator(const allocator<_Up>&) { }
         -:  186:    };
         -:  187:
-        -:  188:  template<typename _Alloc>
-        -:  189:    struct __alloc_neq<_Alloc, false>
+        -:  188:  template<typename _Tp>
+        -:  189:    class allocator<volatile _Tp>
         -:  190:    {
-        -:  191:      static bool
-        -:  192:      _S_do_it(const _Alloc& __one, const _Alloc& __two)
-        -:  193:      { return __one != __two; }
+        -:  191:    public:
+        -:  192:      typedef _Tp value_type;
+        -:  193:      template<typename _Up> allocator(const allocator<_Up>&) { }
         -:  194:    };
         -:  195:
-        -:  196:#if __cplusplus >= 201103L
-        -:  197:  template<typename _Tp, bool
-        -:  198:    = __or_<is_copy_constructible<typename _Tp::value_type>,
-        -:  199:            is_nothrow_move_constructible<typename _Tp::value_type>>::value>
-        -:  200:    struct __shrink_to_fit_aux
-        -:  201:    { static bool _S_do_it(_Tp&) noexcept { return false; } };
-        -:  202:
-        -:  203:  template<typename _Tp>
-        -:  204:    struct __shrink_to_fit_aux<_Tp, true>
-        -:  205:    {
-        -:  206:      static bool
-        -:  207:      _S_do_it(_Tp& __c) noexcept
-        -:  208:      {
-        -:  209:#if __cpp_exceptions
-        -:  210:	try
-        -:  211:	  {
-        -:  212:	    _Tp(__make_move_if_noexcept_iterator(__c.begin()),
-        -:  213:		__make_move_if_noexcept_iterator(__c.end()),
-        -:  214:		__c.get_allocator()).swap(__c);
-        -:  215:	    return true;
-        -:  216:	  }
-        -:  217:	catch(...)
-        -:  218:	  { return false; }
-        -:  219:#else
-        -:  220:	return false;
-        -:  221:#endif
-        -:  222:      }
-        -:  223:    };
-        -:  224:#endif
-        -:  225:
-        -:  226:_GLIBCXX_END_NAMESPACE_VERSION
-        -:  227:} // namespace std
-        -:  228:
-        -:  229:#endif
+        -:  196:  template<typename _Tp>
+        -:  197:    class allocator<const volatile _Tp>
+        -:  198:    {
+        -:  199:    public:
+        -:  200:      typedef _Tp value_type;
+        -:  201:      template<typename _Up> allocator(const allocator<_Up>&) { }
+        -:  202:    };
+        -:  203:
+        -:  204:  /// @} group allocator
+        -:  205:
+        -:  206:  // Inhibit implicit instantiations for required instantiations,
+        -:  207:  // which are defined via explicit instantiations elsewhere.
+        -:  208:#if _GLIBCXX_EXTERN_TEMPLATE
+        -:  209:  extern template class allocator<char>;
+        -:  210:  extern template class allocator<wchar_t>;
+        -:  211:#endif
+        -:  212:
+        -:  213:  // Undefine.
+        -:  214:#undef __allocator_base
+        -:  215:
+        -:  216:  // To implement Option 3 of DR 431.
+        -:  217:  template<typename _Alloc, bool = __is_empty(_Alloc)>
+        -:  218:    struct __alloc_swap
+        -:  219:    { static void _S_do_it(_Alloc&, _Alloc&) _GLIBCXX_NOEXCEPT { } };
+        -:  220:
+        -:  221:  template<typename _Alloc>
+        -:  222:    struct __alloc_swap<_Alloc, false>
+        -:  223:    {
+        -:  224:      static void
+        -:  225:      _S_do_it(_Alloc& __one, _Alloc& __two) _GLIBCXX_NOEXCEPT
+        -:  226:      {
+        -:  227:	// Precondition: swappable allocators.
+        -:  228:	if (__one != __two)
+        -:  229:	  swap(__one, __two);
+        -:  230:      }
+        -:  231:    };
+        -:  232:
+        -:  233:  // Optimize for stateless allocators.
+        -:  234:  template<typename _Alloc, bool = __is_empty(_Alloc)>
+        -:  235:    struct __alloc_neq
+        -:  236:    {
+        -:  237:      static bool
+        -:  238:      _S_do_it(const _Alloc&, const _Alloc&)
+        -:  239:      { return false; }
+        -:  240:    };
+        -:  241:
+        -:  242:  template<typename _Alloc>
+        -:  243:    struct __alloc_neq<_Alloc, false>
+        -:  244:    {
+        -:  245:      static bool
+        -:  246:      _S_do_it(const _Alloc& __one, const _Alloc& __two)
+        -:  247:      { return __one != __two; }
+        -:  248:    };
+        -:  249:
+        -:  250:#if __cplusplus >= 201103L
+        -:  251:  template<typename _Tp, bool
+        -:  252:    = __or_<is_copy_constructible<typename _Tp::value_type>,
+        -:  253:            is_nothrow_move_constructible<typename _Tp::value_type>>::value>
+        -:  254:    struct __shrink_to_fit_aux
+        -:  255:    { static bool _S_do_it(_Tp&) noexcept { return false; } };
+        -:  256:
+        -:  257:  template<typename _Tp>
+        -:  258:    struct __shrink_to_fit_aux<_Tp, true>
+        -:  259:    {
+        -:  260:      static bool
+        -:  261:      _S_do_it(_Tp& __c) noexcept
+        -:  262:      {
+        -:  263:#if __cpp_exceptions
+        -:  264:	try
+        -:  265:	  {
+        -:  266:	    _Tp(__make_move_if_noexcept_iterator(__c.begin()),
+        -:  267:		__make_move_if_noexcept_iterator(__c.end()),
+        -:  268:		__c.get_allocator()).swap(__c);
+        -:  269:	    return true;
+        -:  270:	  }
+        -:  271:	catch(...)
+        -:  272:	  { return false; }
+        -:  273:#else
+        -:  274:	return false;
+        -:  275:#endif
+        -:  276:      }
+        -:  277:    };
+        -:  278:#endif
+        -:  279:
+        -:  280:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  281:} // namespace std
+        -:  282:
+        -:  283:#endif

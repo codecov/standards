@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/c++/5/bits/stl_iterator_base_types.h
+        -:    0:Source:/usr/include/c++/9/bits/stl_iterator_base_types.h
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// Types used in iterator implementation -*- C++ -*-
         -:    2:
-        -:    3:// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+        -:    3:// Copyright (C) 2001-2019 Free Software Foundation, Inc.
         -:    4://
         -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
         -:    6:// software; you can redistribute it and/or modify it under the
@@ -120,7 +119,7 @@
         -:  115:  */
         -:  116:  template<typename _Category, typename _Tp, typename _Distance = ptrdiff_t,
         -:  117:           typename _Pointer = _Tp*, typename _Reference = _Tp&>
-        4:  118:    struct iterator
+        -:  118:    struct iterator
         -:  119:    {
         -:  120:      /// One of the @link iterator_tags tag types@endlink.
         -:  121:      typedef _Category  iterator_category;
@@ -205,40 +204,112 @@
         -:  200:   *  sugar for internal library use only.
         -:  201:  */
         -:  202:  template<typename _Iter>
-        -:  203:    inline typename iterator_traits<_Iter>::iterator_category
-     3804:  204:    __iterator_category(const _Iter&)
-     3804:  205:    { return typename iterator_traits<_Iter>::iterator_category(); }
-        -:  206:
-        -:  207:  //@}
-        -:  208:
-        -:  209:  // If _Iterator has a base returns it otherwise _Iterator is returned
-        -:  210:  // untouched
-        -:  211:  template<typename _Iterator, bool _HasBase>
-        -:  212:    struct _Iter_base
-        -:  213:    {
-        -:  214:      typedef _Iterator iterator_type;
-        3:  215:      static iterator_type _S_base(_Iterator __it)
-        3:  216:      { return __it; }
-        -:  217:    };
-        -:  218:
-        -:  219:  template<typename _Iterator>
-        -:  220:    struct _Iter_base<_Iterator, true>
-        -:  221:    {
-        -:  222:      typedef typename _Iterator::iterator_type iterator_type;
-        2:  223:      static iterator_type _S_base(_Iterator __it)
-        2:  224:      { return __it.base(); }
-        -:  225:    };
-        -:  226:
-        -:  227:#if __cplusplus >= 201103L
-        -:  228:  template<typename _InIter>
-        -:  229:    using _RequireInputIter = typename
-        -:  230:      enable_if<is_convertible<typename
-        -:  231:		iterator_traits<_InIter>::iterator_category,
-        -:  232:			       input_iterator_tag>::value>::type;
-        -:  233:#endif
-        -:  234:
-        -:  235:_GLIBCXX_END_NAMESPACE_VERSION
-        -:  236:} // namespace
+        -:  203:    inline _GLIBCXX_CONSTEXPR
+        -:  204:    typename iterator_traits<_Iter>::iterator_category
+    3805*:  205:    __iterator_category(const _Iter&)
+    3805*:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIPKN5Catch12_GLOBAL__N_110ColumnInfoEENSt15iterator_traitsIT_E17iterator_categoryERKS6_:
+        1:  205:    __iterator_category(const _Iter&)
+        1:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIPKPKcENSt15iterator_traitsIT_E17iterator_categoryERKS5_:
+        2:  205:    __iterator_category(const _Iter&)
+        2:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPKN5Catch11MessageInfoESt6vectorIS3_SaIS3_EEEEENSt15iterator_traitsIT_E17iterator_categoryERKSB_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPN5Catch5clara6detail11HelpColumnsESt6vectorIS5_SaIS5_EEEEENSt15iterator_traitsIT_E17iterator_categoryERKSC_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPSt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEESt6vectorIS6_SaIS6_EEEEENSt15iterator_traitsIT_E17iterator_categoryERKSD_:
+        2:  205:    __iterator_category(const _Iter&)
+        2:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt6vectorIS7_SaIS7_EEEEENSt15iterator_traitsIT_E17iterator_categoryERKSF_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIPKN5Catch5clara6detail11HelpColumnsEENSt15iterator_traitsIT_E17iterator_categoryERKS7_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPN5Catch11MessageInfoESt6vectorIS3_SaIS3_EEEEENSt15iterator_traitsIT_E17iterator_categoryERKSA_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPKSt10shared_ptrIN5Catch8TestSpec7PatternEESt6vectorIS6_SaIS6_EEEEENSt15iterator_traitsIT_E17iterator_categoryERKSE_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPSt10shared_ptrIN5Catch22CumulativeReporterBaseINS3_13JunitReporterEE11SectionNodeEESt6vectorIS8_SaIS8_EEEEENSt15iterator_traitsIT_E17iterator_categoryERKSF_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPKN5Catch8TestSpec6FilterESt6vectorIS4_SaIS4_EEEEENSt15iterator_traitsIT_E17iterator_categoryERKSC_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIPKcENSt15iterator_traitsIT_E17iterator_categoryERKS3_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIPcENSt15iterator_traitsIT_E17iterator_categoryERKS2_:
+     3800:  205:    __iterator_category(const _Iter&)
+     3800:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIPKwENSt15iterator_traitsIT_E17iterator_categoryERKS3_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEENSt15iterator_traitsIT_E17iterator_categoryERKSC_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPKcSt6vectorIcSaIcEEEEENSt15iterator_traitsIT_E17iterator_categoryERKS9_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+_ZSt19__iterator_categoryIN9__gnu_cxx17__normal_iteratorIPcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEENSt15iterator_traitsIT_E17iterator_categoryERKSB_:
+    #####:  205:    __iterator_category(const _Iter&)
+    #####:  206:    { return typename iterator_traits<_Iter>::iterator_category(); }
+------------------
+        -:  207:
+        -:  208:  //@}
+        -:  209:
+        -:  210:#if __cplusplus < 201103L
+        -:  211:  // If _Iterator has a base returns it otherwise _Iterator is returned
+        -:  212:  // untouched
+        -:  213:  template<typename _Iterator, bool _HasBase>
+        -:  214:    struct _Iter_base
+        -:  215:    {
+        -:  216:      typedef _Iterator iterator_type;
+        -:  217:      static iterator_type _S_base(_Iterator __it)
+        -:  218:      { return __it; }
+        -:  219:    };
+        -:  220:
+        -:  221:  template<typename _Iterator>
+        -:  222:    struct _Iter_base<_Iterator, true>
+        -:  223:    {
+        -:  224:      typedef typename _Iterator::iterator_type iterator_type;
+        -:  225:      static iterator_type _S_base(_Iterator __it)
+        -:  226:      { return __it.base(); }
+        -:  227:    };
+        -:  228:#endif
+        -:  229:
+        -:  230:#if __cplusplus >= 201103L
+        -:  231:  template<typename _InIter>
+        -:  232:    using _RequireInputIter = typename
+        -:  233:      enable_if<is_convertible<typename
+        -:  234:		iterator_traits<_InIter>::iterator_category,
+        -:  235:			       input_iterator_tag>::value>::type;
+        -:  236:#endif
         -:  237:
-        -:  238:#endif /* _STL_ITERATOR_BASE_TYPES_H */
-        -:  239:
+        -:  238:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  239:} // namespace
+        -:  240:
+        -:  241:#endif /* _STL_ITERATOR_BASE_TYPES_H */
+        -:  242:

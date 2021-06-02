@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/x86_64-linux-gnu/c++/5/bits/gthr-default.h
+        -:    0:Source:/usr/include/x86_64-linux-gnu/c++/9/bits/gthr-default.h
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:/* Threads compatibility routines for libgcc2 and libobjc.  */
         -:    2:/* Compile this one with gcc.  */
-        -:    3:/* Copyright (C) 1997-2015 Free Software Foundation, Inc.
+        -:    3:/* Copyright (C) 1997-2019 Free Software Foundation, Inc.
         -:    4:
         -:    5:This file is part of GCC.
         -:    6:
@@ -92,803 +91,804 @@
         -:   87:#  define __gthrw_pragma(pragma)
         -:   88:# endif
         -:   89:# define __gthrw2(name,name2,type) \
-        -:   90:  static __typeof(type) name __attribute__ ((__weakref__(#name2))); \
-        -:   91:  __gthrw_pragma(weak type)
-        -:   92:# define __gthrw_(name) __gthrw_ ## name
-        -:   93:#else
-        -:   94:# define __gthrw2(name,name2,type)
-        -:   95:# define __gthrw_(name) name
-        -:   96:#endif
-        -:   97:
-        -:   98:/* Typically, __gthrw_foo is a weak reference to symbol foo.  */
-        -:   99:#define __gthrw(name) __gthrw2(__gthrw_ ## name,name,name)
-        -:  100:
-        -:  101:__gthrw(pthread_once)
-        -:  102:__gthrw(pthread_getspecific)
-        -:  103:__gthrw(pthread_setspecific)
-        -:  104:
-        -:  105:__gthrw(pthread_create)
-        -:  106:__gthrw(pthread_join)
-        -:  107:__gthrw(pthread_equal)
-        -:  108:__gthrw(pthread_self)
-        -:  109:__gthrw(pthread_detach)
-        -:  110:#ifndef __BIONIC__
-        -:  111:__gthrw(pthread_cancel)
-        -:  112:#endif
-        -:  113:__gthrw(sched_yield)
-        -:  114:
-        -:  115:__gthrw(pthread_mutex_lock)
-        -:  116:__gthrw(pthread_mutex_trylock)
-        -:  117:#if _GTHREAD_USE_MUTEX_TIMEDLOCK
-        -:  118:__gthrw(pthread_mutex_timedlock)
-        -:  119:#endif
-        -:  120:__gthrw(pthread_mutex_unlock)
-        -:  121:__gthrw(pthread_mutex_init)
-        -:  122:__gthrw(pthread_mutex_destroy)
-        -:  123:
-        -:  124:__gthrw(pthread_cond_init)
-        -:  125:__gthrw(pthread_cond_broadcast)
-        -:  126:__gthrw(pthread_cond_signal)
-        -:  127:__gthrw(pthread_cond_wait)
-        -:  128:__gthrw(pthread_cond_timedwait)
-        -:  129:__gthrw(pthread_cond_destroy)
-        -:  130:
-        -:  131:__gthrw(pthread_key_create)
-        -:  132:__gthrw(pthread_key_delete)
-        -:  133:__gthrw(pthread_mutexattr_init)
-        -:  134:__gthrw(pthread_mutexattr_settype)
-        -:  135:__gthrw(pthread_mutexattr_destroy)
-        -:  136:
+        -:   90:  static __typeof(type) name \
+        -:   91:    __attribute__ ((__weakref__(#name2), __copy__ (type))); \
+        -:   92:  __gthrw_pragma(weak type)
+        -:   93:# define __gthrw_(name) __gthrw_ ## name
+        -:   94:#else
+        -:   95:# define __gthrw2(name,name2,type)
+        -:   96:# define __gthrw_(name) name
+        -:   97:#endif
+        -:   98:
+        -:   99:/* Typically, __gthrw_foo is a weak reference to symbol foo.  */
+        -:  100:#define __gthrw(name) __gthrw2(__gthrw_ ## name,name,name)
+        -:  101:
+        -:  102:__gthrw(pthread_once)
+        -:  103:__gthrw(pthread_getspecific)
+        -:  104:__gthrw(pthread_setspecific)
+        -:  105:
+        -:  106:__gthrw(pthread_create)
+        -:  107:__gthrw(pthread_join)
+        -:  108:__gthrw(pthread_equal)
+        -:  109:__gthrw(pthread_self)
+        -:  110:__gthrw(pthread_detach)
+        -:  111:#ifndef __BIONIC__
+        -:  112:__gthrw(pthread_cancel)
+        -:  113:#endif
+        -:  114:__gthrw(sched_yield)
+        -:  115:
+        -:  116:__gthrw(pthread_mutex_lock)
+        -:  117:__gthrw(pthread_mutex_trylock)
+        -:  118:#if _GTHREAD_USE_MUTEX_TIMEDLOCK
+        -:  119:__gthrw(pthread_mutex_timedlock)
+        -:  120:#endif
+        -:  121:__gthrw(pthread_mutex_unlock)
+        -:  122:__gthrw(pthread_mutex_init)
+        -:  123:__gthrw(pthread_mutex_destroy)
+        -:  124:
+        -:  125:__gthrw(pthread_cond_init)
+        -:  126:__gthrw(pthread_cond_broadcast)
+        -:  127:__gthrw(pthread_cond_signal)
+        -:  128:__gthrw(pthread_cond_wait)
+        -:  129:__gthrw(pthread_cond_timedwait)
+        -:  130:__gthrw(pthread_cond_destroy)
+        -:  131:
+        -:  132:__gthrw(pthread_key_create)
+        -:  133:__gthrw(pthread_key_delete)
+        -:  134:__gthrw(pthread_mutexattr_init)
+        -:  135:__gthrw(pthread_mutexattr_settype)
+        -:  136:__gthrw(pthread_mutexattr_destroy)
         -:  137:
-        -:  138:#if defined(_LIBOBJC) || defined(_LIBOBJC_WEAK)
-        -:  139:/* Objective-C.  */
-        -:  140:__gthrw(pthread_exit)
-        -:  141:#ifdef _POSIX_PRIORITY_SCHEDULING
-        -:  142:#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
-        -:  143:__gthrw(sched_get_priority_max)
-        -:  144:__gthrw(sched_get_priority_min)
-        -:  145:#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
-        -:  146:#endif /* _POSIX_PRIORITY_SCHEDULING */
-        -:  147:__gthrw(pthread_attr_destroy)
-        -:  148:__gthrw(pthread_attr_init)
-        -:  149:__gthrw(pthread_attr_setdetachstate)
-        -:  150:#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
-        -:  151:__gthrw(pthread_getschedparam)
-        -:  152:__gthrw(pthread_setschedparam)
-        -:  153:#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
-        -:  154:#endif /* _LIBOBJC || _LIBOBJC_WEAK */
-        -:  155:
-        -:  156:#if __GXX_WEAK__ && _GLIBCXX_GTHREAD_USE_WEAK
-        -:  157:
-        -:  158:/* On Solaris 2.6 up to 9, the libc exposes a POSIX threads interface even if
-        -:  159:   -pthreads is not specified.  The functions are dummies and most return an
-        -:  160:   error value.  However pthread_once returns 0 without invoking the routine
-        -:  161:   it is passed so we cannot pretend that the interface is active if -pthreads
-        -:  162:   is not specified.  On Solaris 2.5.1, the interface is not exposed at all so
-        -:  163:   we need to play the usual game with weak symbols.  On Solaris 10 and up, a
-        -:  164:   working interface is always exposed.  On FreeBSD 6 and later, libc also
-        -:  165:   exposes a dummy POSIX threads interface, similar to what Solaris 2.6 up
-        -:  166:   to 9 does.  FreeBSD >= 700014 even provides a pthread_cancel stub in libc,
-        -:  167:   which means the alternate __gthread_active_p below cannot be used there.  */
-        -:  168:
-        -:  169:#if defined(__FreeBSD__) || (defined(__sun) && defined(__svr4__))
-        -:  170:
-        -:  171:static volatile int __gthread_active = -1;
-        -:  172:
-        -:  173:static void
-        -:  174:__gthread_trigger (void)
-        -:  175:{
-        -:  176:  __gthread_active = 1;
-        -:  177:}
-        -:  178:
-        -:  179:static inline int
-        -:  180:__gthread_active_p (void)
-        -:  181:{
-        -:  182:  static pthread_mutex_t __gthread_active_mutex = PTHREAD_MUTEX_INITIALIZER;
-        -:  183:  static pthread_once_t __gthread_active_once = PTHREAD_ONCE_INIT;
-        -:  184:
-        -:  185:  /* Avoid reading __gthread_active twice on the main code path.  */
-        -:  186:  int __gthread_active_latest_value = __gthread_active;
-        -:  187:
-        -:  188:  /* This test is not protected to avoid taking a lock on the main code
-        -:  189:     path so every update of __gthread_active in a threaded program must
-        -:  190:     be atomic with regard to the result of the test.  */
-        -:  191:  if (__builtin_expect (__gthread_active_latest_value < 0, 0))
-        -:  192:    {
-        -:  193:      if (__gthrw_(pthread_once))
-        -:  194:	{
-        -:  195:	  /* If this really is a threaded program, then we must ensure that
-        -:  196:	     __gthread_active has been set to 1 before exiting this block.  */
-        -:  197:	  __gthrw_(pthread_mutex_lock) (&__gthread_active_mutex);
-        -:  198:	  __gthrw_(pthread_once) (&__gthread_active_once, __gthread_trigger);
-        -:  199:	  __gthrw_(pthread_mutex_unlock) (&__gthread_active_mutex);
-        -:  200:	}
-        -:  201:
-        -:  202:      /* Make sure we'll never enter this block again.  */
-        -:  203:      if (__gthread_active < 0)
-        -:  204:	__gthread_active = 0;
-        -:  205:
-        -:  206:      __gthread_active_latest_value = __gthread_active;
-        -:  207:    }
-        -:  208:
-        -:  209:  return __gthread_active_latest_value != 0;
-        -:  210:}
-        -:  211:
-        -:  212:#else /* neither FreeBSD nor Solaris */
-        -:  213:
-        -:  214:/* For a program to be multi-threaded the only thing that it certainly must
-        -:  215:   be using is pthread_create.  However, there may be other libraries that
-        -:  216:   intercept pthread_create with their own definitions to wrap pthreads
-        -:  217:   functionality for some purpose.  In those cases, pthread_create being
-        -:  218:   defined might not necessarily mean that libpthread is actually linked
-        -:  219:   in.
-        -:  220:
-        -:  221:   For the GNU C library, we can use a known internal name.  This is always
-        -:  222:   available in the ABI, but no other library would define it.  That is
-        -:  223:   ideal, since any public pthread function might be intercepted just as
-        -:  224:   pthread_create might be.  __pthread_key_create is an "internal"
-        -:  225:   implementation symbol, but it is part of the public exported ABI.  Also,
-        -:  226:   it's among the symbols that the static libpthread.a always links in
-        -:  227:   whenever pthread_create is used, so there is no danger of a false
-        -:  228:   negative result in any statically-linked, multi-threaded program.
-        -:  229:
-        -:  230:   For others, we choose pthread_cancel as a function that seems unlikely
-        -:  231:   to be redefined by an interceptor library.  The bionic (Android) C
-        -:  232:   library does not provide pthread_cancel, so we do use pthread_create
-        -:  233:   there (and interceptor libraries lose).  */
-        -:  234:
-        -:  235:#ifdef __GLIBC__
-        -:  236:__gthrw2(__gthrw_(__pthread_key_create),
-        -:  237:	 __pthread_key_create,
-        -:  238:	 pthread_key_create)
-        -:  239:# define GTHR_ACTIVE_PROXY	__gthrw_(__pthread_key_create)
-        -:  240:#elif defined (__BIONIC__)
-        -:  241:# define GTHR_ACTIVE_PROXY	__gthrw_(pthread_create)
-        -:  242:#else
-        -:  243:# define GTHR_ACTIVE_PROXY	__gthrw_(pthread_cancel)
-        -:  244:#endif
-        -:  245:
-        -:  246:static inline int
-     2272:  247:__gthread_active_p (void)
-        -:  248:{
-        -:  249:  static void *const __gthread_active_ptr
-        -:  250:    = __extension__ (void *) &GTHR_ACTIVE_PROXY;
-     2272:  251:  return __gthread_active_ptr != 0;
-        -:  252:}
-        -:  253:
-        -:  254:#endif /* FreeBSD or Solaris */
-        -:  255:
-        -:  256:#else /* not __GXX_WEAK__ */
-        -:  257:
-        -:  258:/* Similar to Solaris, HP-UX 11 for PA-RISC provides stubs for pthread
-        -:  259:   calls in shared flavors of the HP-UX C library.  Most of the stubs
-        -:  260:   have no functionality.  The details are described in the "libc cumulative
-        -:  261:   patch" for each subversion of HP-UX 11.  There are two special interfaces
-        -:  262:   provided for checking whether an application is linked to a shared pthread
-        -:  263:   library or not.  However, these interfaces aren't available in early
-        -:  264:   libpthread libraries.  We also need a test that works for archive
-        -:  265:   libraries.  We can't use pthread_once as some libc versions call the
-        -:  266:   init function.  We also can't use pthread_create or pthread_attr_init
-        -:  267:   as these create a thread and thereby prevent changing the default stack
-        -:  268:   size.  The function pthread_default_stacksize_np is available in both
-        -:  269:   the archive and shared versions of libpthread.   It can be used to
-        -:  270:   determine the default pthread stack size.  There is a stub in some
-        -:  271:   shared libc versions which returns a zero size if pthreads are not
-        -:  272:   active.  We provide an equivalent stub to handle cases where libc
-        -:  273:   doesn't provide one.  */
-        -:  274:
-        -:  275:#if defined(__hppa__) && defined(__hpux__)
-        -:  276:
-        -:  277:static volatile int __gthread_active = -1;
-        -:  278:
-        -:  279:static inline int
-        -:  280:__gthread_active_p (void)
-        -:  281:{
-        -:  282:  /* Avoid reading __gthread_active twice on the main code path.  */
-        -:  283:  int __gthread_active_latest_value = __gthread_active;
-        -:  284:  size_t __s;
-        -:  285:
-        -:  286:  if (__builtin_expect (__gthread_active_latest_value < 0, 0))
-        -:  287:    {
-        -:  288:      pthread_default_stacksize_np (0, &__s);
-        -:  289:      __gthread_active = __s ? 1 : 0;
-        -:  290:      __gthread_active_latest_value = __gthread_active;
-        -:  291:    }
-        -:  292:
-        -:  293:  return __gthread_active_latest_value != 0;
-        -:  294:}
-        -:  295:
-        -:  296:#else /* not hppa-hpux */
-        -:  297:
-        -:  298:static inline int
-        -:  299:__gthread_active_p (void)
-        -:  300:{
-        -:  301:  return 1;
-        -:  302:}
-        -:  303:
-        -:  304:#endif /* hppa-hpux */
-        -:  305:
-        -:  306:#endif /* __GXX_WEAK__ */
-        -:  307:
-        -:  308:#ifdef _LIBOBJC
-        -:  309:
-        -:  310:/* This is the config.h file in libobjc/ */
-        -:  311:#include <config.h>
-        -:  312:
-        -:  313:#ifdef HAVE_SCHED_H
-        -:  314:# include <sched.h>
-        -:  315:#endif
-        -:  316:
-        -:  317:/* Key structure for maintaining thread specific storage */
-        -:  318:static pthread_key_t _objc_thread_storage;
-        -:  319:static pthread_attr_t _objc_thread_attribs;
-        -:  320:
-        -:  321:/* Thread local storage for a single thread */
-        -:  322:static void *thread_local_storage = NULL;
-        -:  323:
-        -:  324:/* Backend initialization functions */
-        -:  325:
-        -:  326:/* Initialize the threads subsystem.  */
-        -:  327:static inline int
-        -:  328:__gthread_objc_init_thread_system (void)
-        -:  329:{
-        -:  330:  if (__gthread_active_p ())
-        -:  331:    {
-        -:  332:      /* Initialize the thread storage key.  */
-        -:  333:      if (__gthrw_(pthread_key_create) (&_objc_thread_storage, NULL) == 0)
-        -:  334:	{
-        -:  335:	  /* The normal default detach state for threads is
-        -:  336:	   * PTHREAD_CREATE_JOINABLE which causes threads to not die
-        -:  337:	   * when you think they should.  */
-        -:  338:	  if (__gthrw_(pthread_attr_init) (&_objc_thread_attribs) == 0
-        -:  339:	      && __gthrw_(pthread_attr_setdetachstate) (&_objc_thread_attribs,
-        -:  340:					      PTHREAD_CREATE_DETACHED) == 0)
-        -:  341:	    return 0;
-        -:  342:	}
-        -:  343:    }
-        -:  344:
-        -:  345:  return -1;
-        -:  346:}
-        -:  347:
-        -:  348:/* Close the threads subsystem.  */
-        -:  349:static inline int
-        -:  350:__gthread_objc_close_thread_system (void)
-        -:  351:{
-        -:  352:  if (__gthread_active_p ()
-        -:  353:      && __gthrw_(pthread_key_delete) (_objc_thread_storage) == 0
-        -:  354:      && __gthrw_(pthread_attr_destroy) (&_objc_thread_attribs) == 0)
-        -:  355:    return 0;
-        -:  356:
-        -:  357:  return -1;
-        -:  358:}
-        -:  359:
-        -:  360:/* Backend thread functions */
-        -:  361:
-        -:  362:/* Create a new thread of execution.  */
-        -:  363:static inline objc_thread_t
-        -:  364:__gthread_objc_thread_detach (void (*func)(void *), void *arg)
-        -:  365:{
-        -:  366:  objc_thread_t thread_id;
-        -:  367:  pthread_t new_thread_handle;
-        -:  368:
-        -:  369:  if (!__gthread_active_p ())
-        -:  370:    return NULL;
-        -:  371:
-        -:  372:  if (!(__gthrw_(pthread_create) (&new_thread_handle, &_objc_thread_attribs,
-        -:  373:				  (void *) func, arg)))
-        -:  374:    thread_id = (objc_thread_t) new_thread_handle;
-        -:  375:  else
-        -:  376:    thread_id = NULL;
-        -:  377:
-        -:  378:  return thread_id;
-        -:  379:}
-        -:  380:
-        -:  381:/* Set the current thread's priority.  */
-        -:  382:static inline int
-        -:  383:__gthread_objc_thread_set_priority (int priority)
-        -:  384:{
-        -:  385:  if (!__gthread_active_p ())
-        -:  386:    return -1;
-        -:  387:  else
-        -:  388:    {
-        -:  389:#ifdef _POSIX_PRIORITY_SCHEDULING
-        -:  390:#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
-        -:  391:      pthread_t thread_id = __gthrw_(pthread_self) ();
-        -:  392:      int policy;
-        -:  393:      struct sched_param params;
-        -:  394:      int priority_min, priority_max;
-        -:  395:
-        -:  396:      if (__gthrw_(pthread_getschedparam) (thread_id, &policy, &params) == 0)
-        -:  397:	{
-        -:  398:	  if ((priority_max = __gthrw_(sched_get_priority_max) (policy)) == -1)
-        -:  399:	    return -1;
-        -:  400:
-        -:  401:	  if ((priority_min = __gthrw_(sched_get_priority_min) (policy)) == -1)
-        -:  402:	    return -1;
-        -:  403:
-        -:  404:	  if (priority > priority_max)
-        -:  405:	    priority = priority_max;
-        -:  406:	  else if (priority < priority_min)
-        -:  407:	    priority = priority_min;
-        -:  408:	  params.sched_priority = priority;
-        -:  409:
-        -:  410:	  /*
-        -:  411:	   * The solaris 7 and several other man pages incorrectly state that
-        -:  412:	   * this should be a pointer to policy but pthread.h is universally
-        -:  413:	   * at odds with this.
-        -:  414:	   */
-        -:  415:	  if (__gthrw_(pthread_setschedparam) (thread_id, policy, &params) == 0)
-        -:  416:	    return 0;
-        -:  417:	}
-        -:  418:#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
-        -:  419:#endif /* _POSIX_PRIORITY_SCHEDULING */
-        -:  420:      return -1;
-        -:  421:    }
-        -:  422:}
-        -:  423:
-        -:  424:/* Return the current thread's priority.  */
-        -:  425:static inline int
-        -:  426:__gthread_objc_thread_get_priority (void)
-        -:  427:{
-        -:  428:#ifdef _POSIX_PRIORITY_SCHEDULING
-        -:  429:#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
-        -:  430:  if (__gthread_active_p ())
-        -:  431:    {
-        -:  432:      int policy;
-        -:  433:      struct sched_param params;
-        -:  434:
-        -:  435:      if (__gthrw_(pthread_getschedparam) (__gthrw_(pthread_self) (), &policy, &params) == 0)
-        -:  436:	return params.sched_priority;
-        -:  437:      else
-        -:  438:	return -1;
-        -:  439:    }
-        -:  440:  else
-        -:  441:#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
-        -:  442:#endif /* _POSIX_PRIORITY_SCHEDULING */
-        -:  443:    return OBJC_THREAD_INTERACTIVE_PRIORITY;
-        -:  444:}
-        -:  445:
-        -:  446:/* Yield our process time to another thread.  */
-        -:  447:static inline void
-        -:  448:__gthread_objc_thread_yield (void)
-        -:  449:{
-        -:  450:  if (__gthread_active_p ())
-        -:  451:    __gthrw_(sched_yield) ();
-        -:  452:}
-        -:  453:
-        -:  454:/* Terminate the current thread.  */
-        -:  455:static inline int
-        -:  456:__gthread_objc_thread_exit (void)
-        -:  457:{
-        -:  458:  if (__gthread_active_p ())
-        -:  459:    /* exit the thread */
-        -:  460:    __gthrw_(pthread_exit) (&__objc_thread_exit_status);
-        -:  461:
-        -:  462:  /* Failed if we reached here */
-        -:  463:  return -1;
-        -:  464:}
-        -:  465:
-        -:  466:/* Returns an integer value which uniquely describes a thread.  */
-        -:  467:static inline objc_thread_t
-        -:  468:__gthread_objc_thread_id (void)
-        -:  469:{
-        -:  470:  if (__gthread_active_p ())
-        -:  471:    return (objc_thread_t) __gthrw_(pthread_self) ();
-        -:  472:  else
-        -:  473:    return (objc_thread_t) 1;
-        -:  474:}
-        -:  475:
-        -:  476:/* Sets the thread's local storage pointer.  */
-        -:  477:static inline int
-        -:  478:__gthread_objc_thread_set_data (void *value)
-        -:  479:{
-        -:  480:  if (__gthread_active_p ())
-        -:  481:    return __gthrw_(pthread_setspecific) (_objc_thread_storage, value);
-        -:  482:  else
-        -:  483:    {
-        -:  484:      thread_local_storage = value;
-        -:  485:      return 0;
-        -:  486:    }
-        -:  487:}
-        -:  488:
-        -:  489:/* Returns the thread's local storage pointer.  */
-        -:  490:static inline void *
-        -:  491:__gthread_objc_thread_get_data (void)
-        -:  492:{
-        -:  493:  if (__gthread_active_p ())
-        -:  494:    return __gthrw_(pthread_getspecific) (_objc_thread_storage);
-        -:  495:  else
-        -:  496:    return thread_local_storage;
-        -:  497:}
-        -:  498:
-        -:  499:/* Backend mutex functions */
-        -:  500:
-        -:  501:/* Allocate a mutex.  */
-        -:  502:static inline int
-        -:  503:__gthread_objc_mutex_allocate (objc_mutex_t mutex)
-        -:  504:{
-        -:  505:  if (__gthread_active_p ())
-        -:  506:    {
-        -:  507:      mutex->backend = objc_malloc (sizeof (pthread_mutex_t));
-        -:  508:
-        -:  509:      if (__gthrw_(pthread_mutex_init) ((pthread_mutex_t *) mutex->backend, NULL))
-        -:  510:	{
-        -:  511:	  objc_free (mutex->backend);
-        -:  512:	  mutex->backend = NULL;
-        -:  513:	  return -1;
-        -:  514:	}
-        -:  515:    }
-        -:  516:
-        -:  517:  return 0;
-        -:  518:}
-        -:  519:
-        -:  520:/* Deallocate a mutex.  */
-        -:  521:static inline int
-        -:  522:__gthread_objc_mutex_deallocate (objc_mutex_t mutex)
-        -:  523:{
-        -:  524:  if (__gthread_active_p ())
-        -:  525:    {
-        -:  526:      int count;
-        -:  527:
-        -:  528:      /*
-        -:  529:       * Posix Threads specifically require that the thread be unlocked
-        -:  530:       * for __gthrw_(pthread_mutex_destroy) to work.
-        -:  531:       */
-        -:  532:
-        -:  533:      do
-        -:  534:	{
-        -:  535:	  count = __gthrw_(pthread_mutex_unlock) ((pthread_mutex_t *) mutex->backend);
-        -:  536:	  if (count < 0)
-        -:  537:	    return -1;
-        -:  538:	}
-        -:  539:      while (count);
-        -:  540:
-        -:  541:      if (__gthrw_(pthread_mutex_destroy) ((pthread_mutex_t *) mutex->backend))
-        -:  542:	return -1;
-        -:  543:
-        -:  544:      objc_free (mutex->backend);
-        -:  545:      mutex->backend = NULL;
-        -:  546:    }
-        -:  547:  return 0;
-        -:  548:}
-        -:  549:
-        -:  550:/* Grab a lock on a mutex.  */
-        -:  551:static inline int
-        -:  552:__gthread_objc_mutex_lock (objc_mutex_t mutex)
-        -:  553:{
-        -:  554:  if (__gthread_active_p ()
-        -:  555:      && __gthrw_(pthread_mutex_lock) ((pthread_mutex_t *) mutex->backend) != 0)
-        -:  556:    {
-        -:  557:      return -1;
-        -:  558:    }
-        -:  559:
-        -:  560:  return 0;
-        -:  561:}
-        -:  562:
-        -:  563:/* Try to grab a lock on a mutex.  */
-        -:  564:static inline int
-        -:  565:__gthread_objc_mutex_trylock (objc_mutex_t mutex)
-        -:  566:{
-        -:  567:  if (__gthread_active_p ()
-        -:  568:      && __gthrw_(pthread_mutex_trylock) ((pthread_mutex_t *) mutex->backend) != 0)
-        -:  569:    {
-        -:  570:      return -1;
-        -:  571:    }
-        -:  572:
-        -:  573:  return 0;
-        -:  574:}
-        -:  575:
-        -:  576:/* Unlock the mutex */
-        -:  577:static inline int
-        -:  578:__gthread_objc_mutex_unlock (objc_mutex_t mutex)
-        -:  579:{
-        -:  580:  if (__gthread_active_p ()
-        -:  581:      && __gthrw_(pthread_mutex_unlock) ((pthread_mutex_t *) mutex->backend) != 0)
-        -:  582:    {
-        -:  583:      return -1;
-        -:  584:    }
-        -:  585:
-        -:  586:  return 0;
-        -:  587:}
-        -:  588:
-        -:  589:/* Backend condition mutex functions */
-        -:  590:
-        -:  591:/* Allocate a condition.  */
-        -:  592:static inline int
-        -:  593:__gthread_objc_condition_allocate (objc_condition_t condition)
-        -:  594:{
-        -:  595:  if (__gthread_active_p ())
-        -:  596:    {
-        -:  597:      condition->backend = objc_malloc (sizeof (pthread_cond_t));
-        -:  598:
-        -:  599:      if (__gthrw_(pthread_cond_init) ((pthread_cond_t *) condition->backend, NULL))
-        -:  600:	{
-        -:  601:	  objc_free (condition->backend);
-        -:  602:	  condition->backend = NULL;
-        -:  603:	  return -1;
-        -:  604:	}
-        -:  605:    }
-        -:  606:
-        -:  607:  return 0;
-        -:  608:}
-        -:  609:
-        -:  610:/* Deallocate a condition.  */
-        -:  611:static inline int
-        -:  612:__gthread_objc_condition_deallocate (objc_condition_t condition)
-        -:  613:{
-        -:  614:  if (__gthread_active_p ())
-        -:  615:    {
-        -:  616:      if (__gthrw_(pthread_cond_destroy) ((pthread_cond_t *) condition->backend))
-        -:  617:	return -1;
-        -:  618:
-        -:  619:      objc_free (condition->backend);
-        -:  620:      condition->backend = NULL;
-        -:  621:    }
-        -:  622:  return 0;
-        -:  623:}
-        -:  624:
-        -:  625:/* Wait on the condition */
-        -:  626:static inline int
-        -:  627:__gthread_objc_condition_wait (objc_condition_t condition, objc_mutex_t mutex)
-        -:  628:{
-        -:  629:  if (__gthread_active_p ())
-        -:  630:    return __gthrw_(pthread_cond_wait) ((pthread_cond_t *) condition->backend,
-        -:  631:			      (pthread_mutex_t *) mutex->backend);
-        -:  632:  else
-        -:  633:    return 0;
-        -:  634:}
-        -:  635:
-        -:  636:/* Wake up all threads waiting on this condition.  */
-        -:  637:static inline int
-        -:  638:__gthread_objc_condition_broadcast (objc_condition_t condition)
-        -:  639:{
-        -:  640:  if (__gthread_active_p ())
-        -:  641:    return __gthrw_(pthread_cond_broadcast) ((pthread_cond_t *) condition->backend);
-        -:  642:  else
-        -:  643:    return 0;
-        -:  644:}
-        -:  645:
-        -:  646:/* Wake up one thread waiting on this condition.  */
-        -:  647:static inline int
-        -:  648:__gthread_objc_condition_signal (objc_condition_t condition)
-        -:  649:{
-        -:  650:  if (__gthread_active_p ())
-        -:  651:    return __gthrw_(pthread_cond_signal) ((pthread_cond_t *) condition->backend);
-        -:  652:  else
-        -:  653:    return 0;
-        -:  654:}
-        -:  655:
-        -:  656:#else /* _LIBOBJC */
-        -:  657:
-        -:  658:static inline int
-        -:  659:__gthread_create (__gthread_t *__threadid, void *(*__func) (void*),
-        -:  660:		  void *__args)
-        -:  661:{
-        -:  662:  return __gthrw_(pthread_create) (__threadid, NULL, __func, __args);
-        -:  663:}
-        -:  664:
-        -:  665:static inline int
-        -:  666:__gthread_join (__gthread_t __threadid, void **__value_ptr)
-        -:  667:{
-        -:  668:  return __gthrw_(pthread_join) (__threadid, __value_ptr);
-        -:  669:}
-        -:  670:
-        -:  671:static inline int
-        -:  672:__gthread_detach (__gthread_t __threadid)
-        -:  673:{
-        -:  674:  return __gthrw_(pthread_detach) (__threadid);
-        -:  675:}
-        -:  676:
-        -:  677:static inline int
-        -:  678:__gthread_equal (__gthread_t __t1, __gthread_t __t2)
-        -:  679:{
-        -:  680:  return __gthrw_(pthread_equal) (__t1, __t2);
-        -:  681:}
-        -:  682:
-        -:  683:static inline __gthread_t
-        -:  684:__gthread_self (void)
-        -:  685:{
-        -:  686:  return __gthrw_(pthread_self) ();
-        -:  687:}
-        -:  688:
-        -:  689:static inline int
-        -:  690:__gthread_yield (void)
-        -:  691:{
-        -:  692:  return __gthrw_(sched_yield) ();
-        -:  693:}
-        -:  694:
-        -:  695:static inline int
-        -:  696:__gthread_once (__gthread_once_t *__once, void (*__func) (void))
-        -:  697:{
-        -:  698:  if (__gthread_active_p ())
-        -:  699:    return __gthrw_(pthread_once) (__once, __func);
-        -:  700:  else
-        -:  701:    return -1;
-        -:  702:}
-        -:  703:
-        -:  704:static inline int
-        -:  705:__gthread_key_create (__gthread_key_t *__key, void (*__dtor) (void *))
-        -:  706:{
-        -:  707:  return __gthrw_(pthread_key_create) (__key, __dtor);
-        -:  708:}
-        -:  709:
-        -:  710:static inline int
-        -:  711:__gthread_key_delete (__gthread_key_t __key)
-        -:  712:{
-        -:  713:  return __gthrw_(pthread_key_delete) (__key);
-        -:  714:}
-        -:  715:
-        -:  716:static inline void *
-        -:  717:__gthread_getspecific (__gthread_key_t __key)
-        -:  718:{
-        -:  719:  return __gthrw_(pthread_getspecific) (__key);
-        -:  720:}
-        -:  721:
-        -:  722:static inline int
-        -:  723:__gthread_setspecific (__gthread_key_t __key, const void *__ptr)
-        -:  724:{
-        -:  725:  return __gthrw_(pthread_setspecific) (__key, __ptr);
-        -:  726:}
-        -:  727:
-        -:  728:static inline void
-        -:  729:__gthread_mutex_init_function (__gthread_mutex_t *__mutex)
-        -:  730:{
-        -:  731:  if (__gthread_active_p ())
-        -:  732:    __gthrw_(pthread_mutex_init) (__mutex, NULL);
-        -:  733:}
-        -:  734:
-        -:  735:static inline int
-        -:  736:__gthread_mutex_destroy (__gthread_mutex_t *__mutex)
-        -:  737:{
-        -:  738:  if (__gthread_active_p ())
-        -:  739:    return __gthrw_(pthread_mutex_destroy) (__mutex);
-        -:  740:  else
-        -:  741:    return 0;
-        -:  742:}
-        -:  743:
-        -:  744:static inline int
-        -:  745:__gthread_mutex_lock (__gthread_mutex_t *__mutex)
-        -:  746:{
-        -:  747:  if (__gthread_active_p ())
-        -:  748:    return __gthrw_(pthread_mutex_lock) (__mutex);
-        -:  749:  else
-        -:  750:    return 0;
-        -:  751:}
-        -:  752:
-        -:  753:static inline int
-        -:  754:__gthread_mutex_trylock (__gthread_mutex_t *__mutex)
-        -:  755:{
-        -:  756:  if (__gthread_active_p ())
-        -:  757:    return __gthrw_(pthread_mutex_trylock) (__mutex);
-        -:  758:  else
-        -:  759:    return 0;
-        -:  760:}
-        -:  761:
-        -:  762:#if _GTHREAD_USE_MUTEX_TIMEDLOCK
-        -:  763:static inline int
-        -:  764:__gthread_mutex_timedlock (__gthread_mutex_t *__mutex,
-        -:  765:			   const __gthread_time_t *__abs_timeout)
-        -:  766:{
-        -:  767:  if (__gthread_active_p ())
-        -:  768:    return __gthrw_(pthread_mutex_timedlock) (__mutex, __abs_timeout);
-        -:  769:  else
-        -:  770:    return 0;
-        -:  771:}
-        -:  772:#endif
-        -:  773:
-        -:  774:static inline int
-        -:  775:__gthread_mutex_unlock (__gthread_mutex_t *__mutex)
-        -:  776:{
-        -:  777:  if (__gthread_active_p ())
-        -:  778:    return __gthrw_(pthread_mutex_unlock) (__mutex);
-        -:  779:  else
-        -:  780:    return 0;
-        -:  781:}
-        -:  782:
-        -:  783:#if !defined( PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP) \
-        -:  784:  || defined(_GTHREAD_USE_RECURSIVE_MUTEX_INIT_FUNC)
-        -:  785:static inline int
-        -:  786:__gthread_recursive_mutex_init_function (__gthread_recursive_mutex_t *__mutex)
-        -:  787:{
-        -:  788:  if (__gthread_active_p ())
-        -:  789:    {
-        -:  790:      pthread_mutexattr_t __attr;
-        -:  791:      int __r;
-        -:  792:
-        -:  793:      __r = __gthrw_(pthread_mutexattr_init) (&__attr);
-        -:  794:      if (!__r)
-        -:  795:	__r = __gthrw_(pthread_mutexattr_settype) (&__attr,
-        -:  796:						   PTHREAD_MUTEX_RECURSIVE);
-        -:  797:      if (!__r)
-        -:  798:	__r = __gthrw_(pthread_mutex_init) (__mutex, &__attr);
-        -:  799:      if (!__r)
-        -:  800:	__r = __gthrw_(pthread_mutexattr_destroy) (&__attr);
-        -:  801:      return __r;
-        -:  802:    }
-        -:  803:  return 0;
-        -:  804:}
-        -:  805:#endif
-        -:  806:
-        -:  807:static inline int
-        -:  808:__gthread_recursive_mutex_lock (__gthread_recursive_mutex_t *__mutex)
-        -:  809:{
-        -:  810:  return __gthread_mutex_lock (__mutex);
-        -:  811:}
-        -:  812:
-        -:  813:static inline int
-        -:  814:__gthread_recursive_mutex_trylock (__gthread_recursive_mutex_t *__mutex)
-        -:  815:{
-        -:  816:  return __gthread_mutex_trylock (__mutex);
-        -:  817:}
-        -:  818:
-        -:  819:#if _GTHREAD_USE_MUTEX_TIMEDLOCK
-        -:  820:static inline int
-        -:  821:__gthread_recursive_mutex_timedlock (__gthread_recursive_mutex_t *__mutex,
-        -:  822:				     const __gthread_time_t *__abs_timeout)
-        -:  823:{
-        -:  824:  return __gthread_mutex_timedlock (__mutex, __abs_timeout);
-        -:  825:}
-        -:  826:#endif
-        -:  827:
-        -:  828:static inline int
-        -:  829:__gthread_recursive_mutex_unlock (__gthread_recursive_mutex_t *__mutex)
-        -:  830:{
-        -:  831:  return __gthread_mutex_unlock (__mutex);
-        -:  832:}
-        -:  833:
-        -:  834:static inline int
-        -:  835:__gthread_recursive_mutex_destroy (__gthread_recursive_mutex_t *__mutex)
-        -:  836:{
-        -:  837:  return __gthread_mutex_destroy (__mutex);
-        -:  838:}
-        -:  839:
-        -:  840:#ifdef _GTHREAD_USE_COND_INIT_FUNC
-        -:  841:static inline void
-        -:  842:__gthread_cond_init_function (__gthread_cond_t *__cond)
-        -:  843:{
-        -:  844:  if (__gthread_active_p ())
-        -:  845:    __gthrw_(pthread_cond_init) (__cond, NULL);
-        -:  846:}
-        -:  847:#endif
-        -:  848:
-        -:  849:static inline int
-        -:  850:__gthread_cond_broadcast (__gthread_cond_t *__cond)
-        -:  851:{
-        -:  852:  return __gthrw_(pthread_cond_broadcast) (__cond);
-        -:  853:}
-        -:  854:
-        -:  855:static inline int
-        -:  856:__gthread_cond_signal (__gthread_cond_t *__cond)
-        -:  857:{
-        -:  858:  return __gthrw_(pthread_cond_signal) (__cond);
-        -:  859:}
-        -:  860:
-        -:  861:static inline int
-        -:  862:__gthread_cond_wait (__gthread_cond_t *__cond, __gthread_mutex_t *__mutex)
-        -:  863:{
-        -:  864:  return __gthrw_(pthread_cond_wait) (__cond, __mutex);
-        -:  865:}
-        -:  866:
-        -:  867:static inline int
-        -:  868:__gthread_cond_timedwait (__gthread_cond_t *__cond, __gthread_mutex_t *__mutex,
-        -:  869:			  const __gthread_time_t *__abs_timeout)
-        -:  870:{
-        -:  871:  return __gthrw_(pthread_cond_timedwait) (__cond, __mutex, __abs_timeout);
-        -:  872:}
-        -:  873:
-        -:  874:static inline int
-        -:  875:__gthread_cond_wait_recursive (__gthread_cond_t *__cond,
-        -:  876:			       __gthread_recursive_mutex_t *__mutex)
-        -:  877:{
-        -:  878:  return __gthread_cond_wait (__cond, __mutex);
-        -:  879:}
-        -:  880:
-        -:  881:static inline int
-        -:  882:__gthread_cond_destroy (__gthread_cond_t* __cond)
-        -:  883:{
-        -:  884:  return __gthrw_(pthread_cond_destroy) (__cond);
-        -:  885:}
-        -:  886:
-        -:  887:#endif /* _LIBOBJC */
-        -:  888:
-        -:  889:#endif /* ! _GLIBCXX_GCC_GTHR_POSIX_H */
+        -:  138:
+        -:  139:#if defined(_LIBOBJC) || defined(_LIBOBJC_WEAK)
+        -:  140:/* Objective-C.  */
+        -:  141:__gthrw(pthread_exit)
+        -:  142:#ifdef _POSIX_PRIORITY_SCHEDULING
+        -:  143:#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
+        -:  144:__gthrw(sched_get_priority_max)
+        -:  145:__gthrw(sched_get_priority_min)
+        -:  146:#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
+        -:  147:#endif /* _POSIX_PRIORITY_SCHEDULING */
+        -:  148:__gthrw(pthread_attr_destroy)
+        -:  149:__gthrw(pthread_attr_init)
+        -:  150:__gthrw(pthread_attr_setdetachstate)
+        -:  151:#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
+        -:  152:__gthrw(pthread_getschedparam)
+        -:  153:__gthrw(pthread_setschedparam)
+        -:  154:#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
+        -:  155:#endif /* _LIBOBJC || _LIBOBJC_WEAK */
+        -:  156:
+        -:  157:#if __GXX_WEAK__ && _GLIBCXX_GTHREAD_USE_WEAK
+        -:  158:
+        -:  159:/* On Solaris 2.6 up to 9, the libc exposes a POSIX threads interface even if
+        -:  160:   -pthreads is not specified.  The functions are dummies and most return an
+        -:  161:   error value.  However pthread_once returns 0 without invoking the routine
+        -:  162:   it is passed so we cannot pretend that the interface is active if -pthreads
+        -:  163:   is not specified.  On Solaris 2.5.1, the interface is not exposed at all so
+        -:  164:   we need to play the usual game with weak symbols.  On Solaris 10 and up, a
+        -:  165:   working interface is always exposed.  On FreeBSD 6 and later, libc also
+        -:  166:   exposes a dummy POSIX threads interface, similar to what Solaris 2.6 up
+        -:  167:   to 9 does.  FreeBSD >= 700014 even provides a pthread_cancel stub in libc,
+        -:  168:   which means the alternate __gthread_active_p below cannot be used there.  */
+        -:  169:
+        -:  170:#if defined(__FreeBSD__) || (defined(__sun) && defined(__svr4__))
+        -:  171:
+        -:  172:static volatile int __gthread_active = -1;
+        -:  173:
+        -:  174:static void
+        -:  175:__gthread_trigger (void)
+        -:  176:{
+        -:  177:  __gthread_active = 1;
+        -:  178:}
+        -:  179:
+        -:  180:static inline int
+        -:  181:__gthread_active_p (void)
+        -:  182:{
+        -:  183:  static pthread_mutex_t __gthread_active_mutex = PTHREAD_MUTEX_INITIALIZER;
+        -:  184:  static pthread_once_t __gthread_active_once = PTHREAD_ONCE_INIT;
+        -:  185:
+        -:  186:  /* Avoid reading __gthread_active twice on the main code path.  */
+        -:  187:  int __gthread_active_latest_value = __gthread_active;
+        -:  188:
+        -:  189:  /* This test is not protected to avoid taking a lock on the main code
+        -:  190:     path so every update of __gthread_active in a threaded program must
+        -:  191:     be atomic with regard to the result of the test.  */
+        -:  192:  if (__builtin_expect (__gthread_active_latest_value < 0, 0))
+        -:  193:    {
+        -:  194:      if (__gthrw_(pthread_once))
+        -:  195:	{
+        -:  196:	  /* If this really is a threaded program, then we must ensure that
+        -:  197:	     __gthread_active has been set to 1 before exiting this block.  */
+        -:  198:	  __gthrw_(pthread_mutex_lock) (&__gthread_active_mutex);
+        -:  199:	  __gthrw_(pthread_once) (&__gthread_active_once, __gthread_trigger);
+        -:  200:	  __gthrw_(pthread_mutex_unlock) (&__gthread_active_mutex);
+        -:  201:	}
+        -:  202:
+        -:  203:      /* Make sure we'll never enter this block again.  */
+        -:  204:      if (__gthread_active < 0)
+        -:  205:	__gthread_active = 0;
+        -:  206:
+        -:  207:      __gthread_active_latest_value = __gthread_active;
+        -:  208:    }
+        -:  209:
+        -:  210:  return __gthread_active_latest_value != 0;
+        -:  211:}
+        -:  212:
+        -:  213:#else /* neither FreeBSD nor Solaris */
+        -:  214:
+        -:  215:/* For a program to be multi-threaded the only thing that it certainly must
+        -:  216:   be using is pthread_create.  However, there may be other libraries that
+        -:  217:   intercept pthread_create with their own definitions to wrap pthreads
+        -:  218:   functionality for some purpose.  In those cases, pthread_create being
+        -:  219:   defined might not necessarily mean that libpthread is actually linked
+        -:  220:   in.
+        -:  221:
+        -:  222:   For the GNU C library, we can use a known internal name.  This is always
+        -:  223:   available in the ABI, but no other library would define it.  That is
+        -:  224:   ideal, since any public pthread function might be intercepted just as
+        -:  225:   pthread_create might be.  __pthread_key_create is an "internal"
+        -:  226:   implementation symbol, but it is part of the public exported ABI.  Also,
+        -:  227:   it's among the symbols that the static libpthread.a always links in
+        -:  228:   whenever pthread_create is used, so there is no danger of a false
+        -:  229:   negative result in any statically-linked, multi-threaded program.
+        -:  230:
+        -:  231:   For others, we choose pthread_cancel as a function that seems unlikely
+        -:  232:   to be redefined by an interceptor library.  The bionic (Android) C
+        -:  233:   library does not provide pthread_cancel, so we do use pthread_create
+        -:  234:   there (and interceptor libraries lose).  */
+        -:  235:
+        -:  236:#ifdef __GLIBC__
+        -:  237:__gthrw2(__gthrw_(__pthread_key_create),
+        -:  238:	 __pthread_key_create,
+        -:  239:	 pthread_key_create)
+        -:  240:# define GTHR_ACTIVE_PROXY	__gthrw_(__pthread_key_create)
+        -:  241:#elif defined (__BIONIC__)
+        -:  242:# define GTHR_ACTIVE_PROXY	__gthrw_(pthread_create)
+        -:  243:#else
+        -:  244:# define GTHR_ACTIVE_PROXY	__gthrw_(pthread_cancel)
+        -:  245:#endif
+        -:  246:
+        -:  247:static inline int
+     2272:  248:__gthread_active_p (void)
+        -:  249:{
+        -:  250:  static void *const __gthread_active_ptr
+        -:  251:    = __extension__ (void *) &GTHR_ACTIVE_PROXY;
+     2272:  252:  return __gthread_active_ptr != 0;
+        -:  253:}
+        -:  254:
+        -:  255:#endif /* FreeBSD or Solaris */
+        -:  256:
+        -:  257:#else /* not __GXX_WEAK__ */
+        -:  258:
+        -:  259:/* Similar to Solaris, HP-UX 11 for PA-RISC provides stubs for pthread
+        -:  260:   calls in shared flavors of the HP-UX C library.  Most of the stubs
+        -:  261:   have no functionality.  The details are described in the "libc cumulative
+        -:  262:   patch" for each subversion of HP-UX 11.  There are two special interfaces
+        -:  263:   provided for checking whether an application is linked to a shared pthread
+        -:  264:   library or not.  However, these interfaces aren't available in early
+        -:  265:   libpthread libraries.  We also need a test that works for archive
+        -:  266:   libraries.  We can't use pthread_once as some libc versions call the
+        -:  267:   init function.  We also can't use pthread_create or pthread_attr_init
+        -:  268:   as these create a thread and thereby prevent changing the default stack
+        -:  269:   size.  The function pthread_default_stacksize_np is available in both
+        -:  270:   the archive and shared versions of libpthread.   It can be used to
+        -:  271:   determine the default pthread stack size.  There is a stub in some
+        -:  272:   shared libc versions which returns a zero size if pthreads are not
+        -:  273:   active.  We provide an equivalent stub to handle cases where libc
+        -:  274:   doesn't provide one.  */
+        -:  275:
+        -:  276:#if defined(__hppa__) && defined(__hpux__)
+        -:  277:
+        -:  278:static volatile int __gthread_active = -1;
+        -:  279:
+        -:  280:static inline int
+        -:  281:__gthread_active_p (void)
+        -:  282:{
+        -:  283:  /* Avoid reading __gthread_active twice on the main code path.  */
+        -:  284:  int __gthread_active_latest_value = __gthread_active;
+        -:  285:  size_t __s;
+        -:  286:
+        -:  287:  if (__builtin_expect (__gthread_active_latest_value < 0, 0))
+        -:  288:    {
+        -:  289:      pthread_default_stacksize_np (0, &__s);
+        -:  290:      __gthread_active = __s ? 1 : 0;
+        -:  291:      __gthread_active_latest_value = __gthread_active;
+        -:  292:    }
+        -:  293:
+        -:  294:  return __gthread_active_latest_value != 0;
+        -:  295:}
+        -:  296:
+        -:  297:#else /* not hppa-hpux */
+        -:  298:
+        -:  299:static inline int
+        -:  300:__gthread_active_p (void)
+        -:  301:{
+        -:  302:  return 1;
+        -:  303:}
+        -:  304:
+        -:  305:#endif /* hppa-hpux */
+        -:  306:
+        -:  307:#endif /* __GXX_WEAK__ */
+        -:  308:
+        -:  309:#ifdef _LIBOBJC
+        -:  310:
+        -:  311:/* This is the config.h file in libobjc/ */
+        -:  312:#include <config.h>
+        -:  313:
+        -:  314:#ifdef HAVE_SCHED_H
+        -:  315:# include <sched.h>
+        -:  316:#endif
+        -:  317:
+        -:  318:/* Key structure for maintaining thread specific storage */
+        -:  319:static pthread_key_t _objc_thread_storage;
+        -:  320:static pthread_attr_t _objc_thread_attribs;
+        -:  321:
+        -:  322:/* Thread local storage for a single thread */
+        -:  323:static void *thread_local_storage = NULL;
+        -:  324:
+        -:  325:/* Backend initialization functions */
+        -:  326:
+        -:  327:/* Initialize the threads subsystem.  */
+        -:  328:static inline int
+        -:  329:__gthread_objc_init_thread_system (void)
+        -:  330:{
+        -:  331:  if (__gthread_active_p ())
+        -:  332:    {
+        -:  333:      /* Initialize the thread storage key.  */
+        -:  334:      if (__gthrw_(pthread_key_create) (&_objc_thread_storage, NULL) == 0)
+        -:  335:	{
+        -:  336:	  /* The normal default detach state for threads is
+        -:  337:	   * PTHREAD_CREATE_JOINABLE which causes threads to not die
+        -:  338:	   * when you think they should.  */
+        -:  339:	  if (__gthrw_(pthread_attr_init) (&_objc_thread_attribs) == 0
+        -:  340:	      && __gthrw_(pthread_attr_setdetachstate) (&_objc_thread_attribs,
+        -:  341:					      PTHREAD_CREATE_DETACHED) == 0)
+        -:  342:	    return 0;
+        -:  343:	}
+        -:  344:    }
+        -:  345:
+        -:  346:  return -1;
+        -:  347:}
+        -:  348:
+        -:  349:/* Close the threads subsystem.  */
+        -:  350:static inline int
+        -:  351:__gthread_objc_close_thread_system (void)
+        -:  352:{
+        -:  353:  if (__gthread_active_p ()
+        -:  354:      && __gthrw_(pthread_key_delete) (_objc_thread_storage) == 0
+        -:  355:      && __gthrw_(pthread_attr_destroy) (&_objc_thread_attribs) == 0)
+        -:  356:    return 0;
+        -:  357:
+        -:  358:  return -1;
+        -:  359:}
+        -:  360:
+        -:  361:/* Backend thread functions */
+        -:  362:
+        -:  363:/* Create a new thread of execution.  */
+        -:  364:static inline objc_thread_t
+        -:  365:__gthread_objc_thread_detach (void (*func)(void *), void *arg)
+        -:  366:{
+        -:  367:  objc_thread_t thread_id;
+        -:  368:  pthread_t new_thread_handle;
+        -:  369:
+        -:  370:  if (!__gthread_active_p ())
+        -:  371:    return NULL;
+        -:  372:
+        -:  373:  if (!(__gthrw_(pthread_create) (&new_thread_handle, &_objc_thread_attribs,
+        -:  374:				  (void *) func, arg)))
+        -:  375:    thread_id = (objc_thread_t) new_thread_handle;
+        -:  376:  else
+        -:  377:    thread_id = NULL;
+        -:  378:
+        -:  379:  return thread_id;
+        -:  380:}
+        -:  381:
+        -:  382:/* Set the current thread's priority.  */
+        -:  383:static inline int
+        -:  384:__gthread_objc_thread_set_priority (int priority)
+        -:  385:{
+        -:  386:  if (!__gthread_active_p ())
+        -:  387:    return -1;
+        -:  388:  else
+        -:  389:    {
+        -:  390:#ifdef _POSIX_PRIORITY_SCHEDULING
+        -:  391:#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
+        -:  392:      pthread_t thread_id = __gthrw_(pthread_self) ();
+        -:  393:      int policy;
+        -:  394:      struct sched_param params;
+        -:  395:      int priority_min, priority_max;
+        -:  396:
+        -:  397:      if (__gthrw_(pthread_getschedparam) (thread_id, &policy, &params) == 0)
+        -:  398:	{
+        -:  399:	  if ((priority_max = __gthrw_(sched_get_priority_max) (policy)) == -1)
+        -:  400:	    return -1;
+        -:  401:
+        -:  402:	  if ((priority_min = __gthrw_(sched_get_priority_min) (policy)) == -1)
+        -:  403:	    return -1;
+        -:  404:
+        -:  405:	  if (priority > priority_max)
+        -:  406:	    priority = priority_max;
+        -:  407:	  else if (priority < priority_min)
+        -:  408:	    priority = priority_min;
+        -:  409:	  params.sched_priority = priority;
+        -:  410:
+        -:  411:	  /*
+        -:  412:	   * The solaris 7 and several other man pages incorrectly state that
+        -:  413:	   * this should be a pointer to policy but pthread.h is universally
+        -:  414:	   * at odds with this.
+        -:  415:	   */
+        -:  416:	  if (__gthrw_(pthread_setschedparam) (thread_id, policy, &params) == 0)
+        -:  417:	    return 0;
+        -:  418:	}
+        -:  419:#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
+        -:  420:#endif /* _POSIX_PRIORITY_SCHEDULING */
+        -:  421:      return -1;
+        -:  422:    }
+        -:  423:}
+        -:  424:
+        -:  425:/* Return the current thread's priority.  */
+        -:  426:static inline int
+        -:  427:__gthread_objc_thread_get_priority (void)
+        -:  428:{
+        -:  429:#ifdef _POSIX_PRIORITY_SCHEDULING
+        -:  430:#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
+        -:  431:  if (__gthread_active_p ())
+        -:  432:    {
+        -:  433:      int policy;
+        -:  434:      struct sched_param params;
+        -:  435:
+        -:  436:      if (__gthrw_(pthread_getschedparam) (__gthrw_(pthread_self) (), &policy, &params) == 0)
+        -:  437:	return params.sched_priority;
+        -:  438:      else
+        -:  439:	return -1;
+        -:  440:    }
+        -:  441:  else
+        -:  442:#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
+        -:  443:#endif /* _POSIX_PRIORITY_SCHEDULING */
+        -:  444:    return OBJC_THREAD_INTERACTIVE_PRIORITY;
+        -:  445:}
+        -:  446:
+        -:  447:/* Yield our process time to another thread.  */
+        -:  448:static inline void
+        -:  449:__gthread_objc_thread_yield (void)
+        -:  450:{
+        -:  451:  if (__gthread_active_p ())
+        -:  452:    __gthrw_(sched_yield) ();
+        -:  453:}
+        -:  454:
+        -:  455:/* Terminate the current thread.  */
+        -:  456:static inline int
+        -:  457:__gthread_objc_thread_exit (void)
+        -:  458:{
+        -:  459:  if (__gthread_active_p ())
+        -:  460:    /* exit the thread */
+        -:  461:    __gthrw_(pthread_exit) (&__objc_thread_exit_status);
+        -:  462:
+        -:  463:  /* Failed if we reached here */
+        -:  464:  return -1;
+        -:  465:}
+        -:  466:
+        -:  467:/* Returns an integer value which uniquely describes a thread.  */
+        -:  468:static inline objc_thread_t
+        -:  469:__gthread_objc_thread_id (void)
+        -:  470:{
+        -:  471:  if (__gthread_active_p ())
+        -:  472:    return (objc_thread_t) __gthrw_(pthread_self) ();
+        -:  473:  else
+        -:  474:    return (objc_thread_t) 1;
+        -:  475:}
+        -:  476:
+        -:  477:/* Sets the thread's local storage pointer.  */
+        -:  478:static inline int
+        -:  479:__gthread_objc_thread_set_data (void *value)
+        -:  480:{
+        -:  481:  if (__gthread_active_p ())
+        -:  482:    return __gthrw_(pthread_setspecific) (_objc_thread_storage, value);
+        -:  483:  else
+        -:  484:    {
+        -:  485:      thread_local_storage = value;
+        -:  486:      return 0;
+        -:  487:    }
+        -:  488:}
+        -:  489:
+        -:  490:/* Returns the thread's local storage pointer.  */
+        -:  491:static inline void *
+        -:  492:__gthread_objc_thread_get_data (void)
+        -:  493:{
+        -:  494:  if (__gthread_active_p ())
+        -:  495:    return __gthrw_(pthread_getspecific) (_objc_thread_storage);
+        -:  496:  else
+        -:  497:    return thread_local_storage;
+        -:  498:}
+        -:  499:
+        -:  500:/* Backend mutex functions */
+        -:  501:
+        -:  502:/* Allocate a mutex.  */
+        -:  503:static inline int
+        -:  504:__gthread_objc_mutex_allocate (objc_mutex_t mutex)
+        -:  505:{
+        -:  506:  if (__gthread_active_p ())
+        -:  507:    {
+        -:  508:      mutex->backend = objc_malloc (sizeof (pthread_mutex_t));
+        -:  509:
+        -:  510:      if (__gthrw_(pthread_mutex_init) ((pthread_mutex_t *) mutex->backend, NULL))
+        -:  511:	{
+        -:  512:	  objc_free (mutex->backend);
+        -:  513:	  mutex->backend = NULL;
+        -:  514:	  return -1;
+        -:  515:	}
+        -:  516:    }
+        -:  517:
+        -:  518:  return 0;
+        -:  519:}
+        -:  520:
+        -:  521:/* Deallocate a mutex.  */
+        -:  522:static inline int
+        -:  523:__gthread_objc_mutex_deallocate (objc_mutex_t mutex)
+        -:  524:{
+        -:  525:  if (__gthread_active_p ())
+        -:  526:    {
+        -:  527:      int count;
+        -:  528:
+        -:  529:      /*
+        -:  530:       * Posix Threads specifically require that the thread be unlocked
+        -:  531:       * for __gthrw_(pthread_mutex_destroy) to work.
+        -:  532:       */
+        -:  533:
+        -:  534:      do
+        -:  535:	{
+        -:  536:	  count = __gthrw_(pthread_mutex_unlock) ((pthread_mutex_t *) mutex->backend);
+        -:  537:	  if (count < 0)
+        -:  538:	    return -1;
+        -:  539:	}
+        -:  540:      while (count);
+        -:  541:
+        -:  542:      if (__gthrw_(pthread_mutex_destroy) ((pthread_mutex_t *) mutex->backend))
+        -:  543:	return -1;
+        -:  544:
+        -:  545:      objc_free (mutex->backend);
+        -:  546:      mutex->backend = NULL;
+        -:  547:    }
+        -:  548:  return 0;
+        -:  549:}
+        -:  550:
+        -:  551:/* Grab a lock on a mutex.  */
+        -:  552:static inline int
+        -:  553:__gthread_objc_mutex_lock (objc_mutex_t mutex)
+        -:  554:{
+        -:  555:  if (__gthread_active_p ()
+        -:  556:      && __gthrw_(pthread_mutex_lock) ((pthread_mutex_t *) mutex->backend) != 0)
+        -:  557:    {
+        -:  558:      return -1;
+        -:  559:    }
+        -:  560:
+        -:  561:  return 0;
+        -:  562:}
+        -:  563:
+        -:  564:/* Try to grab a lock on a mutex.  */
+        -:  565:static inline int
+        -:  566:__gthread_objc_mutex_trylock (objc_mutex_t mutex)
+        -:  567:{
+        -:  568:  if (__gthread_active_p ()
+        -:  569:      && __gthrw_(pthread_mutex_trylock) ((pthread_mutex_t *) mutex->backend) != 0)
+        -:  570:    {
+        -:  571:      return -1;
+        -:  572:    }
+        -:  573:
+        -:  574:  return 0;
+        -:  575:}
+        -:  576:
+        -:  577:/* Unlock the mutex */
+        -:  578:static inline int
+        -:  579:__gthread_objc_mutex_unlock (objc_mutex_t mutex)
+        -:  580:{
+        -:  581:  if (__gthread_active_p ()
+        -:  582:      && __gthrw_(pthread_mutex_unlock) ((pthread_mutex_t *) mutex->backend) != 0)
+        -:  583:    {
+        -:  584:      return -1;
+        -:  585:    }
+        -:  586:
+        -:  587:  return 0;
+        -:  588:}
+        -:  589:
+        -:  590:/* Backend condition mutex functions */
+        -:  591:
+        -:  592:/* Allocate a condition.  */
+        -:  593:static inline int
+        -:  594:__gthread_objc_condition_allocate (objc_condition_t condition)
+        -:  595:{
+        -:  596:  if (__gthread_active_p ())
+        -:  597:    {
+        -:  598:      condition->backend = objc_malloc (sizeof (pthread_cond_t));
+        -:  599:
+        -:  600:      if (__gthrw_(pthread_cond_init) ((pthread_cond_t *) condition->backend, NULL))
+        -:  601:	{
+        -:  602:	  objc_free (condition->backend);
+        -:  603:	  condition->backend = NULL;
+        -:  604:	  return -1;
+        -:  605:	}
+        -:  606:    }
+        -:  607:
+        -:  608:  return 0;
+        -:  609:}
+        -:  610:
+        -:  611:/* Deallocate a condition.  */
+        -:  612:static inline int
+        -:  613:__gthread_objc_condition_deallocate (objc_condition_t condition)
+        -:  614:{
+        -:  615:  if (__gthread_active_p ())
+        -:  616:    {
+        -:  617:      if (__gthrw_(pthread_cond_destroy) ((pthread_cond_t *) condition->backend))
+        -:  618:	return -1;
+        -:  619:
+        -:  620:      objc_free (condition->backend);
+        -:  621:      condition->backend = NULL;
+        -:  622:    }
+        -:  623:  return 0;
+        -:  624:}
+        -:  625:
+        -:  626:/* Wait on the condition */
+        -:  627:static inline int
+        -:  628:__gthread_objc_condition_wait (objc_condition_t condition, objc_mutex_t mutex)
+        -:  629:{
+        -:  630:  if (__gthread_active_p ())
+        -:  631:    return __gthrw_(pthread_cond_wait) ((pthread_cond_t *) condition->backend,
+        -:  632:			      (pthread_mutex_t *) mutex->backend);
+        -:  633:  else
+        -:  634:    return 0;
+        -:  635:}
+        -:  636:
+        -:  637:/* Wake up all threads waiting on this condition.  */
+        -:  638:static inline int
+        -:  639:__gthread_objc_condition_broadcast (objc_condition_t condition)
+        -:  640:{
+        -:  641:  if (__gthread_active_p ())
+        -:  642:    return __gthrw_(pthread_cond_broadcast) ((pthread_cond_t *) condition->backend);
+        -:  643:  else
+        -:  644:    return 0;
+        -:  645:}
+        -:  646:
+        -:  647:/* Wake up one thread waiting on this condition.  */
+        -:  648:static inline int
+        -:  649:__gthread_objc_condition_signal (objc_condition_t condition)
+        -:  650:{
+        -:  651:  if (__gthread_active_p ())
+        -:  652:    return __gthrw_(pthread_cond_signal) ((pthread_cond_t *) condition->backend);
+        -:  653:  else
+        -:  654:    return 0;
+        -:  655:}
+        -:  656:
+        -:  657:#else /* _LIBOBJC */
+        -:  658:
+        -:  659:static inline int
+        -:  660:__gthread_create (__gthread_t *__threadid, void *(*__func) (void*),
+        -:  661:		  void *__args)
+        -:  662:{
+        -:  663:  return __gthrw_(pthread_create) (__threadid, NULL, __func, __args);
+        -:  664:}
+        -:  665:
+        -:  666:static inline int
+        -:  667:__gthread_join (__gthread_t __threadid, void **__value_ptr)
+        -:  668:{
+        -:  669:  return __gthrw_(pthread_join) (__threadid, __value_ptr);
+        -:  670:}
+        -:  671:
+        -:  672:static inline int
+        -:  673:__gthread_detach (__gthread_t __threadid)
+        -:  674:{
+        -:  675:  return __gthrw_(pthread_detach) (__threadid);
+        -:  676:}
+        -:  677:
+        -:  678:static inline int
+        -:  679:__gthread_equal (__gthread_t __t1, __gthread_t __t2)
+        -:  680:{
+        -:  681:  return __gthrw_(pthread_equal) (__t1, __t2);
+        -:  682:}
+        -:  683:
+        -:  684:static inline __gthread_t
+        -:  685:__gthread_self (void)
+        -:  686:{
+        -:  687:  return __gthrw_(pthread_self) ();
+        -:  688:}
+        -:  689:
+        -:  690:static inline int
+        -:  691:__gthread_yield (void)
+        -:  692:{
+        -:  693:  return __gthrw_(sched_yield) ();
+        -:  694:}
+        -:  695:
+        -:  696:static inline int
+        -:  697:__gthread_once (__gthread_once_t *__once, void (*__func) (void))
+        -:  698:{
+        -:  699:  if (__gthread_active_p ())
+        -:  700:    return __gthrw_(pthread_once) (__once, __func);
+        -:  701:  else
+        -:  702:    return -1;
+        -:  703:}
+        -:  704:
+        -:  705:static inline int
+        -:  706:__gthread_key_create (__gthread_key_t *__key, void (*__dtor) (void *))
+        -:  707:{
+        -:  708:  return __gthrw_(pthread_key_create) (__key, __dtor);
+        -:  709:}
+        -:  710:
+        -:  711:static inline int
+        -:  712:__gthread_key_delete (__gthread_key_t __key)
+        -:  713:{
+        -:  714:  return __gthrw_(pthread_key_delete) (__key);
+        -:  715:}
+        -:  716:
+        -:  717:static inline void *
+        -:  718:__gthread_getspecific (__gthread_key_t __key)
+        -:  719:{
+        -:  720:  return __gthrw_(pthread_getspecific) (__key);
+        -:  721:}
+        -:  722:
+        -:  723:static inline int
+        -:  724:__gthread_setspecific (__gthread_key_t __key, const void *__ptr)
+        -:  725:{
+        -:  726:  return __gthrw_(pthread_setspecific) (__key, __ptr);
+        -:  727:}
+        -:  728:
+        -:  729:static inline void
+        -:  730:__gthread_mutex_init_function (__gthread_mutex_t *__mutex)
+        -:  731:{
+        -:  732:  if (__gthread_active_p ())
+        -:  733:    __gthrw_(pthread_mutex_init) (__mutex, NULL);
+        -:  734:}
+        -:  735:
+        -:  736:static inline int
+        -:  737:__gthread_mutex_destroy (__gthread_mutex_t *__mutex)
+        -:  738:{
+        -:  739:  if (__gthread_active_p ())
+        -:  740:    return __gthrw_(pthread_mutex_destroy) (__mutex);
+        -:  741:  else
+        -:  742:    return 0;
+        -:  743:}
+        -:  744:
+        -:  745:static inline int
+        -:  746:__gthread_mutex_lock (__gthread_mutex_t *__mutex)
+        -:  747:{
+        -:  748:  if (__gthread_active_p ())
+        -:  749:    return __gthrw_(pthread_mutex_lock) (__mutex);
+        -:  750:  else
+        -:  751:    return 0;
+        -:  752:}
+        -:  753:
+        -:  754:static inline int
+        -:  755:__gthread_mutex_trylock (__gthread_mutex_t *__mutex)
+        -:  756:{
+        -:  757:  if (__gthread_active_p ())
+        -:  758:    return __gthrw_(pthread_mutex_trylock) (__mutex);
+        -:  759:  else
+        -:  760:    return 0;
+        -:  761:}
+        -:  762:
+        -:  763:#if _GTHREAD_USE_MUTEX_TIMEDLOCK
+        -:  764:static inline int
+        -:  765:__gthread_mutex_timedlock (__gthread_mutex_t *__mutex,
+        -:  766:			   const __gthread_time_t *__abs_timeout)
+        -:  767:{
+        -:  768:  if (__gthread_active_p ())
+        -:  769:    return __gthrw_(pthread_mutex_timedlock) (__mutex, __abs_timeout);
+        -:  770:  else
+        -:  771:    return 0;
+        -:  772:}
+        -:  773:#endif
+        -:  774:
+        -:  775:static inline int
+        -:  776:__gthread_mutex_unlock (__gthread_mutex_t *__mutex)
+        -:  777:{
+        -:  778:  if (__gthread_active_p ())
+        -:  779:    return __gthrw_(pthread_mutex_unlock) (__mutex);
+        -:  780:  else
+        -:  781:    return 0;
+        -:  782:}
+        -:  783:
+        -:  784:#if !defined( PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP) \
+        -:  785:  || defined(_GTHREAD_USE_RECURSIVE_MUTEX_INIT_FUNC)
+        -:  786:static inline int
+        -:  787:__gthread_recursive_mutex_init_function (__gthread_recursive_mutex_t *__mutex)
+        -:  788:{
+        -:  789:  if (__gthread_active_p ())
+        -:  790:    {
+        -:  791:      pthread_mutexattr_t __attr;
+        -:  792:      int __r;
+        -:  793:
+        -:  794:      __r = __gthrw_(pthread_mutexattr_init) (&__attr);
+        -:  795:      if (!__r)
+        -:  796:	__r = __gthrw_(pthread_mutexattr_settype) (&__attr,
+        -:  797:						   PTHREAD_MUTEX_RECURSIVE);
+        -:  798:      if (!__r)
+        -:  799:	__r = __gthrw_(pthread_mutex_init) (__mutex, &__attr);
+        -:  800:      if (!__r)
+        -:  801:	__r = __gthrw_(pthread_mutexattr_destroy) (&__attr);
+        -:  802:      return __r;
+        -:  803:    }
+        -:  804:  return 0;
+        -:  805:}
+        -:  806:#endif
+        -:  807:
+        -:  808:static inline int
+        -:  809:__gthread_recursive_mutex_lock (__gthread_recursive_mutex_t *__mutex)
+        -:  810:{
+        -:  811:  return __gthread_mutex_lock (__mutex);
+        -:  812:}
+        -:  813:
+        -:  814:static inline int
+        -:  815:__gthread_recursive_mutex_trylock (__gthread_recursive_mutex_t *__mutex)
+        -:  816:{
+        -:  817:  return __gthread_mutex_trylock (__mutex);
+        -:  818:}
+        -:  819:
+        -:  820:#if _GTHREAD_USE_MUTEX_TIMEDLOCK
+        -:  821:static inline int
+        -:  822:__gthread_recursive_mutex_timedlock (__gthread_recursive_mutex_t *__mutex,
+        -:  823:				     const __gthread_time_t *__abs_timeout)
+        -:  824:{
+        -:  825:  return __gthread_mutex_timedlock (__mutex, __abs_timeout);
+        -:  826:}
+        -:  827:#endif
+        -:  828:
+        -:  829:static inline int
+        -:  830:__gthread_recursive_mutex_unlock (__gthread_recursive_mutex_t *__mutex)
+        -:  831:{
+        -:  832:  return __gthread_mutex_unlock (__mutex);
+        -:  833:}
+        -:  834:
+        -:  835:static inline int
+        -:  836:__gthread_recursive_mutex_destroy (__gthread_recursive_mutex_t *__mutex)
+        -:  837:{
+        -:  838:  return __gthread_mutex_destroy (__mutex);
+        -:  839:}
+        -:  840:
+        -:  841:#ifdef _GTHREAD_USE_COND_INIT_FUNC
+        -:  842:static inline void
+        -:  843:__gthread_cond_init_function (__gthread_cond_t *__cond)
+        -:  844:{
+        -:  845:  if (__gthread_active_p ())
+        -:  846:    __gthrw_(pthread_cond_init) (__cond, NULL);
+        -:  847:}
+        -:  848:#endif
+        -:  849:
+        -:  850:static inline int
+        -:  851:__gthread_cond_broadcast (__gthread_cond_t *__cond)
+        -:  852:{
+        -:  853:  return __gthrw_(pthread_cond_broadcast) (__cond);
+        -:  854:}
+        -:  855:
+        -:  856:static inline int
+        -:  857:__gthread_cond_signal (__gthread_cond_t *__cond)
+        -:  858:{
+        -:  859:  return __gthrw_(pthread_cond_signal) (__cond);
+        -:  860:}
+        -:  861:
+        -:  862:static inline int
+        -:  863:__gthread_cond_wait (__gthread_cond_t *__cond, __gthread_mutex_t *__mutex)
+        -:  864:{
+        -:  865:  return __gthrw_(pthread_cond_wait) (__cond, __mutex);
+        -:  866:}
+        -:  867:
+        -:  868:static inline int
+        -:  869:__gthread_cond_timedwait (__gthread_cond_t *__cond, __gthread_mutex_t *__mutex,
+        -:  870:			  const __gthread_time_t *__abs_timeout)
+        -:  871:{
+        -:  872:  return __gthrw_(pthread_cond_timedwait) (__cond, __mutex, __abs_timeout);
+        -:  873:}
+        -:  874:
+        -:  875:static inline int
+        -:  876:__gthread_cond_wait_recursive (__gthread_cond_t *__cond,
+        -:  877:			       __gthread_recursive_mutex_t *__mutex)
+        -:  878:{
+        -:  879:  return __gthread_cond_wait (__cond, __mutex);
+        -:  880:}
+        -:  881:
+        -:  882:static inline int
+        -:  883:__gthread_cond_destroy (__gthread_cond_t* __cond)
+        -:  884:{
+        -:  885:  return __gthrw_(pthread_cond_destroy) (__cond);
+        -:  886:}
+        -:  887:
+        -:  888:#endif /* _LIBOBJC */
+        -:  889:
+        -:  890:#endif /* ! _GLIBCXX_GCC_GTHR_POSIX_H */

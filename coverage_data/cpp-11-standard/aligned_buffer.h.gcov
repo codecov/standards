@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/c++/5/ext/aligned_buffer.h
+        -:    0:Source:/usr/include/c++/9/ext/aligned_buffer.h
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// Aligned memory buffer -*- C++ -*-
         -:    2:
-        -:    3:// Copyright (C) 2013-2015 Free Software Foundation, Inc.
+        -:    3:// Copyright (C) 2013-2019 Free Software Foundation, Inc.
         -:    4://
         -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
         -:    6:// software; you can redistribute it and/or modify it under the
@@ -54,71 +53,549 @@
         -:   49:      // Target macro ADJUST_FIELD_ALIGN can produce different alignment for
         -:   50:      // types when used as class members. __aligned_membuf is intended
         -:   51:      // for use as a class member, so align the buffer as for a class member.
-        -:   52:      struct _Tp2 { _Tp _M_t; };
-        -:   53:
-        -:   54:      alignas(__alignof__(_Tp2::_M_t)) unsigned char _M_storage[sizeof(_Tp)];
+        -:   52:      // Since GCC 8 we could just use alignof(_Tp) instead, but older
+        -:   53:      // versions of non-GNU compilers might still need this trick.
+        -:   54:      struct _Tp2 { _Tp _M_t; };
         -:   55:
-        9:   56:      __aligned_membuf() = default;
+        -:   56:      alignas(__alignof__(_Tp2::_M_t)) unsigned char _M_storage[sizeof(_Tp)];
         -:   57:
-        -:   58:      // Can be used to avoid value-initialization zeroing _M_storage.
-        -:   59:      __aligned_membuf(std::nullptr_t) { }
-        -:   60:
-        -:   61:      void*
-       18:   62:      _M_addr() noexcept
-       18:   63:      { return static_cast<void*>(&_M_storage); }
-        -:   64:
-        -:   65:      const void*
-       34:   66:      _M_addr() const noexcept
-       34:   67:      { return static_cast<const void*>(&_M_storage); }
-        -:   68:
-        -:   69:      _Tp*
-       18:   70:      _M_ptr() noexcept
-       18:   71:      { return static_cast<_Tp*>(_M_addr()); }
-        -:   72:
-        -:   73:      const _Tp*
-       34:   74:      _M_ptr() const noexcept
-       34:   75:      { return static_cast<const _Tp*>(_M_addr()); }
-        -:   76:    };
-        -:   77:
-        -:   78:  // Similar to __aligned_membuf but aligned for complete objects, not members.
-        -:   79:  // This type is used in <forward_list>, <future>, <bits/shared_ptr_base.h>
-        -:   80:  // and <bits/hashtable_policy.h>, but ideally they would use __aligned_membuf
-        -:   81:  // instead, as it has smaller size for some types on some targets.
-        -:   82:  // This type is still used to avoid an ABI change.
-        -:   83:  template<typename _Tp>
-        -:   84:    struct __aligned_buffer
-        -:   85:    : std::aligned_storage<sizeof(_Tp), std::alignment_of<_Tp>::value>
-        -:   86:    {
-        -:   87:      typename
-        -:   88:	std::aligned_storage<sizeof(_Tp), std::alignment_of<_Tp>::value>::type
-        -:   89:	_M_storage;
-        -:   90:
-       43:   91:      __aligned_buffer() = default;
-        -:   92:
-        -:   93:      // Can be used to avoid value-initialization
-        -:   94:      __aligned_buffer(std::nullptr_t) { }
+        -:   58:      __aligned_membuf() = default;
+        -:   59:
+        -:   60:      // Can be used to avoid value-initialization zeroing _M_storage.
+        -:   61:      __aligned_membuf(std::nullptr_t) { }
+        -:   62:
+        -:   63:      void*
+      18*:   64:      _M_addr() noexcept
+      18*:   65:      { return static_cast<void*>(&_M_storage); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufISt4pairIKllEE7_M_addrEv:
+    #####:   64:      _M_addr() noexcept
+    #####:   65:      { return static_cast<void*>(&_M_storage); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufISt8functionIFbcEEE7_M_addrEv:
+    #####:   64:      _M_addr() noexcept
+    #####:   65:      { return static_cast<void*>(&_M_storage); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufIN5Catch9VerbosityEE7_M_addrEv:
+        2:   64:      _M_addr() noexcept
+        2:   65:      { return static_cast<void*>(&_M_storage); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufIN5Catch8TestCaseEE7_M_addrEv:
+        4:   64:      _M_addr() noexcept
+        4:   65:      { return static_cast<void*>(&_M_storage); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEE7_M_addrEv:
+    #####:   64:      _M_addr() noexcept
+    #####:   65:      { return static_cast<void*>(&_M_storage); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufIPKN5Catch8TestCaseEE7_M_addrEv:
+        4:   64:      _M_addr() noexcept
+        4:   65:      { return static_cast<void*>(&_M_storage); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEE7_M_addrEv:
+        8:   64:      _M_addr() noexcept
+        8:   65:      { return static_cast<void*>(&_M_storage); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE7_M_addrEv:
+    #####:   64:      _M_addr() noexcept
+    #####:   65:      { return static_cast<void*>(&_M_storage); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEE7_M_addrEv:
+    #####:   64:      _M_addr() noexcept
+    #####:   65:      { return static_cast<void*>(&_M_storage); }
+------------------
+        -:   66:
+        -:   67:      const void*
+      34*:   68:      _M_addr() const noexcept
+      34*:   69:      { return static_cast<const void*>(&_M_storage); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufISt4pairIKllEE7_M_addrEv:
+    #####:   68:      _M_addr() const noexcept
+    #####:   69:      { return static_cast<const void*>(&_M_storage); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufISt8functionIFbcEEE7_M_addrEv:
+    #####:   68:      _M_addr() const noexcept
+    #####:   69:      { return static_cast<const void*>(&_M_storage); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufIN5Catch9VerbosityEE7_M_addrEv:
+        2:   68:      _M_addr() const noexcept
+        2:   69:      { return static_cast<const void*>(&_M_storage); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEE7_M_addrEv:
+    #####:   68:      _M_addr() const noexcept
+    #####:   69:      { return static_cast<const void*>(&_M_storage); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufIN5Catch8TestCaseEE7_M_addrEv:
+        2:   68:      _M_addr() const noexcept
+        2:   69:      { return static_cast<const void*>(&_M_storage); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEE7_M_addrEv:
+    #####:   68:      _M_addr() const noexcept
+    #####:   69:      { return static_cast<const void*>(&_M_storage); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufIPKN5Catch8TestCaseEE7_M_addrEv:
+        8:   68:      _M_addr() const noexcept
+        8:   69:      { return static_cast<const void*>(&_M_storage); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEE7_M_addrEv:
+       22:   68:      _M_addr() const noexcept
+       22:   69:      { return static_cast<const void*>(&_M_storage); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE7_M_addrEv:
+    #####:   68:      _M_addr() const noexcept
+    #####:   69:      { return static_cast<const void*>(&_M_storage); }
+------------------
+        -:   70:
+        -:   71:      _Tp*
+      18*:   72:      _M_ptr() noexcept
+      18*:   73:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufISt4pairIKllEE6_M_ptrEv:
+    #####:   72:      _M_ptr() noexcept
+    #####:   73:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufIN5Catch9VerbosityEE6_M_ptrEv:
+        2:   72:      _M_ptr() noexcept
+        2:   73:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufIN5Catch8TestCaseEE6_M_ptrEv:
+        4:   72:      _M_ptr() noexcept
+        4:   73:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEE6_M_ptrEv:
+    #####:   72:      _M_ptr() noexcept
+    #####:   73:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufIPKN5Catch8TestCaseEE6_M_ptrEv:
+        4:   72:      _M_ptr() noexcept
+        4:   73:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEE6_M_ptrEv:
+        8:   72:      _M_ptr() noexcept
+        8:   73:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_M_ptrEv:
+    #####:   72:      _M_ptr() noexcept
+    #####:   73:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEE6_M_ptrEv:
+    #####:   72:      _M_ptr() noexcept
+    #####:   73:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+        -:   74:
+        -:   75:      const _Tp*
+      34*:   76:      _M_ptr() const noexcept
+      34*:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufISt4pairIKllEE6_M_ptrEv:
+    #####:   76:      _M_ptr() const noexcept
+    #####:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufIN5Catch9VerbosityEE6_M_ptrEv:
+        2:   76:      _M_ptr() const noexcept
+        2:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEE6_M_ptrEv:
+    #####:   76:      _M_ptr() const noexcept
+    #####:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufIN5Catch8TestCaseEE6_M_ptrEv:
+        2:   76:      _M_ptr() const noexcept
+        2:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEE6_M_ptrEv:
+    #####:   76:      _M_ptr() const noexcept
+    #####:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufIPKN5Catch8TestCaseEE6_M_ptrEv:
+        8:   76:      _M_ptr() const noexcept
+        8:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEE6_M_ptrEv:
+       22:   76:      _M_ptr() const noexcept
+       22:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+------------------
+_ZNK9__gnu_cxx16__aligned_membufINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_M_ptrEv:
+    #####:   76:      _M_ptr() const noexcept
+    #####:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+------------------
+        -:   78:    };
+        -:   79:
+        -:   80:#if _GLIBCXX_INLINE_VERSION
+        -:   81:  template<typename _Tp>
+        -:   82:    using __aligned_buffer = __aligned_membuf<_Tp>;
+        -:   83:#else
+        -:   84:  // Similar to __aligned_membuf but aligned for complete objects, not members.
+        -:   85:  // This type is used in <forward_list>, <future>, <bits/shared_ptr_base.h>
+        -:   86:  // and <bits/hashtable_policy.h>, but ideally they would use __aligned_membuf
+        -:   87:  // instead, as it has smaller size for some types on some targets.
+        -:   88:  // This type is still used to avoid an ABI change.
+        -:   89:  template<typename _Tp>
+        -:   90:    struct __aligned_buffer
+        -:   91:    : std::aligned_storage<sizeof(_Tp), __alignof__(_Tp)>
+        -:   92:    {
+        -:   93:      typename
+        -:   94:	std::aligned_storage<sizeof(_Tp), __alignof__(_Tp)>::type _M_storage;
         -:   95:
-        -:   96:      void*
-      129:   97:      _M_addr() noexcept
-        -:   98:      {
-      129:   99:        return static_cast<void*>(&_M_storage);
-        -:  100:      }
-        -:  101:
-        -:  102:      const void*
-        -:  103:      _M_addr() const noexcept
-        -:  104:      {
-        -:  105:        return static_cast<const void*>(&_M_storage);
-        -:  106:      }
-        -:  107:
-        -:  108:      _Tp*
-      129:  109:      _M_ptr() noexcept
-      129:  110:      { return static_cast<_Tp*>(_M_addr()); }
-        -:  111:
-        -:  112:      const _Tp*
-        -:  113:      _M_ptr() const noexcept
-        -:  114:      { return static_cast<const _Tp*>(_M_addr()); }
-        -:  115:    };
+        -:   96:      __aligned_buffer() = default;
+        -:   97:
+        -:   98:      // Can be used to avoid value-initialization
+        -:   99:      __aligned_buffer(std::nullptr_t) { }
+        -:  100:
+        -:  101:      void*
+     129*:  102:      _M_addr() noexcept
+        -:  103:      {
+     129*:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEE7_M_addrEv:
+    #####:  102:      _M_addr() noexcept
+        -:  103:      {
+    #####:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEE7_M_addrEv:
+    #####:  102:      _M_addr() noexcept
+        -:  103:      {
+    #####:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch8TestSpec10TagPatternEE7_M_addrEv:
+    #####:  102:      _M_addr() noexcept
+        -:  103:      {
+    #####:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch8TestSpec15ExcludedPatternEE7_M_addrEv:
+    #####:  102:      _M_addr() noexcept
+        -:  103:      {
+    #####:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch8TestSpec11NamePatternEE7_M_addrEv:
+    #####:  102:      _M_addr() noexcept
+        -:  103:      {
+    #####:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEEE7_M_addrEv:
+        6:  102:      _M_addr() noexcept
+        -:  103:      {
+        6:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch16TestCaseTracking14SectionTrackerEE7_M_addrEv:
+       12:  102:      _M_addr() noexcept
+        -:  103:      {
+       12:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch6ConfigEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch10Generators16GeneratorTrackerEE7_M_addrEv:
+    #####:  102:      _M_addr() noexcept
+        -:  103:      {
+    #####:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail12BoundFlagRefEE7_M_addrEv:
+       33:  102:      _M_addr() noexcept
+        -:  103:      {
+       33:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEE7_M_addrEv:
+        9:  102:      _M_addr() noexcept
+        -:  103:      {
+        9:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE7_M_addrEv:
+        9:  102:      _M_addr() noexcept
+        -:  103:      {
+        9:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEE7_M_addrEv:
+    #####:  102:      _M_addr() noexcept
+        -:  103:      {
+    #####:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail13BoundValueRefIjEEE7_M_addrEv:
+        6:  102:      _M_addr() noexcept
+        -:  103:      {
+        6:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail13BoundValueRefIdEEE7_M_addrEv:
+        3:  102:      _M_addr() noexcept
+        -:  103:      {
+        3:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEE7_M_addrEv:
+    #####:  102:      _M_addr() noexcept
+        -:  103:      {
+    #####:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEE7_M_addrEv:
+    #####:  102:      _M_addr() noexcept
+        -:  103:      {
+    #####:  104:        return static_cast<void*>(&_M_storage);
+        -:  105:      }
+------------------
+        -:  106:
+        -:  107:      const void*
+        -:  108:      _M_addr() const noexcept
+        -:  109:      {
+        -:  110:        return static_cast<const void*>(&_M_storage);
+        -:  111:      }
+        -:  112:
+        -:  113:      _Tp*
+     129*:  114:      _M_ptr() noexcept
+     129*:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEE6_M_ptrEv:
+    #####:  114:      _M_ptr() noexcept
+    #####:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEEE6_M_ptrEv:
+    #####:  114:      _M_ptr() noexcept
+    #####:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch8TestSpec10TagPatternEE6_M_ptrEv:
+    #####:  114:      _M_ptr() noexcept
+    #####:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch8TestSpec15ExcludedPatternEE6_M_ptrEv:
+    #####:  114:      _M_ptr() noexcept
+    #####:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch8TestSpec11NamePatternEE6_M_ptrEv:
+    #####:  114:      _M_ptr() noexcept
+    #####:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEEE6_M_ptrEv:
+        6:  114:      _M_ptr() noexcept
+        6:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch16TestCaseTracking14SectionTrackerEE6_M_ptrEv:
+       12:  114:      _M_ptr() noexcept
+       12:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch6ConfigEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch10Generators16GeneratorTrackerEE6_M_ptrEv:
+    #####:  114:      _M_ptr() noexcept
+    #####:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail12BoundFlagRefEE6_M_ptrEv:
+       33:  114:      _M_ptr() noexcept
+       33:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEE6_M_ptrEv:
+        9:  114:      _M_ptr() noexcept
+        9:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_M_ptrEv:
+        9:  114:      _M_ptr() noexcept
+        9:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEEE6_M_ptrEv:
+    #####:  114:      _M_ptr() noexcept
+    #####:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail13BoundValueRefIjEEE6_M_ptrEv:
+        6:  114:      _M_ptr() noexcept
+        6:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch5clara6detail13BoundValueRefIdEEE6_M_ptrEv:
+        3:  114:      _M_ptr() noexcept
+        3:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEE6_M_ptrEv:
+    #####:  114:      _M_ptr() noexcept
+    #####:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
+_ZN9__gnu_cxx16__aligned_bufferIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEE6_M_ptrEv:
+    #####:  114:      _M_ptr() noexcept
+    #####:  115:      { return static_cast<_Tp*>(_M_addr()); }
+------------------
         -:  116:
-        -:  117:} // namespace
-        -:  118:
-        -:  119:#endif /* _ALIGNED_BUFFER_H */
+        -:  117:      const _Tp*
+        -:  118:      _M_ptr() const noexcept
+        -:  119:      { return static_cast<const _Tp*>(_M_addr()); }
+        -:  120:    };
+        -:  121:#endif
+        -:  122:
+        -:  123:} // namespace
+        -:  124:
+        -:  125:#endif /* _ALIGNED_BUFFER_H */

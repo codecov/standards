@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/c++/5/bits/ios_base.h
+        -:    0:Source:/usr/include/c++/9/bits/ios_base.h
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// Iostreams base classes -*- C++ -*-
         -:    2:
-        -:    3:// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+        -:    3:// Copyright (C) 1997-2019 Free Software Foundation, Inc.
         -:    4://
         -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
         -:    6:// software; you can redistribute it and/or modify it under the
@@ -57,8 +56,8 @@
         -:   52:
         -:   53:  // The following definitions of bitmask types are enums, not ints,
         -:   54:  // as permitted (but not required) in the standard, in order to provide
-        -:   55:  // better type safety in iostream calls.  A side effect is that
-        -:   56:  // expressions involving them are no longer compile-time constants.
+        -:   55:  // better type safety in iostream calls.  A side effect is that in C++98
+        -:   56:  // expressions involving them are not compile-time constants.
         -:   57:  enum _Ios_Fmtflags 
         -:   58:    { 
         -:   59:      _S_boolalpha 	= 1L << 0,
@@ -131,8 +130,8 @@
         -:  126:  { return _Ios_Openmode(static_cast<int>(__a) & static_cast<int>(__b)); }
         -:  127:
         -:  128:  inline _GLIBCXX_CONSTEXPR _Ios_Openmode
-    #####:  129:  operator|(_Ios_Openmode __a, _Ios_Openmode __b)
-    #####:  130:  { return _Ios_Openmode(static_cast<int>(__a) | static_cast<int>(__b)); }
+        -:  129:  operator|(_Ios_Openmode __a, _Ios_Openmode __b)
+        -:  130:  { return _Ios_Openmode(static_cast<int>(__a) | static_cast<int>(__b)); }
         -:  131:
         -:  132:  inline _GLIBCXX_CONSTEXPR _Ios_Openmode
         -:  133:  operator^(_Ios_Openmode __a, _Ios_Openmode __b)
@@ -212,12 +211,12 @@
         -:  207:  const error_category& iostream_category() noexcept;
         -:  208:
         -:  209:  inline error_code
-        -:  210:  make_error_code(io_errc e) noexcept
-        -:  211:  { return error_code(static_cast<int>(e), iostream_category()); }
+        -:  210:  make_error_code(io_errc __e) noexcept
+        -:  211:  { return error_code(static_cast<int>(__e), iostream_category()); }
         -:  212:
         -:  213:  inline error_condition
-        -:  214:  make_error_condition(io_errc e) noexcept
-        -:  215:  { return error_condition(static_cast<int>(e), iostream_category()); }
+        -:  214:  make_error_condition(io_errc __e) noexcept
+        -:  215:  { return error_condition(static_cast<int>(__e), iostream_category()); }
         -:  216:#endif
         -:  217:
         -:  218:  // 27.4.2  Class ios_base
@@ -450,7 +449,7 @@
         -:  445:    /// Open for output.  Default for @c ofstream and fstream.
         -:  446:    static const openmode out =		_S_out;
         -:  447:
-        -:  448:    /// Open for input.  Default for @c ofstream.
+        -:  448:    /// Truncate an existing stream when opening.  Default for @c ofstream.
         -:  449:    static const openmode trunc =	_S_trunc;
         -:  450:
         -:  451:    // 27.4.2.1.5  Type ios_base::seekdir
@@ -474,611 +473,618 @@
         -:  469:    /// Request a seek relative to the current end of the sequence.
         -:  470:    static const seekdir end =		_S_end;
         -:  471:
-        -:  472:    // Annex D.6
-        -:  473:    typedef int io_state;
-        -:  474:    typedef int open_mode;
-        -:  475:    typedef int seek_dir;
-        -:  476:
-        -:  477:    typedef std::streampos streampos;
-        -:  478:    typedef std::streamoff streamoff;
-        -:  479:
-        -:  480:    // Callbacks;
-        -:  481:    /**
-        -:  482:     *  @brief  The set of events that may be passed to an event callback.
-        -:  483:     *
-        -:  484:     *  erase_event is used during ~ios() and copyfmt().  imbue_event is used
-        -:  485:     *  during imbue().  copyfmt_event is used during copyfmt().
-        -:  486:    */
-        -:  487:    enum event
-        -:  488:    {
-        -:  489:      erase_event,
-        -:  490:      imbue_event,
-        -:  491:      copyfmt_event
-        -:  492:    };
-        -:  493:
-        -:  494:    /**
-        -:  495:     *  @brief  The type of an event callback function.
-        -:  496:     *  @param  __e  One of the members of the event enum.
-        -:  497:     *  @param  __b  Reference to the ios_base object.
-        -:  498:     *  @param  __i  The integer provided when the callback was registered.
-        -:  499:     *
-        -:  500:     *  Event callbacks are user defined functions that get called during
-        -:  501:     *  several ios_base and basic_ios functions, specifically imbue(),
-        -:  502:     *  copyfmt(), and ~ios().
-        -:  503:    */
-        -:  504:    typedef void (*event_callback) (event __e, ios_base& __b, int __i);
-        -:  505:
-        -:  506:    /**
-        -:  507:     *  @brief  Add the callback __fn with parameter __index.
-        -:  508:     *  @param  __fn  The function to add.
-        -:  509:     *  @param  __index  The integer to pass to the function when invoked.
-        -:  510:     *
-        -:  511:     *  Registers a function as an event callback with an integer parameter to
-        -:  512:     *  be passed to the function when invoked.  Multiple copies of the
-        -:  513:     *  function are allowed.  If there are multiple callbacks, they are
-        -:  514:     *  invoked in the order they were registered.
-        -:  515:    */
-        -:  516:    void
-        -:  517:    register_callback(event_callback __fn, int __index);
-        -:  518:
-        -:  519:  protected:
-        -:  520:    streamsize		_M_precision;
-        -:  521:    streamsize		_M_width;
-        -:  522:    fmtflags		_M_flags;
-        -:  523:    iostate		_M_exception;
-        -:  524:    iostate		_M_streambuf_state;
-        -:  525:
-        -:  526:    // 27.4.2.6  Members for callbacks
-        -:  527:    // 27.4.2.6  ios_base callbacks
-        -:  528:    struct _Callback_list
-        -:  529:    {
-        -:  530:      // Data Members
-        -:  531:      _Callback_list*		_M_next;
-        -:  532:      ios_base::event_callback	_M_fn;
-        -:  533:      int			_M_index;
-        -:  534:      _Atomic_word		_M_refcount;  // 0 means one reference.
-        -:  535:
-        -:  536:      _Callback_list(ios_base::event_callback __fn, int __index,
-        -:  537:		     _Callback_list* __cb)
-        -:  538:      : _M_next(__cb), _M_fn(__fn), _M_index(__index), _M_refcount(0) { }
-        -:  539:
-        -:  540:      void
-        -:  541:      _M_add_reference() { __gnu_cxx::__atomic_add_dispatch(&_M_refcount, 1); }
-        -:  542:
-        -:  543:      // 0 => OK to delete.
-        -:  544:      int
-        -:  545:      _M_remove_reference() 
-        -:  546:      {
-        -:  547:        // Be race-detector-friendly.  For more info see bits/c++config.
-        -:  548:        _GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE(&_M_refcount);
-        -:  549:        int __res = __gnu_cxx::__exchange_and_add_dispatch(&_M_refcount, -1);
-        -:  550:        if (__res == 0)
-        -:  551:          {
-        -:  552:            _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER(&_M_refcount);
-        -:  553:          }
-        -:  554:        return __res;
-        -:  555:      }
-        -:  556:    };
-        -:  557:
-        -:  558:     _Callback_list*	_M_callbacks;
+        -:  472:#if __cplusplus <= 201402L
+        -:  473:    // Annex D.6 (removed in C++17)
+        -:  474:    typedef int io_state;
+        -:  475:    typedef int open_mode;
+        -:  476:    typedef int seek_dir;
+        -:  477:
+        -:  478:    typedef std::streampos streampos;
+        -:  479:    typedef std::streamoff streamoff;
+        -:  480:#endif
+        -:  481:
+        -:  482:    // Callbacks;
+        -:  483:    /**
+        -:  484:     *  @brief  The set of events that may be passed to an event callback.
+        -:  485:     *
+        -:  486:     *  erase_event is used during ~ios() and copyfmt().  imbue_event is used
+        -:  487:     *  during imbue().  copyfmt_event is used during copyfmt().
+        -:  488:    */
+        -:  489:    enum event
+        -:  490:    {
+        -:  491:      erase_event,
+        -:  492:      imbue_event,
+        -:  493:      copyfmt_event
+        -:  494:    };
+        -:  495:
+        -:  496:    /**
+        -:  497:     *  @brief  The type of an event callback function.
+        -:  498:     *  @param  __e  One of the members of the event enum.
+        -:  499:     *  @param  __b  Reference to the ios_base object.
+        -:  500:     *  @param  __i  The integer provided when the callback was registered.
+        -:  501:     *
+        -:  502:     *  Event callbacks are user defined functions that get called during
+        -:  503:     *  several ios_base and basic_ios functions, specifically imbue(),
+        -:  504:     *  copyfmt(), and ~ios().
+        -:  505:    */
+        -:  506:    typedef void (*event_callback) (event __e, ios_base& __b, int __i);
+        -:  507:
+        -:  508:    /**
+        -:  509:     *  @brief  Add the callback __fn with parameter __index.
+        -:  510:     *  @param  __fn  The function to add.
+        -:  511:     *  @param  __index  The integer to pass to the function when invoked.
+        -:  512:     *
+        -:  513:     *  Registers a function as an event callback with an integer parameter to
+        -:  514:     *  be passed to the function when invoked.  Multiple copies of the
+        -:  515:     *  function are allowed.  If there are multiple callbacks, they are
+        -:  516:     *  invoked in the order they were registered.
+        -:  517:    */
+        -:  518:    void
+        -:  519:    register_callback(event_callback __fn, int __index);
+        -:  520:
+        -:  521:  protected:
+        -:  522:    streamsize		_M_precision;
+        -:  523:    streamsize		_M_width;
+        -:  524:    fmtflags		_M_flags;
+        -:  525:    iostate		_M_exception;
+        -:  526:    iostate		_M_streambuf_state;
+        -:  527:
+        -:  528:    // 27.4.2.6  Members for callbacks
+        -:  529:    // 27.4.2.6  ios_base callbacks
+        -:  530:    struct _Callback_list
+        -:  531:    {
+        -:  532:      // Data Members
+        -:  533:      _Callback_list*		_M_next;
+        -:  534:      ios_base::event_callback	_M_fn;
+        -:  535:      int			_M_index;
+        -:  536:      _Atomic_word		_M_refcount;  // 0 means one reference.
+        -:  537:
+        -:  538:      _Callback_list(ios_base::event_callback __fn, int __index,
+        -:  539:		     _Callback_list* __cb)
+        -:  540:      : _M_next(__cb), _M_fn(__fn), _M_index(__index), _M_refcount(0) { }
+        -:  541:
+        -:  542:      void
+        -:  543:      _M_add_reference() { __gnu_cxx::__atomic_add_dispatch(&_M_refcount, 1); }
+        -:  544:
+        -:  545:      // 0 => OK to delete.
+        -:  546:      int
+        -:  547:      _M_remove_reference() 
+        -:  548:      {
+        -:  549:        // Be race-detector-friendly.  For more info see bits/c++config.
+        -:  550:        _GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE(&_M_refcount);
+        -:  551:        int __res = __gnu_cxx::__exchange_and_add_dispatch(&_M_refcount, -1);
+        -:  552:        if (__res == 0)
+        -:  553:          {
+        -:  554:            _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER(&_M_refcount);
+        -:  555:          }
+        -:  556:        return __res;
+        -:  557:      }
+        -:  558:    };
         -:  559:
-        -:  560:    void
-        -:  561:    _M_call_callbacks(event __ev) throw();
-        -:  562:
-        -:  563:    void
-        -:  564:    _M_dispose_callbacks(void) throw();
-        -:  565:
-        -:  566:    // 27.4.2.5  Members for iword/pword storage
-        -:  567:    struct _Words
-        -:  568:    {
-        -:  569:      void*	_M_pword;
-        -:  570:      long	_M_iword;
-        -:  571:      _Words() : _M_pword(0), _M_iword(0) { }
-        -:  572:    };
-        -:  573:
-        -:  574:    // Only for failed iword/pword calls.
-        -:  575:    _Words		_M_word_zero;
-        -:  576:
-        -:  577:    // Guaranteed storage.
-        -:  578:    // The first 5 iword and pword slots are reserved for internal use.
-        -:  579:    enum { _S_local_word_size = 8 };
-        -:  580:    _Words		_M_local_word[_S_local_word_size];
-        -:  581:
-        -:  582:    // Allocated storage.
-        -:  583:    int			_M_word_size;
-        -:  584:    _Words*		_M_word;
-        -:  585:
-        -:  586:    _Words&
-        -:  587:    _M_grow_words(int __index, bool __iword);
-        -:  588:
-        -:  589:    // Members for locale and locale caching.
-        -:  590:    locale		_M_ios_locale;
-        -:  591:
-        -:  592:    void
-        -:  593:    _M_init() throw();
-        -:  594:
-        -:  595:  public:
+        -:  560:     _Callback_list*	_M_callbacks;
+        -:  561:
+        -:  562:    void
+        -:  563:    _M_call_callbacks(event __ev) throw();
+        -:  564:
+        -:  565:    void
+        -:  566:    _M_dispose_callbacks(void) throw();
+        -:  567:
+        -:  568:    // 27.4.2.5  Members for iword/pword storage
+        -:  569:    struct _Words
+        -:  570:    {
+        -:  571:      void*	_M_pword;
+        -:  572:      long	_M_iword;
+        -:  573:      _Words() : _M_pword(0), _M_iword(0) { }
+        -:  574:    };
+        -:  575:
+        -:  576:    // Only for failed iword/pword calls.
+        -:  577:    _Words		_M_word_zero;
+        -:  578:
+        -:  579:    // Guaranteed storage.
+        -:  580:    // The first 5 iword and pword slots are reserved for internal use.
+        -:  581:    enum { _S_local_word_size = 8 };
+        -:  582:    _Words		_M_local_word[_S_local_word_size];
+        -:  583:
+        -:  584:    // Allocated storage.
+        -:  585:    int			_M_word_size;
+        -:  586:    _Words*		_M_word;
+        -:  587:
+        -:  588:    _Words&
+        -:  589:    _M_grow_words(int __index, bool __iword);
+        -:  590:
+        -:  591:    // Members for locale and locale caching.
+        -:  592:    locale		_M_ios_locale;
+        -:  593:
+        -:  594:    void
+        -:  595:    _M_init() throw();
         -:  596:
-        -:  597:    // 27.4.2.1.6  Class ios_base::Init
-        -:  598:    // Used to initialize standard streams. In theory, g++ could use
-        -:  599:    // -finit-priority to order this stuff correctly without going
-        -:  600:    // through these machinations.
-        -:  601:    class Init
-        -:  602:    {
-        -:  603:      friend class ios_base;
-        -:  604:    public:
-        -:  605:      Init();
-        -:  606:      ~Init();
-        -:  607:
-        -:  608:    private:
-        -:  609:      static _Atomic_word	_S_refcount;
-        -:  610:      static bool		_S_synced_with_stdio;
-        -:  611:    };
-        -:  612:
-        -:  613:    // [27.4.2.2] fmtflags state functions
-        -:  614:    /**
-        -:  615:     *  @brief  Access to format flags.
-        -:  616:     *  @return  The format control flags for both input and output.
-        -:  617:    */
-        -:  618:    fmtflags
-    #####:  619:    flags() const
-    #####:  620:    { return _M_flags; }
-        -:  621:
-        -:  622:    /**
-        -:  623:     *  @brief  Setting new format flags all at once.
-        -:  624:     *  @param  __fmtfl  The new flags to set.
-        -:  625:     *  @return  The previous format control flags.
-        -:  626:     *
-        -:  627:     *  This function overwrites all the format flags with @a __fmtfl.
-        -:  628:    */
-        -:  629:    fmtflags
-    #####:  630:    flags(fmtflags __fmtfl)
-        -:  631:    {
-    #####:  632:      fmtflags __old = _M_flags;
-    #####:  633:      _M_flags = __fmtfl;
-    #####:  634:      return __old;
-        -:  635:    }
-        -:  636:
-        -:  637:    /**
-        -:  638:     *  @brief  Setting new format flags.
-        -:  639:     *  @param  __fmtfl  Additional flags to set.
-        -:  640:     *  @return  The previous format control flags.
-        -:  641:     *
-        -:  642:     *  This function sets additional flags in format control.  Flags that
-        -:  643:     *  were previously set remain set.
-        -:  644:    */
-        -:  645:    fmtflags
-    #####:  646:    setf(fmtflags __fmtfl)
-        -:  647:    {
-    #####:  648:      fmtflags __old = _M_flags;
-    #####:  649:      _M_flags |= __fmtfl;
-    #####:  650:      return __old;
-        -:  651:    }
-        -:  652:
-        -:  653:    /**
-        -:  654:     *  @brief  Setting new format flags.
-        -:  655:     *  @param  __fmtfl  Additional flags to set.
-        -:  656:     *  @param  __mask  The flags mask for @a fmtfl.
-        -:  657:     *  @return  The previous format control flags.
-        -:  658:     *
-        -:  659:     *  This function clears @a mask in the format flags, then sets
-        -:  660:     *  @a fmtfl @c & @a mask.  An example mask is @c ios_base::adjustfield.
-        -:  661:    */
-        -:  662:    fmtflags
-    #####:  663:    setf(fmtflags __fmtfl, fmtflags __mask)
-        -:  664:    {
-    #####:  665:      fmtflags __old = _M_flags;
-    #####:  666:      _M_flags &= ~__mask;
-    #####:  667:      _M_flags |= (__fmtfl & __mask);
-    #####:  668:      return __old;
-        -:  669:    }
-        -:  670:
-        -:  671:    /**
-        -:  672:     *  @brief  Clearing format flags.
-        -:  673:     *  @param  __mask  The flags to unset.
-        -:  674:     *
-        -:  675:     *  This function clears @a __mask in the format flags.
-        -:  676:    */
-        -:  677:    void
-        -:  678:    unsetf(fmtflags __mask)
-        -:  679:    { _M_flags &= ~__mask; }
-        -:  680:
-        -:  681:    /**
-        -:  682:     *  @brief  Flags access.
-        -:  683:     *  @return  The precision to generate on certain output operations.
-        -:  684:     *
-        -:  685:     *  Be careful if you try to give a definition of @a precision here; see
-        -:  686:     *  DR 189.
-        -:  687:    */
-        -:  688:    streamsize
-        -:  689:    precision() const
-        -:  690:    { return _M_precision; }
-        -:  691:
-        -:  692:    /**
-        -:  693:     *  @brief  Changing flags.
-        -:  694:     *  @param  __prec  The new precision value.
-        -:  695:     *  @return  The previous value of precision().
-        -:  696:    */
-        -:  697:    streamsize
-        -:  698:    precision(streamsize __prec)
-        -:  699:    {
-        -:  700:      streamsize __old = _M_precision;
-        -:  701:      _M_precision = __prec;
-        -:  702:      return __old;
-        -:  703:    }
-        -:  704:
-        -:  705:    /**
-        -:  706:     *  @brief  Flags access.
-        -:  707:     *  @return  The minimum field width to generate on output operations.
-        -:  708:     *
-        -:  709:     *  <em>Minimum field width</em> refers to the number of characters.
-        -:  710:    */
-        -:  711:    streamsize
-        -:  712:    width() const
-        -:  713:    { return _M_width; }
-        -:  714:
-        -:  715:    /**
-        -:  716:     *  @brief  Changing flags.
-        -:  717:     *  @param  __wide  The new width value.
-        -:  718:     *  @return  The previous value of width().
-        -:  719:    */
-        -:  720:    streamsize
-        -:  721:    width(streamsize __wide)
-        -:  722:    {
-        -:  723:      streamsize __old = _M_width;
-        -:  724:      _M_width = __wide;
-        -:  725:      return __old;
-        -:  726:    }
-        -:  727:
-        -:  728:    // [27.4.2.4] ios_base static members
-        -:  729:    /**
-        -:  730:     *  @brief  Interaction with the standard C I/O objects.
-        -:  731:     *  @param  __sync  Whether to synchronize or not.
-        -:  732:     *  @return  True if the standard streams were previously synchronized.
-        -:  733:     *
-        -:  734:     *  The synchronization referred to is @e only that between the standard
-        -:  735:     *  C facilities (e.g., stdout) and the standard C++ objects (e.g.,
-        -:  736:     *  cout).  User-declared streams are unaffected.  See
-        -:  737:     *  https://gcc.gnu.org/onlinedocs/libstdc++/manual/fstreams.html#std.io.filestreams.binary
-        -:  738:    */
-        -:  739:    static bool
-        -:  740:    sync_with_stdio(bool __sync = true);
-        -:  741:
-        -:  742:    // [27.4.2.3] ios_base locale functions
-        -:  743:    /**
-        -:  744:     *  @brief  Setting a new locale.
-        -:  745:     *  @param  __loc  The new locale.
-        -:  746:     *  @return  The previous locale.
-        -:  747:     *
-        -:  748:     *  Sets the new locale for this stream, and then invokes each callback
-        -:  749:     *  with imbue_event.
-        -:  750:    */
-        -:  751:    locale
-        -:  752:    imbue(const locale& __loc) throw();
-        -:  753:
-        -:  754:    /**
-        -:  755:     *  @brief  Locale access
-        -:  756:     *  @return  A copy of the current locale.
-        -:  757:     *
-        -:  758:     *  If @c imbue(loc) has previously been called, then this function
-        -:  759:     *  returns @c loc.  Otherwise, it returns a copy of @c std::locale(),
-        -:  760:     *  the global C++ locale.
-        -:  761:    */
-        -:  762:    locale
-        -:  763:    getloc() const
-        -:  764:    { return _M_ios_locale; }
-        -:  765:
-        -:  766:    /**
-        -:  767:     *  @brief  Locale access
-        -:  768:     *  @return  A reference to the current locale.
-        -:  769:     *
-        -:  770:     *  Like getloc above, but returns a reference instead of
-        -:  771:     *  generating a copy.
-        -:  772:    */
-        -:  773:    const locale&
-        -:  774:    _M_getloc() const
-        -:  775:    { return _M_ios_locale; }
-        -:  776:
-        -:  777:    // [27.4.2.5] ios_base storage functions
-        -:  778:    /**
-        -:  779:     *  @brief  Access to unique indices.
-        -:  780:     *  @return  An integer different from all previous calls.
-        -:  781:     *
-        -:  782:     *  This function returns a unique integer every time it is called.  It
-        -:  783:     *  can be used for any purpose, but is primarily intended to be a unique
-        -:  784:     *  index for the iword and pword functions.  The expectation is that an
-        -:  785:     *  application calls xalloc in order to obtain an index in the iword and
-        -:  786:     *  pword arrays that can be used without fear of conflict.
-        -:  787:     *
-        -:  788:     *  The implementation maintains a static variable that is incremented and
-        -:  789:     *  returned on each invocation.  xalloc is guaranteed to return an index
-        -:  790:     *  that is safe to use in the iword and pword arrays.
-        -:  791:    */
-        -:  792:    static int
-        -:  793:    xalloc() throw();
-        -:  794:
-        -:  795:    /**
-        -:  796:     *  @brief  Access to integer array.
-        -:  797:     *  @param  __ix  Index into the array.
-        -:  798:     *  @return  A reference to an integer associated with the index.
-        -:  799:     *
-        -:  800:     *  The iword function provides access to an array of integers that can be
-        -:  801:     *  used for any purpose.  The array grows as required to hold the
-        -:  802:     *  supplied index.  All integers in the array are initialized to 0.
-        -:  803:     *
-        -:  804:     *  The implementation reserves several indices.  You should use xalloc to
-        -:  805:     *  obtain an index that is safe to use.  Also note that since the array
-        -:  806:     *  can grow dynamically, it is not safe to hold onto the reference.
-        -:  807:    */
-        -:  808:    long&
-        -:  809:    iword(int __ix)
-        -:  810:    {
-        -:  811:      _Words& __word = (__ix < _M_word_size)
-        -:  812:			? _M_word[__ix] : _M_grow_words(__ix, true);
-        -:  813:      return __word._M_iword;
-        -:  814:    }
-        -:  815:
-        -:  816:    /**
-        -:  817:     *  @brief  Access to void pointer array.
-        -:  818:     *  @param  __ix  Index into the array.
-        -:  819:     *  @return  A reference to a void* associated with the index.
-        -:  820:     *
-        -:  821:     *  The pword function provides access to an array of pointers that can be
-        -:  822:     *  used for any purpose.  The array grows as required to hold the
-        -:  823:     *  supplied index.  All pointers in the array are initialized to 0.
-        -:  824:     *
-        -:  825:     *  The implementation reserves several indices.  You should use xalloc to
-        -:  826:     *  obtain an index that is safe to use.  Also note that since the array
-        -:  827:     *  can grow dynamically, it is not safe to hold onto the reference.
-        -:  828:    */
-        -:  829:    void*&
-        -:  830:    pword(int __ix)
-        -:  831:    {
-        -:  832:      _Words& __word = (__ix < _M_word_size)
-        -:  833:			? _M_word[__ix] : _M_grow_words(__ix, false);
-        -:  834:      return __word._M_pword;
-        -:  835:    }
-        -:  836:
-        -:  837:    // Destructor
-        -:  838:    /**
-        -:  839:     *  Invokes each callback with erase_event.  Destroys local storage.
-        -:  840:     *
-        -:  841:     *  Note that the ios_base object for the standard streams never gets
-        -:  842:     *  destroyed.  As a result, any callbacks registered with the standard
-        -:  843:     *  streams will not get invoked with erase_event (unless copyfmt is
-        -:  844:     *  used).
-        -:  845:    */
-        -:  846:    virtual ~ios_base();
-        -:  847:
-        -:  848:  protected:
-        -:  849:    ios_base() throw ();
-        -:  850:
-        -:  851:#if __cplusplus < 201103L
-        -:  852:  // _GLIBCXX_RESOLVE_LIB_DEFECTS
-        -:  853:  // 50.  Copy constructor and assignment operator of ios_base
-        -:  854:  private:
-        -:  855:    ios_base(const ios_base&);
-        -:  856:
-        -:  857:    ios_base&
-        -:  858:    operator=(const ios_base&);
-        -:  859:#else
-        -:  860:  public:
-        -:  861:    ios_base(const ios_base&) = delete;
-        -:  862:
-        -:  863:    ios_base&
-        -:  864:    operator=(const ios_base&) = delete;
-        -:  865:
-        -:  866:  protected:
-        -:  867:    void
-        -:  868:    _M_move(ios_base&) noexcept;
+        -:  597:  public:
+        -:  598:
+        -:  599:    // 27.4.2.1.6  Class ios_base::Init
+        -:  600:    // Used to initialize standard streams. In theory, g++ could use
+        -:  601:    // -finit-priority to order this stuff correctly without going
+        -:  602:    // through these machinations.
+        -:  603:    class Init
+        -:  604:    {
+        -:  605:      friend class ios_base;
+        -:  606:    public:
+        -:  607:      Init();
+        -:  608:      ~Init();
+        -:  609:
+        -:  610:#if __cplusplus >= 201103L
+        -:  611:      Init(const Init&) = default;
+        -:  612:      Init& operator=(const Init&) = default;
+        -:  613:#endif
+        -:  614:
+        -:  615:    private:
+        -:  616:      static _Atomic_word	_S_refcount;
+        -:  617:      static bool		_S_synced_with_stdio;
+        -:  618:    };
+        -:  619:
+        -:  620:    // [27.4.2.2] fmtflags state functions
+        -:  621:    /**
+        -:  622:     *  @brief  Access to format flags.
+        -:  623:     *  @return  The format control flags for both input and output.
+        -:  624:    */
+        -:  625:    fmtflags
+    #####:  626:    flags() const
+    #####:  627:    { return _M_flags; }
+        -:  628:
+        -:  629:    /**
+        -:  630:     *  @brief  Setting new format flags all at once.
+        -:  631:     *  @param  __fmtfl  The new flags to set.
+        -:  632:     *  @return  The previous format control flags.
+        -:  633:     *
+        -:  634:     *  This function overwrites all the format flags with @a __fmtfl.
+        -:  635:    */
+        -:  636:    fmtflags
+    #####:  637:    flags(fmtflags __fmtfl)
+        -:  638:    {
+    #####:  639:      fmtflags __old = _M_flags;
+    #####:  640:      _M_flags = __fmtfl;
+    #####:  641:      return __old;
+        -:  642:    }
+        -:  643:
+        -:  644:    /**
+        -:  645:     *  @brief  Setting new format flags.
+        -:  646:     *  @param  __fmtfl  Additional flags to set.
+        -:  647:     *  @return  The previous format control flags.
+        -:  648:     *
+        -:  649:     *  This function sets additional flags in format control.  Flags that
+        -:  650:     *  were previously set remain set.
+        -:  651:    */
+        -:  652:    fmtflags
+    #####:  653:    setf(fmtflags __fmtfl)
+        -:  654:    {
+    #####:  655:      fmtflags __old = _M_flags;
+    #####:  656:      _M_flags |= __fmtfl;
+    #####:  657:      return __old;
+        -:  658:    }
+        -:  659:
+        -:  660:    /**
+        -:  661:     *  @brief  Setting new format flags.
+        -:  662:     *  @param  __fmtfl  Additional flags to set.
+        -:  663:     *  @param  __mask  The flags mask for @a fmtfl.
+        -:  664:     *  @return  The previous format control flags.
+        -:  665:     *
+        -:  666:     *  This function clears @a mask in the format flags, then sets
+        -:  667:     *  @a fmtfl @c & @a mask.  An example mask is @c ios_base::adjustfield.
+        -:  668:    */
+        -:  669:    fmtflags
+    #####:  670:    setf(fmtflags __fmtfl, fmtflags __mask)
+        -:  671:    {
+    #####:  672:      fmtflags __old = _M_flags;
+    #####:  673:      _M_flags &= ~__mask;
+    #####:  674:      _M_flags |= (__fmtfl & __mask);
+    #####:  675:      return __old;
+        -:  676:    }
+        -:  677:
+        -:  678:    /**
+        -:  679:     *  @brief  Clearing format flags.
+        -:  680:     *  @param  __mask  The flags to unset.
+        -:  681:     *
+        -:  682:     *  This function clears @a __mask in the format flags.
+        -:  683:    */
+        -:  684:    void
+        -:  685:    unsetf(fmtflags __mask)
+        -:  686:    { _M_flags &= ~__mask; }
+        -:  687:
+        -:  688:    /**
+        -:  689:     *  @brief  Flags access.
+        -:  690:     *  @return  The precision to generate on certain output operations.
+        -:  691:     *
+        -:  692:     *  Be careful if you try to give a definition of @a precision here; see
+        -:  693:     *  DR 189.
+        -:  694:    */
+        -:  695:    streamsize
+        -:  696:    precision() const
+        -:  697:    { return _M_precision; }
+        -:  698:
+        -:  699:    /**
+        -:  700:     *  @brief  Changing flags.
+        -:  701:     *  @param  __prec  The new precision value.
+        -:  702:     *  @return  The previous value of precision().
+        -:  703:    */
+        -:  704:    streamsize
+        -:  705:    precision(streamsize __prec)
+        -:  706:    {
+        -:  707:      streamsize __old = _M_precision;
+        -:  708:      _M_precision = __prec;
+        -:  709:      return __old;
+        -:  710:    }
+        -:  711:
+        -:  712:    /**
+        -:  713:     *  @brief  Flags access.
+        -:  714:     *  @return  The minimum field width to generate on output operations.
+        -:  715:     *
+        -:  716:     *  <em>Minimum field width</em> refers to the number of characters.
+        -:  717:    */
+        -:  718:    streamsize
+        -:  719:    width() const
+        -:  720:    { return _M_width; }
+        -:  721:
+        -:  722:    /**
+        -:  723:     *  @brief  Changing flags.
+        -:  724:     *  @param  __wide  The new width value.
+        -:  725:     *  @return  The previous value of width().
+        -:  726:    */
+        -:  727:    streamsize
+        -:  728:    width(streamsize __wide)
+        -:  729:    {
+        -:  730:      streamsize __old = _M_width;
+        -:  731:      _M_width = __wide;
+        -:  732:      return __old;
+        -:  733:    }
+        -:  734:
+        -:  735:    // [27.4.2.4] ios_base static members
+        -:  736:    /**
+        -:  737:     *  @brief  Interaction with the standard C I/O objects.
+        -:  738:     *  @param  __sync  Whether to synchronize or not.
+        -:  739:     *  @return  True if the standard streams were previously synchronized.
+        -:  740:     *
+        -:  741:     *  The synchronization referred to is @e only that between the standard
+        -:  742:     *  C facilities (e.g., stdout) and the standard C++ objects (e.g.,
+        -:  743:     *  cout).  User-declared streams are unaffected.  See
+        -:  744:     *  https://gcc.gnu.org/onlinedocs/libstdc++/manual/fstreams.html#std.io.filestreams.binary
+        -:  745:    */
+        -:  746:    static bool
+        -:  747:    sync_with_stdio(bool __sync = true);
+        -:  748:
+        -:  749:    // [27.4.2.3] ios_base locale functions
+        -:  750:    /**
+        -:  751:     *  @brief  Setting a new locale.
+        -:  752:     *  @param  __loc  The new locale.
+        -:  753:     *  @return  The previous locale.
+        -:  754:     *
+        -:  755:     *  Sets the new locale for this stream, and then invokes each callback
+        -:  756:     *  with imbue_event.
+        -:  757:    */
+        -:  758:    locale
+        -:  759:    imbue(const locale& __loc) throw();
+        -:  760:
+        -:  761:    /**
+        -:  762:     *  @brief  Locale access
+        -:  763:     *  @return  A copy of the current locale.
+        -:  764:     *
+        -:  765:     *  If @c imbue(loc) has previously been called, then this function
+        -:  766:     *  returns @c loc.  Otherwise, it returns a copy of @c std::locale(),
+        -:  767:     *  the global C++ locale.
+        -:  768:    */
+        -:  769:    locale
+        -:  770:    getloc() const
+        -:  771:    { return _M_ios_locale; }
+        -:  772:
+        -:  773:    /**
+        -:  774:     *  @brief  Locale access
+        -:  775:     *  @return  A reference to the current locale.
+        -:  776:     *
+        -:  777:     *  Like getloc above, but returns a reference instead of
+        -:  778:     *  generating a copy.
+        -:  779:    */
+        -:  780:    const locale&
+        -:  781:    _M_getloc() const
+        -:  782:    { return _M_ios_locale; }
+        -:  783:
+        -:  784:    // [27.4.2.5] ios_base storage functions
+        -:  785:    /**
+        -:  786:     *  @brief  Access to unique indices.
+        -:  787:     *  @return  An integer different from all previous calls.
+        -:  788:     *
+        -:  789:     *  This function returns a unique integer every time it is called.  It
+        -:  790:     *  can be used for any purpose, but is primarily intended to be a unique
+        -:  791:     *  index for the iword and pword functions.  The expectation is that an
+        -:  792:     *  application calls xalloc in order to obtain an index in the iword and
+        -:  793:     *  pword arrays that can be used without fear of conflict.
+        -:  794:     *
+        -:  795:     *  The implementation maintains a static variable that is incremented and
+        -:  796:     *  returned on each invocation.  xalloc is guaranteed to return an index
+        -:  797:     *  that is safe to use in the iword and pword arrays.
+        -:  798:    */
+        -:  799:    static int
+        -:  800:    xalloc() throw();
+        -:  801:
+        -:  802:    /**
+        -:  803:     *  @brief  Access to integer array.
+        -:  804:     *  @param  __ix  Index into the array.
+        -:  805:     *  @return  A reference to an integer associated with the index.
+        -:  806:     *
+        -:  807:     *  The iword function provides access to an array of integers that can be
+        -:  808:     *  used for any purpose.  The array grows as required to hold the
+        -:  809:     *  supplied index.  All integers in the array are initialized to 0.
+        -:  810:     *
+        -:  811:     *  The implementation reserves several indices.  You should use xalloc to
+        -:  812:     *  obtain an index that is safe to use.  Also note that since the array
+        -:  813:     *  can grow dynamically, it is not safe to hold onto the reference.
+        -:  814:    */
+        -:  815:    long&
+        -:  816:    iword(int __ix)
+        -:  817:    {
+        -:  818:      _Words& __word = ((unsigned)__ix < (unsigned)_M_word_size)
+        -:  819:			? _M_word[__ix] : _M_grow_words(__ix, true);
+        -:  820:      return __word._M_iword;
+        -:  821:    }
+        -:  822:
+        -:  823:    /**
+        -:  824:     *  @brief  Access to void pointer array.
+        -:  825:     *  @param  __ix  Index into the array.
+        -:  826:     *  @return  A reference to a void* associated with the index.
+        -:  827:     *
+        -:  828:     *  The pword function provides access to an array of pointers that can be
+        -:  829:     *  used for any purpose.  The array grows as required to hold the
+        -:  830:     *  supplied index.  All pointers in the array are initialized to 0.
+        -:  831:     *
+        -:  832:     *  The implementation reserves several indices.  You should use xalloc to
+        -:  833:     *  obtain an index that is safe to use.  Also note that since the array
+        -:  834:     *  can grow dynamically, it is not safe to hold onto the reference.
+        -:  835:    */
+        -:  836:    void*&
+        -:  837:    pword(int __ix)
+        -:  838:    {
+        -:  839:      _Words& __word = ((unsigned)__ix < (unsigned)_M_word_size)
+        -:  840:			? _M_word[__ix] : _M_grow_words(__ix, false);
+        -:  841:      return __word._M_pword;
+        -:  842:    }
+        -:  843:
+        -:  844:    // Destructor
+        -:  845:    /**
+        -:  846:     *  Invokes each callback with erase_event.  Destroys local storage.
+        -:  847:     *
+        -:  848:     *  Note that the ios_base object for the standard streams never gets
+        -:  849:     *  destroyed.  As a result, any callbacks registered with the standard
+        -:  850:     *  streams will not get invoked with erase_event (unless copyfmt is
+        -:  851:     *  used).
+        -:  852:    */
+        -:  853:    virtual ~ios_base();
+        -:  854:
+        -:  855:  protected:
+        -:  856:    ios_base() throw ();
+        -:  857:
+        -:  858:#if __cplusplus < 201103L
+        -:  859:  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  860:  // 50.  Copy constructor and assignment operator of ios_base
+        -:  861:  private:
+        -:  862:    ios_base(const ios_base&);
+        -:  863:
+        -:  864:    ios_base&
+        -:  865:    operator=(const ios_base&);
+        -:  866:#else
+        -:  867:  public:
+        -:  868:    ios_base(const ios_base&) = delete;
         -:  869:
-        -:  870:    void
-        -:  871:    _M_swap(ios_base& __rhs) noexcept;
-        -:  872:#endif
-        -:  873:  };
-        -:  874:
-        -:  875:  // [27.4.5.1] fmtflags manipulators
-        -:  876:  /// Calls base.setf(ios_base::boolalpha).
-        -:  877:  inline ios_base&
-        -:  878:  boolalpha(ios_base& __base)
-        -:  879:  {
-        -:  880:    __base.setf(ios_base::boolalpha);
-        -:  881:    return __base;
-        -:  882:  }
-        -:  883:
-        -:  884:  /// Calls base.unsetf(ios_base::boolalpha).
-        -:  885:  inline ios_base&
-        -:  886:  noboolalpha(ios_base& __base)
-        -:  887:  {
-        -:  888:    __base.unsetf(ios_base::boolalpha);
-        -:  889:    return __base;
-        -:  890:  }
-        -:  891:
-        -:  892:  /// Calls base.setf(ios_base::showbase).
-        -:  893:  inline ios_base&
-        -:  894:  showbase(ios_base& __base)
-        -:  895:  {
-        -:  896:    __base.setf(ios_base::showbase);
-        -:  897:    return __base;
-        -:  898:  }
-        -:  899:
-        -:  900:  /// Calls base.unsetf(ios_base::showbase).
-        -:  901:  inline ios_base&
-        -:  902:  noshowbase(ios_base& __base)
-        -:  903:  {
-        -:  904:    __base.unsetf(ios_base::showbase);
-        -:  905:    return __base;
-        -:  906:  }
-        -:  907:
-        -:  908:  /// Calls base.setf(ios_base::showpoint).
-        -:  909:  inline ios_base&
-        -:  910:  showpoint(ios_base& __base)
-        -:  911:  {
-        -:  912:    __base.setf(ios_base::showpoint);
-        -:  913:    return __base;
-        -:  914:  }
-        -:  915:
-        -:  916:  /// Calls base.unsetf(ios_base::showpoint).
-        -:  917:  inline ios_base&
-        -:  918:  noshowpoint(ios_base& __base)
-        -:  919:  {
-        -:  920:    __base.unsetf(ios_base::showpoint);
-        -:  921:    return __base;
-        -:  922:  }
-        -:  923:
-        -:  924:  /// Calls base.setf(ios_base::showpos).
-        -:  925:  inline ios_base&
-        -:  926:  showpos(ios_base& __base)
-        -:  927:  {
-        -:  928:    __base.setf(ios_base::showpos);
-        -:  929:    return __base;
-        -:  930:  }
-        -:  931:
-        -:  932:  /// Calls base.unsetf(ios_base::showpos).
-        -:  933:  inline ios_base&
-        -:  934:  noshowpos(ios_base& __base)
-        -:  935:  {
-        -:  936:    __base.unsetf(ios_base::showpos);
-        -:  937:    return __base;
-        -:  938:  }
-        -:  939:
-        -:  940:  /// Calls base.setf(ios_base::skipws).
-        -:  941:  inline ios_base&
-        -:  942:  skipws(ios_base& __base)
-        -:  943:  {
-        -:  944:    __base.setf(ios_base::skipws);
-        -:  945:    return __base;
-        -:  946:  }
-        -:  947:
-        -:  948:  /// Calls base.unsetf(ios_base::skipws).
-        -:  949:  inline ios_base&
-        -:  950:  noskipws(ios_base& __base)
-        -:  951:  {
-        -:  952:    __base.unsetf(ios_base::skipws);
-        -:  953:    return __base;
-        -:  954:  }
-        -:  955:
-        -:  956:  /// Calls base.setf(ios_base::uppercase).
-        -:  957:  inline ios_base&
-    #####:  958:  uppercase(ios_base& __base)
-        -:  959:  {
-    #####:  960:    __base.setf(ios_base::uppercase);
-    #####:  961:    return __base;
-        -:  962:  }
-        -:  963:
-        -:  964:  /// Calls base.unsetf(ios_base::uppercase).
-        -:  965:  inline ios_base&
-        -:  966:  nouppercase(ios_base& __base)
-        -:  967:  {
-        -:  968:    __base.unsetf(ios_base::uppercase);
-        -:  969:    return __base;
-        -:  970:  }
-        -:  971:
-        -:  972:  /// Calls base.setf(ios_base::unitbuf).
-        -:  973:  inline ios_base&
-        -:  974:  unitbuf(ios_base& __base)
-        -:  975:  {
-        -:  976:     __base.setf(ios_base::unitbuf);
-        -:  977:     return __base;
-        -:  978:  }
-        -:  979:
-        -:  980:  /// Calls base.unsetf(ios_base::unitbuf).
-        -:  981:  inline ios_base&
-        -:  982:  nounitbuf(ios_base& __base)
-        -:  983:  {
-        -:  984:     __base.unsetf(ios_base::unitbuf);
-        -:  985:     return __base;
-        -:  986:  }
-        -:  987:
-        -:  988:  // [27.4.5.2] adjustfield manipulators
-        -:  989:  /// Calls base.setf(ios_base::internal, ios_base::adjustfield).
-        -:  990:  inline ios_base&
-        -:  991:  internal(ios_base& __base)
-        -:  992:  {
-        -:  993:     __base.setf(ios_base::internal, ios_base::adjustfield);
-        -:  994:     return __base;
-        -:  995:  }
-        -:  996:
-        -:  997:  /// Calls base.setf(ios_base::left, ios_base::adjustfield).
-        -:  998:  inline ios_base&
-    #####:  999:  left(ios_base& __base)
-        -: 1000:  {
-    #####: 1001:    __base.setf(ios_base::left, ios_base::adjustfield);
-    #####: 1002:    return __base;
-        -: 1003:  }
-        -: 1004:
-        -: 1005:  /// Calls base.setf(ios_base::right, ios_base::adjustfield).
-        -: 1006:  inline ios_base&
-        -: 1007:  right(ios_base& __base)
-        -: 1008:  {
-        -: 1009:    __base.setf(ios_base::right, ios_base::adjustfield);
-        -: 1010:    return __base;
-        -: 1011:  }
-        -: 1012:
-        -: 1013:  // [27.4.5.3] basefield manipulators
-        -: 1014:  /// Calls base.setf(ios_base::dec, ios_base::basefield).
-        -: 1015:  inline ios_base&
-        -: 1016:  dec(ios_base& __base)
-        -: 1017:  {
-        -: 1018:    __base.setf(ios_base::dec, ios_base::basefield);
-        -: 1019:    return __base;
-        -: 1020:  }
-        -: 1021:
-        -: 1022:  /// Calls base.setf(ios_base::hex, ios_base::basefield).
-        -: 1023:  inline ios_base&
-    #####: 1024:  hex(ios_base& __base)
-        -: 1025:  {
-    #####: 1026:    __base.setf(ios_base::hex, ios_base::basefield);
-    #####: 1027:    return __base;
-        -: 1028:  }
-        -: 1029:
-        -: 1030:  /// Calls base.setf(ios_base::oct, ios_base::basefield).
-        -: 1031:  inline ios_base&
-    #####: 1032:  oct(ios_base& __base)
-        -: 1033:  {
-    #####: 1034:    __base.setf(ios_base::oct, ios_base::basefield);
-    #####: 1035:    return __base;
-        -: 1036:  }
-        -: 1037:
-        -: 1038:  // [27.4.5.4] floatfield manipulators
-        -: 1039:  /// Calls base.setf(ios_base::fixed, ios_base::floatfield).
-        -: 1040:  inline ios_base&
-    #####: 1041:  fixed(ios_base& __base)
-        -: 1042:  {
-    #####: 1043:    __base.setf(ios_base::fixed, ios_base::floatfield);
-    #####: 1044:    return __base;
-        -: 1045:  }
-        -: 1046:
-        -: 1047:  /// Calls base.setf(ios_base::scientific, ios_base::floatfield).
-        -: 1048:  inline ios_base&
-        -: 1049:  scientific(ios_base& __base)
-        -: 1050:  {
-        -: 1051:    __base.setf(ios_base::scientific, ios_base::floatfield);
-        -: 1052:    return __base;
-        -: 1053:  }
-        -: 1054:
-        -: 1055:#if __cplusplus >= 201103L
-        -: 1056:  // New C++11 floatfield manipulators
-        -: 1057:
-        -: 1058:  /// Calls
-        -: 1059:  /// base.setf(ios_base::fixed|ios_base::scientific, ios_base::floatfield)
-        -: 1060:  inline ios_base&
-        -: 1061:  hexfloat(ios_base& __base)
-        -: 1062:  {
-        -: 1063:    __base.setf(ios_base::fixed | ios_base::scientific, ios_base::floatfield);
-        -: 1064:    return __base;
-        -: 1065:  }
-        -: 1066:
-        -: 1067:  /// Calls @c base.unsetf(ios_base::floatfield)
-        -: 1068:  inline ios_base&
-        -: 1069:  defaultfloat(ios_base& __base)
-        -: 1070:  {
-        -: 1071:    __base.unsetf(ios_base::floatfield);
-        -: 1072:    return __base;
-        -: 1073:  }
-        -: 1074:#endif
-        -: 1075:
-        -: 1076:_GLIBCXX_END_NAMESPACE_VERSION
-        -: 1077:} // namespace
-        -: 1078:
-        -: 1079:#endif /* _IOS_BASE_H */
+        -:  870:    ios_base&
+        -:  871:    operator=(const ios_base&) = delete;
+        -:  872:
+        -:  873:  protected:
+        -:  874:    void
+        -:  875:    _M_move(ios_base&) noexcept;
+        -:  876:
+        -:  877:    void
+        -:  878:    _M_swap(ios_base& __rhs) noexcept;
+        -:  879:#endif
+        -:  880:  };
+        -:  881:
+        -:  882:  // [27.4.5.1] fmtflags manipulators
+        -:  883:  /// Calls base.setf(ios_base::boolalpha).
+        -:  884:  inline ios_base&
+        -:  885:  boolalpha(ios_base& __base)
+        -:  886:  {
+        -:  887:    __base.setf(ios_base::boolalpha);
+        -:  888:    return __base;
+        -:  889:  }
+        -:  890:
+        -:  891:  /// Calls base.unsetf(ios_base::boolalpha).
+        -:  892:  inline ios_base&
+        -:  893:  noboolalpha(ios_base& __base)
+        -:  894:  {
+        -:  895:    __base.unsetf(ios_base::boolalpha);
+        -:  896:    return __base;
+        -:  897:  }
+        -:  898:
+        -:  899:  /// Calls base.setf(ios_base::showbase).
+        -:  900:  inline ios_base&
+        -:  901:  showbase(ios_base& __base)
+        -:  902:  {
+        -:  903:    __base.setf(ios_base::showbase);
+        -:  904:    return __base;
+        -:  905:  }
+        -:  906:
+        -:  907:  /// Calls base.unsetf(ios_base::showbase).
+        -:  908:  inline ios_base&
+        -:  909:  noshowbase(ios_base& __base)
+        -:  910:  {
+        -:  911:    __base.unsetf(ios_base::showbase);
+        -:  912:    return __base;
+        -:  913:  }
+        -:  914:
+        -:  915:  /// Calls base.setf(ios_base::showpoint).
+        -:  916:  inline ios_base&
+        -:  917:  showpoint(ios_base& __base)
+        -:  918:  {
+        -:  919:    __base.setf(ios_base::showpoint);
+        -:  920:    return __base;
+        -:  921:  }
+        -:  922:
+        -:  923:  /// Calls base.unsetf(ios_base::showpoint).
+        -:  924:  inline ios_base&
+        -:  925:  noshowpoint(ios_base& __base)
+        -:  926:  {
+        -:  927:    __base.unsetf(ios_base::showpoint);
+        -:  928:    return __base;
+        -:  929:  }
+        -:  930:
+        -:  931:  /// Calls base.setf(ios_base::showpos).
+        -:  932:  inline ios_base&
+        -:  933:  showpos(ios_base& __base)
+        -:  934:  {
+        -:  935:    __base.setf(ios_base::showpos);
+        -:  936:    return __base;
+        -:  937:  }
+        -:  938:
+        -:  939:  /// Calls base.unsetf(ios_base::showpos).
+        -:  940:  inline ios_base&
+        -:  941:  noshowpos(ios_base& __base)
+        -:  942:  {
+        -:  943:    __base.unsetf(ios_base::showpos);
+        -:  944:    return __base;
+        -:  945:  }
+        -:  946:
+        -:  947:  /// Calls base.setf(ios_base::skipws).
+        -:  948:  inline ios_base&
+        -:  949:  skipws(ios_base& __base)
+        -:  950:  {
+        -:  951:    __base.setf(ios_base::skipws);
+        -:  952:    return __base;
+        -:  953:  }
+        -:  954:
+        -:  955:  /// Calls base.unsetf(ios_base::skipws).
+        -:  956:  inline ios_base&
+        -:  957:  noskipws(ios_base& __base)
+        -:  958:  {
+        -:  959:    __base.unsetf(ios_base::skipws);
+        -:  960:    return __base;
+        -:  961:  }
+        -:  962:
+        -:  963:  /// Calls base.setf(ios_base::uppercase).
+        -:  964:  inline ios_base&
+    #####:  965:  uppercase(ios_base& __base)
+        -:  966:  {
+    #####:  967:    __base.setf(ios_base::uppercase);
+    #####:  968:    return __base;
+        -:  969:  }
+        -:  970:
+        -:  971:  /// Calls base.unsetf(ios_base::uppercase).
+        -:  972:  inline ios_base&
+        -:  973:  nouppercase(ios_base& __base)
+        -:  974:  {
+        -:  975:    __base.unsetf(ios_base::uppercase);
+        -:  976:    return __base;
+        -:  977:  }
+        -:  978:
+        -:  979:  /// Calls base.setf(ios_base::unitbuf).
+        -:  980:  inline ios_base&
+        -:  981:  unitbuf(ios_base& __base)
+        -:  982:  {
+        -:  983:     __base.setf(ios_base::unitbuf);
+        -:  984:     return __base;
+        -:  985:  }
+        -:  986:
+        -:  987:  /// Calls base.unsetf(ios_base::unitbuf).
+        -:  988:  inline ios_base&
+        -:  989:  nounitbuf(ios_base& __base)
+        -:  990:  {
+        -:  991:     __base.unsetf(ios_base::unitbuf);
+        -:  992:     return __base;
+        -:  993:  }
+        -:  994:
+        -:  995:  // [27.4.5.2] adjustfield manipulators
+        -:  996:  /// Calls base.setf(ios_base::internal, ios_base::adjustfield).
+        -:  997:  inline ios_base&
+        -:  998:  internal(ios_base& __base)
+        -:  999:  {
+        -: 1000:     __base.setf(ios_base::internal, ios_base::adjustfield);
+        -: 1001:     return __base;
+        -: 1002:  }
+        -: 1003:
+        -: 1004:  /// Calls base.setf(ios_base::left, ios_base::adjustfield).
+        -: 1005:  inline ios_base&
+    #####: 1006:  left(ios_base& __base)
+        -: 1007:  {
+    #####: 1008:    __base.setf(ios_base::left, ios_base::adjustfield);
+    #####: 1009:    return __base;
+        -: 1010:  }
+        -: 1011:
+        -: 1012:  /// Calls base.setf(ios_base::right, ios_base::adjustfield).
+        -: 1013:  inline ios_base&
+        -: 1014:  right(ios_base& __base)
+        -: 1015:  {
+        -: 1016:    __base.setf(ios_base::right, ios_base::adjustfield);
+        -: 1017:    return __base;
+        -: 1018:  }
+        -: 1019:
+        -: 1020:  // [27.4.5.3] basefield manipulators
+        -: 1021:  /// Calls base.setf(ios_base::dec, ios_base::basefield).
+        -: 1022:  inline ios_base&
+        -: 1023:  dec(ios_base& __base)
+        -: 1024:  {
+        -: 1025:    __base.setf(ios_base::dec, ios_base::basefield);
+        -: 1026:    return __base;
+        -: 1027:  }
+        -: 1028:
+        -: 1029:  /// Calls base.setf(ios_base::hex, ios_base::basefield).
+        -: 1030:  inline ios_base&
+    #####: 1031:  hex(ios_base& __base)
+        -: 1032:  {
+    #####: 1033:    __base.setf(ios_base::hex, ios_base::basefield);
+    #####: 1034:    return __base;
+        -: 1035:  }
+        -: 1036:
+        -: 1037:  /// Calls base.setf(ios_base::oct, ios_base::basefield).
+        -: 1038:  inline ios_base&
+    #####: 1039:  oct(ios_base& __base)
+        -: 1040:  {
+    #####: 1041:    __base.setf(ios_base::oct, ios_base::basefield);
+    #####: 1042:    return __base;
+        -: 1043:  }
+        -: 1044:
+        -: 1045:  // [27.4.5.4] floatfield manipulators
+        -: 1046:  /// Calls base.setf(ios_base::fixed, ios_base::floatfield).
+        -: 1047:  inline ios_base&
+    #####: 1048:  fixed(ios_base& __base)
+        -: 1049:  {
+    #####: 1050:    __base.setf(ios_base::fixed, ios_base::floatfield);
+    #####: 1051:    return __base;
+        -: 1052:  }
+        -: 1053:
+        -: 1054:  /// Calls base.setf(ios_base::scientific, ios_base::floatfield).
+        -: 1055:  inline ios_base&
+        -: 1056:  scientific(ios_base& __base)
+        -: 1057:  {
+        -: 1058:    __base.setf(ios_base::scientific, ios_base::floatfield);
+        -: 1059:    return __base;
+        -: 1060:  }
+        -: 1061:
+        -: 1062:#if __cplusplus >= 201103L
+        -: 1063:  // New C++11 floatfield manipulators
+        -: 1064:
+        -: 1065:  /// Calls
+        -: 1066:  /// base.setf(ios_base::fixed|ios_base::scientific, ios_base::floatfield)
+        -: 1067:  inline ios_base&
+        -: 1068:  hexfloat(ios_base& __base)
+        -: 1069:  {
+        -: 1070:    __base.setf(ios_base::fixed | ios_base::scientific, ios_base::floatfield);
+        -: 1071:    return __base;
+        -: 1072:  }
+        -: 1073:
+        -: 1074:  /// Calls @c base.unsetf(ios_base::floatfield)
+        -: 1075:  inline ios_base&
+        -: 1076:  defaultfloat(ios_base& __base)
+        -: 1077:  {
+        -: 1078:    __base.unsetf(ios_base::floatfield);
+        -: 1079:    return __base;
+        -: 1080:  }
+        -: 1081:#endif
+        -: 1082:
+        -: 1083:_GLIBCXX_END_NAMESPACE_VERSION
+        -: 1084:} // namespace
+        -: 1085:
+        -: 1086:#endif /* _IOS_BASE_H */

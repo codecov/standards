@@ -1,11 +1,10 @@
-        -:    0:Source:/usr/include/x86_64-linux-gnu/c++/5/bits/ctype_inline.h
+        -:    0:Source:/usr/include/x86_64-linux-gnu/c++/9/bits/ctype_inline.h
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:// Locale support -*- C++ -*-
         -:    2:
-        -:    3:// Copyright (C) 2000-2015 Free Software Foundation, Inc.
+        -:    3:// Copyright (C) 2000-2019 Free Software Foundation, Inc.
         -:    4://
         -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
         -:    6:// software; you can redistribute it and/or modify it under the

@@ -2,7 +2,6 @@
         -:    0:Graph:./test_index.gcno
         -:    0:Data:./test_index.gcda
         -:    0:Runs:1
-        -:    0:Programs:1
         -:    1:
         -:    2:namespace Index {
 function _ZN5Index12uncovered_ifEb called 1 returned 100% blocks executed 75%
