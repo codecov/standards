@@ -12,6 +12,8 @@ jobs:
         with:
           node-version: '14'
       - name: Run Standards Scripts
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           bash scripts/standard-python.sh
           # bash scripts/standard-swift.sh
