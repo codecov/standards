@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Update this to the coverage file you want to upload to the standards repo
-COVERAGE_SOURCE_FILE=$COVERAGE_SOURCE_FILE
+COVERAGE_SOURCE_FILE=${COVERAGE_SOURCE_FILE}
 
 # -=- Nothing below here should need to be changed -=-
 
