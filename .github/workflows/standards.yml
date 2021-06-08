@@ -19,10 +19,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           bash scripts/standard-python.sh
-          # bash scripts/standard-swift.sh
-          # bash scripts/standard-ruby-2.sh
-          # bash scripts/standard-typescript.sh
-          # bash scripts/standard-kotlin.sh
-          # bash scripts/standard-go.sh
-          # bash scripts/standard-cpp-11.sh
-          # bash scripts/standard-java.sh
+          bash scripts/standard-swift.sh
+          bash scripts/standard-ruby-2.sh
+          bash scripts/standard-typescript.sh
+          bash scripts/standard-kotlin.sh
+          bash scripts/standard-go.sh
+          bash scripts/standard-cpp-11.sh
+          bash scripts/standard-java.sh
