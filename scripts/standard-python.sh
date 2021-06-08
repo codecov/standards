@@ -1,6 +1,5 @@
 #Function: Helper shell script for python standards repo
 
-
 #clone the python standards repo from gh
 echo "Cloning Python Standard repo..."
 clone_repo(){
