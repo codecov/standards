@@ -22,7 +22,8 @@ change_readme() {
 #commit files and upload to github repo with new commmit sha
 echo "Committing changes, pushing to GH repo..."
 commit_and_upload() {
-  
+  git config --global user.email "devops@codecov.local"
+  git config --global user.name "Codecov Devops"
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 

@@ -20,7 +20,7 @@ jobs:
         run: |
           bash scripts/standard-python.sh
           # bash scripts/standard-swift.sh
-          bash scripts/standard-ruby-2.sh
+          # bash scripts/standard-ruby-2.sh
           bash scripts/standard-typescript.sh
           bash scripts/standard-kotlin.sh
           bash scripts/standard-go.sh
