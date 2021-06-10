@@ -1,0 +1,27 @@
+name: Standards
+on:
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  run-standards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Set up Node v14
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Run Standards Scripts
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          bash scripts/standard-python.sh
+          bash scripts/standard-swift.sh
+          bash scripts/standard-ruby-2.sh
+          bash scripts/standard-typescript.sh
+          bash scripts/standard-kotlin.sh
+          bash scripts/standard-go.sh
+          bash scripts/standard-cpp-11.sh
+          bash scripts/standard-java.sh

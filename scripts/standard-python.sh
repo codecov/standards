@@ -1,6 +1,5 @@
 #Function: Helper shell script for python standards repo
 
-
 #clone the python standards repo from gh
 echo "Cloning Python Standard repo..."
 clone_repo(){
@@ -22,7 +21,8 @@ change_readme() {
 #commit files and upload to github repo with new commmit sha
 echo "Committing changes, pushing to GH repo..."
 commit_and_upload() {
-  
+  git config --global user.email "devops@codecov.io"
+  git config --global user.name "Codecov Devops"
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
