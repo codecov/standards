@@ -19,7 +19,7 @@ echo "Deleting content in coverage_data if it exists"
 COVERAGE_DEST_DIR="coverage_data/$PROJECT_NAME"
 rm -rf $COVERAGE_DEST_DIR
 echo "Commiting deletion of coverage data"
-git config --global user.email "devops@codecov.local"
+git config --global user.email "devops@codecov.io"
 git config --global user.name "Codecov Devops"
 git add .
 git commit -m "Deleting existing coverage data for $PROJECT_NAME with SHA $COVERAGE_SHA"
