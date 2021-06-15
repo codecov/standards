@@ -1,7 +1,8 @@
 name: Standards
-on:
-  schedule:
-    - cron: '0 0 * * *'
+on: [push]
+# on:
+#   schedule:
+#     - cron: '0 0 * * *'
 jobs:
   run-standards:
     runs-on: ubuntu-latest
@@ -25,3 +26,5 @@ jobs:
           bash scripts/standard-go.sh
           bash scripts/standard-cpp-11.sh
           bash scripts/standard-java.sh
+          sleep 10
+          bash scripts/autotest.sh
