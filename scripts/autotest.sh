@@ -3,7 +3,7 @@
 #clone the Autotest standards repo from gh
 echo "Cloning Autotest repo..."
 clone_repo(){
-    git clone https://codecov:${GH_TOKEN}@github.com/codecov/autotest.git
+    git clone https://${GH_TOKEN}@github.com/codecov/autotest.git
     cd autotest
 }
 
@@ -26,7 +26,7 @@ commit_and_upload() {
   git add .
   git commit -m "New Build: ${dateAndTime}" 
   git remote rm origin 
-  git remote add origin https://codecov:${GH_TOKEN}@github.com/codecov/autotest.git
+  git remote add origin https://${GH_TOKEN}@github.com/codecov/autotest.git
   git push origin master --quiet
 }
 
