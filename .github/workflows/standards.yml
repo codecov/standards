@@ -18,23 +18,22 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          # ls
-          # bash scripts/standard-python.sh
-          # bash scripts/standard-swift.sh
-          # bash scripts/standard-ruby-2.sh
-          # bash scripts/standard-typescript.sh
-          # bash scripts/standard-kotlin.sh
-          # bash scripts/standard-go.sh
-          # bash scripts/standard-cpp-11.sh
-          # bash scripts/standard-java.sh
+          bash scripts/standard-python.sh
+          bash scripts/standard-swift.sh
+          bash scripts/standard-ruby-2.sh
+          bash scripts/standard-typescript.sh
+          bash scripts/standard-kotlin.sh
+          bash scripts/standard-go.sh
+          bash scripts/standard-cpp-11.sh
+          bash scripts/standard-java.sh
       - name: Trigger Autotest After 15 Minutes
         env:
           CODECOV_DEVOPS_CIRCLECI_TOKEN: ${{ secrets.CODECOV_DEVOPS_CIRCLECI_TOKEN }}
         run: |
           echo "Sleep for 15 minutes..."
-          # sleep 15m
+          sleep 15m
           curl --request POST \
           --url https://circleci.com/api/v2/project/gh/codecov/autotest/pipeline \
           --header "Circle-Token: ${CODECOV_DEVOPS_CIRCLECI_TOKEN}" \
           --header 'content-type: application/json' \
-          --data '{"branch":"standards-dockerfile"}'
+          --data '{"branch":"master"}'
