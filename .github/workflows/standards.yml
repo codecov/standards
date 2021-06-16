@@ -31,7 +31,8 @@ jobs:
           # sleep 10
       - name: Trigger Autotest After 15 Minutes
         run: |
-          sleep 2*10
+          echo "Sleep for 15 minutes..."
+          # sleep 15m
           curl --request POST \
           --url https://circleci.com/api/v2/project/gh/codecov/autotest/pipeline \
           --header 'Circle-Token: ${CODECOV_DEVOPS_CIRCLECI_TOKEN}' \
