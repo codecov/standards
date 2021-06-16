@@ -17,6 +17,7 @@ jobs:
       - name: Run Standards Scripts
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          CODECOV_DEVOPS_CIRCLECI_TOKEN: ${{ secrets.CODECOV_DEVOPS_CIRCLECI_TOKEN }}
         run: |
           # ls
           # bash scripts/standard-python.sh
@@ -28,4 +29,11 @@ jobs:
           # bash scripts/standard-cpp-11.sh
           # bash scripts/standard-java.sh
           # sleep 10
-          bash scripts/autotest.sh
+      - name: Trigger Autotest After 15 Minutes
+        run: |
+          sleep 2*10
+          curl --request POST \
+          --url https://circleci.com/api/v2/project/gh/codecov/autotest/pipeline \
+          --header 'Circle-Token: ${CODECOV_DEVOPS_CIRCLECI_TOKEN}' \
+          --header 'content-type: application/json' \
+          --data '{"branch":"standards-dockerfile"}'
