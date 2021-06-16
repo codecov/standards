@@ -1,8 +1,7 @@
 name: Standards
-on: [push]
-# on:
-#   schedule:
-#     - cron: '0 0 * * *'
+on:
+  schedule:
+    - cron: '0 0 * * *'
 jobs:
   run-standards:
     runs-on: ubuntu-latest
@@ -26,7 +25,7 @@ jobs:
           bash scripts/standard-go.sh
           bash scripts/standard-cpp-11.sh
           bash scripts/standard-java.sh
-      - name: Trigger Autotest After 15 Minutes
+      - name: Trigger Autotest CircleCI Build After 15 Minutes
         env:
           CODECOV_DEVOPS_CIRCLECI_TOKEN: ${{ secrets.CODECOV_DEVOPS_CIRCLECI_TOKEN }}
         run: |
