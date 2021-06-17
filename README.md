@@ -35,8 +35,6 @@ Within the GitHub Action build for each standard:
 
 If all of these details check out, then Codecov's processing for that lanaguage is working as intended. The build status of all of these builds are aggregated in the table above.
 
-Additionally, the GitHub Action build will trigger an internal Codecov job that creates an image containing the previously calculated coverage data. This image is used for internal calculations within Codecov to ensure our report coverage accuracy.
-
 ## Contributing
 
 Want to write a standard for a lanaguage that's not listed in the table? Contributions are welcome! See the [Contributing Guide](CONTRIBUTING.md) for more details.
