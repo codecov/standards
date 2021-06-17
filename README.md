@@ -5,7 +5,7 @@
 
 ## What is this?
 
-This is a repository containing aggregated information about the state of all Codecov language standards. Each standard ensures that Codecov is properly processing reports for a particular lanaguge if its build is passing. 
+This is a repository containing aggregated information about the state of all Codecov language standards. Each standard ensures that Codecov is properly processing reports for a particular lanaguge if its build is passing.
 
 ## List of Standards
 
@@ -25,19 +25,21 @@ This is a repository containing aggregated information about the state of all Co
 
 ## Operation Details
 
-Inside the `scripts` folder, you'll find shell files that run daily on a Travis CRON job. These scripts attach a timestamp to the `Last Updated` line in the `README.md` files for each standard and commit this change. This action triggers a Travis build for the respective standard. 
+Inside the `scripts` folder, you'll find shell files that run daily on a GitHub Action CRON job. These scripts attach a timestamp to the `Last Updated` line in the `README.md` files for each standard and commit this change. This action triggers a GitHub Action build for the respective standard.
 
-Within the Travis build for each standard:
+Within the GitHub Action build for each standard:
   * Unit tests are run
-  * A coverage report is generated (should not vary from commit to commit) 
+  * A coverage report is generated (should not vary from commit to commit)
   * Coverage is uploaded to Codecov
   * A script ensures that Codecov's API returns the right coverage percentage
-  
-If all of these details check out, then Codecov's processing for that lanaguage is working as intended. The build status of all of these builds are aggregated in the table above. 
+
+If all of these details check out, then Codecov's processing for that lanaguage is working as intended. The build status of all of these builds are aggregated in the table above.
+
+Additionally, the GitHub Action build will trigger an internal Codecov job that creates an image containing the previously calculated coverage data. This image is used for internal calculations within Codecov to ensure our report coverage accuracy.
 
 ## Contributing
 
-Want to write a standard for a lanaguage that's not listed in the table? Contributions are welcome! See the [Contributing Guide](CONTRIBUTING.md) for more details. 
+Want to write a standard for a lanaguage that's not listed in the table? Contributions are welcome! See the [Contributing Guide](CONTRIBUTING.md) for more details.
 
 
 ## License
