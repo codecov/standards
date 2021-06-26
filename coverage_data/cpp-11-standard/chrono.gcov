@@ -1,0 +1,989 @@
+        -:    0:Source:/usr/include/c++/9/chrono
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    1:// <chrono> -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2008-2019 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file include/chrono
+        -:   26: *  This is a Standard C++ Library header.
+        -:   27: */
+        -:   28:
+        -:   29:#ifndef _GLIBCXX_CHRONO
+        -:   30:#define _GLIBCXX_CHRONO 1
+        -:   31:
+        -:   32:#pragma GCC system_header
+        -:   33:
+        -:   34:#if __cplusplus < 201103L
+        -:   35:# include <bits/c++0x_warning.h>
+        -:   36:#else
+        -:   37:
+        -:   38:#include <ratio>
+        -:   39:#include <type_traits>
+        -:   40:#include <limits>
+        -:   41:#include <ctime>
+        -:   42:#include <bits/parse_numbers.h> // for literals support.
+        -:   43:
+        -:   44:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   45:{
+        -:   46:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   47:
+        -:   48:  /**
+        -:   49:   * @defgroup chrono Time
+        -:   50:   * @ingroup utilities
+        -:   51:   *
+        -:   52:   * Classes and functions for time.
+        -:   53:   * @{
+        -:   54:   */
+        -:   55:
+        -:   56:  /** @namespace std::chrono
+        -:   57:   *  @brief ISO C++ 2011 entities sub-namespace for time and date.
+        -:   58:   */
+        -:   59:  namespace chrono
+        -:   60:  {
+        -:   61:    template<typename _Rep, typename _Period = ratio<1>>
+        -:   62:      struct duration;
+        -:   63:
+        -:   64:    template<typename _Clock, typename _Dur = typename _Clock::duration>
+        -:   65:      struct time_point;
+        -:   66:  }
+        -:   67:
+        -:   68:  // 20.11.4.3 specialization of common_type (for duration, sfinae-friendly)
+        -:   69:
+        -:   70:  template<typename _CT, typename _Period1, typename _Period2>
+        -:   71:    struct __duration_common_type_wrapper
+        -:   72:    {
+        -:   73:    private:
+        -:   74:      typedef __static_gcd<_Period1::num, _Period2::num> __gcd_num;
+        -:   75:      typedef __static_gcd<_Period1::den, _Period2::den> __gcd_den;
+        -:   76:      typedef typename _CT::type __cr;
+        -:   77:      typedef ratio<__gcd_num::value,
+        -:   78:        (_Period1::den / __gcd_den::value) * _Period2::den> __r;
+        -:   79:    public:
+        -:   80:      typedef __success_type<chrono::duration<__cr, __r>> type;
+        -:   81:    };
+        -:   82:
+        -:   83:  template<typename _Period1, typename _Period2>
+        -:   84:    struct __duration_common_type_wrapper<__failure_type, _Period1, _Period2>
+        -:   85:    { typedef __failure_type type; };
+        -:   86:
+        -:   87:  template<typename _Rep1, typename _Period1, typename _Rep2, typename _Period2>
+        -:   88:    struct common_type<chrono::duration<_Rep1, _Period1>,
+        -:   89:             chrono::duration<_Rep2, _Period2>>
+        -:   90:    : public __duration_common_type_wrapper<typename __member_type_wrapper<
+        -:   91:             common_type<_Rep1, _Rep2>>::type, _Period1, _Period2>::type
+        -:   92:    { };
+        -:   93:
+        -:   94:  // 20.11.4.3 specialization of common_type (for time_point, sfinae-friendly)
+        -:   95:
+        -:   96:  template<typename _CT, typename _Clock>
+        -:   97:    struct __timepoint_common_type_wrapper
+        -:   98:    {
+        -:   99:      typedef __success_type<chrono::time_point<_Clock, typename _CT::type>>
+        -:  100:        type;
+        -:  101:    };
+        -:  102:
+        -:  103:  template<typename _Clock>
+        -:  104:    struct __timepoint_common_type_wrapper<__failure_type, _Clock>
+        -:  105:    { typedef __failure_type type; };
+        -:  106:
+        -:  107:  template<typename _Clock, typename _Duration1, typename _Duration2>
+        -:  108:    struct common_type<chrono::time_point<_Clock, _Duration1>,
+        -:  109:             chrono::time_point<_Clock, _Duration2>>
+        -:  110:    : public __timepoint_common_type_wrapper<typename __member_type_wrapper<
+        -:  111:             common_type<_Duration1, _Duration2>>::type, _Clock>::type
+        -:  112:    { };
+        -:  113:
+        -:  114:  namespace chrono
+        -:  115:  {
+        -:  116:    // Primary template for duration_cast impl.
+        -:  117:    template<typename _ToDur, typename _CF, typename _CR,
+        -:  118:	     bool _NumIsOne = false, bool _DenIsOne = false>
+        -:  119:      struct __duration_cast_impl
+        -:  120:      {
+        -:  121:	template<typename _Rep, typename _Period>
+        -:  122:	  static constexpr _ToDur
+        -:  123:	  __cast(const duration<_Rep, _Period>& __d)
+        -:  124:	  {
+        -:  125:	    typedef typename _ToDur::rep			__to_rep;
+        -:  126:	    return _ToDur(static_cast<__to_rep>(static_cast<_CR>(__d.count())
+        -:  127:	      * static_cast<_CR>(_CF::num)
+        -:  128:	      / static_cast<_CR>(_CF::den)));
+        -:  129:	  }
+        -:  130:      };
+        -:  131:
+        -:  132:    template<typename _ToDur, typename _CF, typename _CR>
+        -:  133:      struct __duration_cast_impl<_ToDur, _CF, _CR, true, true>
+        -:  134:      {
+        -:  135:	template<typename _Rep, typename _Period>
+        -:  136:	  static constexpr _ToDur
+        4:  137:	  __cast(const duration<_Rep, _Period>& __d)
+        -:  138:	  {
+        -:  139:	    typedef typename _ToDur::rep			__to_rep;
+        4:  140:	    return _ToDur(static_cast<__to_rep>(__d.count()));
+        -:  141:	  }
+        -:  142:      };
+        -:  143:
+        -:  144:    template<typename _ToDur, typename _CF, typename _CR>
+        -:  145:      struct __duration_cast_impl<_ToDur, _CF, _CR, true, false>
+        -:  146:      {
+        -:  147:	template<typename _Rep, typename _Period>
+        -:  148:	  static constexpr _ToDur
+        -:  149:	  __cast(const duration<_Rep, _Period>& __d)
+        -:  150:	  {
+        -:  151:	    typedef typename _ToDur::rep			__to_rep;
+        -:  152:	    return _ToDur(static_cast<__to_rep>(
+        -:  153:	      static_cast<_CR>(__d.count()) / static_cast<_CR>(_CF::den)));
+        -:  154:	  }
+        -:  155:      };
+        -:  156:
+        -:  157:    template<typename _ToDur, typename _CF, typename _CR>
+        -:  158:      struct __duration_cast_impl<_ToDur, _CF, _CR, false, true>
+        -:  159:      {
+        -:  160:	template<typename _Rep, typename _Period>
+        -:  161:	  static constexpr _ToDur
+        -:  162:	  __cast(const duration<_Rep, _Period>& __d)
+        -:  163:	  {
+        -:  164:	    typedef typename _ToDur::rep			__to_rep;
+        -:  165:	    return _ToDur(static_cast<__to_rep>(
+        -:  166:	      static_cast<_CR>(__d.count()) * static_cast<_CR>(_CF::num)));
+        -:  167:	  }
+        -:  168:      };
+        -:  169:
+        -:  170:    template<typename _Tp>
+        -:  171:      struct __is_duration
+        -:  172:      : std::false_type
+        -:  173:      { };
+        -:  174:
+        -:  175:    template<typename _Rep, typename _Period>
+        -:  176:      struct __is_duration<duration<_Rep, _Period>>
+        -:  177:      : std::true_type
+        -:  178:      { };
+        -:  179:
+        -:  180:    template<typename _Tp>
+        -:  181:      using __enable_if_is_duration
+        -:  182:	= typename enable_if<__is_duration<_Tp>::value, _Tp>::type;
+        -:  183:
+        -:  184:    template<typename _Tp>
+        -:  185:      using __disable_if_is_duration
+        -:  186:	= typename enable_if<!__is_duration<_Tp>::value, _Tp>::type;
+        -:  187:
+        -:  188:    /// duration_cast
+        -:  189:    template<typename _ToDur, typename _Rep, typename _Period>
+        -:  190:      constexpr __enable_if_is_duration<_ToDur>
+        4:  191:      duration_cast(const duration<_Rep, _Period>& __d)
+        -:  192:      {
+        -:  193:	typedef typename _ToDur::period				__to_period;
+        -:  194:	typedef typename _ToDur::rep				__to_rep;
+        -:  195:	typedef ratio_divide<_Period, __to_period> 		__cf;
+        -:  196:	typedef typename common_type<__to_rep, _Rep, intmax_t>::type
+        -:  197:	  							__cr;
+        -:  198:	typedef  __duration_cast_impl<_ToDur, __cf, __cr,
+        -:  199:				      __cf::num == 1, __cf::den == 1> __dc;
+        4:  200:	return __dc::__cast(__d);
+        -:  201:      }
+        -:  202:
+        -:  203:    /// treat_as_floating_point
+        -:  204:    template<typename _Rep>
+        -:  205:      struct treat_as_floating_point
+        -:  206:      : is_floating_point<_Rep>
+        -:  207:      { };
+        -:  208:
+        -:  209:#if __cplusplus > 201402L
+        -:  210:    template <typename _Rep>
+        -:  211:      inline constexpr bool treat_as_floating_point_v =
+        -:  212:        treat_as_floating_point<_Rep>::value;
+        -:  213:#endif // C++17
+        -:  214:
+        -:  215:#if __cplusplus >= 201703L
+        -:  216:# define __cpp_lib_chrono 201611
+        -:  217:
+        -:  218:    template<typename _ToDur, typename _Rep, typename _Period>
+        -:  219:      constexpr __enable_if_is_duration<_ToDur>
+        -:  220:      floor(const duration<_Rep, _Period>& __d)
+        -:  221:      {
+        -:  222:	auto __to = chrono::duration_cast<_ToDur>(__d);
+        -:  223:	if (__to > __d)
+        -:  224:	  return __to - _ToDur{1};
+        -:  225:	return __to;
+        -:  226:      }
+        -:  227:
+        -:  228:    template<typename _ToDur, typename _Rep, typename _Period>
+        -:  229:      constexpr __enable_if_is_duration<_ToDur>
+        -:  230:      ceil(const duration<_Rep, _Period>& __d)
+        -:  231:      {
+        -:  232:	auto __to = chrono::duration_cast<_ToDur>(__d);
+        -:  233:	if (__to < __d)
+        -:  234:	  return __to + _ToDur{1};
+        -:  235:	return __to;
+        -:  236:      }
+        -:  237:
+        -:  238:    template <typename _ToDur, typename _Rep, typename _Period>
+        -:  239:      constexpr enable_if_t<
+        -:  240:	__and_<__is_duration<_ToDur>,
+        -:  241:	       __not_<treat_as_floating_point<typename _ToDur::rep>>>::value,
+        -:  242:	_ToDur>
+        -:  243:      round(const duration<_Rep, _Period>& __d)
+        -:  244:      {
+        -:  245:	_ToDur __t0 = chrono::floor<_ToDur>(__d);
+        -:  246:	_ToDur __t1 = __t0 + _ToDur{1};
+        -:  247:	auto __diff0 = __d - __t0;
+        -:  248:	auto __diff1 = __t1 - __d;
+        -:  249:	if (__diff0 == __diff1)
+        -:  250:	{
+        -:  251:	    if (__t0.count() & 1)
+        -:  252:		return __t1;
+        -:  253:	    return __t0;
+        -:  254:	}
+        -:  255:	else if (__diff0 < __diff1)
+        -:  256:	    return __t0;
+        -:  257:	return __t1;
+        -:  258:      }
+        -:  259:
+        -:  260:    template<typename _Rep, typename _Period>
+        -:  261:      constexpr
+        -:  262:      enable_if_t<numeric_limits<_Rep>::is_signed, duration<_Rep, _Period>>
+        -:  263:      abs(duration<_Rep, _Period> __d)
+        -:  264:      {
+        -:  265:	if (__d >= __d.zero())
+        -:  266:	  return __d;
+        -:  267:	return -__d;
+        -:  268:      }
+        -:  269:#endif // C++17
+        -:  270:
+        -:  271:    /// duration_values
+        -:  272:    template<typename _Rep>
+        -:  273:      struct duration_values
+        -:  274:      {
+        -:  275:	static constexpr _Rep
+        -:  276:	zero() noexcept
+        -:  277:	{ return _Rep(0); }
+        -:  278:
+        -:  279:	static constexpr _Rep
+        -:  280:	max() noexcept
+        -:  281:	{ return numeric_limits<_Rep>::max(); }
+        -:  282:
+        -:  283:	static constexpr _Rep
+        -:  284:	min() noexcept
+        -:  285:	{ return numeric_limits<_Rep>::lowest(); }
+        -:  286:      };
+        -:  287:
+        -:  288:    template<typename _Tp>
+        -:  289:      struct __is_ratio
+        -:  290:      : std::false_type
+        -:  291:      { };
+        -:  292:
+        -:  293:    template<intmax_t _Num, intmax_t _Den>
+        -:  294:      struct __is_ratio<ratio<_Num, _Den>>
+        -:  295:      : std::true_type
+        -:  296:      { };
+        -:  297:
+        -:  298:    /// duration
+        -:  299:    template<typename _Rep, typename _Period>
+        -:  300:      struct duration
+        -:  301:      {
+        -:  302:      private:
+        -:  303:	template<typename _Rep2>
+        -:  304:	  using __is_float = treat_as_floating_point<_Rep2>;
+        -:  305:
+        -:  306:	// _Period2 is an exact multiple of _Period
+        -:  307:	template<typename _Period2>
+        -:  308:	  using __is_harmonic
+        -:  309:	    = __bool_constant<ratio_divide<_Period2, _Period>::den == 1>;
+        -:  310:
+        -:  311:      public:
+        -:  312:
+        -:  313:	typedef _Rep						rep;
+        -:  314:	typedef _Period 					period;
+        -:  315:
+        -:  316:	static_assert(!__is_duration<_Rep>::value, "rep cannot be a duration");
+        -:  317:	static_assert(__is_ratio<_Period>::value,
+        -:  318:		      "period must be a specialization of ratio");
+        -:  319:	static_assert(_Period::num > 0, "period must be positive");
+        -:  320:
+        -:  321:	// 20.11.5.1 construction / copy / destroy
+        -:  322:	constexpr duration() = default;
+        -:  323:
+        -:  324:	duration(const duration&) = default;
+        -:  325:
+        -:  326:	// _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  327:	// 3050. Conversion specification problem in chrono::duration
+        -:  328:	template<typename _Rep2, typename = _Require<
+        -:  329:		 is_convertible<const _Rep2&, rep>,
+        -:  330:		 __or_<__is_float<rep>, __not_<__is_float<_Rep2>>>>>
+        4:  331:	  constexpr explicit duration(const _Rep2& __rep)
+        4:  332:	  : __r(static_cast<rep>(__rep)) { }
+        -:  333:
+        -:  334:	template<typename _Rep2, typename _Period2, typename = _Require<
+        -:  335:		 __or_<__is_float<rep>,
+        -:  336:		       __and_<__is_harmonic<_Period2>,
+        -:  337:			      __not_<__is_float<_Rep2>>>>>>
+        -:  338:	  constexpr duration(const duration<_Rep2, _Period2>& __d)
+        -:  339:	  : __r(duration_cast<duration>(__d).count()) { }
+        -:  340:
+        -:  341:	~duration() = default;
+        -:  342:	duration& operator=(const duration&) = default;
+        -:  343:
+        -:  344:	// 20.11.5.2 observer
+        -:  345:	constexpr rep
+        8:  346:	count() const
+        8:  347:	{ return __r; }
+        -:  348:
+        -:  349:	// 20.11.5.3 arithmetic
+        -:  350:	constexpr duration
+        -:  351:	operator+() const
+        -:  352:	{ return *this; }
+        -:  353:
+        -:  354:	constexpr duration
+        -:  355:	operator-() const
+        -:  356:	{ return duration(-__r); }
+        -:  357:
+        -:  358:	_GLIBCXX17_CONSTEXPR duration&
+        -:  359:	operator++()
+        -:  360:	{
+        -:  361:	  ++__r;
+        -:  362:	  return *this;
+        -:  363:	}
+        -:  364:
+        -:  365:	_GLIBCXX17_CONSTEXPR duration
+        -:  366:	operator++(int)
+        -:  367:	{ return duration(__r++); }
+        -:  368:
+        -:  369:	_GLIBCXX17_CONSTEXPR duration&
+        -:  370:	operator--()
+        -:  371:	{
+        -:  372:	  --__r;
+        -:  373:	  return *this;
+        -:  374:	}
+        -:  375:
+        -:  376:	_GLIBCXX17_CONSTEXPR duration
+        -:  377:	operator--(int)
+        -:  378:	{ return duration(__r--); }
+        -:  379:
+        -:  380:	_GLIBCXX17_CONSTEXPR duration&
+        -:  381:	operator+=(const duration& __d)
+        -:  382:	{
+        -:  383:	  __r += __d.count();
+        -:  384:	  return *this;
+        -:  385:	}
+        -:  386:
+        -:  387:	_GLIBCXX17_CONSTEXPR duration&
+        -:  388:	operator-=(const duration& __d)
+        -:  389:	{
+        -:  390:	  __r -= __d.count();
+        -:  391:	  return *this;
+        -:  392:	}
+        -:  393:
+        -:  394:	_GLIBCXX17_CONSTEXPR duration&
+        -:  395:	operator*=(const rep& __rhs)
+        -:  396:	{
+        -:  397:	  __r *= __rhs;
+        -:  398:	  return *this;
+        -:  399:	}
+        -:  400:
+        -:  401:	_GLIBCXX17_CONSTEXPR duration&
+        -:  402:	operator/=(const rep& __rhs)
+        -:  403:	{
+        -:  404:	  __r /= __rhs;
+        -:  405:	  return *this;
+        -:  406:	}
+        -:  407:
+        -:  408:	// DR 934.
+        -:  409:	template<typename _Rep2 = rep>
+        -:  410:	  _GLIBCXX17_CONSTEXPR
+        -:  411:	  typename enable_if<!treat_as_floating_point<_Rep2>::value,
+        -:  412:			     duration&>::type
+        -:  413:	  operator%=(const rep& __rhs)
+        -:  414:	  {
+        -:  415:	    __r %= __rhs;
+        -:  416:	    return *this;
+        -:  417:	  }
+        -:  418:
+        -:  419:	template<typename _Rep2 = rep>
+        -:  420:	  _GLIBCXX17_CONSTEXPR
+        -:  421:	  typename enable_if<!treat_as_floating_point<_Rep2>::value,
+        -:  422:			     duration&>::type
+        -:  423:	  operator%=(const duration& __d)
+        -:  424:	  {
+        -:  425:	    __r %= __d.count();
+        -:  426:	    return *this;
+        -:  427:	  }
+        -:  428:
+        -:  429:	// 20.11.5.4 special values
+        -:  430:	static constexpr duration
+        -:  431:	zero() noexcept
+        -:  432:	{ return duration(duration_values<rep>::zero()); }
+        -:  433:
+        -:  434:	static constexpr duration
+        -:  435:	min() noexcept
+        -:  436:	{ return duration(duration_values<rep>::min()); }
+        -:  437:
+        -:  438:	static constexpr duration
+        -:  439:	max() noexcept
+        -:  440:	{ return duration(duration_values<rep>::max()); }
+        -:  441:
+        -:  442:      private:
+        -:  443:	rep __r;
+        -:  444:      };
+        -:  445:
+        -:  446:    template<typename _Rep1, typename _Period1,
+        -:  447:	     typename _Rep2, typename _Period2>
+        -:  448:      constexpr typename common_type<duration<_Rep1, _Period1>,
+        -:  449:				     duration<_Rep2, _Period2>>::type
+        -:  450:      operator+(const duration<_Rep1, _Period1>& __lhs,
+        -:  451:		const duration<_Rep2, _Period2>& __rhs)
+        -:  452:      {
+        -:  453:	typedef duration<_Rep1, _Period1>			__dur1;
+        -:  454:	typedef duration<_Rep2, _Period2>			__dur2;
+        -:  455:	typedef typename common_type<__dur1,__dur2>::type	__cd;
+        -:  456:	return __cd(__cd(__lhs).count() + __cd(__rhs).count());
+        -:  457:      }
+        -:  458:
+        -:  459:    template<typename _Rep1, typename _Period1,
+        -:  460:	     typename _Rep2, typename _Period2>
+        -:  461:      constexpr typename common_type<duration<_Rep1, _Period1>,
+        -:  462:				     duration<_Rep2, _Period2>>::type
+        -:  463:      operator-(const duration<_Rep1, _Period1>& __lhs,
+        -:  464:		const duration<_Rep2, _Period2>& __rhs)
+        -:  465:      {
+        -:  466:	typedef duration<_Rep1, _Period1>			__dur1;
+        -:  467:	typedef duration<_Rep2, _Period2>			__dur2;
+        -:  468:	typedef typename common_type<__dur1,__dur2>::type	__cd;
+        -:  469:	return __cd(__cd(__lhs).count() - __cd(__rhs).count());
+        -:  470:      }
+        -:  471:
+        -:  472:    // SFINAE helper to obtain common_type<_Rep1, _Rep2> only if _Rep2
+        -:  473:    // is implicitly convertible to it.
+        -:  474:    // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  475:    // 3050. Conversion specification problem in chrono::duration constructor
+        -:  476:    template<typename _Rep1, typename _Rep2,
+        -:  477:	     typename _CRep = typename common_type<_Rep1, _Rep2>::type>
+        -:  478:      using __common_rep_t = typename
+        -:  479:	enable_if<is_convertible<const _Rep2&, _CRep>::value, _CRep>::type;
+        -:  480:
+        -:  481:    template<typename _Rep1, typename _Period, typename _Rep2>
+        -:  482:      constexpr duration<__common_rep_t<_Rep1, _Rep2>, _Period>
+        -:  483:      operator*(const duration<_Rep1, _Period>& __d, const _Rep2& __s)
+        -:  484:      {
+        -:  485:	typedef duration<typename common_type<_Rep1, _Rep2>::type, _Period>
+        -:  486:	  __cd;
+        -:  487:	return __cd(__cd(__d).count() * __s);
+        -:  488:      }
+        -:  489:
+        -:  490:    template<typename _Rep1, typename _Rep2, typename _Period>
+        -:  491:      constexpr duration<__common_rep_t<_Rep2, _Rep1>, _Period>
+        -:  492:      operator*(const _Rep1& __s, const duration<_Rep2, _Period>& __d)
+        -:  493:      { return __d * __s; }
+        -:  494:
+        -:  495:    template<typename _Rep1, typename _Period, typename _Rep2>
+        -:  496:      constexpr
+        -:  497:      duration<__common_rep_t<_Rep1, __disable_if_is_duration<_Rep2>>, _Period>
+        -:  498:      operator/(const duration<_Rep1, _Period>& __d, const _Rep2& __s)
+        -:  499:      {
+        -:  500:	typedef duration<typename common_type<_Rep1, _Rep2>::type, _Period>
+        -:  501:	  __cd;
+        -:  502:	return __cd(__cd(__d).count() / __s);
+        -:  503:      }
+        -:  504:
+        -:  505:    template<typename _Rep1, typename _Period1,
+        -:  506:	     typename _Rep2, typename _Period2>
+        -:  507:      constexpr typename common_type<_Rep1, _Rep2>::type
+        -:  508:      operator/(const duration<_Rep1, _Period1>& __lhs,
+        -:  509:		const duration<_Rep2, _Period2>& __rhs)
+        -:  510:      {
+        -:  511:	typedef duration<_Rep1, _Period1>			__dur1;
+        -:  512:	typedef duration<_Rep2, _Period2>			__dur2;
+        -:  513:	typedef typename common_type<__dur1,__dur2>::type	__cd;
+        -:  514:	return __cd(__lhs).count() / __cd(__rhs).count();
+        -:  515:      }
+        -:  516:
+        -:  517:    // DR 934.
+        -:  518:    template<typename _Rep1, typename _Period, typename _Rep2>
+        -:  519:      constexpr
+        -:  520:      duration<__common_rep_t<_Rep1, __disable_if_is_duration<_Rep2>>, _Period>
+        -:  521:      operator%(const duration<_Rep1, _Period>& __d, const _Rep2& __s)
+        -:  522:      {
+        -:  523:	typedef duration<typename common_type<_Rep1, _Rep2>::type, _Period>
+        -:  524:	  __cd;
+        -:  525:	return __cd(__cd(__d).count() % __s);
+        -:  526:      }
+        -:  527:
+        -:  528:    template<typename _Rep1, typename _Period1,
+        -:  529:	     typename _Rep2, typename _Period2>
+        -:  530:      constexpr typename common_type<duration<_Rep1, _Period1>,
+        -:  531:				     duration<_Rep2, _Period2>>::type
+        -:  532:      operator%(const duration<_Rep1, _Period1>& __lhs,
+        -:  533:		const duration<_Rep2, _Period2>& __rhs)
+        -:  534:      {
+        -:  535:	typedef duration<_Rep1, _Period1>			__dur1;
+        -:  536:	typedef duration<_Rep2, _Period2>			__dur2;
+        -:  537:	typedef typename common_type<__dur1,__dur2>::type	__cd;
+        -:  538:	return __cd(__cd(__lhs).count() % __cd(__rhs).count());
+        -:  539:      }
+        -:  540:
+        -:  541:    // comparisons
+        -:  542:    template<typename _Rep1, typename _Period1,
+        -:  543:	     typename _Rep2, typename _Period2>
+        -:  544:      constexpr bool
+        -:  545:      operator==(const duration<_Rep1, _Period1>& __lhs,
+        -:  546:		 const duration<_Rep2, _Period2>& __rhs)
+        -:  547:      {
+        -:  548:	typedef duration<_Rep1, _Period1>			__dur1;
+        -:  549:	typedef duration<_Rep2, _Period2>			__dur2;
+        -:  550:	typedef typename common_type<__dur1,__dur2>::type	__ct;
+        -:  551:	return __ct(__lhs).count() == __ct(__rhs).count();
+        -:  552:      }
+        -:  553:
+        -:  554:    template<typename _Rep1, typename _Period1,
+        -:  555:	     typename _Rep2, typename _Period2>
+        -:  556:      constexpr bool
+        -:  557:      operator<(const duration<_Rep1, _Period1>& __lhs,
+        -:  558:		const duration<_Rep2, _Period2>& __rhs)
+        -:  559:      {
+        -:  560:	typedef duration<_Rep1, _Period1>			__dur1;
+        -:  561:	typedef duration<_Rep2, _Period2>			__dur2;
+        -:  562:	typedef typename common_type<__dur1,__dur2>::type	__ct;
+        -:  563:	return __ct(__lhs).count() < __ct(__rhs).count();
+        -:  564:      }
+        -:  565:
+        -:  566:    template<typename _Rep1, typename _Period1,
+        -:  567:	     typename _Rep2, typename _Period2>
+        -:  568:      constexpr bool
+        -:  569:      operator!=(const duration<_Rep1, _Period1>& __lhs,
+        -:  570:		 const duration<_Rep2, _Period2>& __rhs)
+        -:  571:      { return !(__lhs == __rhs); }
+        -:  572:
+        -:  573:    template<typename _Rep1, typename _Period1,
+        -:  574:	     typename _Rep2, typename _Period2>
+        -:  575:      constexpr bool
+        -:  576:      operator<=(const duration<_Rep1, _Period1>& __lhs,
+        -:  577:		 const duration<_Rep2, _Period2>& __rhs)
+        -:  578:      { return !(__rhs < __lhs); }
+        -:  579:
+        -:  580:    template<typename _Rep1, typename _Period1,
+        -:  581:	     typename _Rep2, typename _Period2>
+        -:  582:      constexpr bool
+        -:  583:      operator>(const duration<_Rep1, _Period1>& __lhs,
+        -:  584:		const duration<_Rep2, _Period2>& __rhs)
+        -:  585:      { return __rhs < __lhs; }
+        -:  586:
+        -:  587:    template<typename _Rep1, typename _Period1,
+        -:  588:	     typename _Rep2, typename _Period2>
+        -:  589:      constexpr bool
+        -:  590:      operator>=(const duration<_Rep1, _Period1>& __lhs,
+        -:  591:		 const duration<_Rep2, _Period2>& __rhs)
+        -:  592:      { return !(__lhs < __rhs); }
+        -:  593:
+        -:  594:#ifdef _GLIBCXX_USE_C99_STDINT_TR1
+        -:  595:# define _GLIBCXX_CHRONO_INT64_T int64_t
+        -:  596:#elif defined __INT64_TYPE__
+        -:  597:# define _GLIBCXX_CHRONO_INT64_T __INT64_TYPE__
+        -:  598:#else
+        -:  599:    static_assert(std::numeric_limits<unsigned long long>::digits >= 64,
+        -:  600:	"Representation type for nanoseconds must have at least 64 bits");
+        -:  601:# define _GLIBCXX_CHRONO_INT64_T long long
+        -:  602:#endif
+        -:  603:
+        -:  604:    /// nanoseconds
+        -:  605:    typedef duration<_GLIBCXX_CHRONO_INT64_T, nano> 	    nanoseconds;
+        -:  606:
+        -:  607:    /// microseconds
+        -:  608:    typedef duration<_GLIBCXX_CHRONO_INT64_T, micro> 	    microseconds;
+        -:  609:
+        -:  610:    /// milliseconds
+        -:  611:    typedef duration<_GLIBCXX_CHRONO_INT64_T, milli> 	    milliseconds;
+        -:  612:
+        -:  613:    /// seconds
+        -:  614:    typedef duration<_GLIBCXX_CHRONO_INT64_T> 		    seconds;
+        -:  615:
+        -:  616:    /// minutes
+        -:  617:    typedef duration<_GLIBCXX_CHRONO_INT64_T, ratio< 60>>   minutes;
+        -:  618:
+        -:  619:    /// hours
+        -:  620:    typedef duration<_GLIBCXX_CHRONO_INT64_T, ratio<3600>>  hours;
+        -:  621:
+        -:  622:#undef _GLIBCXX_CHRONO_INT64_T
+        -:  623:
+        -:  624:    /// time_point
+        -:  625:    template<typename _Clock, typename _Dur>
+        -:  626:      struct time_point
+        -:  627:      {
+        -:  628:	typedef _Clock			  			clock;
+        -:  629:	typedef _Dur		  				duration;
+        -:  630:	typedef typename duration::rep	  			rep;
+        -:  631:	typedef typename duration::period			period;
+        -:  632:
+        -:  633:	constexpr time_point() : __d(duration::zero())
+        -:  634:	{ }
+        -:  635:
+        -:  636:	constexpr explicit time_point(const duration& __dur)
+        -:  637:	: __d(__dur)
+        -:  638:	{ }
+        -:  639:
+        -:  640:	// conversions
+        -:  641:	template<typename _Dur2,
+        -:  642:		 typename = _Require<is_convertible<_Dur2, _Dur>>>
+        -:  643:	  constexpr time_point(const time_point<clock, _Dur2>& __t)
+        -:  644:	  : __d(__t.time_since_epoch())
+        -:  645:	  { }
+        -:  646:
+        -:  647:	// observer
+        -:  648:	constexpr duration
+        4:  649:	time_since_epoch() const
+        4:  650:	{ return __d; }
+        -:  651:
+        -:  652:	// arithmetic
+        -:  653:	_GLIBCXX17_CONSTEXPR time_point&
+        -:  654:	operator+=(const duration& __dur)
+        -:  655:	{
+        -:  656:	  __d += __dur;
+        -:  657:	  return *this;
+        -:  658:	}
+        -:  659:
+        -:  660:	_GLIBCXX17_CONSTEXPR time_point&
+        -:  661:	operator-=(const duration& __dur)
+        -:  662:	{
+        -:  663:	  __d -= __dur;
+        -:  664:	  return *this;
+        -:  665:	}
+        -:  666:
+        -:  667:	// special values
+        -:  668:	static constexpr time_point
+        -:  669:	min() noexcept
+        -:  670:	{ return time_point(duration::min()); }
+        -:  671:
+        -:  672:	static constexpr time_point
+        -:  673:	max() noexcept
+        -:  674:	{ return time_point(duration::max()); }
+        -:  675:
+        -:  676:      private:
+        -:  677:	duration __d;
+        -:  678:      };
+        -:  679:
+        -:  680:    /// time_point_cast
+        -:  681:    template<typename _ToDur, typename _Clock, typename _Dur>
+        -:  682:      constexpr typename enable_if<__is_duration<_ToDur>::value,
+        -:  683:				   time_point<_Clock, _ToDur>>::type
+        -:  684:      time_point_cast(const time_point<_Clock, _Dur>& __t)
+        -:  685:      {
+        -:  686:	typedef time_point<_Clock, _ToDur> 			__time_point;
+        -:  687:	return __time_point(duration_cast<_ToDur>(__t.time_since_epoch()));
+        -:  688:      }
+        -:  689:
+        -:  690:#if __cplusplus > 201402L
+        -:  691:    template<typename _ToDur, typename _Clock, typename _Dur>
+        -:  692:      constexpr
+        -:  693:      enable_if_t<__is_duration<_ToDur>::value, time_point<_Clock, _ToDur>>
+        -:  694:      floor(const time_point<_Clock, _Dur>& __tp)
+        -:  695:      {
+        -:  696:	return time_point<_Clock, _ToDur>{
+        -:  697:	    chrono::floor<_ToDur>(__tp.time_since_epoch())};
+        -:  698:      }
+        -:  699:
+        -:  700:    template<typename _ToDur, typename _Clock, typename _Dur>
+        -:  701:      constexpr
+        -:  702:      enable_if_t<__is_duration<_ToDur>::value, time_point<_Clock, _ToDur>>
+        -:  703:      ceil(const time_point<_Clock, _Dur>& __tp)
+        -:  704:      {
+        -:  705:	return time_point<_Clock, _ToDur>{
+        -:  706:	    chrono::ceil<_ToDur>(__tp.time_since_epoch())};
+        -:  707:      }
+        -:  708:
+        -:  709:    template<typename _ToDur, typename _Clock, typename _Dur>
+        -:  710:      constexpr enable_if_t<
+        -:  711:	__and_<__is_duration<_ToDur>,
+        -:  712:	       __not_<treat_as_floating_point<typename _ToDur::rep>>>::value,
+        -:  713:	time_point<_Clock, _ToDur>>
+        -:  714:      round(const time_point<_Clock, _Dur>& __tp)
+        -:  715:      {
+        -:  716:	return time_point<_Clock, _ToDur>{
+        -:  717:	    chrono::round<_ToDur>(__tp.time_since_epoch())};
+        -:  718:      }
+        -:  719:#endif // C++17
+        -:  720:
+        -:  721:    template<typename _Clock, typename _Dur1,
+        -:  722:	     typename _Rep2, typename _Period2>
+        -:  723:      constexpr time_point<_Clock,
+        -:  724:	typename common_type<_Dur1, duration<_Rep2, _Period2>>::type>
+        -:  725:      operator+(const time_point<_Clock, _Dur1>& __lhs,
+        -:  726:		const duration<_Rep2, _Period2>& __rhs)
+        -:  727:      {
+        -:  728:	typedef duration<_Rep2, _Period2>			__dur2;
+        -:  729:	typedef typename common_type<_Dur1,__dur2>::type	__ct;
+        -:  730:	typedef time_point<_Clock, __ct> 			__time_point;
+        -:  731:	return __time_point(__lhs.time_since_epoch() + __rhs);
+        -:  732:      }
+        -:  733:
+        -:  734:    template<typename _Rep1, typename _Period1,
+        -:  735:	     typename _Clock, typename _Dur2>
+        -:  736:      constexpr time_point<_Clock,
+        -:  737:	typename common_type<duration<_Rep1, _Period1>, _Dur2>::type>
+        -:  738:      operator+(const duration<_Rep1, _Period1>& __lhs,
+        -:  739:		const time_point<_Clock, _Dur2>& __rhs)
+        -:  740:      {
+        -:  741:	typedef duration<_Rep1, _Period1>			__dur1;
+        -:  742:	typedef typename common_type<__dur1,_Dur2>::type	__ct;
+        -:  743:	typedef time_point<_Clock, __ct> 			__time_point;
+        -:  744:	return __time_point(__rhs.time_since_epoch() + __lhs);
+        -:  745:      }
+        -:  746:
+        -:  747:    template<typename _Clock, typename _Dur1,
+        -:  748:	     typename _Rep2, typename _Period2>
+        -:  749:      constexpr time_point<_Clock,
+        -:  750:	typename common_type<_Dur1, duration<_Rep2, _Period2>>::type>
+        -:  751:      operator-(const time_point<_Clock, _Dur1>& __lhs,
+        -:  752:		const duration<_Rep2, _Period2>& __rhs)
+        -:  753:      {
+        -:  754:	typedef duration<_Rep2, _Period2>			__dur2;
+        -:  755:	typedef typename common_type<_Dur1,__dur2>::type	__ct;
+        -:  756:	typedef time_point<_Clock, __ct> 			__time_point;
+        -:  757:	return __time_point(__lhs.time_since_epoch() -__rhs);
+        -:  758:      }
+        -:  759:
+        -:  760:    template<typename _Clock, typename _Dur1, typename _Dur2>
+        -:  761:      constexpr typename common_type<_Dur1, _Dur2>::type
+        -:  762:      operator-(const time_point<_Clock, _Dur1>& __lhs,
+        -:  763:		const time_point<_Clock, _Dur2>& __rhs)
+        -:  764:      { return __lhs.time_since_epoch() - __rhs.time_since_epoch(); }
+        -:  765:
+        -:  766:    template<typename _Clock, typename _Dur1, typename _Dur2>
+        -:  767:      constexpr bool
+        -:  768:      operator==(const time_point<_Clock, _Dur1>& __lhs,
+        -:  769:		 const time_point<_Clock, _Dur2>& __rhs)
+        -:  770:      { return __lhs.time_since_epoch() == __rhs.time_since_epoch(); }
+        -:  771:
+        -:  772:    template<typename _Clock, typename _Dur1, typename _Dur2>
+        -:  773:      constexpr bool
+        -:  774:      operator!=(const time_point<_Clock, _Dur1>& __lhs,
+        -:  775:		 const time_point<_Clock, _Dur2>& __rhs)
+        -:  776:      { return !(__lhs == __rhs); }
+        -:  777:
+        -:  778:    template<typename _Clock, typename _Dur1, typename _Dur2>
+        -:  779:      constexpr bool
+        -:  780:      operator<(const time_point<_Clock, _Dur1>& __lhs,
+        -:  781:		const time_point<_Clock, _Dur2>& __rhs)
+        -:  782:      { return  __lhs.time_since_epoch() < __rhs.time_since_epoch(); }
+        -:  783:
+        -:  784:    template<typename _Clock, typename _Dur1, typename _Dur2>
+        -:  785:      constexpr bool
+        -:  786:      operator<=(const time_point<_Clock, _Dur1>& __lhs,
+        -:  787:		 const time_point<_Clock, _Dur2>& __rhs)
+        -:  788:      { return !(__rhs < __lhs); }
+        -:  789:
+        -:  790:    template<typename _Clock, typename _Dur1, typename _Dur2>
+        -:  791:      constexpr bool
+        -:  792:      operator>(const time_point<_Clock, _Dur1>& __lhs,
+        -:  793:		const time_point<_Clock, _Dur2>& __rhs)
+        -:  794:      { return __rhs < __lhs; }
+        -:  795:
+        -:  796:    template<typename _Clock, typename _Dur1, typename _Dur2>
+        -:  797:      constexpr bool
+        -:  798:      operator>=(const time_point<_Clock, _Dur1>& __lhs,
+        -:  799:		 const time_point<_Clock, _Dur2>& __rhs)
+        -:  800:      { return !(__lhs < __rhs); }
+        -:  801:
+        -:  802:
+        -:  803:    // Clocks.
+        -:  804:
+        -:  805:    // Why nanosecond resolution as the default?
+        -:  806:    // Why have std::system_clock always count in the highest
+        -:  807:    // resolution (ie nanoseconds), even if on some OSes the low 3
+        -:  808:    // or 9 decimal digits will be always zero? This allows later
+        -:  809:    // implementations to change the system_clock::now()
+        -:  810:    // implementation any time to provide better resolution without
+        -:  811:    // changing function signature or units.
+        -:  812:
+        -:  813:    // To support the (forward) evolution of the library's defined
+        -:  814:    // clocks, wrap inside inline namespace so that the current
+        -:  815:    // defintions of system_clock, steady_clock, and
+        -:  816:    // high_resolution_clock types are uniquely mangled. This way, new
+        -:  817:    // code can use the latests clocks, while the library can contain
+        -:  818:    // compatibility definitions for previous versions.  At some
+        -:  819:    // point, when these clocks settle down, the inlined namespaces
+        -:  820:    // can be removed.  XXX GLIBCXX_ABI Deprecated
+        -:  821:    inline namespace _V2 {
+        -:  822:
+        -:  823:    /**
+        -:  824:     *  @brief System clock.
+        -:  825:     *
+        -:  826:     *  Time returned represents wall time from the system-wide clock.
+        -:  827:    */
+        -:  828:    struct system_clock
+        -:  829:    {
+        -:  830:      typedef chrono::nanoseconds     				duration;
+        -:  831:      typedef duration::rep    					rep;
+        -:  832:      typedef duration::period 					period;
+        -:  833:      typedef chrono::time_point<system_clock, duration> 	time_point;
+        -:  834:
+        -:  835:      static_assert(system_clock::duration::min()
+        -:  836:		    < system_clock::duration::zero(),
+        -:  837:		    "a clock's minimum duration cannot be less than its epoch");
+        -:  838:
+        -:  839:      static constexpr bool is_steady = false;
+        -:  840:
+        -:  841:      static time_point
+        -:  842:      now() noexcept;
+        -:  843:
+        -:  844:      // Map to C API
+        -:  845:      static std::time_t
+        -:  846:      to_time_t(const time_point& __t) noexcept
+        -:  847:      {
+        -:  848:	return std::time_t(duration_cast<chrono::seconds>
+        -:  849:			   (__t.time_since_epoch()).count());
+        -:  850:      }
+        -:  851:
+        -:  852:      static time_point
+        -:  853:      from_time_t(std::time_t __t) noexcept
+        -:  854:      {
+        -:  855:	typedef chrono::time_point<system_clock, seconds>	__from;
+        -:  856:	return time_point_cast<system_clock::duration>
+        -:  857:	       (__from(chrono::seconds(__t)));
+        -:  858:      }
+        -:  859:    };
+        -:  860:
+        -:  861:
+        -:  862:    /**
+        -:  863:     *  @brief Monotonic clock
+        -:  864:     *
+        -:  865:     *  Time returned has the property of only increasing at a uniform rate.
+        -:  866:    */
+        -:  867:    struct steady_clock
+        -:  868:    {
+        -:  869:      typedef chrono::nanoseconds 				duration;
+        -:  870:      typedef duration::rep	  				rep;
+        -:  871:      typedef duration::period	  				period;
+        -:  872:      typedef chrono::time_point<steady_clock, duration> 	time_point;
+        -:  873:
+        -:  874:      static constexpr bool is_steady = true;
+        -:  875:
+        -:  876:      static time_point
+        -:  877:      now() noexcept;
+        -:  878:    };
+        -:  879:
+        -:  880:
+        -:  881:    /**
+        -:  882:     *  @brief Highest-resolution clock
+        -:  883:     *
+        -:  884:     *  This is the clock "with the shortest tick period." Alias to
+        -:  885:     *  std::system_clock until higher-than-nanosecond definitions
+        -:  886:     *  become feasible.
+        -:  887:    */
+        -:  888:    using high_resolution_clock = system_clock;
+        -:  889:
+        -:  890:    } // end inline namespace _V2
+        -:  891:  } // namespace chrono
+        -:  892:
+        -:  893:#if __cplusplus > 201103L
+        -:  894:
+        -:  895:#define __cpp_lib_chrono_udls 201304
+        -:  896:
+        -:  897:  inline namespace literals
+        -:  898:  {
+        -:  899:  inline namespace chrono_literals
+        -:  900:  {
+        -:  901:#pragma GCC diagnostic push
+        -:  902:#pragma GCC diagnostic ignored "-Wliteral-suffix"
+        -:  903:    template<typename _Dur, char... _Digits>
+        -:  904:      constexpr _Dur __check_overflow()
+        -:  905:      {
+        -:  906:	using _Val = __parse_int::_Parse_int<_Digits...>;
+        -:  907:	constexpr typename _Dur::rep __repval = _Val::value;
+        -:  908:	static_assert(__repval >= 0 && __repval == _Val::value,
+        -:  909:		      "literal value cannot be represented by duration type");
+        -:  910:	return _Dur(__repval);
+        -:  911:      }
+        -:  912:
+        -:  913:    constexpr chrono::duration<long double, ratio<3600,1>>
+        -:  914:    operator""h(long double __hours)
+        -:  915:    { return chrono::duration<long double, ratio<3600,1>>{__hours}; }
+        -:  916:
+        -:  917:    template <char... _Digits>
+        -:  918:      constexpr chrono::hours
+        -:  919:      operator""h()
+        -:  920:      { return __check_overflow<chrono::hours, _Digits...>(); }
+        -:  921:
+        -:  922:    constexpr chrono::duration<long double, ratio<60,1>>
+        -:  923:    operator""min(long double __mins)
+        -:  924:    { return chrono::duration<long double, ratio<60,1>>{__mins}; }
+        -:  925:
+        -:  926:    template <char... _Digits>
+        -:  927:      constexpr chrono::minutes
+        -:  928:      operator""min()
+        -:  929:      { return __check_overflow<chrono::minutes, _Digits...>(); }
+        -:  930:
+        -:  931:    constexpr chrono::duration<long double>
+        -:  932:    operator""s(long double __secs)
+        -:  933:    { return chrono::duration<long double>{__secs}; }
+        -:  934:
+        -:  935:    template <char... _Digits>
+        -:  936:      constexpr chrono::seconds
+        -:  937:      operator""s()
+        -:  938:      { return __check_overflow<chrono::seconds, _Digits...>(); }
+        -:  939:
+        -:  940:    constexpr chrono::duration<long double, milli>
+        -:  941:    operator""ms(long double __msecs)
+        -:  942:    { return chrono::duration<long double, milli>{__msecs}; }
+        -:  943:
+        -:  944:    template <char... _Digits>
+        -:  945:      constexpr chrono::milliseconds
+        -:  946:      operator""ms()
+        -:  947:      { return __check_overflow<chrono::milliseconds, _Digits...>(); }
+        -:  948:
+        -:  949:    constexpr chrono::duration<long double, micro>
+        -:  950:    operator""us(long double __usecs)
+        -:  951:    { return chrono::duration<long double, micro>{__usecs}; }
+        -:  952:
+        -:  953:    template <char... _Digits>
+        -:  954:      constexpr chrono::microseconds
+        -:  955:      operator""us()
+        -:  956:      { return __check_overflow<chrono::microseconds, _Digits...>(); }
+        -:  957:
+        -:  958:    constexpr chrono::duration<long double, nano>
+        -:  959:    operator""ns(long double __nsecs)
+        -:  960:    { return chrono::duration<long double, nano>{__nsecs}; }
+        -:  961:
+        -:  962:    template <char... _Digits>
+        -:  963:      constexpr chrono::nanoseconds
+        -:  964:      operator""ns()
+        -:  965:      { return __check_overflow<chrono::nanoseconds, _Digits...>(); }
+        -:  966:
+        -:  967:#pragma GCC diagnostic pop
+        -:  968:  } // inline namespace chrono_literals
+        -:  969:  } // inline namespace literals
+        -:  970:
+        -:  971:  namespace chrono
+        -:  972:  {
+        -:  973:    using namespace literals::chrono_literals;
+        -:  974:  } // namespace chrono
+        -:  975:
+        -:  976:#endif // C++14
+        -:  977:
+        -:  978:  // @} group chrono
+        -:  979:
+        -:  980:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  981:} // namespace std
+        -:  982:
+        -:  983:#endif // C++11
+        -:  984:
+        -:  985:#endif //_GLIBCXX_CHRONO
