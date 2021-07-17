@@ -13,7 +13,12 @@ COVERAGE_SHA=$(git rev-list HEAD | head -1)
 echo $COVERAGE_SHA > SHA.txt
 echo "Processing coverage for report belonging to latest commit"
 PROD_COVERAGE=$(curl https://codecov.io/api/gh/codecov/$PROJECT_NAME/commit/$COVERAGE_SHA | \
-python2 -c 'import json,sys;obj=json.load(sys.stdin);print obj["commit"]["totals"]["c"]')
+python3 -c "import sys, json; print(json.load(sys.stdin)['commit']['totals']['c'])")
+echo "Validating if production coverage is a number"
+if ! [[ $PROD_COVERAGE =~ ^[0-9]+([.][0-9]+)?$ ]] ; then
+  echo "error: Not a number" >&2; exit 1
+fi
+echo "Generating coverage_totals.txt file"
 echo $PROD_COVERAGE > coverage_totals.txt
 echo "Cloning the standards repo in the parent directory"
 cd ..
