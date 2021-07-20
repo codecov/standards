@@ -1,7 +1,7 @@
 name: Standards
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
 jobs:
   run-standards:
     runs-on: ubuntu-latest
@@ -12,7 +12,7 @@ jobs:
       - name: Set up Node v14
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: "14"
       - name: Run Standards Scripts
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
