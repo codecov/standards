@@ -1,6 +1,0 @@
-mode: atomic
-/home/runner/work/go-standard/go-standard/main.go:5.31,6.7 1 1
-/home/runner/work/go-standard/go-standard/main.go:10.2,10.13 1 0
-/home/runner/work/go-standard/go-standard/main.go:6.7,8.3 1 1
-/home/runner/work/go-standard/go-standard/main.go:14.26,16.2 1 1
-/home/runner/work/go-standard/go-standard/main.go:21.23,23.2 1 0
