@@ -1,0 +1,2368 @@
+        -:    0:Source:/usr/include/c++/9/bits/std_function.h
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    1:// Implementation of std::function -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2004-2019 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file include/bits/std_function.h
+        -:   26: *  This is an internal header file, included by other library headers.
+        -:   27: *  Do not attempt to use it directly. @headername{functional}
+        -:   28: */
+        -:   29:
+        -:   30:#ifndef _GLIBCXX_STD_FUNCTION_H
+        -:   31:#define _GLIBCXX_STD_FUNCTION_H 1
+        -:   32:
+        -:   33:#pragma GCC system_header
+        -:   34:
+        -:   35:#if __cplusplus < 201103L
+        -:   36:# include <bits/c++0x_warning.h>
+        -:   37:#else
+        -:   38:
+        -:   39:#if __cpp_rtti
+        -:   40:# include <typeinfo>
+        -:   41:#endif
+        -:   42:#include <bits/stl_function.h>
+        -:   43:#include <bits/invoke.h>
+        -:   44:#include <bits/refwrap.h>
+        -:   45:#include <bits/functexcept.h>
+        -:   46:
+        -:   47:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   48:{
+        -:   49:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   50:
+        -:   51:  /**
+        -:   52:   *  @brief Exception class thrown when class template function's
+        -:   53:   *  operator() is called with an empty target.
+        -:   54:   *  @ingroup exceptions
+        -:   55:   */
+        -:   56:  class bad_function_call : public std::exception
+        -:   57:  {
+        -:   58:  public:
+        -:   59:    virtual ~bad_function_call() noexcept;
+        -:   60:
+        -:   61:    const char* what() const noexcept;
+        -:   62:  };
+        -:   63:
+        -:   64:  /**
+        -:   65:   *  Trait identifying "location-invariant" types, meaning that the
+        -:   66:   *  address of the object (or any of its members) will not escape.
+        -:   67:   *  Trivially copyable types are location-invariant and users can
+        -:   68:   *  specialize this trait for other types.
+        -:   69:   */
+        -:   70:  template<typename _Tp>
+        -:   71:    struct __is_location_invariant
+        -:   72:    : is_trivially_copyable<_Tp>::type
+        -:   73:    { };
+        -:   74:
+        -:   75:  class _Undefined_class;
+        -:   76:
+        -:   77:  union _Nocopy_types
+        -:   78:  {
+        -:   79:    void*       _M_object;
+        -:   80:    const void* _M_const_object;
+        -:   81:    void (*_M_function_pointer)();
+        -:   82:    void (_Undefined_class::*_M_member_pointer)();
+        -:   83:  };
+        -:   84:
+        -:   85:  union [[gnu::may_alias]] _Any_data
+        -:   86:  {
+    #####:   87:    void*       _M_access()       { return &_M_pod_data[0]; }
+    #####:   88:    const void* _M_access() const { return &_M_pod_data[0]; }
+        -:   89:
+        -:   90:    template<typename _Tp>
+        -:   91:      _Tp&
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPKSt9type_infoEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessIPNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+_ZNSt9_Any_data9_M_accessINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEEERT_v:
+    #####:   92:      _M_access()
+    #####:   93:      { return *static_cast<_Tp*>(_M_access()); }
+------------------
+        -:   94:
+        -:   95:    template<typename _Tp>
+        -:   96:      const _Tp&
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessIPKNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessIPNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessIPKNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessIPNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessIPKNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessIPNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessIPKNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+_ZNKSt9_Any_data9_M_accessIPNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEEERKT_v:
+    #####:   97:      _M_access() const
+    #####:   98:      { return *static_cast<const _Tp*>(_M_access()); }
+------------------
+        -:   99:
+        -:  100:    _Nocopy_types _M_unused;
+        -:  101:    char _M_pod_data[sizeof(_Nocopy_types)];
+        -:  102:  };
+        -:  103:
+        -:  104:  enum _Manager_operation
+        -:  105:  {
+        -:  106:    __get_type_info,
+        -:  107:    __get_functor_ptr,
+        -:  108:    __clone_functor,
+        -:  109:    __destroy_functor
+        -:  110:  };
+        -:  111:
+        -:  112:  // Simple type wrapper that helps avoid annoying const problems
+        -:  113:  // when casting between void pointers and pointers-to-pointers.
+        -:  114:  template<typename _Tp>
+        -:  115:    struct _Simple_type_wrapper
+        -:  116:    {
+        -:  117:      _Simple_type_wrapper(_Tp __value) : __value(__value) { }
+        -:  118:
+        -:  119:      _Tp __value;
+        -:  120:    };
+        -:  121:
+        -:  122:  template<typename _Tp>
+        -:  123:    struct __is_location_invariant<_Simple_type_wrapper<_Tp> >
+        -:  124:    : __is_location_invariant<_Tp>
+        -:  125:    { };
+        -:  126:
+        -:  127:  template<typename _Signature>
+        -:  128:    class function;
+        -:  129:
+        -:  130:  /// Base class of all polymorphic function object wrappers.
+        -:  131:  class _Function_base
+        -:  132:  {
+        -:  133:  public:
+        -:  134:    static const size_t _M_max_size = sizeof(_Nocopy_types);
+        -:  135:    static const size_t _M_max_align = __alignof__(_Nocopy_types);
+        -:  136:
+        -:  137:    template<typename _Functor>
+        -:  138:      class _Base_manager
+        -:  139:      {
+        -:  140:      protected:
+        -:  141:	static const bool __stored_locally =
+        -:  142:	(__is_location_invariant<_Functor>::value
+        -:  143:	 && sizeof(_Functor) <= _M_max_size
+        -:  144:	 && __alignof__(_Functor) <= _M_max_align
+        -:  145:	 && (_M_max_align % __alignof__(_Functor) == 0));
+        -:  146:
+        -:  147:	typedef integral_constant<bool, __stored_locally> _Local_storage;
+        -:  148:
+        -:  149:	// Retrieve a pointer to the function object
+        -:  150:	static _Functor*
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+    #####:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+        -:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+        -:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+    #####:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+        -:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+        -:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+    #####:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+        -:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+        -:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+    #####:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+        -:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+        -:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+    #####:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEE14_M_get_pointerERKSt9_Any_data:
+    #####:  151:	_M_get_pointer(const _Any_data& __source)
+        -:  152:	{
+        -:  153:	  if _GLIBCXX17_CONSTEXPR (__stored_locally)
+        -:  154:	    {
+    #####:  155:	      const _Functor& __f = __source._M_access<_Functor>();
+    #####:  156:	      return const_cast<_Functor*>(std::__addressof(__f));
+        -:  157:	    }
+        -:  158:	  else // have stored a pointer
+        -:  159:	    return __source._M_access<_Functor*>();
+        -:  160:	}
+------------------
+        -:  161:
+        -:  162:	// Clone a location-invariant function object that fits within
+        -:  163:	// an _Any_data structure.
+        -:  164:	static void
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb1EE:
+    #####:  165:	_M_clone(_Any_data& __dest, const _Any_data& __source, true_type)
+        -:  166:	{
+    #####:  167:	  ::new (__dest._M_access()) _Functor(__source._M_access<_Functor>());
+    #####:  168:	}
+------------------
+        -:  169:
+        -:  170:	// Clone a function object that is not location-invariant or
+        -:  171:	// that cannot fit into an _Any_data structure.
+        -:  172:	static void
+    #####:  173:	_M_clone(_Any_data& __dest, const _Any_data& __source, false_type)
+        -:  174:	{
+    #####:  175:	  __dest._M_access<_Functor*>() =
+    #####:  176:	    new _Functor(*__source._M_access<const _Functor*>());
+    #####:  177:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb0EE:
+    #####:  173:	_M_clone(_Any_data& __dest, const _Any_data& __source, false_type)
+        -:  174:	{
+    #####:  175:	  __dest._M_access<_Functor*>() =
+    #####:  176:	    new _Functor(*__source._M_access<const _Functor*>());
+    #####:  177:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb0EE:
+    #####:  173:	_M_clone(_Any_data& __dest, const _Any_data& __source, false_type)
+        -:  174:	{
+    #####:  175:	  __dest._M_access<_Functor*>() =
+    #####:  176:	    new _Functor(*__source._M_access<const _Functor*>());
+    #####:  177:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb0EE:
+    #####:  173:	_M_clone(_Any_data& __dest, const _Any_data& __source, false_type)
+        -:  174:	{
+    #####:  175:	  __dest._M_access<_Functor*>() =
+    #####:  176:	    new _Functor(*__source._M_access<const _Functor*>());
+    #####:  177:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE8_M_cloneERSt9_Any_dataRKS8_St17integral_constantIbLb0EE:
+    #####:  173:	_M_clone(_Any_data& __dest, const _Any_data& __source, false_type)
+        -:  174:	{
+    #####:  175:	  __dest._M_access<_Functor*>() =
+    #####:  176:	    new _Functor(*__source._M_access<const _Functor*>());
+    #####:  177:	}
+------------------
+        -:  178:
+        -:  179:	// Destroying a location-invariant object may still require
+        -:  180:	// destruction.
+        -:  181:	static void
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb1EE:
+    #####:  182:	_M_destroy(_Any_data& __victim, true_type)
+        -:  183:	{
+    #####:  184:	  __victim._M_access<_Functor>().~_Functor();
+    #####:  185:	}
+------------------
+        -:  186:
+        -:  187:	// Destroying an object located on the heap.
+        -:  188:	static void
+    #####:  189:	_M_destroy(_Any_data& __victim, false_type)
+        -:  190:	{
+    #####:  191:	  delete __victim._M_access<_Functor*>();
+    #####:  192:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb0EE:
+    #####:  189:	_M_destroy(_Any_data& __victim, false_type)
+        -:  190:	{
+    #####:  191:	  delete __victim._M_access<_Functor*>();
+    #####:  192:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb0EE:
+    #####:  189:	_M_destroy(_Any_data& __victim, false_type)
+        -:  190:	{
+    #####:  191:	  delete __victim._M_access<_Functor*>();
+    #####:  192:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb0EE:
+    #####:  189:	_M_destroy(_Any_data& __victim, false_type)
+        -:  190:	{
+    #####:  191:	  delete __victim._M_access<_Functor*>();
+    #####:  192:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE10_M_destroyERSt9_Any_dataSt17integral_constantIbLb0EE:
+    #####:  189:	_M_destroy(_Any_data& __victim, false_type)
+        -:  190:	{
+    #####:  191:	  delete __victim._M_access<_Functor*>();
+    #####:  192:	}
+------------------
+        -:  193:
+        -:  194:      public:
+        -:  195:	static bool
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEE10_M_managerERSt9_Any_dataRKS8_St18_Manager_operation:
+    #####:  196:	_M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  197:		   _Manager_operation __op)
+        -:  198:	{
+    #####:  199:	  switch (__op)
+        -:  200:	    {
+        -:  201:#if __cpp_rtti
+    #####:  202:	    case __get_type_info:
+    #####:  203:	      __dest._M_access<const type_info*>() = &typeid(_Functor);
+    #####:  204:	      break;
+        -:  205:#endif
+    #####:  206:	    case __get_functor_ptr:
+    #####:  207:	      __dest._M_access<_Functor*>() = _M_get_pointer(__source);
+    #####:  208:	      break;
+        -:  209:
+    #####:  210:	    case __clone_functor:
+    #####:  211:	      _M_clone(__dest, __source, _Local_storage());
+    #####:  212:	      break;
+        -:  213:
+    #####:  214:	    case __destroy_functor:
+    #####:  215:	      _M_destroy(__dest, _Local_storage());
+    #####:  216:	      break;
+        -:  217:	    }
+    #####:  218:	  return false;
+        -:  219:	}
+------------------
+        -:  220:
+        -:  221:	static void
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_:
+    #####:  222:	_M_init_functor(_Any_data& __functor, _Functor&& __f)
+    #####:  223:	{ _M_init_functor(__functor, std::move(__f), _Local_storage()); }
+------------------
+        -:  224:
+        -:  225:	template<typename _Signature>
+        -:  226:	  static bool
+        -:  227:	  _M_not_empty_function(const function<_Signature>& __f)
+        -:  228:	  { return static_cast<bool>(__f); }
+        -:  229:
+        -:  230:	template<typename _Tp>
+        -:  231:	  static bool
+        -:  232:	  _M_not_empty_function(_Tp* __fp)
+        -:  233:	  { return __fp != nullptr; }
+        -:  234:
+        -:  235:	template<typename _Class, typename _Tp>
+        -:  236:	  static bool
+        -:  237:	  _M_not_empty_function(_Tp _Class::* __mp)
+        -:  238:	  { return __mp != nullptr; }
+        -:  239:
+        -:  240:	template<typename _Tp>
+        -:  241:	  static bool
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEE21_M_not_empty_functionIS6_EEbRKT_:
+    #####:  242:	  _M_not_empty_function(const _Tp&)
+    #####:  243:	  { return true; }
+------------------
+        -:  244:
+        -:  245:      private:
+        -:  246:	static void
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb1EE:
+    #####:  247:	_M_init_functor(_Any_data& __functor, _Functor&& __f, true_type)
+    #####:  248:	{ ::new (__functor._M_access()) _Functor(std::move(__f)); }
+------------------
+        -:  249:
+        -:  250:	static void
+    #####:  251:	_M_init_functor(_Any_data& __functor, _Functor&& __f, false_type)
+    #####:  252:	{ __functor._M_access<_Functor*>() = new _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb0EE:
+    #####:  251:	_M_init_functor(_Any_data& __functor, _Functor&& __f, false_type)
+    #####:  252:	{ __functor._M_access<_Functor*>() = new _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb0EE:
+    #####:  251:	_M_init_functor(_Any_data& __functor, _Functor&& __f, false_type)
+    #####:  252:	{ __functor._M_access<_Functor*>() = new _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb0EE:
+    #####:  251:	_M_init_functor(_Any_data& __functor, _Functor&& __f, false_type)
+    #####:  252:	{ __functor._M_access<_Functor*>() = new _Functor(std::move(__f)); }
+------------------
+_ZNSt14_Function_base13_Base_managerINSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE15_M_init_functorERSt9_Any_dataOS6_St17integral_constantIbLb0EE:
+    #####:  251:	_M_init_functor(_Any_data& __functor, _Functor&& __f, false_type)
+    #####:  252:	{ __functor._M_access<_Functor*>() = new _Functor(std::move(__f)); }
+------------------
+        -:  253:      };
+        -:  254:
+    #####:  255:    _Function_base() : _M_manager(nullptr) { }
+        -:  256:
+    #####:  257:    ~_Function_base()
+    #####:  258:    {
+    #####:  259:      if (_M_manager)
+    #####:  260:	_M_manager(_M_functor, _M_functor, __destroy_functor);
+    #####:  261:    }
+        -:  262:
+    #####:  263:    bool _M_empty() const { return !_M_manager; }
+        -:  264:
+        -:  265:    typedef bool (*_Manager_type)(_Any_data&, const _Any_data&,
+        -:  266:				  _Manager_operation);
+        -:  267:
+        -:  268:    _Any_data     _M_functor;
+        -:  269:    _Manager_type _M_manager;
+        -:  270:  };
+        -:  271:
+        -:  272:  template<typename _Signature, typename _Functor>
+        -:  273:    class _Function_handler;
+        -:  274:
+        -:  275:  template<typename _Res, typename _Functor, typename... _ArgTypes>
+        -:  276:    class _Function_handler<_Res(_ArgTypes...), _Functor>
+        -:  277:    : public _Function_base::_Base_manager<_Functor>
+        -:  278:    {
+        -:  279:      typedef _Function_base::_Base_manager<_Functor> _Base;
+        -:  280:
+        -:  281:    public:
+        -:  282:      static _Res
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+_ZNSt17_Function_handlerIFbcENSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEE9_M_invokeERKSt9_Any_dataOc:
+    #####:  283:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  284:      {
+    #####:  285:	return (*_Base::_M_get_pointer(__functor))(
+    #####:  286:	    std::forward<_ArgTypes>(__args)...);
+        -:  287:      }
+------------------
+        -:  288:    };
+        -:  289:
+        -:  290:  template<typename _Functor, typename... _ArgTypes>
+        -:  291:    class _Function_handler<void(_ArgTypes...), _Functor>
+        -:  292:    : public _Function_base::_Base_manager<_Functor>
+        -:  293:    {
+        -:  294:      typedef _Function_base::_Base_manager<_Functor> _Base;
+        -:  295:
+        -:  296:     public:
+        -:  297:      static void
+        -:  298:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  299:      {
+        -:  300:	(*_Base::_M_get_pointer(__functor))(
+        -:  301:	    std::forward<_ArgTypes>(__args)...);
+        -:  302:      }
+        -:  303:    };
+        -:  304:
+        -:  305:  template<typename _Class, typename _Member, typename _Res,
+        -:  306:	   typename... _ArgTypes>
+        -:  307:    class _Function_handler<_Res(_ArgTypes...), _Member _Class::*>
+        -:  308:    : public _Function_handler<void(_ArgTypes...), _Member _Class::*>
+        -:  309:    {
+        -:  310:      typedef _Function_handler<void(_ArgTypes...), _Member _Class::*>
+        -:  311:	_Base;
+        -:  312:
+        -:  313:     public:
+        -:  314:      static _Res
+        -:  315:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  316:      {
+        -:  317:	return std::__invoke(_Base::_M_get_pointer(__functor)->__value,
+        -:  318:			     std::forward<_ArgTypes>(__args)...);
+        -:  319:      }
+        -:  320:    };
+        -:  321:
+        -:  322:  template<typename _Class, typename _Member, typename... _ArgTypes>
+        -:  323:    class _Function_handler<void(_ArgTypes...), _Member _Class::*>
+        -:  324:    : public _Function_base::_Base_manager<
+        -:  325:		 _Simple_type_wrapper< _Member _Class::* > >
+        -:  326:    {
+        -:  327:      typedef _Member _Class::* _Functor;
+        -:  328:      typedef _Simple_type_wrapper<_Functor> _Wrapper;
+        -:  329:      typedef _Function_base::_Base_manager<_Wrapper> _Base;
+        -:  330:
+        -:  331:    public:
+        -:  332:      static bool
+        -:  333:      _M_manager(_Any_data& __dest, const _Any_data& __source,
+        -:  334:		 _Manager_operation __op)
+        -:  335:      {
+        -:  336:	switch (__op)
+        -:  337:	  {
+        -:  338:#if __cpp_rtti
+        -:  339:	  case __get_type_info:
+        -:  340:	    __dest._M_access<const type_info*>() = &typeid(_Functor);
+        -:  341:	    break;
+        -:  342:#endif
+        -:  343:	  case __get_functor_ptr:
+        -:  344:	    __dest._M_access<_Functor*>() =
+        -:  345:	      &_Base::_M_get_pointer(__source)->__value;
+        -:  346:	    break;
+        -:  347:
+        -:  348:	  default:
+        -:  349:	    _Base::_M_manager(__dest, __source, __op);
+        -:  350:	  }
+        -:  351:	return false;
+        -:  352:      }
+        -:  353:
+        -:  354:      static void
+        -:  355:      _M_invoke(const _Any_data& __functor, _ArgTypes&&... __args)
+        -:  356:      {
+        -:  357:	std::__invoke(_Base::_M_get_pointer(__functor)->__value,
+        -:  358:		      std::forward<_ArgTypes>(__args)...);
+        -:  359:      }
+        -:  360:    };
+        -:  361:
+        -:  362:  /**
+        -:  363:   *  @brief Primary class template for std::function.
+        -:  364:   *  @ingroup functors
+        -:  365:   *
+        -:  366:   *  Polymorphic function wrapper.
+        -:  367:   */
+        -:  368:  template<typename _Res, typename... _ArgTypes>
+        -:  369:    class function<_Res(_ArgTypes...)>
+        -:  370:    : public _Maybe_unary_or_binary_function<_Res, _ArgTypes...>,
+        -:  371:      private _Function_base
+        -:  372:    {
+        -:  373:      template<typename _Func,
+        -:  374:	       typename _Res2 = __invoke_result<_Func&, _ArgTypes...>>
+        -:  375:	struct _Callable
+        -:  376:	: __is_invocable_impl<_Res2, _Res>::type
+        -:  377:	{ };
+        -:  378:
+        -:  379:      // Used so the return type convertibility checks aren't done when
+        -:  380:      // performing overload resolution for copy construction/assignment.
+        -:  381:      template<typename _Tp>
+        -:  382:	struct _Callable<function, _Tp> : false_type { };
+        -:  383:
+        -:  384:      template<typename _Cond, typename _Tp>
+        -:  385:	using _Requires = typename enable_if<_Cond::value, _Tp>::type;
+        -:  386:
+        -:  387:    public:
+        -:  388:      typedef _Res result_type;
+        -:  389:
+        -:  390:      // [3.7.2.1] construct/copy/destroy
+        -:  391:
+        -:  392:      /**
+        -:  393:       *  @brief Default construct creates an empty function call wrapper.
+        -:  394:       *  @post @c !(bool)*this
+        -:  395:       */
+    #####:  396:      function() noexcept
+    #####:  397:      : _Function_base() { }
+        -:  398:
+        -:  399:      /**
+        -:  400:       *  @brief Creates an empty function call wrapper.
+        -:  401:       *  @post @c !(bool)*this
+        -:  402:       */
+        -:  403:      function(nullptr_t) noexcept
+        -:  404:      : _Function_base() { }
+        -:  405:
+        -:  406:      /**
+        -:  407:       *  @brief %Function copy constructor.
+        -:  408:       *  @param __x A %function object with identical call signature.
+        -:  409:       *  @post @c bool(*this) == bool(__x)
+        -:  410:       *
+        -:  411:       *  The newly-created %function contains a copy of the target of @a
+        -:  412:       *  __x (if it has one).
+        -:  413:       */
+        -:  414:      function(const function& __x);
+        -:  415:
+        -:  416:      /**
+        -:  417:       *  @brief %Function move constructor.
+        -:  418:       *  @param __x A %function object rvalue with identical call signature.
+        -:  419:       *
+        -:  420:       *  The newly-created %function contains the target of @a __x
+        -:  421:       *  (if it has one).
+        -:  422:       */
+    #####:  423:      function(function&& __x) noexcept : _Function_base()
+        -:  424:      {
+    #####:  425:	__x.swap(*this);
+    #####:  426:      }
+        -:  427:
+        -:  428:      /**
+        -:  429:       *  @brief Builds a %function that targets a copy of the incoming
+        -:  430:       *  function object.
+        -:  431:       *  @param __f A %function object that is callable with parameters of
+        -:  432:       *  type @c T1, @c T2, ..., @c TN and returns a value convertible
+        -:  433:       *  to @c Res.
+        -:  434:       *
+        -:  435:       *  The newly-created %function object will target a copy of
+        -:  436:       *  @a __f. If @a __f is @c reference_wrapper<F>, then this function
+        -:  437:       *  object will contain a reference to the function object @c
+        -:  438:       *  __f.get(). If @a __f is a NULL function pointer or NULL
+        -:  439:       *  pointer-to-member, the newly-created object will be empty.
+        -:  440:       *
+        -:  441:       *  If @a __f is a non-NULL function pointer or an object of type @c
+        -:  442:       *  reference_wrapper<F>, this function will not throw.
+        -:  443:       */
+        -:  444:      template<typename _Functor,
+        -:  445:	       typename = _Requires<__not_<is_same<_Functor, function>>, void>,
+        -:  446:	       typename = _Requires<_Callable<_Functor>, void>>
+        -:  447:	function(_Functor);
+        -:  448:
+        -:  449:      /**
+        -:  450:       *  @brief %Function assignment operator.
+        -:  451:       *  @param __x A %function with identical call signature.
+        -:  452:       *  @post @c (bool)*this == (bool)x
+        -:  453:       *  @returns @c *this
+        -:  454:       *
+        -:  455:       *  The target of @a __x is copied to @c *this. If @a __x has no
+        -:  456:       *  target, then @c *this will be empty.
+        -:  457:       *
+        -:  458:       *  If @a __x targets a function pointer or a reference to a function
+        -:  459:       *  object, then this operation will not throw an %exception.
+        -:  460:       */
+        -:  461:      function&
+        -:  462:      operator=(const function& __x)
+        -:  463:      {
+        -:  464:	function(__x).swap(*this);
+        -:  465:	return *this;
+        -:  466:      }
+        -:  467:
+        -:  468:      /**
+        -:  469:       *  @brief %Function move-assignment operator.
+        -:  470:       *  @param __x A %function rvalue with identical call signature.
+        -:  471:       *  @returns @c *this
+        -:  472:       *
+        -:  473:       *  The target of @a __x is moved to @c *this. If @a __x has no
+        -:  474:       *  target, then @c *this will be empty.
+        -:  475:       *
+        -:  476:       *  If @a __x targets a function pointer or a reference to a function
+        -:  477:       *  object, then this operation will not throw an %exception.
+        -:  478:       */
+        -:  479:      function&
+    #####:  480:      operator=(function&& __x) noexcept
+        -:  481:      {
+    #####:  482:	function(std::move(__x)).swap(*this);
+    #####:  483:	return *this;
+        -:  484:      }
+        -:  485:
+        -:  486:      /**
+        -:  487:       *  @brief %Function assignment to zero.
+        -:  488:       *  @post @c !(bool)*this
+        -:  489:       *  @returns @c *this
+        -:  490:       *
+        -:  491:       *  The target of @c *this is deallocated, leaving it empty.
+        -:  492:       */
+        -:  493:      function&
+        -:  494:      operator=(nullptr_t) noexcept
+        -:  495:      {
+        -:  496:	if (_M_manager)
+        -:  497:	  {
+        -:  498:	    _M_manager(_M_functor, _M_functor, __destroy_functor);
+        -:  499:	    _M_manager = nullptr;
+        -:  500:	    _M_invoker = nullptr;
+        -:  501:	  }
+        -:  502:	return *this;
+        -:  503:      }
+        -:  504:
+        -:  505:      /**
+        -:  506:       *  @brief %Function assignment to a new target.
+        -:  507:       *  @param __f A %function object that is callable with parameters of
+        -:  508:       *  type @c T1, @c T2, ..., @c TN and returns a value convertible
+        -:  509:       *  to @c Res.
+        -:  510:       *  @return @c *this
+        -:  511:       *
+        -:  512:       *  This  %function object wrapper will target a copy of @a
+        -:  513:       *  __f. If @a __f is @c reference_wrapper<F>, then this function
+        -:  514:       *  object will contain a reference to the function object @c
+        -:  515:       *  __f.get(). If @a __f is a NULL function pointer or NULL
+        -:  516:       *  pointer-to-member, @c this object will be empty.
+        -:  517:       *
+        -:  518:       *  If @a __f is a non-NULL function pointer or an object of type @c
+        -:  519:       *  reference_wrapper<F>, this function will not throw.
+        -:  520:       */
+        -:  521:      template<typename _Functor>
+        -:  522:	_Requires<_Callable<typename decay<_Functor>::type>, function&>
+        -:  523:	operator=(_Functor&& __f)
+        -:  524:	{
+        -:  525:	  function(std::forward<_Functor>(__f)).swap(*this);
+        -:  526:	  return *this;
+        -:  527:	}
+        -:  528:
+        -:  529:      /// @overload
+        -:  530:      template<typename _Functor>
+        -:  531:	function&
+        -:  532:	operator=(reference_wrapper<_Functor> __f) noexcept
+        -:  533:	{
+        -:  534:	  function(__f).swap(*this);
+        -:  535:	  return *this;
+        -:  536:	}
+        -:  537:
+        -:  538:      // [3.7.2.2] function modifiers
+        -:  539:
+        -:  540:      /**
+        -:  541:       *  @brief Swap the targets of two %function objects.
+        -:  542:       *  @param __x A %function with identical call signature.
+        -:  543:       *
+        -:  544:       *  Swap the targets of @c this function object and @a __f. This
+        -:  545:       *  function will not throw an %exception.
+        -:  546:       */
+    #####:  547:      void swap(function& __x) noexcept
+        -:  548:      {
+    #####:  549:	std::swap(_M_functor, __x._M_functor);
+    #####:  550:	std::swap(_M_manager, __x._M_manager);
+    #####:  551:	std::swap(_M_invoker, __x._M_invoker);
+    #####:  552:      }
+        -:  553:
+        -:  554:      // [3.7.2.3] function capacity
+        -:  555:
+        -:  556:      /**
+        -:  557:       *  @brief Determine if the %function wrapper has a target.
+        -:  558:       *
+        -:  559:       *  @return @c true when this %function object contains a target,
+        -:  560:       *  or @c false when it is empty.
+        -:  561:       *
+        -:  562:       *  This function will not throw an %exception.
+        -:  563:       */
+    #####:  564:      explicit operator bool() const noexcept
+    #####:  565:      { return !_M_empty(); }
+        -:  566:
+        -:  567:      // [3.7.2.4] function invocation
+        -:  568:
+        -:  569:      /**
+        -:  570:       *  @brief Invokes the function targeted by @c *this.
+        -:  571:       *  @returns the result of the target.
+        -:  572:       *  @throws bad_function_call when @c !(bool)*this
+        -:  573:       *
+        -:  574:       *  The function call operator invokes the target function object
+        -:  575:       *  stored by @c this.
+        -:  576:       */
+        -:  577:      _Res operator()(_ArgTypes... __args) const;
+        -:  578:
+        -:  579:#if __cpp_rtti
+        -:  580:      // [3.7.2.5] function target access
+        -:  581:      /**
+        -:  582:       *  @brief Determine the type of the target of this function object
+        -:  583:       *  wrapper.
+        -:  584:       *
+        -:  585:       *  @returns the type identifier of the target function object, or
+        -:  586:       *  @c typeid(void) if @c !(bool)*this.
+        -:  587:       *
+        -:  588:       *  This function will not throw an %exception.
+        -:  589:       */
+        -:  590:      const type_info& target_type() const noexcept;
+        -:  591:
+        -:  592:      /**
+        -:  593:       *  @brief Access the stored target function object.
+        -:  594:       *
+        -:  595:       *  @return Returns a pointer to the stored target function object,
+        -:  596:       *  if @c typeid(_Functor).equals(target_type()); otherwise, a NULL
+        -:  597:       *  pointer.
+        -:  598:       *
+        -:  599:       * This function does not throw exceptions.
+        -:  600:       *
+        -:  601:       * @{
+        -:  602:       */
+        -:  603:      template<typename _Functor>       _Functor* target() noexcept;
+        -:  604:
+        -:  605:      template<typename _Functor> const _Functor* target() const noexcept;
+        -:  606:      // @}
+        -:  607:#endif
+        -:  608:
+        -:  609:    private:
+        -:  610:      using _Invoker_type = _Res (*)(const _Any_data&, _ArgTypes&&...);
+        -:  611:      _Invoker_type _M_invoker;
+        -:  612:  };
+        -:  613:
+        -:  614:#if __cpp_deduction_guides >= 201606
+        -:  615:  template<typename>
+        -:  616:    struct __function_guide_helper
+        -:  617:    { };
+        -:  618:
+        -:  619:  template<typename _Res, typename _Tp, bool _Nx, typename... _Args>
+        -:  620:    struct __function_guide_helper<
+        -:  621:      _Res (_Tp::*) (_Args...) noexcept(_Nx)
+        -:  622:    >
+        -:  623:    { using type = _Res(_Args...); };
+        -:  624:
+        -:  625:  template<typename _Res, typename _Tp, bool _Nx, typename... _Args>
+        -:  626:    struct __function_guide_helper<
+        -:  627:      _Res (_Tp::*) (_Args...) & noexcept(_Nx)
+        -:  628:    >
+        -:  629:    { using type = _Res(_Args...); };
+        -:  630:
+        -:  631:  template<typename _Res, typename _Tp, bool _Nx, typename... _Args>
+        -:  632:    struct __function_guide_helper<
+        -:  633:      _Res (_Tp::*) (_Args...) const noexcept(_Nx)
+        -:  634:    >
+        -:  635:    { using type = _Res(_Args...); };
+        -:  636:
+        -:  637:  template<typename _Res, typename _Tp, bool _Nx, typename... _Args>
+        -:  638:    struct __function_guide_helper<
+        -:  639:      _Res (_Tp::*) (_Args...) const & noexcept(_Nx)
+        -:  640:    >
+        -:  641:    { using type = _Res(_Args...); };
+        -:  642:
+        -:  643:  template<typename _Res, typename... _ArgTypes>
+        -:  644:    function(_Res(*)(_ArgTypes...)) -> function<_Res(_ArgTypes...)>;
+        -:  645:
+        -:  646:  template<typename _Functor, typename _Signature = typename
+        -:  647:	   __function_guide_helper<decltype(&_Functor::operator())>::type>
+        -:  648:    function(_Functor) -> function<_Signature>;
+        -:  649:#endif
+        -:  650:
+        -:  651:  // Out-of-line member definitions.
+        -:  652:  template<typename _Res, typename... _ArgTypes>
+    #####:  653:    function<_Res(_ArgTypes...)>::
+        -:  654:    function(const function& __x)
+    #####:  655:    : _Function_base()
+        -:  656:    {
+    #####:  657:      if (static_cast<bool>(__x))
+        -:  658:	{
+    #####:  659:	  __x._M_manager(_M_functor, __x._M_functor, __clone_functor);
+    #####:  660:	  _M_invoker = __x._M_invoker;
+    #####:  661:	  _M_manager = __x._M_manager;
+        -:  662:	}
+    #####:  663:    }
+        -:  664:
+        -:  665:  template<typename _Res, typename... _ArgTypes>
+        -:  666:    template<typename _Functor, typename, typename>
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+_ZNSt8functionIFbcEEC2INSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEEvvEET_:
+    #####:  667:      function<_Res(_ArgTypes...)>::
+        -:  668:      function(_Functor __f)
+    #####:  669:      : _Function_base()
+        -:  670:      {
+        -:  671:	typedef _Function_handler<_Res(_ArgTypes...), _Functor> _My_handler;
+        -:  672:
+    #####:  673:	if (_My_handler::_M_not_empty_function(__f))
+        -:  674:	  {
+    #####:  675:	    _My_handler::_M_init_functor(_M_functor, std::move(__f));
+    #####:  676:	    _M_invoker = &_My_handler::_M_invoke;
+    #####:  677:	    _M_manager = &_My_handler::_M_manager;
+        -:  678:	  }
+    #####:  679:      }
+------------------
+        -:  680:
+        -:  681:  template<typename _Res, typename... _ArgTypes>
+        -:  682:    _Res
+    #####:  683:    function<_Res(_ArgTypes...)>::
+        -:  684:    operator()(_ArgTypes... __args) const
+        -:  685:    {
+    #####:  686:      if (_M_empty())
+    #####:  687:	__throw_bad_function_call();
+    #####:  688:      return _M_invoker(_M_functor, std::forward<_ArgTypes>(__args)...);
+        -:  689:    }
+        -:  690:
+        -:  691:#if __cpp_rtti
+        -:  692:  template<typename _Res, typename... _ArgTypes>
+        -:  693:    const type_info&
+        -:  694:    function<_Res(_ArgTypes...)>::
+        -:  695:    target_type() const noexcept
+        -:  696:    {
+        -:  697:      if (_M_manager)
+        -:  698:	{
+        -:  699:	  _Any_data __typeinfo_result;
+        -:  700:	  _M_manager(__typeinfo_result, _M_functor, __get_type_info);
+        -:  701:	  return *__typeinfo_result._M_access<const type_info*>();
+        -:  702:	}
+        -:  703:      else
+        -:  704:	return typeid(void);
+        -:  705:    }
+        -:  706:
+        -:  707:  template<typename _Res, typename... _ArgTypes>
+        -:  708:    template<typename _Functor>
+        -:  709:      _Functor*
+        -:  710:      function<_Res(_ArgTypes...)>::
+        -:  711:      target() noexcept
+        -:  712:      {
+        -:  713:	const function* __const_this = this;
+        -:  714:	const _Functor* __func = __const_this->template target<_Functor>();
+        -:  715:	return const_cast<_Functor*>(__func);
+        -:  716:      }
+        -:  717:
+        -:  718:  template<typename _Res, typename... _ArgTypes>
+        -:  719:    template<typename _Functor>
+        -:  720:      const _Functor*
+        -:  721:      function<_Res(_ArgTypes...)>::
+        -:  722:      target() const noexcept
+        -:  723:      {
+        -:  724:	if (typeid(_Functor) == target_type() && _M_manager)
+        -:  725:	  {
+        -:  726:	    _Any_data __ptr;
+        -:  727:	    _M_manager(__ptr, _M_functor, __get_functor_ptr);
+        -:  728:	    return __ptr._M_access<const _Functor*>();
+        -:  729:	  }
+        -:  730:	else
+        -:  731:	  return nullptr;
+        -:  732:      }
+        -:  733:#endif
+        -:  734:
+        -:  735:  // [20.7.15.2.6] null pointer comparisons
+        -:  736:
+        -:  737:  /**
+        -:  738:   *  @brief Compares a polymorphic function object wrapper against 0
+        -:  739:   *  (the NULL pointer).
+        -:  740:   *  @returns @c true if the wrapper has no target, @c false otherwise
+        -:  741:   *
+        -:  742:   *  This function will not throw an %exception.
+        -:  743:   */
+        -:  744:  template<typename _Res, typename... _Args>
+        -:  745:    inline bool
+        -:  746:    operator==(const function<_Res(_Args...)>& __f, nullptr_t) noexcept
+        -:  747:    { return !static_cast<bool>(__f); }
+        -:  748:
+        -:  749:  /// @overload
+        -:  750:  template<typename _Res, typename... _Args>
+        -:  751:    inline bool
+        -:  752:    operator==(nullptr_t, const function<_Res(_Args...)>& __f) noexcept
+        -:  753:    { return !static_cast<bool>(__f); }
+        -:  754:
+        -:  755:  /**
+        -:  756:   *  @brief Compares a polymorphic function object wrapper against 0
+        -:  757:   *  (the NULL pointer).
+        -:  758:   *  @returns @c false if the wrapper has no target, @c true otherwise
+        -:  759:   *
+        -:  760:   *  This function will not throw an %exception.
+        -:  761:   */
+        -:  762:  template<typename _Res, typename... _Args>
+        -:  763:    inline bool
+        -:  764:    operator!=(const function<_Res(_Args...)>& __f, nullptr_t) noexcept
+        -:  765:    { return static_cast<bool>(__f); }
+        -:  766:
+        -:  767:  /// @overload
+        -:  768:  template<typename _Res, typename... _Args>
+        -:  769:    inline bool
+        -:  770:    operator!=(nullptr_t, const function<_Res(_Args...)>& __f) noexcept
+        -:  771:    { return static_cast<bool>(__f); }
+        -:  772:
+        -:  773:
+        -:  774:  // [20.7.15.2.7] specialized algorithms
+        -:  775:
+        -:  776:  /**
+        -:  777:   *  @brief Swap the targets of two polymorphic function object wrappers.
+        -:  778:   *
+        -:  779:   *  This function will not throw an %exception.
+        -:  780:   */
+        -:  781:  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  782:  // 2062. Effect contradictions w/o no-throw guarantee of std::function swaps
+        -:  783:  template<typename _Res, typename... _Args>
+        -:  784:    inline void
+        -:  785:    swap(function<_Res(_Args...)>& __x, function<_Res(_Args...)>& __y) noexcept
+        -:  786:    { __x.swap(__y); }
+        -:  787:
+        -:  788:#if __cplusplus >= 201703L
+        -:  789:  namespace __detail::__variant
+        -:  790:  {
+        -:  791:    template<typename> struct _Never_valueless_alt; // see <variant>
+        -:  792:
+        -:  793:    // Provide the strong exception-safety guarantee when emplacing a
+        -:  794:    // function into a variant.
+        -:  795:    template<typename _Signature>
+        -:  796:      struct _Never_valueless_alt<std::function<_Signature>>
+        -:  797:      : std::true_type
+        -:  798:      { };
+        -:  799:  }  // namespace __detail::__variant
+        -:  800:#endif // C++17
+        -:  801:
+        -:  802:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  803:} // namespace std
+        -:  804:
+        -:  805:#endif // C++11
+        -:  806:#endif // _GLIBCXX_STD_FUNCTION_H
