@@ -1,0 +1,17 @@
+        -:    0:Source:test/test_index.cpp
+        -:    0:Graph:./test_index.gcno
+        -:    0:Data:./test_index.gcda
+        -:    0:Runs:1
+        -:    1:#define CATCH_CONFIG_MAIN
+        -:    2:#include "../include/catch.hpp"
+        -:    3:#include "../src/index.cpp"
+        -:    4:
+        1:    5:TEST_CASE("Test uncovered_if method", "[index]")
+        -:    6:{
+        2:    7:    REQUIRE (Index::uncovered_if() == false);
+        1:    8:}
+        -:    9:
+        1:   10:TEST_CASE("Test fully covered", "[index]")
+        -:   11:{
+        2:   12:    REQUIRE (Index::fully_covered() == true);
+        1:   13:}
