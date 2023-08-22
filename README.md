@@ -5,7 +5,7 @@
 
 ## What is this?
 
-This is a repository containing aggregated information about the state of all Codecov language standards. Each standard ensures that Codecov is properly processing reports for a particular lanaguge if its build is passing.
+This is a repository containing aggregated information about the state of all Codecov language standards. Each standard ensures that Codecov is properly processing reports for a particular language if its build is passing.
 
 ## List of Standards
 
@@ -33,11 +33,11 @@ Within the GitHub Action build for each standard:
   * Coverage is uploaded to Codecov
   * A script ensures that Codecov's API returns the right coverage percentage
 
-If all of these details check out, then Codecov's processing for that lanaguage is working as intended. The build status of all of these builds are aggregated in the table above.
+If all of these details check out, then Codecov's processing for that language is working as intended. The build status of all of these builds are aggregated in the table above.
 
 ## Contributing
 
-Want to write a standard for a lanaguage that's not listed in the table? Contributions are welcome! See the [Contributing Guide](CONTRIBUTING.md) for more details.
+Want to write a standard for a language that's not listed in the table? Contributions are welcome! See the [Contributing Guide](CONTRIBUTING.md) for more details.
 
 
 ## License
