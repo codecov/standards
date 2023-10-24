@@ -1,0 +1,295 @@
+        -:    0:Source:/usr/include/c++/11/bits/exception_ptr.h
+        -:    0:Graph:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcno
+        -:    0:Data:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcda
+        -:    0:Runs:1
+        -:    1:// Exception Handling support header (exception_ptr class) for -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2008-2021 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of GCC.
+        -:    6://
+        -:    7:// GCC is free software; you can redistribute it and/or modify
+        -:    8:// it under the terms of the GNU General Public License as published by
+        -:    9:// the Free Software Foundation; either version 3, or (at your option)
+        -:   10:// any later version.
+        -:   11:// 
+        -:   12:// GCC is distributed in the hope that it will be useful,
+        -:   13:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   14:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   15:// GNU General Public License for more details.
+        -:   16:// 
+        -:   17:// Under Section 7 of GPL version 3, you are granted additional
+        -:   18:// permissions described in the GCC Runtime Library Exception, version
+        -:   19:// 3.1, as published by the Free Software Foundation.
+        -:   20:
+        -:   21:// You should have received a copy of the GNU General Public License and
+        -:   22:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   23:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   24:// <http://www.gnu.org/licenses/>.
+        -:   25:
+        -:   26:/** @file bits/exception_ptr.h
+        -:   27: *  This is an internal header file, included by other library headers.
+        -:   28: *  Do not attempt to use it directly. @headername{exception}
+        -:   29: */
+        -:   30:
+        -:   31:#ifndef _EXCEPTION_PTR_H
+        -:   32:#define _EXCEPTION_PTR_H
+        -:   33:
+        -:   34:#pragma GCC visibility push(default)
+        -:   35:
+        -:   36:#include <bits/c++config.h>
+        -:   37:#include <bits/exception_defines.h>
+        -:   38:#include <bits/cxxabi_init_exception.h>
+        -:   39:#include <typeinfo>
+        -:   40:#include <new>
+        -:   41:
+        -:   42:#if __cplusplus >= 201103L
+        -:   43:# include <bits/move.h>
+        -:   44:#endif
+        -:   45:
+        -:   46:#ifdef _GLIBCXX_EH_PTR_RELOPS_COMPAT
+        -:   47:# define _GLIBCXX_EH_PTR_USED __attribute__((__used__))
+        -:   48:#else
+        -:   49:# define _GLIBCXX_EH_PTR_USED
+        -:   50:#endif
+        -:   51:
+        -:   52:extern "C++" {
+        -:   53:
+        -:   54:namespace std 
+        -:   55:{
+        -:   56:  class type_info;
+        -:   57:
+        -:   58:  /**
+        -:   59:   * @addtogroup exceptions
+        -:   60:   * @{
+        -:   61:   */
+        -:   62:
+        -:   63:  namespace __exception_ptr
+        -:   64:  {
+        -:   65:    class exception_ptr;
+        -:   66:  }
+        -:   67:
+        -:   68:  using __exception_ptr::exception_ptr;
+        -:   69:
+        -:   70:  /** Obtain an exception_ptr to the currently handled exception. If there
+        -:   71:   *  is none, or the currently handled exception is foreign, return the null
+        -:   72:   *  value.
+        -:   73:   */
+        -:   74:  exception_ptr current_exception() _GLIBCXX_USE_NOEXCEPT;
+        -:   75:
+        -:   76:  template<typename _Ex>
+        -:   77:  exception_ptr make_exception_ptr(_Ex) _GLIBCXX_USE_NOEXCEPT;
+        -:   78:
+        -:   79:  /// Throw the object pointed to by the exception_ptr.
+        -:   80:  void rethrow_exception(exception_ptr) __attribute__ ((__noreturn__));
+        -:   81:
+        -:   82:  namespace __exception_ptr
+        -:   83:  {
+        -:   84:    using std::rethrow_exception;
+        -:   85:
+        -:   86:    /**
+        -:   87:     *  @brief An opaque pointer to an arbitrary exception.
+        -:   88:     *  @ingroup exceptions
+        -:   89:     */
+        -:   90:    class exception_ptr
+        -:   91:    {
+        -:   92:      void* _M_exception_object;
+        -:   93:
+        -:   94:      explicit exception_ptr(void* __e) _GLIBCXX_USE_NOEXCEPT;
+        -:   95:
+        -:   96:      void _M_addref() _GLIBCXX_USE_NOEXCEPT;
+        -:   97:      void _M_release() _GLIBCXX_USE_NOEXCEPT;
+        -:   98:
+        -:   99:      void *_M_get() const _GLIBCXX_NOEXCEPT __attribute__ ((__pure__));
+        -:  100:
+        -:  101:      friend exception_ptr std::current_exception() _GLIBCXX_USE_NOEXCEPT;
+        -:  102:      friend void std::rethrow_exception(exception_ptr);
+        -:  103:      template<typename _Ex>
+        -:  104:      friend exception_ptr std::make_exception_ptr(_Ex) _GLIBCXX_USE_NOEXCEPT;
+        -:  105:
+        -:  106:    public:
+        -:  107:      exception_ptr() _GLIBCXX_USE_NOEXCEPT;
+        -:  108:
+        -:  109:      exception_ptr(const exception_ptr&) _GLIBCXX_USE_NOEXCEPT;
+        -:  110:
+        -:  111:#if __cplusplus >= 201103L
+function _ZNSt15__exception_ptr13exception_ptrC2EDn called 0 returned 0% blocks executed 0%
+    #####:  112:      exception_ptr(nullptr_t) noexcept
+    #####:  113:      : _M_exception_object(nullptr)
+    #####:  114:      { }
+        -:  115:
+function _ZNSt15__exception_ptr13exception_ptrC2EOS0_ called 0 returned 0% blocks executed 0%
+    #####:  116:      exception_ptr(exception_ptr&& __o) noexcept
+    #####:  117:      : _M_exception_object(__o._M_exception_object)
+    #####:  118:      { __o._M_exception_object = nullptr; }
+        -:  119:#endif
+        -:  120:
+        -:  121:#if (__cplusplus < 201103L) || defined (_GLIBCXX_EH_PTR_COMPAT)
+        -:  122:      typedef void (exception_ptr::*__safe_bool)();
+        -:  123:
+        -:  124:      // For construction from nullptr or 0.
+        -:  125:      exception_ptr(__safe_bool) _GLIBCXX_USE_NOEXCEPT;
+        -:  126:#endif
+        -:  127:
+        -:  128:      exception_ptr& 
+        -:  129:      operator=(const exception_ptr&) _GLIBCXX_USE_NOEXCEPT;
+        -:  130:
+        -:  131:#if __cplusplus >= 201103L
+        -:  132:      exception_ptr& 
+        -:  133:      operator=(exception_ptr&& __o) noexcept
+        -:  134:      {
+        -:  135:        exception_ptr(static_cast<exception_ptr&&>(__o)).swap(*this);
+        -:  136:        return *this;
+        -:  137:      }
+        -:  138:#endif
+        -:  139:
+        -:  140:      ~exception_ptr() _GLIBCXX_USE_NOEXCEPT;
+        -:  141:
+        -:  142:      void 
+        -:  143:      swap(exception_ptr&) _GLIBCXX_USE_NOEXCEPT;
+        -:  144:
+        -:  145:#ifdef _GLIBCXX_EH_PTR_COMPAT
+        -:  146:      // Retained for compatibility with CXXABI_1.3.
+        -:  147:      void _M_safe_bool_dummy() _GLIBCXX_USE_NOEXCEPT
+        -:  148:	__attribute__ ((__const__));
+        -:  149:      bool operator!() const _GLIBCXX_USE_NOEXCEPT
+        -:  150:	__attribute__ ((__pure__));
+        -:  151:      operator __safe_bool() const _GLIBCXX_USE_NOEXCEPT;
+        -:  152:#endif
+        -:  153:
+        -:  154:#if __cplusplus >= 201103L
+        -:  155:      explicit operator bool() const noexcept
+        -:  156:      { return _M_exception_object; }
+        -:  157:#endif
+        -:  158:
+        -:  159:#if __cpp_impl_three_way_comparison >= 201907L \
+        -:  160:      && ! defined _GLIBCXX_EH_PTR_RELOPS_COMPAT
+        -:  161:      friend bool
+        -:  162:      operator==(const exception_ptr&, const exception_ptr&) noexcept = default;
+        -:  163:#else
+        -:  164:      friend _GLIBCXX_EH_PTR_USED bool
+function _ZNSt15__exception_ptreqERKNS_13exception_ptrES2_ called 0 returned 0% blocks executed 0%
+    #####:  165:      operator==(const exception_ptr& __x, const exception_ptr& __y)
+        -:  166:      _GLIBCXX_USE_NOEXCEPT
+    #####:  167:      { return __x._M_exception_object == __y._M_exception_object; }
+        -:  168:
+        -:  169:      friend _GLIBCXX_EH_PTR_USED bool
+        -:  170:      operator!=(const exception_ptr& __x, const exception_ptr& __y)
+        -:  171:      _GLIBCXX_USE_NOEXCEPT
+        -:  172:      { return __x._M_exception_object != __y._M_exception_object; }
+        -:  173:#endif
+        -:  174:
+        -:  175:      const class std::type_info*
+        -:  176:      __cxa_exception_type() const _GLIBCXX_USE_NOEXCEPT
+        -:  177:	__attribute__ ((__pure__));
+        -:  178:    };
+        -:  179:
+        -:  180:    _GLIBCXX_EH_PTR_USED
+        -:  181:    inline
+        -:  182:    exception_ptr::exception_ptr() _GLIBCXX_USE_NOEXCEPT
+        -:  183:    : _M_exception_object(0)
+        -:  184:    { }
+        -:  185:
+        -:  186:    _GLIBCXX_EH_PTR_USED
+        -:  187:    inline
+function _ZNSt15__exception_ptr13exception_ptrC2ERKS0_ called 0 returned 0% blocks executed 0%
+    #####:  188:    exception_ptr::exception_ptr(const exception_ptr& __other)
+    #####:  189:    _GLIBCXX_USE_NOEXCEPT
+    #####:  190:    : _M_exception_object(__other._M_exception_object)
+        -:  191:    {
+    #####:  192:      if (_M_exception_object)
+branch  0 never executed
+branch  1 never executed
+    #####:  193:	_M_addref();
+call    0 never executed
+    #####:  194:    }
+        -:  195:
+        -:  196:    _GLIBCXX_EH_PTR_USED
+        -:  197:    inline
+function _ZNSt15__exception_ptr13exception_ptrD2Ev called 0 returned 0% blocks executed 0%
+    #####:  198:    exception_ptr::~exception_ptr() _GLIBCXX_USE_NOEXCEPT
+        -:  199:    {
+    #####:  200:      if (_M_exception_object)
+branch  0 never executed
+branch  1 never executed
+    #####:  201:	_M_release();
+call    0 never executed
+    #####:  202:    }
+        -:  203:
+        -:  204:    _GLIBCXX_EH_PTR_USED
+        -:  205:    inline exception_ptr&
+        -:  206:    exception_ptr::operator=(const exception_ptr& __other) _GLIBCXX_USE_NOEXCEPT
+        -:  207:    {
+        -:  208:      exception_ptr(__other).swap(*this);
+        -:  209:      return *this;
+        -:  210:    }
+        -:  211:
+        -:  212:    _GLIBCXX_EH_PTR_USED
+        -:  213:    inline void
+        -:  214:    exception_ptr::swap(exception_ptr &__other) _GLIBCXX_USE_NOEXCEPT
+        -:  215:    {
+        -:  216:      void *__tmp = _M_exception_object;
+        -:  217:      _M_exception_object = __other._M_exception_object;
+        -:  218:      __other._M_exception_object = __tmp;
+        -:  219:    }
+        -:  220:
+        -:  221:    /// @relates exception_ptr
+        -:  222:    inline void
+        -:  223:    swap(exception_ptr& __lhs, exception_ptr& __rhs)
+        -:  224:    { __lhs.swap(__rhs); }
+        -:  225:
+        -:  226:    /// @cond undocumented
+        -:  227:    template<typename _Ex>
+        -:  228:      inline void
+        -:  229:      __dest_thunk(void* __x)
+        -:  230:      { static_cast<_Ex*>(__x)->~_Ex(); }
+        -:  231:    /// @endcond
+        -:  232:
+        -:  233:  } // namespace __exception_ptr
+        -:  234:
+        -:  235:  /// Obtain an exception_ptr pointing to a copy of the supplied object.
+        -:  236:  template<typename _Ex>
+        -:  237:    exception_ptr 
+        -:  238:    make_exception_ptr(_Ex __ex) _GLIBCXX_USE_NOEXCEPT
+        -:  239:    {
+        -:  240:#if __cpp_exceptions && __cpp_rtti && !_GLIBCXX_HAVE_CDTOR_CALLABI \
+        -:  241:      && __cplusplus >= 201103L
+        -:  242:      using _Ex2 = typename remove_reference<_Ex>::type;
+        -:  243:      void* __e = __cxxabiv1::__cxa_allocate_exception(sizeof(_Ex));
+        -:  244:      (void) __cxxabiv1::__cxa_init_primary_exception(
+        -:  245:	  __e, const_cast<std::type_info*>(&typeid(_Ex)),
+        -:  246:	  __exception_ptr::__dest_thunk<_Ex2>);
+        -:  247:      try
+        -:  248:	{
+        -:  249:	  ::new (__e) _Ex2(std::forward<_Ex>(__ex));
+        -:  250:          return exception_ptr(__e);
+        -:  251:	}
+        -:  252:      catch(...)
+        -:  253:	{
+        -:  254:	  __cxxabiv1::__cxa_free_exception(__e);
+        -:  255:	  return current_exception();
+        -:  256:	}
+        -:  257:#elif __cpp_exceptions
+        -:  258:      try
+        -:  259:	{
+        -:  260:          throw __ex;
+        -:  261:	}
+        -:  262:      catch(...)
+        -:  263:	{
+        -:  264:	  return current_exception();
+        -:  265:	}
+        -:  266:#else // no RTTI and no exceptions
+        -:  267:      return exception_ptr();
+        -:  268:#endif
+        -:  269:    }
+        -:  270:
+        -:  271:#undef _GLIBCXX_EH_PTR_USED
+        -:  272:
+        -:  273:  /// @} group exceptions
+        -:  274:} // namespace std
+        -:  275:
+        -:  276:} // extern "C++"
+        -:  277:
+        -:  278:#pragma GCC visibility pop
+        -:  279:
+        -:  280:#endif

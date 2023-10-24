@@ -1,0 +1,448 @@
+        -:    0:Source:/usr/include/c++/11/bits/regex_constants.h
+        -:    0:Graph:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcno
+        -:    0:Data:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcda
+        -:    0:Runs:1
+        -:    1:// class template regex -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2010-2021 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/**
+        -:   26: *  @file bits/regex_constants.h
+        -:   27: *  @brief Constant definitions for the std regex library.
+        -:   28: *
+        -:   29: *  This is an internal header file, included by other library headers.
+        -:   30: *  Do not attempt to use it directly. @headername{regex}
+        -:   31: */
+        -:   32:
+        -:   33:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   34:{
+        -:   35:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   36:
+        -:   37:/**
+        -:   38: * @defgroup regex Regular Expressions
+        -:   39: *
+        -:   40: * A facility for performing regular expression pattern matching.
+        -:   41: * @{
+        -:   42: */
+        -:   43:
+        -:   44:/**
+        -:   45: * @namespace std::regex_constants
+        -:   46: * @brief ISO C++ 2011 namespace for options and flags used with std::regex
+        -:   47: */
+        -:   48:namespace regex_constants
+        -:   49:{
+        -:   50:  /**
+        -:   51:   * @name 5.1 Regular Expression Syntax Options
+        -:   52:   */
+        -:   53:  ///@{
+        -:   54:  enum __syntax_option
+        -:   55:  {
+        -:   56:    _S_icase,
+        -:   57:    _S_nosubs,
+        -:   58:    _S_optimize,
+        -:   59:    _S_collate,
+        -:   60:    _S_ECMAScript,
+        -:   61:    _S_basic,
+        -:   62:    _S_extended,
+        -:   63:    _S_awk,
+        -:   64:    _S_grep,
+        -:   65:    _S_egrep,
+        -:   66:    _S_polynomial,
+        -:   67:    _S_multiline
+        -:   68:  };
+        -:   69:
+        -:   70:  /**
+        -:   71:   * @brief This is a bitmask type indicating how to interpret the regex.
+        -:   72:   *
+        -:   73:   * The @c syntax_option_type is implementation defined but it is valid to
+        -:   74:   * perform bitwise operations on these values and expect the right thing to
+        -:   75:   * happen.
+        -:   76:   *
+        -:   77:   * A valid value of type syntax_option_type shall have exactly one of the
+        -:   78:   * elements @c ECMAScript, @c basic, @c extended, @c awk, @c grep, @c egrep
+        -:   79:   * %set.
+        -:   80:   */
+        -:   81:  enum syntax_option_type : unsigned int { };
+        -:   82:
+        -:   83:  /**
+        -:   84:   * Specifies that the matching of regular expressions against a character
+        -:   85:   * sequence shall be performed without regard to case.
+        -:   86:   */
+        -:   87:  _GLIBCXX17_INLINE constexpr syntax_option_type icase =
+        -:   88:    static_cast<syntax_option_type>(1 << _S_icase);
+        -:   89:
+        -:   90:  /**
+        -:   91:   * Specifies that when a regular expression is matched against a character
+        -:   92:   * container sequence, no sub-expression matches are to be stored in the
+        -:   93:   * supplied match_results structure.
+        -:   94:   */
+        -:   95:  _GLIBCXX17_INLINE constexpr syntax_option_type nosubs =
+        -:   96:    static_cast<syntax_option_type>(1 << _S_nosubs);
+        -:   97:
+        -:   98:  /**
+        -:   99:   * Specifies that the regular expression engine should pay more attention to
+        -:  100:   * the speed with which regular expressions are matched, and less to the
+        -:  101:   * speed with which regular expression objects are constructed. Otherwise
+        -:  102:   * it has no detectable effect on the program output.
+        -:  103:   */
+        -:  104:  _GLIBCXX17_INLINE constexpr syntax_option_type optimize =
+        -:  105:    static_cast<syntax_option_type>(1 << _S_optimize);
+        -:  106:
+        -:  107:  /**
+        -:  108:   * Specifies that character ranges of the form [a-b] should be locale
+        -:  109:   * sensitive.
+        -:  110:   */
+        -:  111:  _GLIBCXX17_INLINE constexpr syntax_option_type collate =
+        -:  112:    static_cast<syntax_option_type>(1 << _S_collate);
+        -:  113:
+        -:  114:  /**
+        -:  115:   * Specifies that the grammar recognized by the regular expression engine is
+        -:  116:   * that used by ECMAScript in ECMA-262 [Ecma International, ECMAScript
+        -:  117:   * Language Specification, Standard Ecma-262, third edition, 1999], as
+        -:  118:   * modified in section [28.13].  This grammar is similar to that defined
+        -:  119:   * in the PERL scripting language but extended with elements found in the
+        -:  120:   * POSIX regular expression grammar.
+        -:  121:   */
+        -:  122:  _GLIBCXX17_INLINE constexpr syntax_option_type ECMAScript =
+        -:  123:    static_cast<syntax_option_type>(1 << _S_ECMAScript);
+        -:  124:
+        -:  125:  /**
+        -:  126:   * Specifies that the grammar recognized by the regular expression engine is
+        -:  127:   * that used by POSIX basic regular expressions in IEEE Std 1003.1-2001,
+        -:  128:   * Portable Operating System Interface (POSIX), Base Definitions and
+        -:  129:   * Headers, Section 9, Regular Expressions [IEEE, Information Technology --
+        -:  130:   * Portable Operating System Interface (POSIX), IEEE Standard 1003.1-2001].
+        -:  131:   */
+        -:  132:  _GLIBCXX17_INLINE constexpr syntax_option_type basic =
+        -:  133:    static_cast<syntax_option_type>(1 << _S_basic);
+        -:  134:
+        -:  135:  /**
+        -:  136:   * Specifies that the grammar recognized by the regular expression engine is
+        -:  137:   * that used by POSIX extended regular expressions in IEEE Std 1003.1-2001,
+        -:  138:   * Portable Operating System Interface (POSIX), Base Definitions and
+        -:  139:   * Headers, Section 9, Regular Expressions.
+        -:  140:   */
+        -:  141:  _GLIBCXX17_INLINE constexpr syntax_option_type extended =
+        -:  142:    static_cast<syntax_option_type>(1 << _S_extended);
+        -:  143:
+        -:  144:  /**
+        -:  145:   * Specifies that the grammar recognized by the regular expression engine is
+        -:  146:   * that used by POSIX utility awk in IEEE Std 1003.1-2001.  This option is
+        -:  147:   * identical to syntax_option_type extended, except that C-style escape
+        -:  148:   * sequences are supported.  These sequences are:
+        -:  149:   * \\\\, \\a, \\b, \\f, \\n, \\r, \\t , \\v, \\&apos,, &apos,,
+        -:  150:   * and \\ddd (where ddd is one, two, or three octal digits).
+        -:  151:   */
+        -:  152:  _GLIBCXX17_INLINE constexpr syntax_option_type awk =
+        -:  153:    static_cast<syntax_option_type>(1 << _S_awk);
+        -:  154:
+        -:  155:  /**
+        -:  156:   * Specifies that the grammar recognized by the regular expression engine is
+        -:  157:   * that used by POSIX utility grep in IEEE Std 1003.1-2001.  This option is
+        -:  158:   * identical to syntax_option_type basic, except that newlines are treated
+        -:  159:   * as whitespace.
+        -:  160:   */
+        -:  161:  _GLIBCXX17_INLINE constexpr syntax_option_type grep =
+        -:  162:    static_cast<syntax_option_type>(1 << _S_grep);
+        -:  163:
+        -:  164:  /**
+        -:  165:   * Specifies that the grammar recognized by the regular expression engine is
+        -:  166:   * that used by POSIX utility grep when given the -E option in
+        -:  167:   * IEEE Std 1003.1-2001.  This option is identical to syntax_option_type
+        -:  168:   * extended, except that newlines are treated as whitespace.
+        -:  169:   */
+        -:  170:  _GLIBCXX17_INLINE constexpr syntax_option_type egrep =
+        -:  171:    static_cast<syntax_option_type>(1 << _S_egrep);
+        -:  172:
+        -:  173:#if __cplusplus >= 201703L || !defined __STRICT_ANSI__
+        -:  174:  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  175:  // 2503. multiline option should be added to syntax_option_type
+        -:  176:  /**
+        -:  177:   * Specifies that the `^` anchor matches at the beginning of a line,
+        -:  178:   * and the `$` anchor matches at the end of a line, not only at the
+        -:  179:   * beginning/end of the input.
+        -:  180:   * Valid for the ECMAScript syntax, ignored otherwise.
+        -:  181:   * @since C++17
+        -:  182:   */
+        -:  183:  _GLIBCXX17_INLINE constexpr syntax_option_type multiline =
+        -:  184:    static_cast<syntax_option_type>(1 << _S_multiline);
+        -:  185:#endif
+        -:  186:
+        -:  187:  /// Extension: Equivalent to regex_constants::multiline for C++11 and C++14.
+        -:  188:  _GLIBCXX17_INLINE constexpr syntax_option_type __multiline =
+        -:  189:    static_cast<syntax_option_type>(1 << _S_multiline);
+        -:  190:
+        -:  191:  /**
+        -:  192:   * Extension: Ensure both space complexity of compiled regex and
+        -:  193:   * time complexity execution are not exponential.
+        -:  194:   * If specified in a regex with back-references, the exception
+        -:  195:   * regex_constants::error_complexity will be thrown.
+        -:  196:   */
+        -:  197:  _GLIBCXX17_INLINE constexpr syntax_option_type __polynomial =
+        -:  198:    static_cast<syntax_option_type>(1 << _S_polynomial);
+        -:  199:
+        -:  200:  constexpr inline syntax_option_type
+function _ZNSt15regex_constantsanENS_18syntax_option_typeES0_ called 0 returned 0% blocks executed 0%
+    #####:  201:  operator&(syntax_option_type __a, syntax_option_type __b)
+        -:  202:  {
+        -:  203:    return (syntax_option_type)(static_cast<unsigned int>(__a)
+    #####:  204:				& static_cast<unsigned int>(__b));
+        -:  205:  }
+        -:  206:
+        -:  207:  constexpr inline syntax_option_type
+function _ZNSt15regex_constantsorENS_18syntax_option_typeES0_ called 0 returned 0% blocks executed 0%
+    #####:  208:  operator|(syntax_option_type __a, syntax_option_type __b)
+        -:  209:  {
+        -:  210:    return (syntax_option_type)(static_cast<unsigned int>(__a)
+    #####:  211:				| static_cast<unsigned int>(__b));
+        -:  212:  }
+        -:  213:
+        -:  214:  constexpr inline syntax_option_type
+        -:  215:  operator^(syntax_option_type __a, syntax_option_type __b)
+        -:  216:  {
+        -:  217:    return (syntax_option_type)(static_cast<unsigned int>(__a)
+        -:  218:				^ static_cast<unsigned int>(__b));
+        -:  219:  }
+        -:  220:
+        -:  221:  constexpr inline syntax_option_type
+        -:  222:  operator~(syntax_option_type __a)
+        -:  223:  { return (syntax_option_type)(~static_cast<unsigned int>(__a)); }
+        -:  224:
+        -:  225:  inline syntax_option_type&
+        -:  226:  operator&=(syntax_option_type& __a, syntax_option_type __b)
+        -:  227:  { return __a = __a & __b; }
+        -:  228:
+        -:  229:  inline syntax_option_type&
+function _ZNSt15regex_constantsoRERNS_18syntax_option_typeES0_ called 0 returned 0% blocks executed 0%
+    #####:  230:  operator|=(syntax_option_type& __a, syntax_option_type __b)
+    #####:  231:  { return __a = __a | __b; }
+call    0 never executed
+        -:  232:
+        -:  233:  inline syntax_option_type&
+        -:  234:  operator^=(syntax_option_type& __a, syntax_option_type __b)
+        -:  235:  { return __a = __a ^ __b; }
+        -:  236:
+        -:  237:  ///@}
+        -:  238:
+        -:  239:  /**
+        -:  240:   * @name 5.2 Matching Rules
+        -:  241:   *
+        -:  242:   * Matching a regular expression against a sequence of characters [first,
+        -:  243:   * last) proceeds according to the rules of the grammar specified for the
+        -:  244:   * regular expression object, modified according to the effects listed
+        -:  245:   * below for any bitmask elements set.
+        -:  246:   *
+        -:  247:   */
+        -:  248:  ///@{
+        -:  249:
+        -:  250:  enum __match_flag
+        -:  251:  {
+        -:  252:    _S_not_bol,
+        -:  253:    _S_not_eol,
+        -:  254:    _S_not_bow,
+        -:  255:    _S_not_eow,
+        -:  256:    _S_any,
+        -:  257:    _S_not_null,
+        -:  258:    _S_continuous,
+        -:  259:    _S_prev_avail,
+        -:  260:    _S_sed,
+        -:  261:    _S_no_copy,
+        -:  262:    _S_first_only,
+        -:  263:    _S_match_flag_last
+        -:  264:  };
+        -:  265:
+        -:  266:  /**
+        -:  267:   * @brief This is a bitmask type indicating regex matching rules.
+        -:  268:   *
+        -:  269:   * The @c match_flag_type is implementation defined but it is valid to
+        -:  270:   * perform bitwise operations on these values and expect the right thing to
+        -:  271:   * happen.
+        -:  272:   */
+        -:  273:  enum match_flag_type : unsigned int { };
+        -:  274:
+        -:  275:  /**
+        -:  276:   * The default matching rules.
+        -:  277:   */
+        -:  278:  _GLIBCXX17_INLINE constexpr match_flag_type match_default =
+        -:  279:    static_cast<match_flag_type>(0);
+        -:  280:
+        -:  281:  /**
+        -:  282:   * The first character in the sequence [first, last) is treated as though it
+        -:  283:   * is not at the beginning of a line, so the character (^) in the regular
+        -:  284:   * expression shall not match [first, first).
+        -:  285:   */
+        -:  286:  _GLIBCXX17_INLINE constexpr match_flag_type match_not_bol =
+        -:  287:    static_cast<match_flag_type>(1 << _S_not_bol);
+        -:  288:
+        -:  289:  /**
+        -:  290:   * The last character in the sequence [first, last) is treated as though it
+        -:  291:   * is not at the end of a line, so the character ($) in the regular
+        -:  292:   * expression shall not match [last, last).
+        -:  293:   */
+        -:  294:  _GLIBCXX17_INLINE constexpr match_flag_type match_not_eol =
+        -:  295:    static_cast<match_flag_type>(1 << _S_not_eol);
+        -:  296:
+        -:  297:  /**
+        -:  298:   * The expression \\b is not matched against the sub-sequence
+        -:  299:   * [first,first).
+        -:  300:   */
+        -:  301:  _GLIBCXX17_INLINE constexpr match_flag_type match_not_bow =
+        -:  302:    static_cast<match_flag_type>(1 << _S_not_bow);
+        -:  303:
+        -:  304:  /**
+        -:  305:   * The expression \\b should not be matched against the sub-sequence
+        -:  306:   * [last,last).
+        -:  307:   */
+        -:  308:  _GLIBCXX17_INLINE constexpr match_flag_type match_not_eow =
+        -:  309:    static_cast<match_flag_type>(1 << _S_not_eow);
+        -:  310:
+        -:  311:  /**
+        -:  312:   * If more than one match is possible then any match is an acceptable
+        -:  313:   * result.
+        -:  314:   */
+        -:  315:  _GLIBCXX17_INLINE constexpr match_flag_type match_any =
+        -:  316:    static_cast<match_flag_type>(1 << _S_any);
+        -:  317:
+        -:  318:  /**
+        -:  319:   * The expression does not match an empty sequence.
+        -:  320:   */
+        -:  321:  _GLIBCXX17_INLINE constexpr match_flag_type match_not_null =
+        -:  322:    static_cast<match_flag_type>(1 << _S_not_null);
+        -:  323:
+        -:  324:  /**
+        -:  325:   * The expression only matches a sub-sequence that begins at first .
+        -:  326:   */
+        -:  327:  _GLIBCXX17_INLINE constexpr match_flag_type match_continuous =
+        -:  328:    static_cast<match_flag_type>(1 << _S_continuous);
+        -:  329:
+        -:  330:  /**
+        -:  331:   * `--first` is a valid iterator position.  When this flag is set then the
+        -:  332:   * flags `match_not_bol` and `match_not_bow` are ignored by the algorithms
+        -:  333:   * `regex_match`, `regex_search`, and `regex_replace`, and by the iterators
+        -:  334:   * `regex_iterator` and `regex_token_iterator`.
+        -:  335:   */
+        -:  336:  _GLIBCXX17_INLINE constexpr match_flag_type match_prev_avail =
+        -:  337:    static_cast<match_flag_type>(1 << _S_prev_avail);
+        -:  338:
+        -:  339:  /**
+        -:  340:   * When a regular expression match is to be replaced by a new string, the
+        -:  341:   * new string is constructed using the rules used by the ECMAScript replace
+        -:  342:   * function in ECMA- 262 [Ecma International, ECMAScript Language
+        -:  343:   * Specification, Standard Ecma-262, third edition, 1999], part 15.5.4.11
+        -:  344:   * String.prototype.replace. In addition, during search and replace
+        -:  345:   * operations all non-overlapping occurrences of the regular expression
+        -:  346:   * are located and replaced, and sections of the input that did not match
+        -:  347:   * the expression are copied unchanged to the output string.
+        -:  348:   *
+        -:  349:   * Format strings (from ECMA-262 [15.5.4.11]):
+        -:  350:   * @li $$  The dollar-sign itself ($)
+        -:  351:   * @li $&  The matched substring.
+        -:  352:   * @li $`  The portion of @a string that precedes the matched substring.
+        -:  353:   *         This would be match_results::prefix().
+        -:  354:   * @li $'  The portion of @a string that follows the matched substring.
+        -:  355:   *         This would be match_results::suffix().
+        -:  356:   * @li $n  The nth capture, where n is in [1,9] and $n is not followed by a
+        -:  357:   *         decimal digit.  If n <= match_results::size() and the nth capture
+        -:  358:   *         is undefined, use the empty string instead.  If n >
+        -:  359:   *         match_results::size(), the result is implementation-defined.
+        -:  360:   * @li $nn The nnth capture, where nn is a two-digit decimal number on
+        -:  361:   *         [01, 99].  If nn <= match_results::size() and the nth capture is
+        -:  362:   *         undefined, use the empty string instead. If
+        -:  363:   *         nn > match_results::size(), the result is implementation-defined.
+        -:  364:   */
+        -:  365:  _GLIBCXX17_INLINE constexpr match_flag_type format_default =
+        -:  366:    static_cast<match_flag_type>(0);
+        -:  367:
+        -:  368:  /**
+        -:  369:   * When a regular expression match is to be replaced by a new string, the
+        -:  370:   * new string is constructed using the rules used by the POSIX sed utility
+        -:  371:   * in IEEE Std 1003.1- 2001 [IEEE, Information Technology -- Portable
+        -:  372:   * Operating System Interface (POSIX), IEEE Standard 1003.1-2001].
+        -:  373:   */
+        -:  374:  _GLIBCXX17_INLINE constexpr match_flag_type format_sed =
+        -:  375:    static_cast<match_flag_type>(1 << _S_sed);
+        -:  376:
+        -:  377:  /**
+        -:  378:   * During a search and replace operation, sections of the character
+        -:  379:   * container sequence being searched that do not match the regular
+        -:  380:   * expression shall not be copied to the output string.
+        -:  381:   */
+        -:  382:  _GLIBCXX17_INLINE constexpr match_flag_type format_no_copy =
+        -:  383:    static_cast<match_flag_type>(1 << _S_no_copy);
+        -:  384:
+        -:  385:  /**
+        -:  386:   * When specified during a search and replace operation, only the first
+        -:  387:   * occurrence of the regular expression shall be replaced.
+        -:  388:   */
+        -:  389:  _GLIBCXX17_INLINE constexpr match_flag_type format_first_only =
+        -:  390:    static_cast<match_flag_type>(1 << _S_first_only);
+        -:  391:
+        -:  392:  constexpr inline match_flag_type
+function _ZNSt15regex_constantsanENS_15match_flag_typeES0_ called 0 returned 0% blocks executed 0%
+    #####:  393:  operator&(match_flag_type __a, match_flag_type __b)
+        -:  394:  {
+        -:  395:    return (match_flag_type)(static_cast<unsigned int>(__a)
+    #####:  396:				& static_cast<unsigned int>(__b));
+        -:  397:  }
+        -:  398:
+        -:  399:  constexpr inline match_flag_type
+function _ZNSt15regex_constantsorENS_15match_flag_typeES0_ called 0 returned 0% blocks executed 0%
+    #####:  400:  operator|(match_flag_type __a, match_flag_type __b)
+        -:  401:  {
+        -:  402:    return (match_flag_type)(static_cast<unsigned int>(__a)
+    #####:  403:				| static_cast<unsigned int>(__b));
+        -:  404:  }
+        -:  405:
+        -:  406:  constexpr inline match_flag_type
+        -:  407:  operator^(match_flag_type __a, match_flag_type __b)
+        -:  408:  {
+        -:  409:    return (match_flag_type)(static_cast<unsigned int>(__a)
+        -:  410:				^ static_cast<unsigned int>(__b));
+        -:  411:  }
+        -:  412:
+        -:  413:  constexpr inline match_flag_type
+function _ZNSt15regex_constantscoENS_15match_flag_typeE called 0 returned 0% blocks executed 0%
+    #####:  414:  operator~(match_flag_type __a)
+    #####:  415:  { return (match_flag_type)(~static_cast<unsigned int>(__a)); }
+        -:  416:
+        -:  417:  inline match_flag_type&
+function _ZNSt15regex_constantsaNERNS_15match_flag_typeES0_ called 0 returned 0% blocks executed 0%
+    #####:  418:  operator&=(match_flag_type& __a, match_flag_type __b)
+    #####:  419:  { return __a = __a & __b; }
+call    0 never executed
+        -:  420:
+        -:  421:  inline match_flag_type&
+        -:  422:  operator|=(match_flag_type& __a, match_flag_type __b)
+        -:  423:  { return __a = __a | __b; }
+        -:  424:
+        -:  425:  inline match_flag_type&
+        -:  426:  operator^=(match_flag_type& __a, match_flag_type __b)
+        -:  427:  { return __a = __a ^ __b; }
+        -:  428:
+        -:  429:  ///@}
+        -:  430:} // namespace regex_constants
+        -:  431:/// @} group regex
+        -:  432:
+        -:  433:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  434:} // namespace std
+        -:  435:

@@ -1,0 +1,922 @@
+        -:    0:Source:/usr/include/c++/11/bits/regex_scanner.tcc
+        -:    0:Graph:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcno
+        -:    0:Data:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcda
+        -:    0:Runs:1
+        -:    1:// class template regex -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2013-2021 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/**
+        -:   26: *  @file bits/regex_scanner.tcc
+        -:   27: *  This is an internal header file, included by other library headers.
+        -:   28: *  Do not attempt to use it directly. @headername{regex}
+        -:   29: */
+        -:   30:
+        -:   31:// FIXME make comments doxygen format.
+        -:   32:
+        -:   33:// N3376 specified 6 regex styles: ECMAScript, basic, extended, grep, egrep
+        -:   34:// and awk
+        -:   35:// 1) grep is basic except '\n' is treated as '|'
+        -:   36:// 2) egrep is extended except '\n' is treated as '|'
+        -:   37:// 3) awk is extended except special escaping rules, and there's no
+        -:   38://    back-reference.
+        -:   39://
+        -:   40:// References:
+        -:   41://
+        -:   42:// ECMAScript: ECMA-262 15.10
+        -:   43://
+        -:   44:// basic, extended:
+        -:   45:// http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap09.html
+        -:   46://
+        -:   47:// awk: http://pubs.opengroup.org/onlinepubs/000095399/utilities/awk.html
+        -:   48:
+        -:   49:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   50:{
+        -:   51:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   52:
+        -:   53:namespace __detail
+        -:   54:{
+        -:   55:  template<typename _CharT>
+function _ZNSt8__detail8_ScannerIcEC2EPKcS3_NSt15regex_constants18syntax_option_typeESt6locale called 0 returned 0% blocks executed 0%
+    #####:   56:    _Scanner<_CharT>::
+        -:   57:    _Scanner(const _CharT* __begin, const _CharT* __end,
+        -:   58:	     _FlagT __flags, std::locale __loc)
+        -:   59:    : _ScannerBase(__flags),
+    #####:   60:      _M_current(__begin), _M_end(__end),
+    #####:   61:      _M_ctype(std::use_facet<_CtypeT>(__loc)),
+call    0 never executed
+    #####:   62:      _M_eat_escape(_M_is_ecma()
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:   63:		    ? &_Scanner::_M_eat_escape_ecma
+    #####:   64:		    : &_Scanner::_M_eat_escape_posix)
+call    0 never executed
+call    1 never executed
+    #####:   65:    { _M_advance(); }
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+        -:   66:
+        -:   67:  template<typename _CharT>
+        -:   68:    void
+function _ZNSt8__detail8_ScannerIcE10_M_advanceEv called 0 returned 0% blocks executed 0%
+    #####:   69:    _Scanner<_CharT>::
+        -:   70:    _M_advance()
+        -:   71:    {
+    #####:   72:      if (_M_current == _M_end)
+branch  0 never executed
+branch  1 never executed
+        -:   73:	{
+    #####:   74:	  _M_token = _S_token_eof;
+    #####:   75:	  return;
+        -:   76:	}
+        -:   77:
+    #####:   78:      if (_M_state == _S_state_normal)
+branch  0 never executed
+branch  1 never executed
+    #####:   79:	_M_scan_normal();
+call    0 never executed
+    #####:   80:      else if (_M_state == _S_state_in_bracket)
+branch  0 never executed
+branch  1 never executed
+    #####:   81:	_M_scan_in_bracket();
+call    0 never executed
+    #####:   82:      else if (_M_state == _S_state_in_brace)
+branch  0 never executed
+branch  1 never executed
+    #####:   83:	_M_scan_in_brace();
+call    0 never executed
+        -:   84:      else
+        -:   85:	{
+        -:   86:	  __glibcxx_assert(false);
+        -:   87:	}
+        -:   88:    }
+        -:   89:
+        -:   90:  // Differences between styles:
+        -:   91:  // 1) "\(", "\)", "\{" in basic. It's not escaping.
+        -:   92:  // 2) "(?:", "(?=", "(?!" in ECMAScript.
+        -:   93:  template<typename _CharT>
+        -:   94:    void
+function _ZNSt8__detail8_ScannerIcE14_M_scan_normalEv called 0 returned 0% blocks executed 0%
+    #####:   95:    _Scanner<_CharT>::
+        -:   96:    _M_scan_normal()
+        -:   97:    {
+    #####:   98:      auto __c = *_M_current++;
+        -:   99:
+    #####:  100:      if (std::strchr(_M_spec_char, _M_ctype.narrow(__c, ' ')) == nullptr)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  101:	{
+    #####:  102:	  _M_token = _S_token_ord_char;
+    #####:  103:	  _M_value.assign(1, __c);
+call    0 never executed
+    #####:  104:	  return;
+        -:  105:	}
+    #####:  106:      if (__c == '\\')
+branch  0 never executed
+branch  1 never executed
+        -:  107:	{
+    #####:  108:	  if (_M_current == _M_end)
+branch  0 never executed
+branch  1 never executed
+    #####:  109:	    __throw_regex_error(
+call    0 never executed
+        -:  110:	      regex_constants::error_escape,
+        -:  111:	      "Unexpected end of regex when escaping.");
+        -:  112:
+    #####:  113:	  if (!_M_is_basic()
+call    0 never executed
+    #####:  114:	      || (*_M_current != '('
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  115:		  && *_M_current != ')'
+branch  0 never executed
+branch  1 never executed
+    #####:  116:		  && *_M_current != '{'))
+branch  0 never executed
+branch  1 never executed
+        -:  117:	    {
+    #####:  118:	      (this->*_M_eat_escape)();
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+    #####:  119:	      return;
+        -:  120:	    }
+    #####:  121:	  __c = *_M_current++;
+        -:  122:	}
+    #####:  123:      if (__c == '(')
+branch  0 never executed
+branch  1 never executed
+        -:  124:	{
+    #####:  125:	  if (_M_is_ecma() && *_M_current == '?')
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+        -:  126:	    {
+    #####:  127:	      if (++_M_current == _M_end)
+branch  0 never executed
+branch  1 never executed
+    #####:  128:		__throw_regex_error(
+call    0 never executed
+        -:  129:		  regex_constants::error_paren,
+        -:  130:		  "Unexpected end of regex when in an open parenthesis.");
+        -:  131:
+    #####:  132:	      if (*_M_current == ':')
+branch  0 never executed
+branch  1 never executed
+        -:  133:		{
+    #####:  134:		  ++_M_current;
+    #####:  135:		  _M_token = _S_token_subexpr_no_group_begin;
+        -:  136:		}
+    #####:  137:	      else if (*_M_current == '=')
+branch  0 never executed
+branch  1 never executed
+        -:  138:		{
+    #####:  139:		  ++_M_current;
+    #####:  140:		  _M_token = _S_token_subexpr_lookahead_begin;
+    #####:  141:		  _M_value.assign(1, 'p');
+call    0 never executed
+        -:  142:		}
+    #####:  143:	      else if (*_M_current == '!')
+branch  0 never executed
+branch  1 never executed
+        -:  144:		{
+    #####:  145:		  ++_M_current;
+    #####:  146:		  _M_token = _S_token_subexpr_lookahead_begin;
+    #####:  147:		  _M_value.assign(1, 'n');
+call    0 never executed
+        -:  148:		}
+        -:  149:	      else
+    #####:  150:		__throw_regex_error(
+call    0 never executed
+        -:  151:		  regex_constants::error_paren,
+        -:  152:		  "Invalid special open parenthesis.");
+        -:  153:	    }
+    #####:  154:	  else if (_M_flags & regex_constants::nosubs)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  155:	    _M_token = _S_token_subexpr_no_group_begin;
+        -:  156:	  else
+    #####:  157:	    _M_token = _S_token_subexpr_begin;
+        -:  158:	}
+    #####:  159:      else if (__c == ')')
+branch  0 never executed
+branch  1 never executed
+    #####:  160:	_M_token = _S_token_subexpr_end;
+    #####:  161:      else if (__c == '[')
+branch  0 never executed
+branch  1 never executed
+        -:  162:	{
+    #####:  163:	  _M_state = _S_state_in_bracket;
+    #####:  164:	  _M_at_bracket_start = true;
+    #####:  165:	  if (_M_current != _M_end && *_M_current == '^')
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  166:	    {
+    #####:  167:	      _M_token = _S_token_bracket_neg_begin;
+    #####:  168:	      ++_M_current;
+        -:  169:	    }
+        -:  170:	  else
+    #####:  171:	    _M_token = _S_token_bracket_begin;
+        -:  172:	}
+    #####:  173:      else if (__c == '{')
+branch  0 never executed
+branch  1 never executed
+        -:  174:	{
+    #####:  175:	  _M_state = _S_state_in_brace;
+    #####:  176:	  _M_token = _S_token_interval_begin;
+        -:  177:	}
+    #####:  178:      else if (__builtin_expect(__c == _CharT(0), false))
+branch  0 never executed
+branch  1 never executed
+        -:  179:	{
+    #####:  180:	  if (!_M_is_ecma())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  181:	    {
+    #####:  182:	      __throw_regex_error(regex_constants::_S_null,
+call    0 never executed
+        -:  183:		  "Unexpected null character in regular expression");
+        -:  184:	    }
+    #####:  185:	  _M_token = _S_token_ord_char;
+    #####:  186:	  _M_value.assign(1, __c);
+call    0 never executed
+        -:  187:	}
+    #####:  188:      else if (__c != ']' && __c != '}')
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  189:	{
+    #####:  190:	  auto __it = _M_token_tbl;
+    #####:  191:	  auto __narrowc = _M_ctype.narrow(__c, '\0');
+call    0 never executed
+    #####:  192:	  for (; __it->first != '\0'; ++__it)
+branch  0 never executed
+branch  1 never executed
+    #####:  193:	    if (__it->first == __narrowc)
+branch  0 never executed
+branch  1 never executed
+        -:  194:	      {
+    #####:  195:		_M_token = __it->second;
+    #####:  196:		return;
+        -:  197:	      }
+        -:  198:	  __glibcxx_assert(false);
+    #####:  199:	}
+        -:  200:      else
+        -:  201:	{
+    #####:  202:	  _M_token = _S_token_ord_char;
+    #####:  203:	  _M_value.assign(1, __c);
+call    0 never executed
+        -:  204:	}
+        -:  205:    }
+        -:  206:
+        -:  207:  // Differences between styles:
+        -:  208:  // 1) different semantics of "[]" and "[^]".
+        -:  209:  // 2) Escaping in bracket expr.
+        -:  210:  template<typename _CharT>
+        -:  211:    void
+function _ZNSt8__detail8_ScannerIcE18_M_scan_in_bracketEv called 0 returned 0% blocks executed 0%
+    #####:  212:    _Scanner<_CharT>::
+        -:  213:    _M_scan_in_bracket()
+        -:  214:    {
+    #####:  215:      if (_M_current == _M_end)
+branch  0 never executed
+branch  1 never executed
+    #####:  216:	__throw_regex_error(
+call    0 never executed
+        -:  217:	  regex_constants::error_brack,
+        -:  218:	  "Unexpected end of regex when in bracket expression.");
+        -:  219:
+    #####:  220:      auto __c = *_M_current++;
+        -:  221:
+    #####:  222:      if (__c == '-')
+branch  0 never executed
+branch  1 never executed
+    #####:  223:	_M_token = _S_token_bracket_dash;
+    #####:  224:      else if (__c == '[')
+branch  0 never executed
+branch  1 never executed
+        -:  225:	{
+    #####:  226:	  if (_M_current == _M_end)
+branch  0 never executed
+branch  1 never executed
+    #####:  227:	    __throw_regex_error(regex_constants::error_brack,
+call    0 never executed
+        -:  228:				"Unexpected character class open bracket.");
+        -:  229:
+    #####:  230:	  if (*_M_current == '.')
+branch  0 never executed
+branch  1 never executed
+        -:  231:	    {
+    #####:  232:	      _M_token = _S_token_collsymbol;
+    #####:  233:	      _M_eat_class(*_M_current++);
+call    0 never executed
+        -:  234:	    }
+    #####:  235:	  else if (*_M_current == ':')
+branch  0 never executed
+branch  1 never executed
+        -:  236:	    {
+    #####:  237:	      _M_token = _S_token_char_class_name;
+    #####:  238:	      _M_eat_class(*_M_current++);
+call    0 never executed
+        -:  239:	    }
+    #####:  240:	  else if (*_M_current == '=')
+branch  0 never executed
+branch  1 never executed
+        -:  241:	    {
+    #####:  242:	      _M_token = _S_token_equiv_class_name;
+    #####:  243:	      _M_eat_class(*_M_current++);
+call    0 never executed
+        -:  244:	    }
+        -:  245:	  else
+        -:  246:	    {
+    #####:  247:	      _M_token = _S_token_ord_char;
+    #####:  248:	      _M_value.assign(1, __c);
+call    0 never executed
+        -:  249:	    }
+        -:  250:	}
+        -:  251:      // In POSIX, when encountering "[]" or "[^]", the ']' is interpreted
+        -:  252:      // literally. So "[]]" and "[^]]" are valid regexes. See the testcases
+        -:  253:      // `*/empty_range.cc`.
+    #####:  254:      else if (__c == ']' && (_M_is_ecma() || !_M_at_bracket_start))
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+        -:  255:	{
+    #####:  256:	  _M_token = _S_token_bracket_end;
+    #####:  257:	  _M_state = _S_state_normal;
+        -:  258:	}
+        -:  259:      // ECMAScript and awk permits escaping in bracket.
+    #####:  260:      else if (__c == '\\' && (_M_is_ecma() || _M_is_awk()))
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+    #####:  261:	(this->*_M_eat_escape)();
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+        -:  262:      else
+        -:  263:	{
+    #####:  264:	  _M_token = _S_token_ord_char;
+    #####:  265:	  _M_value.assign(1, __c);
+call    0 never executed
+        -:  266:	}
+    #####:  267:      _M_at_bracket_start = false;
+    #####:  268:    }
+        -:  269:
+        -:  270:  // Differences between styles:
+        -:  271:  // 1) "\}" in basic style.
+        -:  272:  template<typename _CharT>
+        -:  273:    void
+function _ZNSt8__detail8_ScannerIcE16_M_scan_in_braceEv called 0 returned 0% blocks executed 0%
+    #####:  274:    _Scanner<_CharT>::
+        -:  275:    _M_scan_in_brace()
+        -:  276:    {
+    #####:  277:      if (_M_current == _M_end)
+branch  0 never executed
+branch  1 never executed
+    #####:  278:	__throw_regex_error(
+call    0 never executed
+        -:  279:	  regex_constants::error_brace,
+        -:  280:	  "Unexpected end of regex when in brace expression.");
+        -:  281:
+    #####:  282:      auto __c = *_M_current++;
+        -:  283:
+    #####:  284:      if (_M_ctype.is(_CtypeT::digit, __c))
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  285:	{
+    #####:  286:	  _M_token = _S_token_dup_count;
+    #####:  287:	  _M_value.assign(1, __c);
+call    0 never executed
+    #####:  288:	  while (_M_current != _M_end
+    #####:  289:		 && _M_ctype.is(_CtypeT::digit, *_M_current))
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+    #####:  290:	    _M_value += *_M_current++;
+call    0 never executed
+        -:  291:	}
+    #####:  292:      else if (__c == ',')
+branch  0 never executed
+branch  1 never executed
+    #####:  293:	_M_token = _S_token_comma;
+        -:  294:      // basic use \}.
+    #####:  295:      else if (_M_is_basic())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  296:	{
+    #####:  297:	  if (__c == '\\' && _M_current != _M_end && *_M_current == '}')
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  298:	    {
+    #####:  299:	      _M_state = _S_state_normal;
+    #####:  300:	      _M_token = _S_token_interval_end;
+    #####:  301:	      ++_M_current;
+        -:  302:	    }
+        -:  303:	  else
+    #####:  304:	    __throw_regex_error(regex_constants::error_badbrace,
+call    0 never executed
+        -:  305:				"Unexpected character in brace expression.");
+        -:  306:	}
+    #####:  307:      else if (__c == '}')
+branch  0 never executed
+branch  1 never executed
+        -:  308:	{
+    #####:  309:	  _M_state = _S_state_normal;
+    #####:  310:	  _M_token = _S_token_interval_end;
+        -:  311:	}
+        -:  312:      else
+    #####:  313:	__throw_regex_error(regex_constants::error_badbrace,
+call    0 never executed
+        -:  314:			    "Unexpected character in brace expression.");
+    #####:  315:    }
+        -:  316:
+        -:  317:  template<typename _CharT>
+        -:  318:    void
+function _ZNSt8__detail8_ScannerIcE18_M_eat_escape_ecmaEv called 0 returned 0% blocks executed 0%
+    #####:  319:    _Scanner<_CharT>::
+        -:  320:    _M_eat_escape_ecma()
+        -:  321:    {
+    #####:  322:      if (_M_current == _M_end)
+branch  0 never executed
+branch  1 never executed
+    #####:  323:	__throw_regex_error(regex_constants::error_escape,
+call    0 never executed
+        -:  324:			    "Unexpected end of regex when escaping.");
+        -:  325:
+    #####:  326:      auto __c = *_M_current++;
+    #####:  327:      auto __pos = _M_find_escape(_M_ctype.narrow(__c, '\0'));
+call    0 never executed
+call    1 never executed
+        -:  328:
+    #####:  329:      if (__pos != nullptr && (__c != 'b' || _M_state == _S_state_in_bracket))
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  330:	{
+    #####:  331:	  _M_token = _S_token_ord_char;
+    #####:  332:	  _M_value.assign(1, *__pos);
+call    0 never executed
+        -:  333:	}
+    #####:  334:      else if (__c == 'b')
+branch  0 never executed
+branch  1 never executed
+        -:  335:	{
+    #####:  336:	  _M_token = _S_token_word_bound;
+    #####:  337:	  _M_value.assign(1, 'p');
+call    0 never executed
+        -:  338:	}
+    #####:  339:      else if (__c == 'B')
+branch  0 never executed
+branch  1 never executed
+        -:  340:	{
+    #####:  341:	  _M_token = _S_token_word_bound;
+    #####:  342:	  _M_value.assign(1, 'n');
+call    0 never executed
+        -:  343:	}
+        -:  344:      // N3376 28.13
+    #####:  345:      else if (__c == 'd'
+branch  0 never executed
+branch  1 never executed
+    #####:  346:	       || __c == 'D'
+branch  0 never executed
+branch  1 never executed
+    #####:  347:	       || __c == 's'
+branch  0 never executed
+branch  1 never executed
+    #####:  348:	       || __c == 'S'
+branch  0 never executed
+branch  1 never executed
+    #####:  349:	       || __c == 'w'
+branch  0 never executed
+branch  1 never executed
+    #####:  350:	       || __c == 'W')
+branch  0 never executed
+branch  1 never executed
+        -:  351:	{
+    #####:  352:	  _M_token = _S_token_quoted_class;
+    #####:  353:	  _M_value.assign(1, __c);
+call    0 never executed
+        -:  354:	}
+    #####:  355:      else if (__c == 'c')
+branch  0 never executed
+branch  1 never executed
+        -:  356:	{
+    #####:  357:	  if (_M_current == _M_end)
+branch  0 never executed
+branch  1 never executed
+    #####:  358:	    __throw_regex_error(
+call    0 never executed
+        -:  359:	      regex_constants::error_escape,
+        -:  360:	      "Unexpected end of regex when reading control code.");
+    #####:  361:	  _M_token = _S_token_ord_char;
+    #####:  362:	  _M_value.assign(1, *_M_current++);
+call    0 never executed
+        -:  363:	}
+    #####:  364:      else if (__c == 'x' || __c == 'u')
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  365:	{
+    #####:  366:	  _M_value.erase();
+call    0 never executed
+    #####:  367:	  for (int __i = 0; __i < (__c == 'x' ? 2 : 4); __i++)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  368:	    {
+    #####:  369:	      if (_M_current == _M_end
+    #####:  370:		  || !_M_ctype.is(_CtypeT::xdigit, *_M_current))
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+    #####:  371:		__throw_regex_error(
+call    0 never executed
+        -:  372:		  regex_constants::error_escape,
+        -:  373:		  "Unexpected end of regex when ascii character.");
+    #####:  374:	      _M_value += *_M_current++;
+call    0 never executed
+        -:  375:	    }
+    #####:  376:	  _M_token = _S_token_hex_num;
+    #####:  377:	}
+        -:  378:      // ECMAScript recognizes multi-digit back-references.
+    #####:  379:      else if (_M_ctype.is(_CtypeT::digit, __c))
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  380:	{
+    #####:  381:	  _M_value.assign(1, __c);
+call    0 never executed
+    #####:  382:	  while (_M_current != _M_end
+    #####:  383:		 && _M_ctype.is(_CtypeT::digit, *_M_current))
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+    #####:  384:	    _M_value += *_M_current++;
+call    0 never executed
+    #####:  385:	  _M_token = _S_token_backref;
+        -:  386:	}
+        -:  387:      else
+        -:  388:	{
+    #####:  389:	  _M_token = _S_token_ord_char;
+    #####:  390:	  _M_value.assign(1, __c);
+call    0 never executed
+        -:  391:	}
+    #####:  392:    }
+        -:  393:
+        -:  394:  // Differences between styles:
+        -:  395:  // 1) Extended doesn't support backref, but basic does.
+        -:  396:  template<typename _CharT>
+        -:  397:    void
+function _ZNSt8__detail8_ScannerIcE19_M_eat_escape_posixEv called 0 returned 0% blocks executed 0%
+    #####:  398:    _Scanner<_CharT>::
+        -:  399:    _M_eat_escape_posix()
+        -:  400:    {
+    #####:  401:      if (_M_current == _M_end)
+branch  0 never executed
+branch  1 never executed
+    #####:  402:	__throw_regex_error(regex_constants::error_escape,
+call    0 never executed
+        -:  403:			    "Unexpected end of regex when escaping.");
+        -:  404:
+    #####:  405:      auto __c = *_M_current;
+    #####:  406:      auto __pos = std::strchr(_M_spec_char, _M_ctype.narrow(__c, '\0'));
+call    0 never executed
+        -:  407:
+    #####:  408:      if (__pos != nullptr && *__pos != '\0')
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  409:	{
+    #####:  410:	  _M_token = _S_token_ord_char;
+    #####:  411:	  _M_value.assign(1, __c);
+call    0 never executed
+        -:  412:	}
+        -:  413:      // We MUST judge awk before handling backrefs. There's no backref in awk.
+    #####:  414:      else if (_M_is_awk())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  415:	{
+    #####:  416:	  _M_eat_escape_awk();
+call    0 never executed
+    #####:  417:	  return;
+        -:  418:	}
+    #####:  419:      else if (_M_is_basic() && _M_ctype.is(_CtypeT::digit, __c) && __c != '0')
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+        -:  420:	{
+    #####:  421:	  _M_token = _S_token_backref;
+    #####:  422:	  _M_value.assign(1, __c);
+call    0 never executed
+        -:  423:	}
+        -:  424:      else
+        -:  425:	{
+        -:  426:#ifdef __STRICT_ANSI__
+        -:  427:	  // POSIX says it is undefined to escape ordinary characters
+    #####:  428:	  __throw_regex_error(regex_constants::error_escape,
+call    0 never executed
+        -:  429:			      "Unexpected escape character.");
+        -:  430:#else
+        -:  431:	  _M_token = _S_token_ord_char;
+        -:  432:	  _M_value.assign(1, __c);
+        -:  433:#endif
+        -:  434:	}
+    #####:  435:      ++_M_current;
+        -:  436:    }
+        -:  437:
+        -:  438:  template<typename _CharT>
+        -:  439:    void
+function _ZNSt8__detail8_ScannerIcE17_M_eat_escape_awkEv called 0 returned 0% blocks executed 0%
+    #####:  440:    _Scanner<_CharT>::
+        -:  441:    _M_eat_escape_awk()
+        -:  442:    {
+    #####:  443:      auto __c = *_M_current++;
+    #####:  444:      auto __pos = _M_find_escape(_M_ctype.narrow(__c, '\0'));
+call    0 never executed
+call    1 never executed
+        -:  445:
+    #####:  446:      if (__pos != nullptr)
+branch  0 never executed
+branch  1 never executed
+        -:  447:	{
+    #####:  448:	  _M_token = _S_token_ord_char;
+    #####:  449:	  _M_value.assign(1, *__pos);
+call    0 never executed
+        -:  450:	}
+        -:  451:      // \ddd for oct representation
+    #####:  452:      else if (_M_ctype.is(_CtypeT::digit, __c)
+call    0 never executed
+    #####:  453:	       && __c != '8'
+branch  0 never executed
+branch  1 never executed
+    #####:  454:	       && __c != '9')
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  455:	{
+    #####:  456:	  _M_value.assign(1,  __c);
+call    0 never executed
+    #####:  457:	  for (int __i = 0;
+        -:  458:	       __i < 2
+    #####:  459:	       && _M_current != _M_end
+branch  0 never executed
+branch  1 never executed
+    #####:  460:	       && _M_ctype.is(_CtypeT::digit, *_M_current)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  461:	       && *_M_current != '8'
+branch  0 never executed
+branch  1 never executed
+    #####:  462:	       && *_M_current != '9';
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  463:	       __i++)
+    #####:  464:	    _M_value += *_M_current++;
+call    0 never executed
+    #####:  465:	  _M_token = _S_token_oct_num;
+    #####:  466:	  return;
+        -:  467:	}
+        -:  468:      else
+    #####:  469:	__throw_regex_error(regex_constants::error_escape,
+call    0 never executed
+        -:  470:			    "Unexpected escape character.");
+        -:  471:    }
+        -:  472:
+        -:  473:  // Eats a character class or throws an exception.
+        -:  474:  // __ch could be ':', '.' or '=', _M_current is the char after ']' when
+        -:  475:  // returning.
+        -:  476:  template<typename _CharT>
+        -:  477:    void
+function _ZNSt8__detail8_ScannerIcE12_M_eat_classEc called 0 returned 0% blocks executed 0%
+    #####:  478:    _Scanner<_CharT>::
+        -:  479:    _M_eat_class(char __ch)
+        -:  480:    {
+    #####:  481:      for (_M_value.clear(); _M_current != _M_end && *_M_current != __ch;)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  482:	_M_value += *_M_current++;
+call    0 never executed
+    #####:  483:      if (_M_current == _M_end
+    #####:  484:	  || *_M_current++ != __ch
+branch  0 never executed
+branch  1 never executed
+    #####:  485:	  || _M_current == _M_end // skip __ch
+branch  0 never executed
+branch  1 never executed
+    #####:  486:	  || *_M_current++ != ']') // skip ']'
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  487:	{
+    #####:  488:	  if (__ch == ':')
+branch  0 never executed
+branch  1 never executed
+    #####:  489:	    __throw_regex_error(regex_constants::error_ctype,
+call    0 never executed
+        -:  490:				"Unexpected end of character class.");
+        -:  491:	  else
+    #####:  492:	    __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+        -:  493:				"Unexpected end of character class.");
+        -:  494:	}
+    #####:  495:    }
+        -:  496:
+        -:  497:#ifdef _GLIBCXX_DEBUG
+        -:  498:  template<typename _CharT>
+        -:  499:    std::ostream&
+        -:  500:    _Scanner<_CharT>::
+        -:  501:    _M_print(std::ostream& ostr)
+        -:  502:    {
+        -:  503:      switch (_M_token)
+        -:  504:      {
+        -:  505:      case _S_token_anychar:
+        -:  506:	ostr << "any-character\n";
+        -:  507:	break;
+        -:  508:      case _S_token_backref:
+        -:  509:	ostr << "backref\n";
+        -:  510:	break;
+        -:  511:      case _S_token_bracket_begin:
+        -:  512:	ostr << "bracket-begin\n";
+        -:  513:	break;
+        -:  514:      case _S_token_bracket_neg_begin:
+        -:  515:	ostr << "bracket-neg-begin\n";
+        -:  516:	break;
+        -:  517:      case _S_token_bracket_end:
+        -:  518:	ostr << "bracket-end\n";
+        -:  519:	break;
+        -:  520:      case _S_token_char_class_name:
+        -:  521:	ostr << "char-class-name \"" << _M_value << "\"\n";
+        -:  522:	break;
+        -:  523:      case _S_token_closure0:
+        -:  524:	ostr << "closure0\n";
+        -:  525:	break;
+        -:  526:      case _S_token_closure1:
+        -:  527:	ostr << "closure1\n";
+        -:  528:	break;
+        -:  529:      case _S_token_collsymbol:
+        -:  530:	ostr << "collsymbol \"" << _M_value << "\"\n";
+        -:  531:	break;
+        -:  532:      case _S_token_comma:
+        -:  533:	ostr << "comma\n";
+        -:  534:	break;
+        -:  535:      case _S_token_dup_count:
+        -:  536:	ostr << "dup count: " << _M_value << "\n";
+        -:  537:	break;
+        -:  538:      case _S_token_eof:
+        -:  539:	ostr << "EOF\n";
+        -:  540:	break;
+        -:  541:      case _S_token_equiv_class_name:
+        -:  542:	ostr << "equiv-class-name \"" << _M_value << "\"\n";
+        -:  543:	break;
+        -:  544:      case _S_token_interval_begin:
+        -:  545:	ostr << "interval begin\n";
+        -:  546:	break;
+        -:  547:      case _S_token_interval_end:
+        -:  548:	ostr << "interval end\n";
+        -:  549:	break;
+        -:  550:      case _S_token_line_begin:
+        -:  551:	ostr << "line begin\n";
+        -:  552:	break;
+        -:  553:      case _S_token_line_end:
+        -:  554:	ostr << "line end\n";
+        -:  555:	break;
+        -:  556:      case _S_token_opt:
+        -:  557:	ostr << "opt\n";
+        -:  558:	break;
+        -:  559:      case _S_token_or:
+        -:  560:	ostr << "or\n";
+        -:  561:	break;
+        -:  562:      case _S_token_ord_char:
+        -:  563:	ostr << "ordinary character: \"" << _M_value << "\"\n";
+        -:  564:	break;
+        -:  565:      case _S_token_subexpr_begin:
+        -:  566:	ostr << "subexpr begin\n";
+        -:  567:	break;
+        -:  568:      case _S_token_subexpr_no_group_begin:
+        -:  569:	ostr << "no grouping subexpr begin\n";
+        -:  570:	break;
+        -:  571:      case _S_token_subexpr_lookahead_begin:
+        -:  572:	ostr << "lookahead subexpr begin\n";
+        -:  573:	break;
+        -:  574:      case _S_token_subexpr_end:
+        -:  575:	ostr << "subexpr end\n";
+        -:  576:	break;
+        -:  577:      case _S_token_unknown:
+        -:  578:	ostr << "-- unknown token --\n";
+        -:  579:	break;
+        -:  580:      case _S_token_oct_num:
+        -:  581:	ostr << "oct number " << _M_value << "\n";
+        -:  582:	break;
+        -:  583:      case _S_token_hex_num:
+        -:  584:	ostr << "hex number " << _M_value << "\n";
+        -:  585:	break;
+        -:  586:      case _S_token_quoted_class:
+        -:  587:	ostr << "quoted class " << "\\" << _M_value << "\n";
+        -:  588:	break;
+        -:  589:      default:
+        -:  590:	_GLIBCXX_DEBUG_ASSERT(false);
+        -:  591:      }
+        -:  592:      return ostr;
+        -:  593:    }
+        -:  594:#endif
+        -:  595:
+        -:  596:} // namespace __detail
+        -:  597:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  598:} // namespace

@@ -1,0 +1,2000 @@
+        -:    0:Source:/usr/include/c++/11/bits/regex_compiler.h
+        -:    0:Graph:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcno
+        -:    0:Data:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcda
+        -:    0:Runs:1
+        -:    1:// class template regex -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2010-2021 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/**
+        -:   26: *  @file bits/regex_compiler.h
+        -:   27: *  This is an internal header file, included by other library headers.
+        -:   28: *  Do not attempt to use it directly. @headername{regex}
+        -:   29: */
+        -:   30:
+        -:   31:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   32:{
+        -:   33:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   34:_GLIBCXX_BEGIN_NAMESPACE_CXX11
+        -:   35:
+        -:   36:  template<typename>
+        -:   37:    class regex_traits;
+        -:   38:
+        -:   39:_GLIBCXX_END_NAMESPACE_CXX11
+        -:   40:
+        -:   41:namespace __detail
+        -:   42:{
+        -:   43:  /**
+        -:   44:   * @addtogroup regex-detail
+        -:   45:   * @{
+        -:   46:   */
+        -:   47:
+        -:   48:  template<typename, bool, bool>
+        -:   49:    struct _BracketMatcher;
+        -:   50:
+        -:   51:  /**
+        -:   52:   * @brief Builds an NFA from an input iterator range.
+        -:   53:   *
+        -:   54:   * The %_TraitsT type should fulfill requirements [28.3].
+        -:   55:   */
+        -:   56:  template<typename _TraitsT>
+        -:   57:    class _Compiler
+        -:   58:    {
+        -:   59:    public:
+        -:   60:      typedef typename _TraitsT::char_type        _CharT;
+        -:   61:      typedef _NFA<_TraitsT>              	  _RegexT;
+        -:   62:      typedef regex_constants::syntax_option_type _FlagT;
+        -:   63:
+        -:   64:      _Compiler(const _CharT* __b, const _CharT* __e,
+        -:   65:		const typename _TraitsT::locale_type& __traits, _FlagT __flags);
+        -:   66:
+        -:   67:      shared_ptr<const _RegexT>
+function _ZNSt8__detail9_CompilerINSt7__cxx1112regex_traitsIcEEE10_M_get_nfaEv called 0 returned 0% blocks executed 0%
+    #####:   68:      _M_get_nfa() noexcept
+    #####:   69:      { return std::move(_M_nfa); }
+call    0 never executed
+call    1 never executed
+        -:   70:
+        -:   71:    private:
+        -:   72:      typedef _Scanner<_CharT>               _ScannerT;
+        -:   73:      typedef typename _TraitsT::string_type _StringT;
+        -:   74:      typedef typename _ScannerT::_TokenT    _TokenT;
+        -:   75:      typedef _StateSeq<_TraitsT>            _StateSeqT;
+        -:   76:      typedef std::stack<_StateSeqT>         _StackT;
+        -:   77:      typedef std::ctype<_CharT>             _CtypeT;
+        -:   78:
+        -:   79:      // accepts a specific token or returns false.
+        -:   80:      bool
+        -:   81:      _M_match_token(_TokenT __token);
+        -:   82:
+        -:   83:      void
+        -:   84:      _M_disjunction();
+        -:   85:
+        -:   86:      void
+        -:   87:      _M_alternative();
+        -:   88:
+        -:   89:      bool
+        -:   90:      _M_term();
+        -:   91:
+        -:   92:      bool
+        -:   93:      _M_assertion();
+        -:   94:
+        -:   95:      bool
+        -:   96:      _M_quantifier();
+        -:   97:
+        -:   98:      bool
+        -:   99:      _M_atom();
+        -:  100:
+        -:  101:      bool
+        -:  102:      _M_bracket_expression();
+        -:  103:
+        -:  104:      template<bool __icase, bool __collate>
+        -:  105:	void
+        -:  106:	_M_insert_any_matcher_ecma();
+        -:  107:
+        -:  108:      template<bool __icase, bool __collate>
+        -:  109:	void
+        -:  110:	_M_insert_any_matcher_posix();
+        -:  111:
+        -:  112:      template<bool __icase, bool __collate>
+        -:  113:	void
+        -:  114:	_M_insert_char_matcher();
+        -:  115:
+        -:  116:      template<bool __icase, bool __collate>
+        -:  117:	void
+        -:  118:	_M_insert_character_class_matcher();
+        -:  119:
+        -:  120:      template<bool __icase, bool __collate>
+        -:  121:	void
+        -:  122:	_M_insert_bracket_matcher(bool __neg);
+        -:  123:
+        -:  124:      // Cache of the last atom seen in a bracketed range expression.
+        -:  125:      struct _BracketState
+        -:  126:      {
+        -:  127:	enum class _Type : char { _None, _Char, _Class } _M_type = _Type::_None;
+        -:  128:	_CharT _M_char;
+        -:  129:
+        -:  130:	void
+function _ZNSt8__detail9_CompilerINSt7__cxx1112regex_traitsIcEEE13_BracketState3setEc called 0 returned 0% blocks executed 0%
+    #####:  131:	set(_CharT __c) noexcept { _M_type = _Type::_Char; _M_char = __c; }
+        -:  132:
+        -:  133:	_GLIBCXX_NODISCARD _CharT
+function _ZNKSt8__detail9_CompilerINSt7__cxx1112regex_traitsIcEEE13_BracketState3getEv called 0 returned 0% blocks executed 0%
+    #####:  134:	get() const noexcept { return _M_char; }
+        -:  135:
+        -:  136:	void
+function _ZNSt8__detail9_CompilerINSt7__cxx1112regex_traitsIcEEE13_BracketState5resetENS5_5_TypeE called 0 returned 0% blocks executed 0%
+    #####:  137:	reset(_Type __t = _Type::_None) noexcept { _M_type = __t; }
+        -:  138:
+        -:  139:	explicit operator bool() const noexcept
+        -:  140:	{ return _M_type != _Type::_None; }
+        -:  141:
+        -:  142:	// Previous token was a single character.
+        -:  143:	_GLIBCXX_NODISCARD bool
+function _ZNKSt8__detail9_CompilerINSt7__cxx1112regex_traitsIcEEE13_BracketState10_M_is_charEv called 0 returned 0% blocks executed 0%
+    #####:  144:	_M_is_char() const noexcept { return _M_type == _Type::_Char; }
+        -:  145:
+        -:  146:	// Previous token was a character class, equivalent class,
+        -:  147:	// collating symbol etc.
+        -:  148:	_GLIBCXX_NODISCARD bool
+function _ZNKSt8__detail9_CompilerINSt7__cxx1112regex_traitsIcEEE13_BracketState11_M_is_classEv called 0 returned 0% blocks executed 0%
+    #####:  149:	_M_is_class() const noexcept { return _M_type == _Type::_Class; }
+        -:  150:      };
+        -:  151:
+        -:  152:      template<bool __icase, bool __collate>
+        -:  153:	using _BracketMatcher
+        -:  154:	  = std::__detail::_BracketMatcher<_TraitsT, __icase, __collate>;
+        -:  155:
+        -:  156:      // Returns true if successfully parsed one term and should continue
+        -:  157:      // compiling a bracket expression.
+        -:  158:      // Returns false if the compiler should move on.
+        -:  159:      template<bool __icase, bool __collate>
+        -:  160:	bool
+        -:  161:	_M_expression_term(_BracketState& __last_char,
+        -:  162:			   _BracketMatcher<__icase, __collate>& __matcher);
+        -:  163:
+        -:  164:      int
+        -:  165:      _M_cur_int_value(int __radix);
+        -:  166:
+        -:  167:      bool
+        -:  168:      _M_try_char();
+        -:  169:
+        -:  170:      _StateSeqT
+function _ZNSt8__detail9_CompilerINSt7__cxx1112regex_traitsIcEEE6_M_popEv called 0 returned 0% blocks executed 0%
+    #####:  171:      _M_pop()
+        -:  172:      {
+    #####:  173:	auto ret = _M_stack.top();
+call    0 never executed
+    #####:  174:	_M_stack.pop();
+call    0 never executed
+    #####:  175:	return ret;
+        -:  176:      }
+        -:  177:
+        -:  178:      static _FlagT
+function _ZNSt8__detail9_CompilerINSt7__cxx1112regex_traitsIcEEE11_S_validateENSt15regex_constants18syntax_option_typeE called 0 returned 0% blocks executed 0%
+    #####:  179:      _S_validate(_FlagT __f)
+        -:  180:      {
+        -:  181:	using namespace regex_constants;
+    #####:  182:	switch (__f & (ECMAScript|basic|extended|awk|grep|egrep))
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+        -:  183:	  {
+    #####:  184:	  case ECMAScript:
+        -:  185:	  case basic:
+        -:  186:	  case extended:
+        -:  187:	  case awk:
+        -:  188:	  case grep:
+        -:  189:	  case egrep:
+    #####:  190:	    return __f;
+    #####:  191:	  case _FlagT(0):
+    #####:  192:	    return __f | ECMAScript;
+call    0 never executed
+    #####:  193:	  default:
+    #####:  194:	    std::__throw_regex_error(_S_grammar, "conflicting grammar options");
+call    0 never executed
+        -:  195:	  }
+    #####:  196:      }
+        -:  197:
+        -:  198:      _FlagT              _M_flags;
+        -:  199:      _ScannerT           _M_scanner;
+        -:  200:      shared_ptr<_RegexT> _M_nfa;
+        -:  201:      _StringT            _M_value;
+        -:  202:      _StackT             _M_stack;
+        -:  203:      const _TraitsT&     _M_traits;
+        -:  204:      const _CtypeT&      _M_ctype;
+        -:  205:    };
+        -:  206:
+        -:  207:  // [28.13.14]
+        -:  208:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  209:    class _RegexTranslatorBase
+        -:  210:    {
+        -:  211:    public:
+        -:  212:      typedef typename _TraitsT::char_type	      _CharT;
+        -:  213:      typedef typename _TraitsT::string_type	      _StringT;
+        -:  214:      typedef _StringT _StrTransT;
+        -:  215:
+        -:  216:      explicit
+    #####:  217:      _RegexTranslatorBase(const _TraitsT& __traits)
+    #####:  218:      : _M_traits(__traits)
+    #####:  219:      { }
+------------------
+_ZNSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EEC2ERKS3_:
+function _ZNSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  217:      _RegexTranslatorBase(const _TraitsT& __traits)
+    #####:  218:      : _M_traits(__traits)
+    #####:  219:      { }
+------------------
+_ZNSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb0EEC2ERKS3_:
+function _ZNSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb0EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  217:      _RegexTranslatorBase(const _TraitsT& __traits)
+    #####:  218:      : _M_traits(__traits)
+    #####:  219:      { }
+------------------
+_ZNSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb0ELb1EEC2ERKS3_:
+function _ZNSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb0ELb1EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  217:      _RegexTranslatorBase(const _TraitsT& __traits)
+    #####:  218:      : _M_traits(__traits)
+    #####:  219:      { }
+------------------
+        -:  220:
+        -:  221:      _CharT
+    #####:  222:      _M_translate(_CharT __ch) const
+        -:  223:      {
+        -:  224:	if (__icase)
+    #####:  225:	  return _M_traits.translate_nocase(__ch);
+        -:  226:	else if (__collate)
+    #####:  227:	  return _M_traits.translate(__ch);
+        -:  228:	else
+        -:  229:	  return __ch;
+        -:  230:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EE12_M_translateEc:
+function _ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EE12_M_translateEc called 0 returned 0% blocks executed 0%
+    #####:  222:      _M_translate(_CharT __ch) const
+        -:  223:      {
+        -:  224:	if (__icase)
+    #####:  225:	  return _M_traits.translate_nocase(__ch);
+call    0 never executed
+        -:  226:	else if (__collate)
+        -:  227:	  return _M_traits.translate(__ch);
+        -:  228:	else
+        -:  229:	  return __ch;
+        -:  230:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb0EE12_M_translateEc:
+function _ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb0EE12_M_translateEc called 0 returned 0% blocks executed 0%
+    #####:  222:      _M_translate(_CharT __ch) const
+        -:  223:      {
+        -:  224:	if (__icase)
+    #####:  225:	  return _M_traits.translate_nocase(__ch);
+call    0 never executed
+        -:  226:	else if (__collate)
+        -:  227:	  return _M_traits.translate(__ch);
+        -:  228:	else
+        -:  229:	  return __ch;
+        -:  230:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb0ELb1EE12_M_translateEc:
+function _ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb0ELb1EE12_M_translateEc called 0 returned 0% blocks executed 0%
+    #####:  222:      _M_translate(_CharT __ch) const
+        -:  223:      {
+        -:  224:	if (__icase)
+        -:  225:	  return _M_traits.translate_nocase(__ch);
+        -:  226:	else if (__collate)
+    #####:  227:	  return _M_traits.translate(__ch);
+call    0 never executed
+        -:  228:	else
+        -:  229:	  return __ch;
+        -:  230:      }
+------------------
+        -:  231:
+        -:  232:      _StrTransT
+    #####:  233:      _M_transform(_CharT __ch) const
+        -:  234:      {
+    #####:  235:	_StrTransT __str(1, __ch);
+    #####:  236:	return _M_traits.transform(__str.begin(), __str.end());
+    #####:  237:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EE12_M_transformEc:
+function _ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EE12_M_transformEc called 0 returned 0% blocks executed 0%
+    #####:  233:      _M_transform(_CharT __ch) const
+        -:  234:      {
+    #####:  235:	_StrTransT __str(1, __ch);
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  236:	return _M_traits.transform(__str.begin(), __str.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  237:      }
+call    0 never executed
+call    1 never executed
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb0ELb1EE12_M_transformEc:
+function _ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb0ELb1EE12_M_transformEc called 0 returned 0% blocks executed 0%
+    #####:  233:      _M_transform(_CharT __ch) const
+        -:  234:      {
+    #####:  235:	_StrTransT __str(1, __ch);
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  236:	return _M_traits.transform(__str.begin(), __str.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  237:      }
+call    0 never executed
+call    1 never executed
+------------------
+        -:  238:
+        -:  239:      // See LWG 523. It's not efficiently implementable when _TraitsT is not
+        -:  240:      // std::regex_traits<>, and __collate is true. See specializations for
+        -:  241:      // implementations of other cases.
+        -:  242:      bool
+function _ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb0ELb1EE14_M_match_rangeERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEESB_SB_ called 0 returned 0% blocks executed 0%
+    #####:  243:      _M_match_range(const _StrTransT& __first, const _StrTransT& __last,
+        -:  244:		     const _StrTransT& __s) const
+    #####:  245:      { return __first <= __s && __s <= __last; }
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  246:
+        -:  247:    protected:
+    #####:  248:      bool _M_in_range_icase(_CharT __first, _CharT __last, _CharT __ch) const
+        -:  249:      {
+        -:  250:	typedef std::ctype<_CharT> __ctype_type;
+    #####:  251:	const auto& __fctyp = use_facet<__ctype_type>(this->_M_traits.getloc());
+    #####:  252:	auto __lower = __fctyp.tolower(__ch);
+    #####:  253:	auto __upper = __fctyp.toupper(__ch);
+    #####:  254:	return (__first <= __lower && __lower <= __last)
+    #####:  255:	  || (__first <= __upper && __upper <= __last);
+        -:  256:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EE17_M_in_range_icaseEccc:
+function _ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb1EE17_M_in_range_icaseEccc called 0 returned 0% blocks executed 0%
+    #####:  248:      bool _M_in_range_icase(_CharT __first, _CharT __last, _CharT __ch) const
+        -:  249:      {
+        -:  250:	typedef std::ctype<_CharT> __ctype_type;
+    #####:  251:	const auto& __fctyp = use_facet<__ctype_type>(this->_M_traits.getloc());
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+    #####:  252:	auto __lower = __fctyp.tolower(__ch);
+call    0 never executed
+    #####:  253:	auto __upper = __fctyp.toupper(__ch);
+call    0 never executed
+    #####:  254:	return (__first <= __lower && __lower <= __last)
+branch  0 never executed
+branch  1 never executed
+    #####:  255:	  || (__first <= __upper && __upper <= __last);
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  256:      }
+------------------
+_ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb0EE17_M_in_range_icaseEccc:
+function _ZNKSt8__detail20_RegexTranslatorBaseINSt7__cxx1112regex_traitsIcEELb1ELb0EE17_M_in_range_icaseEccc called 0 returned 0% blocks executed 0%
+    #####:  248:      bool _M_in_range_icase(_CharT __first, _CharT __last, _CharT __ch) const
+        -:  249:      {
+        -:  250:	typedef std::ctype<_CharT> __ctype_type;
+    #####:  251:	const auto& __fctyp = use_facet<__ctype_type>(this->_M_traits.getloc());
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+    #####:  252:	auto __lower = __fctyp.tolower(__ch);
+call    0 never executed
+    #####:  253:	auto __upper = __fctyp.toupper(__ch);
+call    0 never executed
+    #####:  254:	return (__first <= __lower && __lower <= __last)
+branch  0 never executed
+branch  1 never executed
+    #####:  255:	  || (__first <= __upper && __upper <= __last);
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  256:      }
+------------------
+        -:  257:
+        -:  258:      const _TraitsT& _M_traits;
+        -:  259:    };
+        -:  260:
+        -:  261:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  262:    class _RegexTranslator
+        -:  263:    : public _RegexTranslatorBase<_TraitsT, __icase, __collate>
+        -:  264:    {
+        -:  265:    public:
+        -:  266:      typedef _RegexTranslatorBase<_TraitsT, __icase, __collate> _Base;
+        -:  267:      using _Base::_Base;
+        -:  268:    };
+        -:  269:
+        -:  270:  template<typename _TraitsT, bool __icase>
+        -:  271:    class _RegexTranslator<_TraitsT, __icase, false>
+        -:  272:    : public _RegexTranslatorBase<_TraitsT, __icase, false>
+        -:  273:    {
+        -:  274:    public:
+        -:  275:      typedef _RegexTranslatorBase<_TraitsT, __icase, false> _Base;
+        -:  276:      typedef typename _Base::_CharT _CharT;
+        -:  277:      typedef _CharT _StrTransT;
+        -:  278:
+        -:  279:      using _Base::_Base;
+        -:  280:
+        -:  281:      _StrTransT
+function _ZNKSt8__detail16_RegexTranslatorINSt7__cxx1112regex_traitsIcEELb1ELb0EE12_M_transformEc called 0 returned 0% blocks executed 0%
+    #####:  282:      _M_transform(_CharT __ch) const
+    #####:  283:      { return __ch; }
+        -:  284:
+        -:  285:      bool
+function _ZNKSt8__detail16_RegexTranslatorINSt7__cxx1112regex_traitsIcEELb1ELb0EE14_M_match_rangeEccc called 0 returned 0% blocks executed 0%
+    #####:  286:      _M_match_range(_CharT __first, _CharT __last, _CharT __ch) const
+        -:  287:      {
+        -:  288:	if (!__icase)
+        -:  289:	  return __first <= __ch && __ch <= __last;
+    #####:  290:	return this->_M_in_range_icase(__first, __last, __ch);
+call    0 never executed
+        -:  291:      }
+        -:  292:    };
+        -:  293:
+        -:  294:  template<typename _CharType>
+        -:  295:    class _RegexTranslator<std::regex_traits<_CharType>, true, true>
+        -:  296:    : public _RegexTranslatorBase<std::regex_traits<_CharType>, true, true>
+        -:  297:    {
+        -:  298:    public:
+        -:  299:      typedef _RegexTranslatorBase<std::regex_traits<_CharType>, true, true>
+        -:  300:	_Base;
+        -:  301:      typedef typename _Base::_CharT _CharT;
+        -:  302:      typedef typename _Base::_StrTransT _StrTransT;
+        -:  303:
+        -:  304:      using _Base::_Base;
+        -:  305:
+        -:  306:      bool
+function _ZNKSt8__detail16_RegexTranslatorINSt7__cxx1112regex_traitsIcEELb1ELb1EE14_M_match_rangeERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEESB_SB_ called 0 returned 0% blocks executed 0%
+    #####:  307:      _M_match_range(const _StrTransT& __first, const _StrTransT& __last,
+        -:  308:		     const _StrTransT& __str) const
+        -:  309:      {
+    #####:  310:	__glibcxx_assert(__first.size() == 1);
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+    #####:  311:	__glibcxx_assert(__last.size() == 1);
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+    #####:  312:	__glibcxx_assert(__str.size() == 1);
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+    #####:  313:	return this->_M_in_range_icase(__first[0], __last[0], __str[0]);
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+        -:  314:      }
+        -:  315:    };
+        -:  316:
+        -:  317:  template<typename _TraitsT>
+        -:  318:    class _RegexTranslator<_TraitsT, false, false>
+        -:  319:    {
+        -:  320:    public:
+        -:  321:      typedef typename _TraitsT::char_type _CharT;
+        -:  322:      typedef _CharT                       _StrTransT;
+        -:  323:
+        -:  324:      explicit
+function _ZNSt8__detail16_RegexTranslatorINSt7__cxx1112regex_traitsIcEELb0ELb0EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  325:      _RegexTranslator(const _TraitsT&)
+    #####:  326:      { }
+        -:  327:
+        -:  328:      _CharT
+function _ZNKSt8__detail16_RegexTranslatorINSt7__cxx1112regex_traitsIcEELb0ELb0EE12_M_translateEc called 0 returned 0% blocks executed 0%
+    #####:  329:      _M_translate(_CharT __ch) const
+    #####:  330:      { return __ch; }
+        -:  331:
+        -:  332:      _StrTransT
+function _ZNKSt8__detail16_RegexTranslatorINSt7__cxx1112regex_traitsIcEELb0ELb0EE12_M_transformEc called 0 returned 0% blocks executed 0%
+    #####:  333:      _M_transform(_CharT __ch) const
+    #####:  334:      { return __ch; }
+        -:  335:
+        -:  336:      bool
+function _ZNKSt8__detail16_RegexTranslatorINSt7__cxx1112regex_traitsIcEELb0ELb0EE14_M_match_rangeEccc called 0 returned 0% blocks executed 0%
+    #####:  337:      _M_match_range(_CharT __first, _CharT __last, _CharT __ch) const
+    #####:  338:      { return __first <= __ch && __ch <= __last; }
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  339:    };
+        -:  340:
+        -:  341:  template<typename _TraitsT, bool __is_ecma, bool __icase, bool __collate>
+        -:  342:    struct _AnyMatcher;
+        -:  343:
+        -:  344:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  345:    struct _AnyMatcher<_TraitsT, false, __icase, __collate>
+        -:  346:    {
+        -:  347:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
+        -:  348:      typedef typename _TransT::_CharT                       _CharT;
+        -:  349:
+        -:  350:      explicit
+    #####:  351:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  352:      : _M_translator(__traits)
+    #####:  353:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEC2ERKS3_:
+function _ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  351:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  352:      : _M_translator(__traits)
+call    0 never executed
+    #####:  353:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEC2ERKS3_:
+function _ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  351:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  352:      : _M_translator(__traits)
+call    0 never executed
+    #####:  353:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEC2ERKS3_:
+function _ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  351:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  352:      : _M_translator(__traits)
+call    0 never executed
+    #####:  353:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEC2ERKS3_:
+function _ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  351:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  352:      : _M_translator(__traits)
+call    0 never executed
+    #####:  353:      { }
+------------------
+        -:  354:
+        -:  355:      bool
+    #####:  356:      operator()(_CharT __ch) const
+        -:  357:      {
+    #####:  358:	static auto __nul = _M_translator._M_translate('\0');
+    #####:  359:	return _M_translator._M_translate(__ch) != __nul;
+        -:  360:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEclEc:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb1EEclEc called 0 returned 0% blocks executed 0%
+    #####:  356:      operator()(_CharT __ch) const
+        -:  357:      {
+    #####:  358:	static auto __nul = _M_translator._M_translate('\0');
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+call    8 never executed
+branch  9 never executed
+branch 10 never executed
+call   11 never executed
+    #####:  359:	return _M_translator._M_translate(__ch) != __nul;
+call    0 never executed
+        -:  360:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEclEc:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1ELb0EEclEc called 0 returned 0% blocks executed 0%
+    #####:  356:      operator()(_CharT __ch) const
+        -:  357:      {
+    #####:  358:	static auto __nul = _M_translator._M_translate('\0');
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+call    8 never executed
+branch  9 never executed
+branch 10 never executed
+call   11 never executed
+    #####:  359:	return _M_translator._M_translate(__ch) != __nul;
+call    0 never executed
+        -:  360:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEclEc:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb1EEclEc called 0 returned 0% blocks executed 0%
+    #####:  356:      operator()(_CharT __ch) const
+        -:  357:      {
+    #####:  358:	static auto __nul = _M_translator._M_translate('\0');
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+branch  6 never executed
+branch  7 never executed
+call    8 never executed
+branch  9 never executed
+branch 10 never executed
+call   11 never executed
+    #####:  359:	return _M_translator._M_translate(__ch) != __nul;
+call    0 never executed
+        -:  360:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEclEc:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0ELb0EEclEc called 0 returned 0% blocks executed 0%
+    #####:  356:      operator()(_CharT __ch) const
+        -:  357:      {
+    #####:  358:	static auto __nul = _M_translator._M_translate('\0');
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+call    6 never executed
+    #####:  359:	return _M_translator._M_translate(__ch) != __nul;
+call    0 never executed
+        -:  360:      }
+------------------
+        -:  361:
+        -:  362:      _TransT _M_translator;
+        -:  363:    };
+        -:  364:
+        -:  365:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  366:    struct _AnyMatcher<_TraitsT, true, __icase, __collate>
+        -:  367:    {
+        -:  368:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
+        -:  369:      typedef typename _TransT::_CharT                       _CharT;
+        -:  370:
+        -:  371:      explicit
+    #####:  372:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  373:      : _M_translator(__traits)
+    #####:  374:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEC2ERKS3_:
+function _ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  372:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  373:      : _M_translator(__traits)
+call    0 never executed
+    #####:  374:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEC2ERKS3_:
+function _ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  372:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  373:      : _M_translator(__traits)
+call    0 never executed
+    #####:  374:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEC2ERKS3_:
+function _ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  372:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  373:      : _M_translator(__traits)
+call    0 never executed
+    #####:  374:      { }
+------------------
+_ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEC2ERKS3_:
+function _ZNSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  372:      _AnyMatcher(const _TraitsT& __traits)
+    #####:  373:      : _M_translator(__traits)
+call    0 never executed
+    #####:  374:      { }
+------------------
+        -:  375:
+        -:  376:      bool
+    #####:  377:      operator()(_CharT __ch) const
+    #####:  378:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEclEc:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EEclEc called 0 returned 0% blocks executed 0%
+    #####:  377:      operator()(_CharT __ch) const
+    #####:  378:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
+call    0 never executed
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEclEc:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EEclEc called 0 returned 0% blocks executed 0%
+    #####:  377:      operator()(_CharT __ch) const
+    #####:  378:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
+call    0 never executed
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEclEc:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EEclEc called 0 returned 0% blocks executed 0%
+    #####:  377:      operator()(_CharT __ch) const
+    #####:  378:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
+call    0 never executed
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEclEc:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EEclEc called 0 returned 0% blocks executed 0%
+    #####:  377:      operator()(_CharT __ch) const
+    #####:  378:      { return _M_apply(__ch, typename is_same<_CharT, char>::type()); }
+call    0 never executed
+------------------
+        -:  379:
+        -:  380:      bool
+    #####:  381:      _M_apply(_CharT __ch, true_type) const
+        -:  382:      {
+    #####:  383:	auto __c = _M_translator._M_translate(__ch);
+    #####:  384:	auto __n = _M_translator._M_translate('\n');
+    #####:  385:	auto __r = _M_translator._M_translate('\r');
+    #####:  386:	return __c != __n && __c != __r;
+        -:  387:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EE8_M_applyEcSt17integral_constantIbLb1EE:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb1EE8_M_applyEcSt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  381:      _M_apply(_CharT __ch, true_type) const
+        -:  382:      {
+    #####:  383:	auto __c = _M_translator._M_translate(__ch);
+call    0 never executed
+    #####:  384:	auto __n = _M_translator._M_translate('\n');
+call    0 never executed
+    #####:  385:	auto __r = _M_translator._M_translate('\r');
+call    0 never executed
+    #####:  386:	return __c != __n && __c != __r;
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  387:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EE8_M_applyEcSt17integral_constantIbLb1EE:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1ELb0EE8_M_applyEcSt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  381:      _M_apply(_CharT __ch, true_type) const
+        -:  382:      {
+    #####:  383:	auto __c = _M_translator._M_translate(__ch);
+call    0 never executed
+    #####:  384:	auto __n = _M_translator._M_translate('\n');
+call    0 never executed
+    #####:  385:	auto __r = _M_translator._M_translate('\r');
+call    0 never executed
+    #####:  386:	return __c != __n && __c != __r;
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  387:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EE8_M_applyEcSt17integral_constantIbLb1EE:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb1EE8_M_applyEcSt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  381:      _M_apply(_CharT __ch, true_type) const
+        -:  382:      {
+    #####:  383:	auto __c = _M_translator._M_translate(__ch);
+call    0 never executed
+    #####:  384:	auto __n = _M_translator._M_translate('\n');
+call    0 never executed
+    #####:  385:	auto __r = _M_translator._M_translate('\r');
+call    0 never executed
+    #####:  386:	return __c != __n && __c != __r;
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  387:      }
+------------------
+_ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EE8_M_applyEcSt17integral_constantIbLb1EE:
+function _ZNKSt8__detail11_AnyMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0ELb0EE8_M_applyEcSt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  381:      _M_apply(_CharT __ch, true_type) const
+        -:  382:      {
+    #####:  383:	auto __c = _M_translator._M_translate(__ch);
+call    0 never executed
+    #####:  384:	auto __n = _M_translator._M_translate('\n');
+call    0 never executed
+    #####:  385:	auto __r = _M_translator._M_translate('\r');
+call    0 never executed
+    #####:  386:	return __c != __n && __c != __r;
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  387:      }
+------------------
+        -:  388:
+        -:  389:      bool
+        -:  390:      _M_apply(_CharT __ch, false_type) const
+        -:  391:      {
+        -:  392:	auto __c = _M_translator._M_translate(__ch);
+        -:  393:	auto __n = _M_translator._M_translate('\n');
+        -:  394:	auto __r = _M_translator._M_translate('\r');
+        -:  395:	auto __u2028 = _M_translator._M_translate(u'\u2028');
+        -:  396:	auto __u2029 = _M_translator._M_translate(u'\u2029');
+        -:  397:	return __c != __n && __c != __r && __c != __u2028 && __c != __u2029;
+        -:  398:      }
+        -:  399:
+        -:  400:      _TransT _M_translator;
+        -:  401:    };
+        -:  402:
+        -:  403:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  404:    struct _CharMatcher
+        -:  405:    {
+        -:  406:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
+        -:  407:      typedef typename _TransT::_CharT                       _CharT;
+        -:  408:
+    #####:  409:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
+    #####:  410:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
+    #####:  411:      { }
+------------------
+_ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEC2EcRKS3_:
+function _ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEC2EcRKS3_ called 0 returned 0% blocks executed 0%
+    #####:  409:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
+    #####:  410:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
+call    0 never executed
+call    1 never executed
+    #####:  411:      { }
+------------------
+_ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEC2EcRKS3_:
+function _ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEC2EcRKS3_ called 0 returned 0% blocks executed 0%
+    #####:  409:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
+    #####:  410:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
+call    0 never executed
+call    1 never executed
+    #####:  411:      { }
+------------------
+_ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEC2EcRKS3_:
+function _ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEC2EcRKS3_ called 0 returned 0% blocks executed 0%
+    #####:  409:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
+    #####:  410:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
+call    0 never executed
+call    1 never executed
+    #####:  411:      { }
+------------------
+_ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEC2EcRKS3_:
+function _ZNSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEC2EcRKS3_ called 0 returned 0% blocks executed 0%
+    #####:  409:      _CharMatcher(_CharT __ch, const _TraitsT& __traits)
+    #####:  410:      : _M_translator(__traits), _M_ch(_M_translator._M_translate(__ch))
+call    0 never executed
+call    1 never executed
+    #####:  411:      { }
+------------------
+        -:  412:
+        -:  413:      bool
+    #####:  414:      operator()(_CharT __ch) const
+    #####:  415:      { return _M_ch == _M_translator._M_translate(__ch); }
+------------------
+_ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEclEc:
+function _ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEclEc called 0 returned 0% blocks executed 0%
+    #####:  414:      operator()(_CharT __ch) const
+    #####:  415:      { return _M_ch == _M_translator._M_translate(__ch); }
+call    0 never executed
+------------------
+_ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEclEc:
+function _ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEclEc called 0 returned 0% blocks executed 0%
+    #####:  414:      operator()(_CharT __ch) const
+    #####:  415:      { return _M_ch == _M_translator._M_translate(__ch); }
+call    0 never executed
+------------------
+_ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEclEc:
+function _ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEclEc called 0 returned 0% blocks executed 0%
+    #####:  414:      operator()(_CharT __ch) const
+    #####:  415:      { return _M_ch == _M_translator._M_translate(__ch); }
+call    0 never executed
+------------------
+_ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEclEc:
+function _ZNKSt8__detail12_CharMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEclEc called 0 returned 0% blocks executed 0%
+    #####:  414:      operator()(_CharT __ch) const
+    #####:  415:      { return _M_ch == _M_translator._M_translate(__ch); }
+call    0 never executed
+------------------
+        -:  416:
+        -:  417:      _TransT _M_translator;
+        -:  418:      _CharT  _M_ch;
+        -:  419:    };
+        -:  420:
+        -:  421:  /// Matches a character range (bracket expression)
+        -:  422:  template<typename _TraitsT, bool __icase, bool __collate>
+        -:  423:    struct _BracketMatcher
+        -:  424:    {
+        -:  425:    public:
+        -:  426:      typedef _RegexTranslator<_TraitsT, __icase, __collate> _TransT;
+        -:  427:      typedef typename _TransT::_CharT                       _CharT;
+        -:  428:      typedef typename _TransT::_StrTransT                   _StrTransT;
+        -:  429:      typedef typename _TraitsT::string_type                 _StringT;
+        -:  430:      typedef typename _TraitsT::char_class_type             _CharClassT;
+        -:  431:
+        -:  432:    public:
+    #####:  433:      _BracketMatcher(bool __is_non_matching,
+        -:  434:		      const _TraitsT& __traits)
+    #####:  435:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
+    #####:  436:      _M_is_non_matching(__is_non_matching)
+    #####:  437:      { }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEC2EbRKS3_:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEC2EbRKS3_ called 0 returned 0% blocks executed 0%
+    #####:  433:      _BracketMatcher(bool __is_non_matching,
+        -:  434:		      const _TraitsT& __traits)
+    #####:  435:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  436:      _M_is_non_matching(__is_non_matching)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+    #####:  437:      { }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEC2EbRKS3_:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEC2EbRKS3_ called 0 returned 0% blocks executed 0%
+    #####:  433:      _BracketMatcher(bool __is_non_matching,
+        -:  434:		      const _TraitsT& __traits)
+    #####:  435:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  436:      _M_is_non_matching(__is_non_matching)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+    #####:  437:      { }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEC2EbRKS3_:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEC2EbRKS3_ called 0 returned 0% blocks executed 0%
+    #####:  433:      _BracketMatcher(bool __is_non_matching,
+        -:  434:		      const _TraitsT& __traits)
+    #####:  435:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  436:      _M_is_non_matching(__is_non_matching)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+    #####:  437:      { }
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEC2EbRKS3_:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEC2EbRKS3_ called 0 returned 0% blocks executed 0%
+    #####:  433:      _BracketMatcher(bool __is_non_matching,
+        -:  434:		      const _TraitsT& __traits)
+    #####:  435:      : _M_class_set(0), _M_translator(__traits), _M_traits(__traits),
+call    0 never executed
+call    1 never executed
+    #####:  436:      _M_is_non_matching(__is_non_matching)
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+    #####:  437:      { }
+------------------
+        -:  438:
+        -:  439:      bool
+    #####:  440:      operator()(_CharT __ch) const
+        -:  441:      {
+        -:  442:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
+    #####:  443:	return _M_apply(__ch, _UseCache());
+        -:  444:      }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEclEc:
+function _ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EEclEc called 0 returned 0% blocks executed 0%
+    #####:  440:      operator()(_CharT __ch) const
+        -:  441:      {
+        -:  442:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
+    #####:  443:	return _M_apply(__ch, _UseCache());
+call    0 never executed
+        -:  444:      }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEclEc:
+function _ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EEclEc called 0 returned 0% blocks executed 0%
+    #####:  440:      operator()(_CharT __ch) const
+        -:  441:      {
+        -:  442:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
+    #####:  443:	return _M_apply(__ch, _UseCache());
+call    0 never executed
+        -:  444:      }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEclEc:
+function _ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EEclEc called 0 returned 0% blocks executed 0%
+    #####:  440:      operator()(_CharT __ch) const
+        -:  441:      {
+        -:  442:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
+    #####:  443:	return _M_apply(__ch, _UseCache());
+call    0 never executed
+        -:  444:      }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEclEc:
+function _ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EEclEc called 0 returned 0% blocks executed 0%
+    #####:  440:      operator()(_CharT __ch) const
+        -:  441:      {
+        -:  442:	_GLIBCXX_DEBUG_ASSERT(_M_is_ready);
+    #####:  443:	return _M_apply(__ch, _UseCache());
+call    0 never executed
+        -:  444:      }
+------------------
+        -:  445:
+        -:  446:      void
+    #####:  447:      _M_add_char(_CharT __c)
+        -:  448:      {
+    #####:  449:	_M_char_set.push_back(_M_translator._M_translate(__c));
+        -:  450:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  451:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE11_M_add_charEc:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE11_M_add_charEc called 0 returned 0% blocks executed 0%
+    #####:  447:      _M_add_char(_CharT __c)
+        -:  448:      {
+    #####:  449:	_M_char_set.push_back(_M_translator._M_translate(__c));
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  450:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  451:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE11_M_add_charEc:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE11_M_add_charEc called 0 returned 0% blocks executed 0%
+    #####:  447:      _M_add_char(_CharT __c)
+        -:  448:      {
+    #####:  449:	_M_char_set.push_back(_M_translator._M_translate(__c));
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  450:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  451:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE11_M_add_charEc:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE11_M_add_charEc called 0 returned 0% blocks executed 0%
+    #####:  447:      _M_add_char(_CharT __c)
+        -:  448:      {
+    #####:  449:	_M_char_set.push_back(_M_translator._M_translate(__c));
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  450:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  451:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE11_M_add_charEc:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE11_M_add_charEc called 0 returned 0% blocks executed 0%
+    #####:  447:      _M_add_char(_CharT __c)
+        -:  448:      {
+    #####:  449:	_M_char_set.push_back(_M_translator._M_translate(__c));
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  450:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  451:      }
+------------------
+        -:  452:
+        -:  453:      _StringT
+    #####:  454:      _M_add_collate_element(const _StringT& __s)
+        -:  455:      {
+    #####:  456:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  457:						 __s.data() + __s.size());
+    #####:  458:	if (__st.empty())
+    #####:  459:	  __throw_regex_error(regex_constants::error_collate,
+        -:  460:			      "Invalid collate element.");
+    #####:  461:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
+        -:  462:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  463:	return __st;
+    =====:  464:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  454:      _M_add_collate_element(const _StringT& __s)
+        -:  455:      {
+    #####:  456:	auto __st = _M_traits.lookup_collatename(__s.data(),
+call    0 never executed
+call    1 never executed
+    #####:  457:						 __s.data() + __s.size());
+call    0 never executed
+call    1 never executed
+    #####:  458:	if (__st.empty())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  459:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  460:			      "Invalid collate element.");
+    #####:  461:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+        -:  462:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  463:	return __st;
+    =====:  464:      }
+call    0 never executed
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  454:      _M_add_collate_element(const _StringT& __s)
+        -:  455:      {
+    #####:  456:	auto __st = _M_traits.lookup_collatename(__s.data(),
+call    0 never executed
+call    1 never executed
+    #####:  457:						 __s.data() + __s.size());
+call    0 never executed
+call    1 never executed
+    #####:  458:	if (__st.empty())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  459:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  460:			      "Invalid collate element.");
+    #####:  461:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+        -:  462:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  463:	return __st;
+    =====:  464:      }
+call    0 never executed
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  454:      _M_add_collate_element(const _StringT& __s)
+        -:  455:      {
+    #####:  456:	auto __st = _M_traits.lookup_collatename(__s.data(),
+call    0 never executed
+call    1 never executed
+    #####:  457:						 __s.data() + __s.size());
+call    0 never executed
+call    1 never executed
+    #####:  458:	if (__st.empty())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  459:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  460:			      "Invalid collate element.");
+    #####:  461:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+branch  7 never executed
+branch  8 never executed
+        -:  462:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  463:	return __st;
+    =====:  464:      }
+call    0 never executed
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE22_M_add_collate_elementERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  454:      _M_add_collate_element(const _StringT& __s)
+        -:  455:      {
+    #####:  456:	auto __st = _M_traits.lookup_collatename(__s.data(),
+call    0 never executed
+call    1 never executed
+    #####:  457:						 __s.data() + __s.size());
+call    0 never executed
+call    1 never executed
+    #####:  458:	if (__st.empty())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  459:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  460:			      "Invalid collate element.");
+    #####:  461:	_M_char_set.push_back(_M_translator._M_translate(__st[0]));
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+        -:  462:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  463:	return __st;
+    =====:  464:      }
+call    0 never executed
+------------------
+        -:  465:
+        -:  466:      void
+    #####:  467:      _M_add_equivalence_class(const _StringT& __s)
+        -:  468:      {
+    #####:  469:	auto __st = _M_traits.lookup_collatename(__s.data(),
+    #####:  470:						 __s.data() + __s.size());
+    #####:  471:	if (__st.empty())
+    #####:  472:	  __throw_regex_error(regex_constants::error_collate,
+        -:  473:			      "Invalid equivalence class.");
+    #####:  474:	__st = _M_traits.transform_primary(__st.data(),
+    #####:  475:					   __st.data() + __st.size());
+    #####:  476:	_M_equiv_set.push_back(__st);
+        -:  477:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  478:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  467:      _M_add_equivalence_class(const _StringT& __s)
+        -:  468:      {
+    #####:  469:	auto __st = _M_traits.lookup_collatename(__s.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  470:						 __s.data() + __s.size());
+call    0 never executed
+call    1 never executed
+    #####:  471:	if (__st.empty())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  472:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  473:			      "Invalid equivalence class.");
+    #####:  474:	__st = _M_traits.transform_primary(__st.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+    #####:  475:					   __st.data() + __st.size());
+call    0 never executed
+call    1 never executed
+    #####:  476:	_M_equiv_set.push_back(__st);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  477:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  478:      }
+call    0 never executed
+call    1 never executed
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  467:      _M_add_equivalence_class(const _StringT& __s)
+        -:  468:      {
+    #####:  469:	auto __st = _M_traits.lookup_collatename(__s.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  470:						 __s.data() + __s.size());
+call    0 never executed
+call    1 never executed
+    #####:  471:	if (__st.empty())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  472:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  473:			      "Invalid equivalence class.");
+    #####:  474:	__st = _M_traits.transform_primary(__st.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+    #####:  475:					   __st.data() + __st.size());
+call    0 never executed
+call    1 never executed
+    #####:  476:	_M_equiv_set.push_back(__st);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  477:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  478:      }
+call    0 never executed
+call    1 never executed
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  467:      _M_add_equivalence_class(const _StringT& __s)
+        -:  468:      {
+    #####:  469:	auto __st = _M_traits.lookup_collatename(__s.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  470:						 __s.data() + __s.size());
+call    0 never executed
+call    1 never executed
+    #####:  471:	if (__st.empty())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  472:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  473:			      "Invalid equivalence class.");
+    #####:  474:	__st = _M_traits.transform_primary(__st.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+    #####:  475:					   __st.data() + __st.size());
+call    0 never executed
+call    1 never executed
+    #####:  476:	_M_equiv_set.push_back(__st);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  477:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  478:      }
+call    0 never executed
+call    1 never executed
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE24_M_add_equivalence_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:  467:      _M_add_equivalence_class(const _StringT& __s)
+        -:  468:      {
+    #####:  469:	auto __st = _M_traits.lookup_collatename(__s.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  470:						 __s.data() + __s.size());
+call    0 never executed
+call    1 never executed
+    #####:  471:	if (__st.empty())
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  472:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  473:			      "Invalid equivalence class.");
+    #####:  474:	__st = _M_traits.transform_primary(__st.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+call    5 never executed
+    #####:  475:					   __st.data() + __st.size());
+call    0 never executed
+call    1 never executed
+    #####:  476:	_M_equiv_set.push_back(__st);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  477:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  478:      }
+call    0 never executed
+call    1 never executed
+------------------
+        -:  479:
+        -:  480:      // __neg should be true for \D, \S and \W only.
+        -:  481:      void
+    #####:  482:      _M_add_character_class(const _StringT& __s, bool __neg)
+        -:  483:      {
+    #####:  484:	auto __mask = _M_traits.lookup_classname(__s.data(),
+    #####:  485:						 __s.data() + __s.size(),
+        -:  486:						 __icase);
+    #####:  487:	if (__mask == 0)
+    #####:  488:	  __throw_regex_error(regex_constants::error_collate,
+        -:  489:			      "Invalid character class.");
+    #####:  490:	if (!__neg)
+    #####:  491:	  _M_class_set |= __mask;
+        -:  492:	else
+    #####:  493:	  _M_neg_class_set.push_back(__mask);
+        -:  494:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  495:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb called 0 returned 0% blocks executed 0%
+    #####:  482:      _M_add_character_class(const _StringT& __s, bool __neg)
+        -:  483:      {
+    #####:  484:	auto __mask = _M_traits.lookup_classname(__s.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  485:						 __s.data() + __s.size(),
+call    0 never executed
+call    1 never executed
+        -:  486:						 __icase);
+    #####:  487:	if (__mask == 0)
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  488:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  489:			      "Invalid character class.");
+    #####:  490:	if (!__neg)
+branch  0 never executed
+branch  1 never executed
+    #####:  491:	  _M_class_set |= __mask;
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  492:	else
+    #####:  493:	  _M_neg_class_set.push_back(__mask);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  494:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  495:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb called 0 returned 0% blocks executed 0%
+    #####:  482:      _M_add_character_class(const _StringT& __s, bool __neg)
+        -:  483:      {
+    #####:  484:	auto __mask = _M_traits.lookup_classname(__s.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  485:						 __s.data() + __s.size(),
+call    0 never executed
+call    1 never executed
+        -:  486:						 __icase);
+    #####:  487:	if (__mask == 0)
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  488:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  489:			      "Invalid character class.");
+    #####:  490:	if (!__neg)
+branch  0 never executed
+branch  1 never executed
+    #####:  491:	  _M_class_set |= __mask;
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  492:	else
+    #####:  493:	  _M_neg_class_set.push_back(__mask);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  494:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  495:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb called 0 returned 0% blocks executed 0%
+    #####:  482:      _M_add_character_class(const _StringT& __s, bool __neg)
+        -:  483:      {
+    #####:  484:	auto __mask = _M_traits.lookup_classname(__s.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  485:						 __s.data() + __s.size(),
+call    0 never executed
+call    1 never executed
+        -:  486:						 __icase);
+    #####:  487:	if (__mask == 0)
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  488:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  489:			      "Invalid character class.");
+    #####:  490:	if (!__neg)
+branch  0 never executed
+branch  1 never executed
+    #####:  491:	  _M_class_set |= __mask;
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  492:	else
+    #####:  493:	  _M_neg_class_set.push_back(__mask);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  494:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  495:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE22_M_add_character_classERKNS1_12basic_stringIcSt11char_traitsIcESaIcEEEb called 0 returned 0% blocks executed 0%
+    #####:  482:      _M_add_character_class(const _StringT& __s, bool __neg)
+        -:  483:      {
+    #####:  484:	auto __mask = _M_traits.lookup_classname(__s.data(),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  485:						 __s.data() + __s.size(),
+call    0 never executed
+call    1 never executed
+        -:  486:						 __icase);
+    #####:  487:	if (__mask == 0)
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  488:	  __throw_regex_error(regex_constants::error_collate,
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  489:			      "Invalid character class.");
+    #####:  490:	if (!__neg)
+branch  0 never executed
+branch  1 never executed
+    #####:  491:	  _M_class_set |= __mask;
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  492:	else
+    #####:  493:	  _M_neg_class_set.push_back(__mask);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  494:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  495:      }
+------------------
+        -:  496:
+        -:  497:      void
+    #####:  498:      _M_make_range(_CharT __l, _CharT __r)
+        -:  499:      {
+    #####:  500:	if (__l > __r)
+    #####:  501:	  __throw_regex_error(regex_constants::error_range,
+        -:  502:			      "Invalid range in bracket expression.");
+    #####:  503:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
+    #####:  504:					 _M_translator._M_transform(__r)));
+        -:  505:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  506:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE13_M_make_rangeEcc:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE13_M_make_rangeEcc called 0 returned 0% blocks executed 0%
+    #####:  498:      _M_make_range(_CharT __l, _CharT __r)
+        -:  499:      {
+    #####:  500:	if (__l > __r)
+branch  0 never executed
+branch  1 never executed
+    #####:  501:	  __throw_regex_error(regex_constants::error_range,
+call    0 never executed
+        -:  502:			      "Invalid range in bracket expression.");
+    #####:  503:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+branch  8 never executed
+branch  9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+        -:  504:					 _M_translator._M_transform(__r)));
+        -:  505:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  506:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE13_M_make_rangeEcc:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE13_M_make_rangeEcc called 0 returned 0% blocks executed 0%
+    #####:  498:      _M_make_range(_CharT __l, _CharT __r)
+        -:  499:      {
+    #####:  500:	if (__l > __r)
+branch  0 never executed
+branch  1 never executed
+    #####:  501:	  __throw_regex_error(regex_constants::error_range,
+call    0 never executed
+        -:  502:			      "Invalid range in bracket expression.");
+    #####:  503:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  504:					 _M_translator._M_transform(__r)));
+call    0 never executed
+call    1 never executed
+        -:  505:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  506:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE13_M_make_rangeEcc:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE13_M_make_rangeEcc called 0 returned 0% blocks executed 0%
+    #####:  498:      _M_make_range(_CharT __l, _CharT __r)
+        -:  499:      {
+    #####:  500:	if (__l > __r)
+branch  0 never executed
+branch  1 never executed
+    #####:  501:	  __throw_regex_error(regex_constants::error_range,
+call    0 never executed
+        -:  502:			      "Invalid range in bracket expression.");
+    #####:  503:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+branch  8 never executed
+branch  9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+call   14 never executed
+call   15 never executed
+        -:  504:					 _M_translator._M_transform(__r)));
+        -:  505:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  506:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE13_M_make_rangeEcc:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE13_M_make_rangeEcc called 0 returned 0% blocks executed 0%
+    #####:  498:      _M_make_range(_CharT __l, _CharT __r)
+        -:  499:      {
+    #####:  500:	if (__l > __r)
+branch  0 never executed
+branch  1 never executed
+    #####:  501:	  __throw_regex_error(regex_constants::error_range,
+call    0 never executed
+        -:  502:			      "Invalid range in bracket expression.");
+    #####:  503:	_M_range_set.push_back(make_pair(_M_translator._M_transform(__l),
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  504:					 _M_translator._M_transform(__r)));
+call    0 never executed
+call    1 never executed
+        -:  505:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = false);
+    #####:  506:      }
+------------------
+        -:  507:
+        -:  508:      void
+    #####:  509:      _M_ready()
+        -:  510:      {
+    #####:  511:	std::sort(_M_char_set.begin(), _M_char_set.end());
+    #####:  512:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
+    #####:  513:	_M_char_set.erase(__end, _M_char_set.end());
+    #####:  514:	_M_make_cache(_UseCache());
+        -:  515:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = true);
+    #####:  516:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE8_M_readyEv:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE8_M_readyEv called 0 returned 0% blocks executed 0%
+    #####:  509:      _M_ready()
+        -:  510:      {
+    #####:  511:	std::sort(_M_char_set.begin(), _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  512:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  513:	_M_char_set.erase(__end, _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  514:	_M_make_cache(_UseCache());
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  515:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = true);
+    #####:  516:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE8_M_readyEv:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE8_M_readyEv called 0 returned 0% blocks executed 0%
+    #####:  509:      _M_ready()
+        -:  510:      {
+    #####:  511:	std::sort(_M_char_set.begin(), _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  512:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  513:	_M_char_set.erase(__end, _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  514:	_M_make_cache(_UseCache());
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  515:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = true);
+    #####:  516:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE8_M_readyEv:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE8_M_readyEv called 0 returned 0% blocks executed 0%
+    #####:  509:      _M_ready()
+        -:  510:      {
+    #####:  511:	std::sort(_M_char_set.begin(), _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  512:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  513:	_M_char_set.erase(__end, _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  514:	_M_make_cache(_UseCache());
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  515:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = true);
+    #####:  516:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE8_M_readyEv:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE8_M_readyEv called 0 returned 0% blocks executed 0%
+    #####:  509:      _M_ready()
+        -:  510:      {
+    #####:  511:	std::sort(_M_char_set.begin(), _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  512:	auto __end = std::unique(_M_char_set.begin(), _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  513:	_M_char_set.erase(__end, _M_char_set.end());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+    #####:  514:	_M_make_cache(_UseCache());
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  515:	_GLIBCXX_DEBUG_ONLY(_M_is_ready = true);
+    #####:  516:      }
+------------------
+        -:  517:
+        -:  518:    private:
+        -:  519:      // Currently we only use the cache for char
+        -:  520:      typedef typename std::is_same<_CharT, char>::type _UseCache;
+        -:  521:
+        -:  522:      static constexpr size_t
+        -:  523:      _S_cache_size =
+        -:  524:	1ul << (sizeof(_CharT) * __CHAR_BIT__ * int(_UseCache::value));
+        -:  525:
+        -:  526:      struct _Dummy { };
+        -:  527:      typedef typename std::conditional<_UseCache::value,
+        -:  528:					std::bitset<_S_cache_size>,
+        -:  529:					_Dummy>::type _CacheT;
+        -:  530:      typedef typename std::make_unsigned<_CharT>::type _UnsignedCharT;
+        -:  531:
+        -:  532:      bool
+        -:  533:      _M_apply(_CharT __ch, false_type) const;
+        -:  534:
+        -:  535:      bool
+    #####:  536:      _M_apply(_CharT __ch, true_type) const
+    #####:  537:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE8_M_applyEcSt17integral_constantIbLb1EE:
+function _ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE8_M_applyEcSt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  536:      _M_apply(_CharT __ch, true_type) const
+    #####:  537:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
+call    0 never executed
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE8_M_applyEcSt17integral_constantIbLb1EE:
+function _ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE8_M_applyEcSt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  536:      _M_apply(_CharT __ch, true_type) const
+    #####:  537:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
+call    0 never executed
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE8_M_applyEcSt17integral_constantIbLb1EE:
+function _ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE8_M_applyEcSt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  536:      _M_apply(_CharT __ch, true_type) const
+    #####:  537:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
+call    0 never executed
+------------------
+_ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE8_M_applyEcSt17integral_constantIbLb1EE:
+function _ZNKSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE8_M_applyEcSt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  536:      _M_apply(_CharT __ch, true_type) const
+    #####:  537:      { return _M_cache[static_cast<_UnsignedCharT>(__ch)]; }
+call    0 never executed
+------------------
+        -:  538:
+        -:  539:      void
+    #####:  540:      _M_make_cache(true_type)
+        -:  541:      {
+    #####:  542:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
+    #####:  543:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
+    #####:  544:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE13_M_make_cacheESt17integral_constantIbLb1EE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb1EE13_M_make_cacheESt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  540:      _M_make_cache(true_type)
+        -:  541:      {
+    #####:  542:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  543:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  544:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE13_M_make_cacheESt17integral_constantIbLb1EE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb1ELb0EE13_M_make_cacheESt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  540:      _M_make_cache(true_type)
+        -:  541:      {
+    #####:  542:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  543:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  544:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE13_M_make_cacheESt17integral_constantIbLb1EE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb1EE13_M_make_cacheESt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  540:      _M_make_cache(true_type)
+        -:  541:      {
+    #####:  542:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  543:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  544:      }
+------------------
+_ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE13_M_make_cacheESt17integral_constantIbLb1EE:
+function _ZNSt8__detail15_BracketMatcherINSt7__cxx1112regex_traitsIcEELb0ELb0EE13_M_make_cacheESt17integral_constantIbLb1EE called 0 returned 0% blocks executed 0%
+    #####:  540:      _M_make_cache(true_type)
+        -:  541:      {
+    #####:  542:	for (unsigned __i = 0; __i < _M_cache.size(); __i++)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  543:	  _M_cache[__i] = _M_apply(static_cast<_CharT>(__i), false_type());
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:  544:      }
+------------------
+        -:  545:
+        -:  546:      void
+        -:  547:      _M_make_cache(false_type)
+        -:  548:      { }
+        -:  549:
+        -:  550:    private:
+        -:  551:      std::vector<_CharT>                       _M_char_set;
+        -:  552:      std::vector<_StringT>                     _M_equiv_set;
+        -:  553:      std::vector<pair<_StrTransT, _StrTransT>> _M_range_set;
+        -:  554:      std::vector<_CharClassT>                  _M_neg_class_set;
+        -:  555:      _CharClassT                               _M_class_set;
+        -:  556:      _TransT                                   _M_translator;
+        -:  557:      const _TraitsT&                           _M_traits;
+        -:  558:      bool                                      _M_is_non_matching;
+        -:  559:      _CacheT					_M_cache;
+        -:  560:#ifdef _GLIBCXX_DEBUG
+        -:  561:      bool                                      _M_is_ready = false;
+        -:  562:#endif
+        -:  563:    };
+        -:  564:
+        -:  565: ///@} regex-detail
+        -:  566:} // namespace __detail
+        -:  567:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  568:} // namespace std
+        -:  569:
+        -:  570:#include <bits/regex_compiler.tcc>

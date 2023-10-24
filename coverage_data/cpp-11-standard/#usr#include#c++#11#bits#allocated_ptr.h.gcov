@@ -1,0 +1,1168 @@
+        -:    0:Source:/usr/include/c++/11/bits/allocated_ptr.h
+        -:    0:Graph:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcno
+        -:    0:Data:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcda
+        -:    0:Runs:1
+        -:    1:// Guarded Allocation -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2014-2021 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file bits/allocated_ptr.h
+        -:   26: *  This is an internal header file, included by other library headers.
+        -:   27: *  Do not attempt to use it directly. @headername{memory}
+        -:   28: */
+        -:   29:
+        -:   30:#ifndef _ALLOCATED_PTR_H
+        -:   31:#define _ALLOCATED_PTR_H 1
+        -:   32:
+        -:   33:#if __cplusplus < 201103L
+        -:   34:# include <bits/c++0xwarning.h>
+        -:   35:#else
+        -:   36:# include <type_traits>
+        -:   37:# include <bits/ptr_traits.h>
+        -:   38:# include <bits/alloc_traits.h>
+        -:   39:
+        -:   40:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   41:{
+        -:   42:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   43:/// @cond undocumented
+        -:   44:
+        -:   45:  /// Non-standard RAII type for managing pointers obtained from allocators.
+        -:   46:  template<typename _Alloc>
+        -:   47:    struct __allocated_ptr
+        -:   48:    {
+        -:   49:      using pointer = typename allocator_traits<_Alloc>::pointer;
+        -:   50:      using value_type = typename allocator_traits<_Alloc>::value_type;
+        -:   51:
+        -:   52:      /// Take ownership of __ptr
+      90*:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+      90*:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+      90*:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS8_PS7_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS8_PS7_ called 0 returned 0% blocks executed 0%
+    #####:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+    #####:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 never executed
+    #####:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSF_PSE_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSF_PSE_ called 0 returned 0% blocks executed 0%
+    #####:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+    #####:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 never executed
+    #####:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSD_PSC_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSD_PSC_ called 0 returned 0% blocks executed 0%
+    #####:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+    #####:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 never executed
+    #####:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEESaISE_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSJ_PSI_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEESaISE_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSJ_PSI_ called 4 returned 100% blocks executed 100%
+        4:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        4:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        4:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSD_PSC_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSD_PSC_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSD_PSC_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSD_PSC_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS8_PS7_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS8_PS7_ called 0 returned 0% blocks executed 0%
+    #####:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+    #####:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 never executed
+    #####:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS8_PS7_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS8_PS7_ called 0 returned 0% blocks executed 0%
+    #####:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+    #####:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 never executed
+    #####:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS8_PS7_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS8_PS7_ called 8 returned 100% blocks executed 100%
+        8:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        8:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        8:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS7_PS6_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS7_PS6_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS8_PS7_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS8_PS7_ called 0 returned 0% blocks executed 0%
+    #####:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+    #####:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 never executed
+    #####:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS9_PS8_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERS9_PS8_ called 22 returned 100% blocks executed 100%
+       22:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+       22:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+       22:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSG_PSF_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSG_PSF_ called 6 returned 100% blocks executed 100%
+        6:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        6:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        6:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSB_PSA_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSB_PSA_ called 6 returned 100% blocks executed 100%
+        6:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        6:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        6:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_ called 0 returned 0% blocks executed 0%
+    #####:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+    #####:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 never executed
+    #####:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSB_PSA_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSB_PSA_ called 0 returned 0% blocks executed 0%
+    #####:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+    #####:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 never executed
+    #####:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_ called 4 returned 100% blocks executed 100%
+        4:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        4:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        4:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEESaISC_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSH_PSG_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEESaISC_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSH_PSG_ called 0 returned 0% blocks executed 0%
+    #####:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+    #####:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 never executed
+    #####:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_ called 4 returned 100% blocks executed 100%
+        4:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        4:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        4:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSD_PSC_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSD_PSC_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSD_PSC_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSD_PSC_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSL_PSK_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEC2ERSA_PS9_ called 2 returned 100% blocks executed 100%
+        2:   53:      __allocated_ptr(_Alloc& __a, pointer __ptr) noexcept
+        2:   54:      : _M_alloc(std::__addressof(__a)), _M_ptr(__ptr)
+call    0 returned 100%
+        2:   55:      { }
+------------------
+        -:   56:
+        -:   57:      /// Convert __ptr to allocator's pointer type and take ownership of it
+        -:   58:      template<typename _Ptr,
+        -:   59:	       typename _Req = _Require<is_same<_Ptr, value_type*>>>
+        -:   60:      __allocated_ptr(_Alloc& __a, _Ptr __ptr)
+        -:   61:      : _M_alloc(std::__addressof(__a)),
+        -:   62:	_M_ptr(pointer_traits<pointer>::pointer_to(*__ptr))
+        -:   63:      { }
+        -:   64:
+        -:   65:      /// Transfer ownership of the owned pointer
+        -:   66:      __allocated_ptr(__allocated_ptr&& __gd) noexcept
+        -:   67:      : _M_alloc(__gd._M_alloc), _M_ptr(__gd._M_ptr)
+        -:   68:      { __gd._M_ptr = nullptr; }
+        -:   69:
+        -:   70:      /// Deallocate the owned pointer
+      90*:   71:      ~__allocated_ptr()
+        -:   72:      {
+      90*:   73:	if (_M_ptr != nullptr)
+      45*:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+      90*:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:   71:      ~__allocated_ptr()
+        -:   72:      {
+    #####:   73:	if (_M_ptr != nullptr)
+branch  0 never executed
+branch  1 never executed
+    #####:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 never executed
+    #####:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:   71:      ~__allocated_ptr()
+        -:   72:      {
+    #####:   73:	if (_M_ptr != nullptr)
+branch  0 never executed
+branch  1 never executed
+    #####:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 never executed
+    #####:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:   71:      ~__allocated_ptr()
+        -:   72:      {
+    #####:   73:	if (_M_ptr != nullptr)
+branch  0 never executed
+branch  1 never executed
+    #####:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 never executed
+    #####:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEESaISE_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEESaISE_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 4 returned 100% blocks executed 100%
+        4:   71:      ~__allocated_ptr()
+        -:   72:      {
+        4:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        2:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        4:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:   71:      ~__allocated_ptr()
+        -:   72:      {
+    #####:   73:	if (_M_ptr != nullptr)
+branch  0 never executed
+branch  1 never executed
+    #####:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 never executed
+    #####:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:   71:      ~__allocated_ptr()
+        -:   72:      {
+    #####:   73:	if (_M_ptr != nullptr)
+branch  0 never executed
+branch  1 never executed
+    #####:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 never executed
+    #####:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 8 returned 100% blocks executed 100%
+        8:   71:      ~__allocated_ptr()
+        -:   72:      {
+        8:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        4:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        8:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:   71:      ~__allocated_ptr()
+        -:   72:      {
+    #####:   73:	if (_M_ptr != nullptr)
+branch  0 never executed
+branch  1 never executed
+    #####:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 never executed
+    #####:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 22 returned 100% blocks executed 100%
+       22:   71:      ~__allocated_ptr()
+        -:   72:      {
+       22:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+       11:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+       22:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 6 returned 100% blocks executed 100%
+        6:   71:      ~__allocated_ptr()
+        -:   72:      {
+        6:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        3:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        6:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 6 returned 100% blocks executed 100%
+        6:   71:      ~__allocated_ptr()
+        -:   72:      {
+        6:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        3:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        6:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:   71:      ~__allocated_ptr()
+        -:   72:      {
+    #####:   73:	if (_M_ptr != nullptr)
+branch  0 never executed
+branch  1 never executed
+    #####:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 never executed
+    #####:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:   71:      ~__allocated_ptr()
+        -:   72:      {
+    #####:   73:	if (_M_ptr != nullptr)
+branch  0 never executed
+branch  1 never executed
+    #####:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 never executed
+    #####:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 4 returned 100% blocks executed 100%
+        4:   71:      ~__allocated_ptr()
+        -:   72:      {
+        4:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        2:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        4:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEESaISC_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEESaISC_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:   71:      ~__allocated_ptr()
+        -:   72:      {
+    #####:   73:	if (_M_ptr != nullptr)
+branch  0 never executed
+branch  1 never executed
+    #####:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 never executed
+    #####:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 4 returned 100% blocks executed 100%
+        4:   71:      ~__allocated_ptr()
+        -:   72:      {
+        4:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        2:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        4:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEED2Ev called 2 returned 100% blocks executed 100%
+        2:   71:      ~__allocated_ptr()
+        -:   72:      {
+        2:   73:	if (_M_ptr != nullptr)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   74:	  std::allocator_traits<_Alloc>::deallocate(*_M_alloc, _M_ptr, 1);
+call    0 returned 100%
+        2:   75:      }
+------------------
+        -:   76:
+        -:   77:      /// Release ownership of the owned pointer
+        -:   78:      __allocated_ptr&
+      45*:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+      45*:   81:	_M_ptr = nullptr;
+      45*:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 0 returned 0% blocks executed 0%
+    #####:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+    #####:   81:	_M_ptr = nullptr;
+    #####:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 0 returned 0% blocks executed 0%
+    #####:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+    #####:   81:	_M_ptr = nullptr;
+    #####:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 0 returned 0% blocks executed 0%
+    #####:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+    #####:   81:	_M_ptr = nullptr;
+    #####:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEESaISE_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEESaISE_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 2 returned 100% blocks executed 100%
+        2:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        2:   81:	_M_ptr = nullptr;
+        2:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 0 returned 0% blocks executed 0%
+    #####:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+    #####:   81:	_M_ptr = nullptr;
+    #####:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 0 returned 0% blocks executed 0%
+    #####:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+    #####:   81:	_M_ptr = nullptr;
+    #####:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 4 returned 100% blocks executed 100%
+        4:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        4:   81:	_M_ptr = nullptr;
+        4:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 0 returned 0% blocks executed 0%
+    #####:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+    #####:   81:	_M_ptr = nullptr;
+    #####:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 11 returned 100% blocks executed 100%
+       11:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+       11:   81:	_M_ptr = nullptr;
+       11:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 3 returned 100% blocks executed 100%
+        3:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        3:   81:	_M_ptr = nullptr;
+        3:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 3 returned 100% blocks executed 100%
+        3:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        3:   81:	_M_ptr = nullptr;
+        3:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 0 returned 0% blocks executed 0%
+    #####:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+    #####:   81:	_M_ptr = nullptr;
+    #####:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 0 returned 0% blocks executed 0%
+    #####:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+    #####:   81:	_M_ptr = nullptr;
+    #####:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 2 returned 100% blocks executed 100%
+        2:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        2:   81:	_M_ptr = nullptr;
+        2:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEESaISC_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEESaISC_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 0 returned 0% blocks executed 0%
+    #####:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+    #####:   81:	_M_ptr = nullptr;
+    #####:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 2 returned 100% blocks executed 100%
+        2:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        2:   81:	_M_ptr = nullptr;
+        2:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEEaSEDn called 1 returned 100% blocks executed 100%
+        1:   79:      operator=(std::nullptr_t) noexcept
+        -:   80:      {
+        1:   81:	_M_ptr = nullptr;
+        1:   82:	return *this;
+        -:   83:      }
+------------------
+        -:   84:
+        -:   85:      /// Get the address that the owned pointer refers to.
+      45*:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 0 returned 0% blocks executed 0%
+    #####:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 never executed
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 0 returned 0% blocks executed 0%
+    #####:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 never executed
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_13TestCaseStatsENS4_11SectionNodeEEESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 0 returned 0% blocks executed 0%
+    #####:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 never executed
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15ConsoleReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_15CompactReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEESaISE_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISB_EEEESaISE_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 2 returned 100% blocks executed 100%
+        2:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE7_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS3_4HelpC4ERbEUlbE_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 0 returned 0% blocks executed 0%
+    #####:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 never executed
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_13JunitReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 0 returned 0% blocks executed 0%
+    #####:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 never executed
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 4 returned 100% blocks executed 100%
+        4:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 0 returned 0% blocks executed 0%
+    #####:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 never executed
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 11 returned 100% blocks executed 100%
+       11:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 3 returned 100% blocks executed 100%
+        3:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 3 returned 100% blocks executed 100%
+        3:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 0 returned 0% blocks executed 0%
+    #####:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 never executed
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS6_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 0 returned 0% blocks executed 0%
+    #####:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 never executed
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 2 returned 100% blocks executed 100%
+        2:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEESaISC_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE4NodeINS1_12TestRunStatsENS5_INS1_14TestGroupStatsENS5_INS1_13TestCaseStatsENS4_11SectionNodeEEEEEEESaISC_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 0 returned 0% blocks executed 0%
+    #####:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 never executed
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 2 returned 100% blocks executed 100%
+        2:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlbE9_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUliE8_EESaIS8_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS1_21makeCommandLineParserERNS1_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISG_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+_ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv:
+function _ZNSt15__allocated_ptrISaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS1_11XmlReporterEE15ReporterFactoryESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEE3getEv called 1 returned 100% blocks executed 100%
+        1:   86:      value_type* get() { return std::__to_address(_M_ptr); }
+call    0 returned 100%
+------------------
+        -:   87:
+        -:   88:    private:
+        -:   89:      _Alloc* _M_alloc;
+        -:   90:      pointer _M_ptr;
+        -:   91:    };
+        -:   92:
+        -:   93:  /// Allocate space for a single object using __a
+        -:   94:  template<typename _Alloc>
+        -:   95:    __allocated_ptr<_Alloc>
+      45*:   96:    __allocate_guarded(_Alloc& __a)
+        -:   97:    {
+      45*:   98:      return { __a, std::allocator_traits<_Alloc>::allocate(__a, 1) };
+        -:   99:    }
+        -:  100:
+        -:  101:/// @endcond
+        -:  102:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  103:} // namespace std
+        -:  104:
+        -:  105:#endif
+        -:  106:#endif

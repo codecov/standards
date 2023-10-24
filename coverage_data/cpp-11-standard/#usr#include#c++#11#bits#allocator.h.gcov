@@ -1,0 +1,1950 @@
+        -:    0:Source:/usr/include/c++/11/bits/allocator.h
+        -:    0:Graph:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcno
+        -:    0:Data:/home/runner/work/cpp-11-standard/cpp-11-standard/TestBinary-test_index.gcda
+        -:    0:Runs:1
+        -:    1:// Allocators -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2001-2021 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/*
+        -:   26: * Copyright (c) 1996-1997
+        -:   27: * Silicon Graphics Computer Systems, Inc.
+        -:   28: *
+        -:   29: * Permission to use, copy, modify, distribute and sell this software
+        -:   30: * and its documentation for any purpose is hereby granted without fee,
+        -:   31: * provided that the above copyright notice appear in all copies and
+        -:   32: * that both that copyright notice and this permission notice appear
+        -:   33: * in supporting documentation.  Silicon Graphics makes no
+        -:   34: * representations about the suitability of this software for any
+        -:   35: * purpose.  It is provided "as is" without express or implied warranty.
+        -:   36: */
+        -:   37:
+        -:   38:/** @file bits/allocator.h
+        -:   39: *  This is an internal header file, included by other library headers.
+        -:   40: *  Do not attempt to use it directly. @headername{memory}
+        -:   41: */
+        -:   42:
+        -:   43:#ifndef _ALLOCATOR_H
+        -:   44:#define _ALLOCATOR_H 1
+        -:   45:
+        -:   46:#include <bits/c++allocator.h> // Define the base class to std::allocator.
+        -:   47:#include <bits/memoryfwd.h>
+        -:   48:#if __cplusplus >= 201103L
+        -:   49:#include <type_traits>
+        -:   50:#endif
+        -:   51:
+        -:   52:#define __cpp_lib_incomplete_container_elements 201505
+        -:   53:
+        -:   54:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   55:{
+        -:   56:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   57:
+        -:   58:  /**
+        -:   59:   *  @addtogroup allocators
+        -:   60:   *  @{
+        -:   61:   */
+        -:   62:
+        -:   63:  // Since C++20 the primary template should be used for allocator<void>,
+        -:   64:  // but then it would have a non-trivial default ctor and dtor for C++20,
+        -:   65:  // but trivial for C++98-17, which would be an ABI incompatibiliy between
+        -:   66:  // different standard dialects. So C++20 still uses the allocator<void>
+        -:   67:  // explicit specialization, with the historical ABI properties, but with
+        -:   68:  // the same members that are present in the primary template.
+        -:   69:
+        -:   70:  /// allocator<void> specialization.
+        -:   71:  template<>
+        -:   72:    class allocator<void>
+        -:   73:    {
+        -:   74:    public:
+        -:   75:      typedef void        value_type;
+        -:   76:      typedef size_t      size_type;
+        -:   77:      typedef ptrdiff_t   difference_type;
+        -:   78:
+        -:   79:#if __cplusplus <= 201703L
+        -:   80:      // These were removed for C++20, allocator_traits does the right thing.
+        -:   81:      typedef void*       pointer;
+        -:   82:      typedef const void* const_pointer;
+        -:   83:
+        -:   84:      template<typename _Tp1>
+        -:   85:	struct rebind
+        -:   86:	{ typedef allocator<_Tp1> other; };
+        -:   87:#endif
+        -:   88:
+        -:   89:#if __cplusplus >= 201103L
+        -:   90:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:   91:      // 2103. std::allocator propagate_on_container_move_assignment
+        -:   92:      using propagate_on_container_move_assignment = true_type;
+        -:   93:
+        -:   94:      using is_always_equal
+        -:   95:	_GLIBCXX20_DEPRECATED_SUGGEST("std::allocator_traits::is_always_equal")
+        -:   96:	= true_type;
+        -:   97:
+        -:   98:#if __cplusplus >= 202002L
+        -:   99:      // As noted above, these members are present for C++20 to provide the
+        -:  100:      // same API as the primary template, but still trivial as in pre-C++20.
+        -:  101:      allocator() = default;
+        -:  102:      ~allocator() = default;
+        -:  103:
+        -:  104:      template<typename _Up>
+        -:  105:	constexpr
+        -:  106:	allocator(const allocator<_Up>&) noexcept { }
+        -:  107:
+        -:  108:      // No allocate member because it's ill-formed by LWG 3307.
+        -:  109:      // No deallocate member because it would be undefined to call it
+        -:  110:      // with any pointer which wasn't obtained from allocate.
+        -:  111:#endif // C++20
+        -:  112:#endif // C++11
+        -:  113:    };
+        -:  114:
+        -:  115:  /**
+        -:  116:   * @brief  The @a standard allocator, as per C++03 [20.4.1].
+        -:  117:   *
+        -:  118:   *  See https://gcc.gnu.org/onlinedocs/libstdc++/manual/memory.html#std.util.memory.allocator
+        -:  119:   *  for further details.
+        -:  120:   *
+        -:  121:   *  @tparam  _Tp  Type of allocated object.
+        -:  122:   */
+        -:  123:  template<typename _Tp>
+        -:  124:    class allocator : public __allocator_base<_Tp>
+        -:  125:    {
+        -:  126:    public:
+        -:  127:      typedef _Tp        value_type;
+        -:  128:      typedef size_t     size_type;
+        -:  129:      typedef ptrdiff_t  difference_type;
+        -:  130:
+        -:  131:#if __cplusplus <= 201703L
+        -:  132:      // These were removed for C++20.
+        -:  133:      typedef _Tp*       pointer;
+        -:  134:      typedef const _Tp* const_pointer;
+        -:  135:      typedef _Tp&       reference;
+        -:  136:      typedef const _Tp& const_reference;
+        -:  137:
+        -:  138:      template<typename _Tp1>
+        -:  139:	struct rebind
+        -:  140:	{ typedef allocator<_Tp1> other; };
+        -:  141:#endif
+        -:  142:
+        -:  143:#if __cplusplus >= 201103L
+        -:  144:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  145:      // 2103. std::allocator propagate_on_container_move_assignment
+        -:  146:      using propagate_on_container_move_assignment = true_type;
+        -:  147:
+        -:  148:      using is_always_equal
+        -:  149:	_GLIBCXX20_DEPRECATED_SUGGEST("std::allocator_traits::is_always_equal")
+        -:  150:	= true_type;
+        -:  151:#endif
+        -:  152:
+        -:  153:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  154:      // 3035. std::allocator's constructors should be constexpr
+        -:  155:      _GLIBCXX20_CONSTEXPR
+     125*:  156:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch8TestSpec7PatternEEEC2Ev:
+function _ZNSaISt10shared_ptrIN5Catch8TestSpec7PatternEEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail3OptEEC2Ev:
+function _ZNSaIN5Catch5clara6detail3OptEEC2Ev called 2 returned 100% blocks executed 100%
+        2:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail3ArgEEC2Ev:
+function _ZNSaIN5Catch5clara6detail3ArgEEC2Ev called 2 returned 100% blocks executed 100%
+        2:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch6ConfigEEC2Ev:
+function _ZNSaIN5Catch6ConfigEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIPN5Catch10ISingletonEEC2Ev:
+function _ZNSaIPN5Catch10ISingletonEEC2Ev called 2 returned 100% blocks executed 100%
+        2:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt4pairImPKN5Catch8TestCaseEEEC2Ev:
+function _ZNSaISt4pairImPKN5Catch8TestCaseEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch8TestCaseEEC2Ev:
+function _ZNSaIN5Catch8TestCaseEEC2Ev called 2 returned 100% blocks executed 100%
+        2:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch8TestCaseEEEC2Ev:
+function _ZNSaISt13_Rb_tree_nodeIN5Catch8TestCaseEEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch16TestCaseTracking14SectionTrackerEEC2Ev:
+function _ZNSaIN5Catch16TestCaseTracking14SectionTrackerEEC2Ev called 4 returned 100% blocks executed 100%
+        4:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEEC2Ev:
+function _ZNSaISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEEC2Ev called 4 returned 100% blocks executed 100%
+        4:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIPKN5Catch8TestCaseEEC2Ev:
+function _ZNSaIPKN5Catch8TestCaseEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEEC2Ev:
+function _ZNSaISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch8TestSpec11NamePatternEEC2Ev:
+function _ZNSaIN5Catch8TestSpec11NamePatternEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch8TestSpec15ExcludedPatternEEC2Ev:
+function _ZNSaIN5Catch8TestSpec15ExcludedPatternEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch8TestSpec10TagPatternEEC2Ev:
+function _ZNSaIN5Catch8TestSpec10TagPatternEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch13SummaryColumnEEC2Ev:
+function _ZNSaIN5Catch13SummaryColumnEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS1_EEEC2Ev:
+function _ZNSaISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS1_EEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2Ev:
+function _ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS1_4HelpC4ERbEUlbE_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS1_4HelpC4ERbEUlbE_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE7_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE7_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS9_EEEEEC2Ev:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS9_EEEEEC2Ev called 2 returned 100% blocks executed 100%
+        2:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch11SectionInfoEEC2Ev:
+function _ZNSaIN5Catch11SectionInfoEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch8TestSpec6FilterEEC2Ev:
+function _ZNSaIN5Catch8TestSpec6FilterEEC2Ev called 2 returned 100% blocks executed 100%
+        2:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2Ev:
+function _ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2Ev called 49 returned 100% blocks executed 100%
+       49:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11HelpColumnsEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11HelpColumnsEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch8TestSpec11FilterMatchEEC2Ev:
+function _ZNSaIN5Catch8TestSpec11FilterMatchEEC2Ev called 2 returned 100% blocks executed 100%
+        2:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch9VerbosityEEC2Ev:
+function _ZNSaIN5Catch9VerbosityEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch12_GLOBAL__N_110ColumnInfoEEC2Ev:
+function _ZNSaIN5Catch12_GLOBAL__N_110ColumnInfoEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara8TextFlow6Column8iteratorEEC2Ev:
+function _ZNSaIN5Catch5clara8TextFlow6Column8iteratorEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara8TextFlow6ColumnEEC2Ev:
+function _ZNSaIN5Catch5clara8TextFlow6ColumnEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail5TokenEEC2Ev:
+function _ZNSaIN5Catch5clara6detail5TokenEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEC2Ev:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEC2Ev called 3 returned 100% blocks executed 100%
+        3:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail12BoundFlagRefEEC2Ev:
+function _ZNSaIN5Catch5clara6detail12BoundFlagRefEEC2Ev called 11 returned 100% blocks executed 100%
+       11:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15CompactReporterEE15ReporterFactoryEEC2Ev:
+function _ZNSaIN5Catch17ReporterRegistrarINS_15CompactReporterEE15ReporterFactoryEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch9StringRefEEC2Ev:
+function _ZNSaIN5Catch9StringRefEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt4pairIiN5Catch9StringRefEEEC2Ev:
+function _ZNSaISt4pairIiN5Catch9StringRefEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEEC2Ev:
+function _ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC2Ev:
+function _ZNSaISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaImEC2Ev:
+function _ZNSaImEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch11MessageInfoEEC2Ev:
+function _ZNSaIN5Catch11MessageInfoEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch10Generators16GeneratorTrackerEEC2Ev:
+function _ZNSaIN5Catch10Generators16GeneratorTrackerEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch13ScopedMessageEEC2Ev:
+function _ZNSaIN5Catch13ScopedMessageEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch14SectionEndInfoEEC2Ev:
+function _ZNSaIN5Catch14SectionEndInfoEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIPN5Catch16TestCaseTracking8ITrackerEEC2Ev:
+function _ZNSaIPN5Catch16TestCaseTracking8ITrackerEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEEC2Ev:
+function _ZNSaINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIjEEEC2Ev:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefIjEEEC2Ev called 2 returned 100% blocks executed 100%
+        2:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIlEEEC2Ev:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefIlEEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEEC2Ev:
+function _ZNSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEEC2Ev:
+function _ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10shared_ptrIN5Catch16IReporterFactoryEEEC2Ev:
+function _ZNSaISt10shared_ptrIN5Catch16IReporterFactoryEEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS2_EEEC2Ev:
+function _ZNSaISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS2_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEEC2Ev:
+function _ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaINSt15__exception_ptr13exception_ptrEEC2Ev:
+function _ZNSaINSt15__exception_ptr13exception_ptrEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS2_EEEC2Ev:
+function _ZNSaISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS2_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS5_EEEC2Ev:
+function _ZNSaISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS5_EEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEEC2Ev:
+function _ZNSaISt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEEC2Ev:
+function _ZNSaINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEEEC2Ev:
+function _ZNSaISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKllEEEC2Ev:
+function _ZNSaISt13_Rb_tree_nodeISt4pairIKllEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt4pairIccEEC2Ev:
+function _ZNSaISt4pairIccEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaINSt7__cxx1112regex_traitsIcE10_RegexMaskEEC2Ev:
+function _ZNSaINSt7__cxx1112regex_traitsIcE10_RegexMaskEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_EEC2Ev:
+function _ZNSaISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_EEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIlEC2Ev:
+function _ZNSaIlEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaINSt8__detail6_StateIcEEEC2Ev:
+function _ZNSaINSt8__detail6_StateIcEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE11SectionNodeEEC2Ev:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE11SectionNodeEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_11XmlReporterEE15ReporterFactoryEEC2Ev:
+function _ZNSaIN5Catch17ReporterRegistrarINS_11XmlReporterEE15ReporterFactoryEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15ConsoleReporterEE15ReporterFactoryEEC2Ev:
+function _ZNSaIN5Catch17ReporterRegistrarINS_15ConsoleReporterEE15ReporterFactoryEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch14AssertionStatsEEC2Ev:
+function _ZNSaIN5Catch14AssertionStatsEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEESaIS6_EEEC2Ev:
+function _ZNSaISt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEESaIS6_EEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEEEEC2Ev:
+function _ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEEC2Ev:
+function _ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEEEEC2Ev:
+function _ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeEEEC2Ev:
+function _ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_13TestCaseStatsENS2_11SectionNodeEEEEC2Ev:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_13TestCaseStatsENS2_11SectionNodeEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEC2Ev:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_13JunitReporterEE15ReporterFactoryEEC2Ev:
+function _ZNSaIN5Catch17ReporterRegistrarINS_13JunitReporterEE15ReporterFactoryEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_12TestRunStatsENS3_INS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEEEC2Ev:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_12TestRunStatsENS3_INS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUliE8_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUliE8_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE9_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE9_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIdEEEC2Ev:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefIdEEEC2Ev called 2 returned 100% blocks executed 100%
+        2:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEEC2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEEC2Ev called 1 returned 100% blocks executed 100%
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+        -:  157:
+        -:  158:      _GLIBCXX20_CONSTEXPR
+    3065*:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    3065*:  160:      : __allocator_base<_Tp>(__a) { }
+------------------
+_ZNSaIN5Catch5clara6detail5TokenEEC2ERKS3_:
+function _ZNSaIN5Catch5clara6detail5TokenEEC2ERKS3_ called 8 returned 100% blocks executed 100%
+        8:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        8:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS9_EEEEEC2ERKSD_:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS9_EEEEEC2ERKSD_ called 6 returned 100% blocks executed 100%
+        6:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        6:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE7_EEEC2ERKS7_:
+function _ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE7_EEEC2ERKS7_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS1_4HelpC4ERbEUlbE_EEEC2ERKS7_:
+function _ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS1_4HelpC4ERbEUlbE_EEEC2ERKS7_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch8TestSpec10TagPatternEEC2ERKS2_:
+function _ZNSaIN5Catch8TestSpec10TagPatternEEC2ERKS2_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch8TestSpec15ExcludedPatternEEC2ERKS2_:
+function _ZNSaIN5Catch8TestSpec15ExcludedPatternEEC2ERKS2_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch8TestSpec11NamePatternEEC2ERKS2_:
+function _ZNSaIN5Catch8TestSpec11NamePatternEEC2ERKS2_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch16TestCaseTracking14SectionTrackerEEC2ERKS2_:
+function _ZNSaIN5Catch16TestCaseTracking14SectionTrackerEEC2ERKS2_ called 12 returned 100% blocks executed 100%
+       12:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+       12:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch6ConfigEEC2ERKS1_:
+function _ZNSaIN5Catch6ConfigEEC2ERKS1_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch10Generators16GeneratorTrackerEEC2ERKS2_:
+function _ZNSaIN5Catch10Generators16GeneratorTrackerEEC2ERKS2_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail12BoundFlagRefEEC2ERKS3_:
+function _ZNSaIN5Catch5clara6detail12BoundFlagRefEEC2ERKS3_ called 33 returned 100% blocks executed 100%
+       33:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+       33:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEC2ERKSA_:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEC2ERKSA_ called 9 returned 100% blocks executed 100%
+        9:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        9:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaISt10shared_ptrIN5Catch8TestSpec7PatternEEEC2ERKS4_:
+function _ZNSaISt10shared_ptrIN5Catch8TestSpec7PatternEEEC2ERKS4_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch11MessageInfoEEC2ERKS1_:
+function _ZNSaIN5Catch11MessageInfoEEC2ERKS1_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15CompactReporterEE15ReporterFactoryEEC2ERKS4_:
+function _ZNSaIN5Catch17ReporterRegistrarINS_15CompactReporterEE15ReporterFactoryEEC2ERKS4_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch12_GLOBAL__N_110ColumnInfoEEC2ERKS2_:
+function _ZNSaIN5Catch12_GLOBAL__N_110ColumnInfoEEC2ERKS2_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch9VerbosityEEC2ERKS1_:
+function _ZNSaIN5Catch9VerbosityEEC2ERKS1_ called 1 returned 100% blocks executed 100%
+        1:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        1:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch8TestSpec6FilterEEC2ERKS2_:
+function _ZNSaIN5Catch8TestSpec6FilterEEC2ERKS2_ called 4 returned 100% blocks executed 100%
+        4:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        4:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch8TestSpec11FilterMatchEEC2ERKS2_:
+function _ZNSaIN5Catch8TestSpec11FilterMatchEEC2ERKS2_ called 4 returned 100% blocks executed 100%
+        4:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        4:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIPKN5Catch8TestCaseEEC2ERKS3_:
+function _ZNSaIPKN5Catch8TestCaseEEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2ERKS5_:
+function _ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2ERKS5_ called 2646 returned 100% blocks executed 100%
+     2646:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+     2646:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC2ERKS7_:
+function _ZNSaISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC2ERKS7_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch8TestCaseEEC2ERKS1_:
+function _ZNSaIN5Catch8TestCaseEEC2ERKS1_ called 4 returned 100% blocks executed 100%
+        4:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        4:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail3ArgEEC2ERKS3_:
+function _ZNSaIN5Catch5clara6detail3ArgEEC2ERKS3_ called 134 returned 100% blocks executed 100%
+      134:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+      134:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail3OptEEC2ERKS3_:
+function _ZNSaIN5Catch5clara6detail3OptEEC2ERKS3_ called 134 returned 100% blocks executed 100%
+      134:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+      134:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11HelpColumnsEEC2ERKS3_:
+function _ZNSaIN5Catch5clara6detail11HelpColumnsEEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara8TextFlow6ColumnEEC2ERKS3_:
+function _ZNSaIN5Catch5clara8TextFlow6ColumnEEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2ERKS3_:
+function _ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2ERKS3_ called 1 returned 100% blocks executed 100%
+        1:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        1:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEEC2ERKSF_:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEEC2ERKSF_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE11SectionNodeEEC2ERKS4_:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE11SectionNodeEEC2ERKS4_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_EEC2ERKS7_:
+function _ZNSaISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_EEC2ERKS7_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaINSt7__cxx1112regex_traitsIcE10_RegexMaskEEC2ERKS3_:
+function _ZNSaINSt7__cxx1112regex_traitsIcE10_RegexMaskEEC2ERKS3_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaISt4pairIccEEC2ERKS1_:
+function _ZNSaISt4pairIccEEC2ERKS1_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEEEC2ERKSH_:
+function _ZNSaISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEEEC2ERKSH_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEEC2ERKS5_:
+function _ZNSaINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEEC2ERKS5_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaISt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEEC2ERKSC_:
+function _ZNSaISt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEEC2ERKSC_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEEC2ERKSC_:
+function _ZNSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEEC2ERKSC_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIlEEEC2ERKS4_:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefIlEEEC2ERKS4_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIjEEEC2ERKS4_:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefIjEEEC2ERKS4_ called 6 returned 100% blocks executed 100%
+        6:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        6:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEEC2ERKSF_:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEEC2ERKSF_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEEC2ERKSF_:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEEC2ERKSF_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEEC2ERKSF_:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEEC2ERKSF_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_12TestRunStatsENS3_INS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEEEC2ERKSB_:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_12TestRunStatsENS3_INS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEEEC2ERKSB_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEEC2ERKSF_:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEEC2ERKSF_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEEC2ERKSF_:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEEC2ERKSF_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIdEEEC2ERKS4_:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefIdEEEC2ERKS4_ called 6 returned 100% blocks executed 100%
+        6:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        6:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE9_EEEC2ERKS7_:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE9_EEEC2ERKS7_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEEC2ERKSF_:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEEC2ERKSF_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUliE8_EEEC2ERKS7_:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUliE8_EEEC2ERKS7_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEEC2ERKSF_:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEEC2ERKSF_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_11XmlReporterEE15ReporterFactoryEEC2ERKS4_:
+function _ZNSaIN5Catch17ReporterRegistrarINS_11XmlReporterEE15ReporterFactoryEEC2ERKS4_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_13JunitReporterEE15ReporterFactoryEEC2ERKS4_:
+function _ZNSaIN5Catch17ReporterRegistrarINS_13JunitReporterEE15ReporterFactoryEEC2ERKS4_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEC2ERKS9_:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEC2ERKS9_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_13TestCaseStatsENS2_11SectionNodeEEEEC2ERKS7_:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_13TestCaseStatsENS2_11SectionNodeEEEEC2ERKS7_ called 0 returned 0% blocks executed 0%
+    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+    #####:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15ConsoleReporterEE15ReporterFactoryEEC2ERKS4_:
+function _ZNSaIN5Catch17ReporterRegistrarINS_15ConsoleReporterEE15ReporterFactoryEEC2ERKS4_ called 3 returned 100% blocks executed 100%
+        3:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        3:  160:      : __allocator_base<_Tp>(__a) { }
+call    0 returned 100%
+------------------
+        -:  161:
+        -:  162:#if __cplusplus >= 201103L
+        -:  163:      // Avoid implicit deprecation.
+        -:  164:      allocator& operator=(const allocator&) = default;
+        -:  165:#endif
+        -:  166:
+        -:  167:      template<typename _Tp1>
+        -:  168:	_GLIBCXX20_CONSTEXPR
+      91*:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15ConsoleReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15ConsoleReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15CompactReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15CompactReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEEC2IS4_EERKSaIT_E:
+function _ZNSaIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEEC2IS4_EERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISA_EEEESaISD_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISD_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISA_EEEESaISD_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISD_EERKSaIT_E called 4 returned 100% blocks executed 100%
+        4:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE7_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE7_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_4HelpC4ERbEUlbE_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_4HelpC4ERbEUlbE_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEESaIS9_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS9_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEESaIS9_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS9_EERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E called 8 returned 100% blocks executed 100%
+        8:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS1_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS1_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS1_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS1_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS2_EERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS3_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS3_EERKSaIT_E called 22 returned 100% blocks executed 100%
+       22:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISA_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISA_EERKSaIT_E called 6 returned 100% blocks executed 100%
+        6:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS5_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS5_EERKSaIT_E called 6 returned 100% blocks executed 100%
+        6:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIPcEC2IcEERKSaIT_E:
+function _ZNSaIPcEC2IcEERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2IS1_EERKSaIT_E:
+function _ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEEC2IS1_EERKSaIT_E called 1 returned 100% blocks executed 100%
+        1:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIPlEC2IlEERKSaIT_E:
+function _ZNSaIPlEC2IlEERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS5_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS5_EERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E called 4 returned 100% blocks executed 100%
+        4:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISB_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISB_EERKSaIT_E called 0 returned 0% blocks executed 0%
+    #####:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E called 4 returned 100% blocks executed 100%
+        4:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE9_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE9_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUliE8_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUliE8_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS7_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEEC2ISF_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_11XmlReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_11XmlReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_13JunitReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_13JunitReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEEC2IS4_EERKSaIT_E called 2 returned 100% blocks executed 100%
+        2:  169:	allocator(const allocator<_Tp1>&) _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+        -:  170:
+        -:  171:#if __cpp_constexpr_dynamic_alloc
+        -:  172:      constexpr
+        -:  173:#endif
+    3281*:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEEEED2Ev:
+function _ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEED2Ev:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEED2Ev called 12 returned 100% blocks executed 100%
+       12:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail12BoundFlagRefEED2Ev:
+function _ZNSaIN5Catch5clara6detail12BoundFlagRefEED2Ev called 44 returned 100% blocks executed 100%
+       44:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEED2Ev:
+function _ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt10shared_ptrIN5Catch16IReporterFactoryEEEEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch10Generators16GeneratorTrackerEED2Ev:
+function _ZNSaIN5Catch10Generators16GeneratorTrackerEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch6ConfigEED2Ev:
+function _ZNSaIN5Catch6ConfigEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEED2Ev:
+function _ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch8TagAliasEEEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch16TestCaseTracking14SectionTrackerEED2Ev:
+function _ZNSaIN5Catch16TestCaseTracking14SectionTrackerEED2Ev called 16 returned 100% blocks executed 100%
+       16:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch8TestSpec11NamePatternEED2Ev:
+function _ZNSaIN5Catch8TestSpec11NamePatternEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch8TestSpec15ExcludedPatternEED2Ev:
+function _ZNSaIN5Catch8TestSpec15ExcludedPatternEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch8TestSpec10TagPatternEED2Ev:
+function _ZNSaIN5Catch8TestSpec10TagPatternEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch11SectionInfoEED2Ev:
+function _ZNSaIN5Catch11SectionInfoEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch14AssertionStatsEED2Ev:
+function _ZNSaIN5Catch14AssertionStatsEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEESaIS6_EEED2Ev:
+function _ZNSaISt6vectorISt10shared_ptrIN5Catch22CumulativeReporterBaseINS1_13JunitReporterEE11SectionNodeEESaIS6_EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEEEED2Ev:
+function _ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEED2Ev:
+function _ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEED2Ev:
+function _ZNSaISt13_Rb_tree_nodeIN5Catch9VerbosityEEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeEEED2Ev:
+function _ZNSaISt10shared_ptrIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS1_4HelpC4ERbEUlbE_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS1_4HelpC4ERbEUlbE_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE7_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail15BoundFlagLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE7_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS9_EEEEED2Ev:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS9_EEEEED2Ev called 8 returned 100% blocks executed 100%
+        8:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS2_EEED2Ev:
+function _ZNSaISt10unique_ptrIKN5Catch20IExceptionTranslatorESt14default_deleteIS2_EEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10shared_ptrIN5Catch16IReporterFactoryEEED2Ev:
+function _ZNSaISt10shared_ptrIN5Catch16IReporterFactoryEEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaINSt15__exception_ptr13exception_ptrEED2Ev:
+function _ZNSaINSt15__exception_ptr13exception_ptrEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS2_EEED2Ev:
+function _ZNSaISt10unique_ptrIN5Catch6Detail8EnumInfoESt14default_deleteIS2_EEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS5_EEED2Ev:
+function _ZNSaISt10unique_ptrINSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEESt14default_deleteIS5_EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15CompactReporterEE15ReporterFactoryEED2Ev:
+function _ZNSaIN5Catch17ReporterRegistrarINS_15CompactReporterEE15ReporterFactoryEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_15ConsoleReporterEE15ReporterFactoryEED2Ev:
+function _ZNSaIN5Catch17ReporterRegistrarINS_15ConsoleReporterEE15ReporterFactoryEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_13TestCaseStatsENS2_11SectionNodeEEEED2Ev:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_13TestCaseStatsENS2_11SectionNodeEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEED2Ev:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_13JunitReporterEE15ReporterFactoryEED2Ev:
+function _ZNSaIN5Catch17ReporterRegistrarINS_13JunitReporterEE15ReporterFactoryEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch17ReporterRegistrarINS_11XmlReporterEE15ReporterFactoryEED2Ev:
+function _ZNSaIN5Catch17ReporterRegistrarINS_11XmlReporterEE15ReporterFactoryEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch13ScopedMessageEED2Ev:
+function _ZNSaIN5Catch13ScopedMessageEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEED2Ev:
+function _ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEED2Ev called 2695 returned 100% blocks executed 100%
+     2695:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara8TextFlow6Column8iteratorEED2Ev:
+function _ZNSaIN5Catch5clara8TextFlow6Column8iteratorEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara8TextFlow6ColumnEED2Ev:
+function _ZNSaIN5Catch5clara8TextFlow6ColumnEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail5TokenEED2Ev:
+function _ZNSaIN5Catch5clara6detail5TokenEED2Ev called 9 returned 100% blocks executed 100%
+        9:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11HelpColumnsEED2Ev:
+function _ZNSaIN5Catch5clara6detail11HelpColumnsEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail3OptEED2Ev:
+function _ZNSaIN5Catch5clara6detail3OptEED2Ev called 136 returned 100% blocks executed 100%
+      136:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail3ArgEED2Ev:
+function _ZNSaIN5Catch5clara6detail3ArgEED2Ev called 136 returned 100% blocks executed 100%
+      136:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch8TestSpec6FilterEED2Ev:
+function _ZNSaIN5Catch8TestSpec6FilterEED2Ev called 6 returned 100% blocks executed 100%
+        6:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch9StringRefEED2Ev:
+function _ZNSaIN5Catch9StringRefEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt4pairIiN5Catch9StringRefEEED2Ev:
+function _ZNSaISt4pairIiN5Catch9StringRefEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch8TestCaseEED2Ev:
+function _ZNSaIN5Catch8TestCaseEED2Ev called 6 returned 100% blocks executed 100%
+        6:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEED2Ev:
+function _ZNSaISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN5Catch7TagInfoEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEED2Ev:
+function _ZNSaISt13_Rb_tree_nodeINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaImED2Ev:
+function _ZNSaImED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch11MessageInfoEED2Ev:
+function _ZNSaIN5Catch11MessageInfoEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch14SectionEndInfoEED2Ev:
+function _ZNSaIN5Catch14SectionEndInfoEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIPN5Catch16TestCaseTracking8ITrackerEED2Ev:
+function _ZNSaIPN5Catch16TestCaseTracking8ITrackerEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEED2Ev:
+function _ZNSaISt13_Rb_tree_nodeIPKN5Catch8TestCaseEEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch8TestSpec11FilterMatchEED2Ev:
+function _ZNSaIN5Catch8TestSpec11FilterMatchEED2Ev called 6 returned 100% blocks executed 100%
+        6:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIPN5Catch10ISingletonEED2Ev:
+function _ZNSaIPN5Catch10ISingletonEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt4pairImPKN5Catch8TestCaseEEED2Ev:
+function _ZNSaISt4pairImPKN5Catch8TestCaseEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeIN5Catch8TestCaseEEED2Ev:
+function _ZNSaISt13_Rb_tree_nodeIN5Catch8TestCaseEEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEED2Ev:
+function _ZNSaISt10shared_ptrIN5Catch16TestCaseTracking8ITrackerEEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIPKN5Catch8TestCaseEED2Ev:
+function _ZNSaIPKN5Catch8TestCaseEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt10shared_ptrIN5Catch8TestSpec7PatternEEED2Ev:
+function _ZNSaISt10shared_ptrIN5Catch8TestSpec7PatternEEED2Ev called 1 returned 100% blocks executed 100%
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch9VerbosityEED2Ev:
+function _ZNSaIN5Catch9VerbosityEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch12_GLOBAL__N_110ColumnInfoEED2Ev:
+function _ZNSaIN5Catch12_GLOBAL__N_110ColumnInfoEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch13SummaryColumnEED2Ev:
+function _ZNSaIN5Catch13SummaryColumnEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS1_EEED2Ev:
+function _ZNSaISt10unique_ptrIN5Catch18IStreamingReporterESt14default_deleteIS1_EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15CompactReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15CompactReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15ConsoleReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_15ConsoleReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_13TestCaseStatsENS3_11SectionNodeEEESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEESaIS9_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEESaIS9_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_13JunitReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_13JunitReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_11XmlReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch17ReporterRegistrarINS0_11XmlReporterEE15ReporterFactoryESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE6_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUliE8_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUliE8_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE9_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE9_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIdEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEEED2Ev:
+function _ZNSaISt4pairIlSt6vectorINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS1_12basic_stringIcSt11char_traitsIcESaIcEEEEEEESaISD_EEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail11BoundLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EESaISF_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIjEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefIlEESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt13_Rb_tree_nodeISt4pairIKllEEED2Ev:
+function _ZNSaISt13_Rb_tree_nodeISt4pairIKllEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt4pairIccEED2Ev:
+function _ZNSaISt4pairIccEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaINSt7__cxx1112regex_traitsIcE10_RegexMaskEED2Ev:
+function _ZNSaINSt7__cxx1112regex_traitsIcE10_RegexMaskEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_EED2Ev:
+function _ZNSaISt4pairINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_EED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIlED2Ev:
+function _ZNSaIlED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIPlED2Ev:
+function _ZNSaIPlED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaINSt8__detail6_StateIcEEED2Ev:
+function _ZNSaINSt8__detail6_StateIcEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE11SectionNodeEED2Ev:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE11SectionNodeEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_12TestRunStatsENS3_INS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEEED2Ev:
+function _ZNSaIN5Catch22CumulativeReporterBaseINS_13JunitReporterEE4NodeINS_12TestRunStatsENS3_INS_14TestGroupStatsENS3_INS_13TestCaseStatsENS2_11SectionNodeEEEEEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE11SectionNodeESaIS4_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEED2Ev:
+function _ZNSaINSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUliE8_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUliE8_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE9_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlbE9_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIdEEED2Ev:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefIdEEED2Ev called 8 returned 100% blocks executed 100%
+        8:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE0_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE5_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE1_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE2_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE3_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEED2Ev:
+function _ZNSaIN5Catch5clara6detail11BoundLambdaIZNS_21makeCommandLineParserERNS_10ConfigDataEEUlRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4_EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIjEEED2Ev:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefIjEEED2Ev called 8 returned 100% blocks executed 100%
+        8:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIN5Catch5clara6detail13BoundValueRefIlEEED2Ev:
+function _ZNSaIN5Catch5clara6detail13BoundValueRefIlEEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEED2Ev:
+function _ZNSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaIPcED2Ev:
+function _ZNSaIPcED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEED2Ev:
+function _ZNSaINSt8__detail4_NFAINSt7__cxx1112regex_traitsIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch22CumulativeReporterBaseINS0_13JunitReporterEE4NodeINS0_12TestRunStatsENS4_INS0_14TestGroupStatsENS4_INS0_13TestCaseStatsENS3_11SectionNodeEEEEEEESaISB_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 6 returned 100% blocks executed 100%
+        6:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEESaISA_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 6 returned 100% blocks executed 100%
+        6:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail12BoundFlagRefESaIS3_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 22 returned 100% blocks executed 100%
+       22:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEED2Ev:
+function _ZNSaIPNSt8__detail9_StateSeqINSt7__cxx1112regex_traitsIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEED2Ev:
+function _ZNSaISt4pairIN9__gnu_cxx17__normal_iteratorIPKcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEiEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch10Generators16GeneratorTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS1_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch6ConfigESaIS1_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch16TestCaseTracking14SectionTrackerESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 8 returned 100% blocks executed 100%
+        8:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec11NamePatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec15ExcludedPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch8TestSpec10TagPatternESaIS2_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 0 returned 0% blocks executed 0%
+    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 never executed
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_4HelpC4ERbEUlbE_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS2_4HelpC4ERbEUlbE_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE7_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail15BoundFlagLambdaIZNS0_21makeCommandLineParserERNS0_10ConfigDataEEUlbE7_EESaIS7_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 2 returned 100% blocks executed 100%
+        2:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+_ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISA_EEEESaISD_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev:
+function _ZNSaISt23_Sp_counted_ptr_inplaceIN5Catch5clara6detail13BoundValueRefISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaISA_EEEESaISD_ELN9__gnu_cxx12_Lock_policyE2EEED2Ev called 4 returned 100% blocks executed 100%
+        4:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+call    0 returned 100%
+------------------
+        -:  175:
+        -:  176:#if __cplusplus > 201703L
+        -:  177:      [[nodiscard,__gnu__::__always_inline__]]
+        -:  178:      constexpr _Tp*
+        -:  179:      allocate(size_t __n)
+        -:  180:      {
+        -:  181:#ifdef __cpp_lib_is_constant_evaluated
+        -:  182:	if (std::is_constant_evaluated())
+        -:  183:	  return static_cast<_Tp*>(::operator new(__n * sizeof(_Tp)));
+        -:  184:#endif
+        -:  185:	return __allocator_base<_Tp>::allocate(__n, 0);
+        -:  186:      }
+        -:  187:
+        -:  188:      [[__gnu__::__always_inline__]]
+        -:  189:      constexpr void
+        -:  190:      deallocate(_Tp* __p, size_t __n)
+        -:  191:      {
+        -:  192:#ifdef __cpp_lib_is_constant_evaluated
+        -:  193:	if (std::is_constant_evaluated())
+        -:  194:	  {
+        -:  195:	    ::operator delete(__p);
+        -:  196:	    return;
+        -:  197:	  }
+        -:  198:#endif
+        -:  199:	__allocator_base<_Tp>::deallocate(__p, __n);
+        -:  200:      }
+        -:  201:#endif // C++20
+        -:  202:
+        -:  203:      friend _GLIBCXX20_CONSTEXPR bool
+function _ZSteqRKSaIcES1_ called 0 returned 0% blocks executed 0%
+    #####:  204:      operator==(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  205:      { return true; }
+        -:  206:
+        -:  207:#if __cpp_impl_three_way_comparison < 201907L
+        -:  208:      friend _GLIBCXX20_CONSTEXPR bool
+    #####:  209:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  210:      { return false; }
+------------------
+_ZStneRKSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEESE_:
+function _ZStneRKSaINSt7__cxx119sub_matchIN9__gnu_cxx17__normal_iteratorIPKcNS_12basic_stringIcSt11char_traitsIcESaIcEEEEEEEESE_ called 0 returned 0% blocks executed 0%
+    #####:  209:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  210:      { return false; }
+------------------
+_ZStneRKSaIN5Catch5clara6detail3ArgEES5_:
+function _ZStneRKSaIN5Catch5clara6detail3ArgEES5_ called 0 returned 0% blocks executed 0%
+    #####:  209:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  210:      { return false; }
+------------------
+_ZStneRKSaIN5Catch5clara6detail3OptEES5_:
+function _ZStneRKSaIN5Catch5clara6detail3OptEES5_ called 0 returned 0% blocks executed 0%
+    #####:  209:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  210:      { return false; }
+------------------
+_ZStneRKSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEES7_:
+function _ZStneRKSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEES7_ called 0 returned 0% blocks executed 0%
+    #####:  209:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+    #####:  210:      { return false; }
+------------------
+        -:  211:#endif
+        -:  212:
+        -:  213:      // Inherit everything else.
+        -:  214:    };
+        -:  215:
+        -:  216:  template<typename _T1, typename _T2>
+        -:  217:    inline _GLIBCXX20_CONSTEXPR bool
+        -:  218:    operator==(const allocator<_T1>&, const allocator<_T2>&)
+        -:  219:    _GLIBCXX_NOTHROW
+        -:  220:    { return true; }
+        -:  221:
+        -:  222:#if __cpp_impl_three_way_comparison < 201907L
+        -:  223:  template<typename _T1, typename _T2>
+        -:  224:    inline _GLIBCXX20_CONSTEXPR bool
+        -:  225:    operator!=(const allocator<_T1>&, const allocator<_T2>&)
+        -:  226:    _GLIBCXX_NOTHROW
+        -:  227:    { return false; }
+        -:  228:#endif
+        -:  229:
+        -:  230:  // Invalid allocator<cv T> partial specializations.
+        -:  231:  // allocator_traits::rebind_alloc can be used to form a valid allocator type.
+        -:  232:  template<typename _Tp>
+        -:  233:    class allocator<const _Tp>
+        -:  234:    {
+        -:  235:    public:
+        -:  236:      typedef _Tp value_type;
+        -:  237:      template<typename _Up> allocator(const allocator<_Up>&) { }
+        -:  238:    };
+        -:  239:
+        -:  240:  template<typename _Tp>
+        -:  241:    class allocator<volatile _Tp>
+        -:  242:    {
+        -:  243:    public:
+        -:  244:      typedef _Tp value_type;
+        -:  245:      template<typename _Up> allocator(const allocator<_Up>&) { }
+        -:  246:    };
+        -:  247:
+        -:  248:  template<typename _Tp>
+        -:  249:    class allocator<const volatile _Tp>
+        -:  250:    {
+        -:  251:    public:
+        -:  252:      typedef _Tp value_type;
+        -:  253:      template<typename _Up> allocator(const allocator<_Up>&) { }
+        -:  254:    };
+        -:  255:
+        -:  256:  /// @} group allocator
+        -:  257:
+        -:  258:  // Inhibit implicit instantiations for required instantiations,
+        -:  259:  // which are defined via explicit instantiations elsewhere.
+        -:  260:#if _GLIBCXX_EXTERN_TEMPLATE
+        -:  261:  extern template class allocator<char>;
+        -:  262:  extern template class allocator<wchar_t>;
+        -:  263:#endif
+        -:  264:
+        -:  265:  // Undefine.
+        -:  266:#undef __allocator_base
+        -:  267:
+        -:  268:  // To implement Option 3 of DR 431.
+        -:  269:  template<typename _Alloc, bool = __is_empty(_Alloc)>
+        -:  270:    struct __alloc_swap
+        -:  271:    { static void _S_do_it(_Alloc&, _Alloc&) _GLIBCXX_NOEXCEPT { } };
+        -:  272:
+        -:  273:  template<typename _Alloc>
+        -:  274:    struct __alloc_swap<_Alloc, false>
+        -:  275:    {
+        -:  276:      static void
+        -:  277:      _S_do_it(_Alloc& __one, _Alloc& __two) _GLIBCXX_NOEXCEPT
+        -:  278:      {
+        -:  279:	// Precondition: swappable allocators.
+        -:  280:	if (__one != __two)
+        -:  281:	  swap(__one, __two);
+        -:  282:      }
+        -:  283:    };
+        -:  284:
+        -:  285:  // Optimize for stateless allocators.
+        -:  286:  template<typename _Alloc, bool = __is_empty(_Alloc)>
+        -:  287:    struct __alloc_neq
+        -:  288:    {
+        -:  289:      static bool
+        -:  290:      _S_do_it(const _Alloc&, const _Alloc&)
+        -:  291:      { return false; }
+        -:  292:    };
+        -:  293:
+        -:  294:  template<typename _Alloc>
+        -:  295:    struct __alloc_neq<_Alloc, false>
+        -:  296:    {
+        -:  297:      static bool
+        -:  298:      _S_do_it(const _Alloc& __one, const _Alloc& __two)
+        -:  299:      { return __one != __two; }
+        -:  300:    };
+        -:  301:
+        -:  302:#if __cplusplus >= 201103L
+        -:  303:  template<typename _Tp, bool
+        -:  304:    = __or_<is_copy_constructible<typename _Tp::value_type>,
+        -:  305:            is_nothrow_move_constructible<typename _Tp::value_type>>::value>
+        -:  306:    struct __shrink_to_fit_aux
+        -:  307:    { static bool _S_do_it(_Tp&) noexcept { return false; } };
+        -:  308:
+        -:  309:  template<typename _Tp>
+        -:  310:    struct __shrink_to_fit_aux<_Tp, true>
+        -:  311:    {
+        -:  312:      static bool
+        -:  313:      _S_do_it(_Tp& __c) noexcept
+        -:  314:      {
+        -:  315:#if __cpp_exceptions
+        -:  316:	try
+        -:  317:	  {
+        -:  318:	    _Tp(__make_move_if_noexcept_iterator(__c.begin()),
+        -:  319:		__make_move_if_noexcept_iterator(__c.end()),
+        -:  320:		__c.get_allocator()).swap(__c);
+        -:  321:	    return true;
+        -:  322:	  }
+        -:  323:	catch(...)
+        -:  324:	  { return false; }
+        -:  325:#else
+        -:  326:	return false;
+        -:  327:#endif
+        -:  328:      }
+        -:  329:    };
+        -:  330:#endif
+        -:  331:
+        -:  332:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  333:} // namespace std
+        -:  334:
+        -:  335:#endif
