@@ -9,6 +9,16 @@ echo "Starting the coverage data push to the standards repo..."
 echo "Generating the SHA.txt file"
 PROJECT_NAME=$(basename `git rev-parse --show-toplevel`)
 echo $PROJECT_NAME
+echo "Seeing if there are any non-.github/ changes"
+LAST_MERGE_COMMIT=$(git log --merges -n 2 --format=%H | tail -1)
+NON_CI_DIFF_FILES=$(git diff HEAD $LAST_MERGE_COMMIT --name-only | grep -v ^.github/)
+if [[ -z $NON_CI_DIFF_FILES ]]; then
+  echo "Only .github/ files found, skipping upload"
+  exit 0;
+else
+  echo "Found non-.github/ files"
+  echo $NON_CI_DIFF_FILES
+fi
 COVERAGE_SHA=$(git rev-list HEAD | head -1)
 echo $COVERAGE_SHA > SHA.txt
 echo "Processing coverage for report belonging to latest commit"
