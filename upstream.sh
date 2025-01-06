@@ -22,9 +22,9 @@ fi
 COVERAGE_SHA=$(git rev-list HEAD | head -1)
 echo $COVERAGE_SHA > SHA.txt
 echo "Processing coverage for report belonging to latest commit"
-echo "Calling https://codecov.io/api/gh/codecov/$PROJECT_NAME/commit/$COVERAGE_SHA"
-PROD_COVERAGE=$(curl https://codecov.io/api/gh/codecov/$PROJECT_NAME/commit/$COVERAGE_SHA | \
-python3 -c "import sys, json; print(json.load(sys.stdin)['commit']['totals']['c'])")
+echo "Calling https://api.codecov.io/api/v2/gh/codecov/repos/$PROJECT_NAME/commits/$COVERAGE_SHA"
+PROD_COVERAGE=$(curl "https://api.codecov.io/api/v2/gh/codecov/repos/$PROJECT_NAME/commits/$COVERAGE_SHA"| \
+python3 -c "import sys, json; print(json.load(sys.stdin)['totals']['coverage'])")
 echo "Validating if production coverage is a number"
 if ! [[ $PROD_COVERAGE =~ ^[0-9]+([.][0-9]+)?$ ]] ; then
   echo "error: Not a number" >&2; exit 1
