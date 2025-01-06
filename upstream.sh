@@ -22,6 +22,7 @@ fi
 COVERAGE_SHA=$(git rev-list HEAD | head -1)
 echo $COVERAGE_SHA > SHA.txt
 echo "Processing coverage for report belonging to latest commit"
+echo "Calling https://codecov.io/api/gh/codecov/$PROJECT_NAME/commit/$COVERAGE_SHA"
 PROD_COVERAGE=$(curl https://codecov.io/api/gh/codecov/$PROJECT_NAME/commit/$COVERAGE_SHA | \
 python3 -c "import sys, json; print(json.load(sys.stdin)['commit']['totals']['c'])")
 echo "Validating if production coverage is a number"
